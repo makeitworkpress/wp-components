@@ -1,3 +1,5 @@
 var Components = {
-    
+    initialize: function() {
+        
+    }
 }

@@ -38,13 +38,13 @@ $atom   = wp_parse_args( $atom, array(
         'pocket'        => array('url' => 'https://getpocket.com/edit.php?url=' . $url . '', 'icon' => 'get-pocket')
     ),
     'style'     => 'default',
-) );
-?>
-<div class="share-atom <?php echo $atom['style']; ?>">
+) ); ?>
+
+<div class="atom-share <?php echo $atom['style']; ?>">
     
     <?php foreach( $atom['networks'] as $network => $values ) { ?>
     
-        <a class="share-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
+        <a class="atom-share-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
             <?php isset($values['icon']) { ?>
                 <i class="fa fa-<?php echo $values['icon']; ?>"></i>
             <?php } ?>

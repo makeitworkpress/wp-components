@@ -34,7 +34,7 @@ class Components {
     }
     
     /**
-     * Contains our hooks
+     * Contains our standaard hooks
      */
     private function hook() {
         
@@ -55,39 +55,43 @@ class Components {
     }
     
     /**
-     * Displays and atom
+     * Retrieves the generic template.
+     *
+     * @param string    $type       The type, either a molecule or atom
+     * @param string    $template   The template to load, either a template in the molecule or atom's folder
+     * @param array     $variables  The custom variables for the template     
+     */
+    private static function template( $type = 'atom', $template, $variables ) {
+        
+        $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . '/' . $type . 's/' . $template . '.php', $template);
+        
+        if( file_exists($path) ) {
+            ${$type} = apply_filters('components_atom_variables', $variables, $template);
+            require_once($path);  
+        } else {
+            __('The given template for the molecule or atom does not exist', 'components');
+        }
+        
+    }
+    
+    /**
+     * Displays any atom
      *
      * @param string $atom  The atom to load
      * @param array $variables  The custom variables for a molecule
      */
     public static function atom( $atom, $variables = array() ) {
-        
-        $path = apply_filters('components_atom_path', COMPONENTS_PATH . '/atom/' . $atom . '.php', $atom);
-        
-        if( file_exists($path) ) {
-            $atom = $variables;
-            require_once($path);  
-        } else {
-            __('The given atom does not exist', 'components');
-        }
+        self::template( 'atom', $atom, $variables );
     }
     
     /**
-     * Displays an molecule
+     * Displays any molecule
      *
-     * @param string $molecule  The atom to load
-     * @param array $variables  The custom variables for a molecule
+     * @param string    $molecule   The atom to load
+     * @param array     $variables  The custom variables for a molecule
      */
     public static function molecule( $molecule, $variables = array() ) {
-        
-        $path = apply_filters('components_molecule_path', COMPONENTS_PATH . '/atom/' . $atom . '.php', $atom);
-        
-        if( file_exists($path) ) {
-            $molecule = $variables;
-            require_once($path);  
-        } else {
-            __('The given atom does not exist', 'components');
-        }
+        self::template( 'molecule', $molecule, $variables );
     }    
     
 }
