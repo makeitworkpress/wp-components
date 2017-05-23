@@ -22,7 +22,7 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
     
     <?php 
         /**
-         * If we can keep the first title, we use it seperate from the slider
+         * If we can keep the first title, we use it seperate from the slider. Ugggly, but it works!
          */
         if( $molecule['keep'] ) { 
     ?>
