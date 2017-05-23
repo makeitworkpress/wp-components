@@ -59,14 +59,14 @@ class Components {
      *
      * @param string    $type       The type, either a molecule or atom
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
-     * @param array     $variables  The custom variables for the template     
+     * @param array     $properties The custom properties for the template     
      */
-    private static function template( $type = 'atom', $template, $variables ) {
+    private static function template( $type = 'atom', $template, $properties ) {
         
         $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . '/' . $type . 's/' . $template . '.php', $template);
         
         if( file_exists($path) ) {
-            ${$type} = apply_filters('components_atom_variables', $variables, $template);
+            ${$type} = apply_filters('components_' . $type . '_properties', $properties, $template);
             require_once($path);  
         } else {
             __('The given template for the molecule or atom does not exist', 'components');

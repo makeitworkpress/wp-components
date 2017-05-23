@@ -12,7 +12,7 @@ $atom = wp_parse_args( $atom, array(
 ) ); 
 
 // Pagination with numbers
-if( $type == 'numbers' ) {
+if( $type == 'numbers' && ! isset($atom['pagination']) ) {
     
     global $wp_query;
     
@@ -28,7 +28,7 @@ if( $type == 'numbers' ) {
 }
 
 // Pagination with next and previous posts links
-if( $type == 'links' ) {
+if( $type == 'links' && ! isset($atom['pagination']) ) {
 
     $atom['pagination']  = get_previous_posts_link( $atom['prev'] ); 
     $atom['pagination'] .= get_next_posts_link( $atom['next'] );
