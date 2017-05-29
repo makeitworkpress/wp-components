@@ -25,7 +25,7 @@ $atom = wp_parse_args( $atom, array(
     
     <?php foreach( $atom['urls'] as $network => $url ) { ?>
     
-        <a class="atom-social-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="external">
+        <a class="atom-social-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
             
             <?php isset( $atom['icons'][$network] ) { ?>
                 <i class="fa fa-<?php echo $atom['icons'][$network]; ?>"></i>

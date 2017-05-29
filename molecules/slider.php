@@ -6,11 +6,10 @@
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
     'duration'      => 5000,
-    'keepTitle'     => false,   // Keep the title and caption from the first slide
-    'position'      => 'normal',   // Keep the title and caption from the first slide
-    'slides'        => array(), // Supports a array with after, before, button, description, src (video embed or image src), title and type (video or image) as keys.
-    'size'          => 'full',  // The default size for images
-    'style'         => 'default',
+    'position'      => 'normal',    // Keep the title and caption from the first slide
+    'slides'        => array(),     // Supports a array with after, before, button, description, image, title and video as keys.
+    'size'          => 'full',      // The default size for images
+    'style'         => 'default',   // Supports default and fullscreen (fullscreen sized slider)
     'transition'    => 'fade',
     'titleTag'      => 'h2',
 ) ); 
@@ -24,11 +23,11 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
         /**
          * If we can keep the first title, we use it seperate from the slider. Ugggly, but it works!
          */
-        if( $molecule['keep'] ) { 
+        if( $molecule['keepTitle'] ) { 
     ?>
     
         <?php if( isset($molecule['slides'][0]['title']) || isset($molecule['slides'][0]['caption']) ) { ?>
-            <div class="atom-slider-caption position-<?php echo $molecule['position']; ?>">
+            <div class="atom-slider-caption atom-slider-caption-kept position-<?php echo $molecule['position']; ?>">
         <?php } ?> 
     
             <?php if( isset($molecule['slides'][0]['title']) ) { ?>
@@ -60,6 +59,41 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
     ?>
     
     <?php foreach( $molecule['slides'] as $slide ) { ?> 
+
+        <div class="atom-slider-caption position-<?php echo $slide['position']; ?>">
+    
+            <?php if( isset($slide['title']) ) { ?>
+                <<?php echo $molecule['titleTag']; ?> class="atom-slider-title">
+                    <?php echo $slide['title']; ?>
+                </<?php echo $molecule['titleTag']; ?>>
+            <?php } ?>
+
+            <?php if( isset($slide['description']) ) { ?>
+                <p class="atom-slider-description">
+                    <?php echo $slide['description']; ?>
+                </p>
+            <?php } ?>
+    
+            <?php if( isset($slide['button']) ) { 
+                
+                Components::atom( 'button', array($slide['button']) );
+            
+            } ?>
+
+            <?php if( isset($slide['image']) ) { 
+                
+                Components::atom( 'image', array($slide['image']) );
+            
+            } ?>
+
+            <?php if( isset($slide['video']) ) { 
+                
+                Components::atom( 'video', array($slide['video']) );
+            
+            } ?> 
+    
+
+        </div>
 
     <?php } ?>
 

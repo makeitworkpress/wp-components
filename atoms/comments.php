@@ -17,14 +17,12 @@ $form = ob_get_clean();
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'closed'        => ! comments_open(), 
-    'closedText'    => '', // May contain a string for the closed text
+    'closedText'    => __('Comments are closed.', 'components'), // May contain a string for the closed text
     'form'          => $form,
     'haveComments'  => have_comments(),
     'list'          => $list,
     'next'          => '&rsaquo;',
     'paged'         => get_comment_pages_count() > 1 && get_option( 'page_comments' ) ? true : false,
-    'password'      => post_password_required(), 
-    'passwordText'  => '', // May contain a string for the password required text
     'prev'          => '&lsaquo;',    
     'style'         => 'default',    
     'title'         => sprintf( 
@@ -37,19 +35,18 @@ $atom = wp_parse_args( $atom, array(
 if( ! isset($atom['pagination']) ) {
     $atom['pagination']  = get_previous_comments_link( $atom['prev'] );
     $atom['pagination'] .= get_next_comments_link( $atom['next'] );
+} 
+
+// Return if a password is required
+if ( post_password_required() ) {
+	return;
 } ?>
 
 <div class="atom-comments <?php echo $atom['style']; ?>">
     
-    <?php if( $atom['password'] ) { ?> 
-        <p class="atom-comments-password"><?php echo $atom['passwordText']; ?></p>
-    <?php } ?>
-    
     <?php if( $atom['closed'] ) { ?> 
         <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>
-    <?php } ?> 
-    
-    <?php if( ! $atom['closed'] || ! $atom['password'] ) { ?> 
+    <?php } else { ?> 
     
         <?php if( $atom['haveComments'] ) { ?> 
     

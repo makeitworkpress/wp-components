@@ -5,7 +5,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'image'     => '', // Custom image tag for the image
+    'image'     => '', // Expects a custom image tag for the image, including the html.
     'size'      => 'large',
     'style'     => 'default entry-image'
 ) );

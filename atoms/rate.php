@@ -28,7 +28,7 @@ $halfStars  = $fraction < 0.75 && $fraction > 0.25 ? 1 : 0;
 $emptyStars = $atom['max'] - $fullStars - $halfStars;
 
 // If we allow users to rate, we need to add a class so our JS can pick it up
-$atom['style']  .= $atom['rate'] ? ' rate-do' : ''; ?>
+$atom['style']  .= $atom['rate'] ? ' do-rate' : ''; ?>
 
 <div class="atom-rate <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['itemprop']; ?>" itemscope="itemscope" itemtype="<?php echo $atom['itemtype']; ?>">
     

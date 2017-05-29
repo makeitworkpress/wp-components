@@ -92,6 +92,6 @@ class Components {
      */
     public static function molecule( $molecule, $variables = array() ) {
         self::template( 'molecule', $molecule, $variables );
-    }    
+    }
     
 }
