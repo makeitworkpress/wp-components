@@ -5,12 +5,16 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'link'      => '',
+    'link'      => '',          
     'schema'    => 'name',
     'style'     => 'default entry-title',
     'tag'       => 'h1',
     'title'     => get_the_title(),
-) ); ?>
+) ); 
+
+// Custom link to a post
+if( $atom['link'] == 'post' )
+    $atom['link'] = esc_url( get_permalink() ); ?>
 
 <<?php echo $atom['tag']; ?> class="atom-title <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>">
     

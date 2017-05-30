@@ -9,7 +9,7 @@
         "watchify": "latest"
     },
     "scripts": {
-        "build-js": "browserify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/divergent.js -o assets/js/components.min.js -c -m",
-        "watch-js": "watchify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/divergent.js -o assets/js/components.min.js -c -m"
+        "build-js": "browserify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/components.js -o assets/js/components.min.js -c -m",
+        "watch-js": "watchify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/components.js -o assets/js/components.min.js -c -m",
     }    
 }

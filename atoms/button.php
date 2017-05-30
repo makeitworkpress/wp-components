@@ -11,7 +11,11 @@ $atom = wp_parse_args( $atom, array(
     'title'      => '',
     'style'      => 'default',
     'target'     => '_self'
-) ); ?>
+) ); 
+
+// Custom link to a post
+if( $atom['link'] == 'post' )
+    $atom['link'] = esc_url( get_permalink() ); ?>
 
 <a class="atom-button <?php echo $atom['style']; ?>" href="<?php echo $atom['link']; ?>" target="<?php echo $atom['target']; ?>">
     

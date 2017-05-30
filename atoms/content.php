@@ -5,7 +5,8 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'content'   => '',                      // Allows developers to set their own string of content   
+    'content'   => '',                      // Allows developers to set their own string of content 
+    'pages'     => wp_link_pages( array('echo' => false) ),
     'scheme'    => 'text',                  // Can also be set to description as a custom microscheme
     'style'     => 'default entry-content',
     'type'      => 'content',               // Accepts content, excerpt;
@@ -32,6 +33,10 @@ if( ! $atom['content'] ) {
 
 <div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>">
     <?php 
-        echo $atom['content']; 
+        echo $atom['content'];
+    
+        // Linked pages within the content
+        if( $atom['type'] == 'content' )
+            echo $atom['pages'];
     ?>         	
 </div><!-- .entry-content -->

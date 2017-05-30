@@ -21,7 +21,7 @@ $molecule = wp_parse_args( $molecule, array(
     <?php } ?>  
              
         <?php 
-             if($molecule['before'])
+             if( $molecule['before'] )
                 echo $molecule['before']; 
         ?>     
     
@@ -42,7 +42,7 @@ $molecule = wp_parse_args( $molecule, array(
         <?php } ?>
              
         <?php 
-             if($molecule['after'])
+             if( $molecule['after'] )
                 echo $molecule['after']; 
         ?>            
              

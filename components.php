@@ -41,15 +41,27 @@ class Components {
         
         add_action('wp_enqueue_scripts', function() {
             
+            // If we are debugging, load the full scripts and css
+            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+            
             // Enqueue our components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components', COMPONENTS_ASSETS . '/css/components.min.css');
+                wp_enqueue_style( 'components', COMPONENTS_ASSETS . '/css/components' . $suffix . '.css');
                 wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
             }            
             
             // Enqueue our components JS
-            if( $this->configurations['js'] )
-                wp_enqueue_script( 'components', COMPONENTS_ASSETS . '/css/components.min.js', array('jquery'), NULL, true);
+            if( $this->configurations['js'] ) {
+                wp_register_script( 'components-slider', COMPONENTS_ASSETS . '/js/vendor/flexslider.min.js', array('jquery'), NULL, true);
+                wp_enqueue_script( 'components', COMPONENTS_ASSETS . '/js/components' . $suffix . '.js', array('jquery'), NULL, true);
+                
+                // Localize our script
+                wp_localize_script( 'components', 'components', array(
+                    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                    'debug'   => defined('WP_DEBUG') && WP_DEBUG ? true : false,
+                    'nonce'   => wp_create_nonce( 'cucumber' ),
+                ) );
+            }
             
         });
         

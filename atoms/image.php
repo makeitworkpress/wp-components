@@ -11,6 +11,10 @@ $atom = wp_parse_args( $atom, array(
     'style'     => 'default entry-image'
 ) );
 
+// Custom link to a post
+if( $atom['link'] == 'post' )
+    $atom['link'] = esc_url( get_permalink() );
+
 $atom['image'] = if( $atom['image'] ) ? $atom['image'] : get_the_post_thumbnail( null, $atom['size'], array('itemprop' => 'image') );
 
 // We should have an image

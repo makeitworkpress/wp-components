@@ -1,5 +1,0 @@
-var Components = {
-    initialize: function() {
-        
-    }
-}
