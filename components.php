@@ -19,7 +19,7 @@ class Components {
      */
     public function __construct( $configurations = array() ) {
         
-        // Setup our configurations
+        // Setup our configurations. By default, we load css and js from the components library.
         $this->configurations = wp_parse_args( $configurations, array('css' => true, 'js' => true) );
         
         // Find our path
@@ -31,6 +31,7 @@ class Components {
         
         // Hook actions
         $this->hook();
+        
     }
     
     /**
@@ -55,7 +56,7 @@ class Components {
     }
     
     /**
-     * Retrieves the generic template.
+     * Retrieves the generic template for an atom or molecule.
      *
      * @param string    $type       The type, either a molecule or atom
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
@@ -69,7 +70,7 @@ class Components {
             ${$type} = apply_filters('components_' . $type . '_properties', $properties, $template);
             require_once($path);  
         } else {
-            __('The given template for the molecule or atom does not exist', 'components');
+            _e('The given template for the molecule or atom does not exist', 'components');
         }
         
     }

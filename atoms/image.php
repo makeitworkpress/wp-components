@@ -5,7 +5,8 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'image'     => '', // Expects a custom image tag for the image, including the html.
+    'image'     => '',      // Expects a custom image tag for the image, including the html.
+    'link'      => '',      // A custom link from the image
     'size'      => 'large',
     'style'     => 'default entry-image'
 ) );
@@ -18,5 +19,15 @@ if( ! $atom['image'] )
 
 ?>
 <figure class="atom-image <?php echo $atom['style']; ?>">
-    <?php echo $atom['image']; ?>
+    
+    <?php if( $atom['link'] ) { ?>
+        <a href="<?php echo $atom['link']; ?>" rel="bookmark">
+    <?php } ?>
+    
+        <?php echo $atom['image']; ?>
+    
+    <?php if( $atom['link'] ) { ?>
+        </a>
+    <?php } ?>
+    
 </figure>>

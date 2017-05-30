@@ -3,8 +3,8 @@
  * Displays a generic header for a post
  */
 
-// Atom values
-$atom = wp_parse_args( $atom, array(
+// Molecule values
+$molecule = wp_parse_args( $molecule, array(
     'after'         => '',      // Custom content at the end of the header
     'afterAtoms'    => array(), // Accepts a multidimensional array with the element name as key and the value for the component variables
     'before'        => '',      // Custom content at the beginning of the header
@@ -15,25 +15,27 @@ $atom = wp_parse_args( $atom, array(
     'title'         => array()  // Custom arguments for the title
 ) ); ?>
 
-<header class="atom-post-header <?php echo $atom['style']; ?>">
+<header class="molecule-post-header <?php echo $molecule['style']; ?>">
     
-    <?php if( $atom['container'] ) { ?>
+    <?php do_action( 'components_post_header_before', $molecule ); ?>
+    
+    <?php if( $molecule['container'] ) { ?>
          <div class="container"> 
     <?php } ?>
              
         <?php 
-             if($atom['before'])
-                echo $atom['before']; 
+             if($molecule['before'])
+                echo $molecule['before']; 
         ?>               
     
-        <?php if( $atom['beforeAtoms'] ) { ?>
-            <div class="atom-post-header-before">
+        <?php if( $molecule['beforeAtoms'] ) { ?>
+            <div class="molecule-post-header-before">
 
                 <?php 
 
-                    foreach( $atom['beforeAtoms'] as $name => $variables ) { 
+                    foreach( $molecule['beforeAtoms'] as $name => $variables ) { 
 
-                        Components::atom( $name, $element );
+                        Components::atom( $name, $variables );
 
                     } 
 
@@ -44,17 +46,17 @@ $atom = wp_parse_args( $atom, array(
              
         <?php
              // Display our title!
-             Components::atom('title', $atom['title']);
+             Components::atom('title', $molecule['title']);
         ?>
 
-        <?php if( $atom['afterAtoms'] ) { ?>     
-            <div class="atom-post-header-after">
+        <?php if( $molecule['afterAtoms'] ) { ?>     
+            <div class="molecule-post-header-after">
 
                 <?php 
 
-                    foreach( $atom['afterAtoms'] as $name => $variables ) { 
+                    foreach( $molecule['afterAtoms'] as $name => $variables ) { 
 
-                        Components::atom( $name, $element );
+                        Components::atom( $name, $variables );
 
                     } 
 
@@ -64,17 +66,18 @@ $atom = wp_parse_args( $atom, array(
         <?php } ?> 
              
         <?php 
-             if($atom['after'])
-                echo $atom['after']; 
+             if($molecule['after'])
+                echo $molecule['after']; 
         ?>              
              
-    <?php if( $atom['container'] ) { ?>
+    <?php if( $molecule['container'] ) { ?>
         </div> 
     <?php } ?>
     
-
-    <?php if( $atom['scroll'] ) { ?>
-        <a class="scroll-down" href="#"></a> 
-    <?php } ?>    
+    <?php if( $molecule['scroll'] ) { ?>
+        <a class="components-scroll-down" href="#"></a> 
+    <?php } ?>  
+    
+    <?php do_action( 'components_post_header_after', $molecule ); ?>
     
 </header>

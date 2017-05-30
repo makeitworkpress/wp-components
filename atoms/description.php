@@ -12,6 +12,6 @@ $atom = wp_parse_args( $atom, array(
 ) );
 
 ?>
-<<?php echo $atom['tag']; ?> class="atom-subtitle <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>">
-    <?php echo $atom['title']; ?>
+<<?php echo $atom['tag']; ?> class="atom-description <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>">
+    <?php echo $atom['description']; ?>
 </<?php echo $atom['tag']; ?>>

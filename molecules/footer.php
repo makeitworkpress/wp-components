@@ -4,29 +4,31 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$molecule = wp_parse_args( $molecule, array(
     'container' => true,    // Wrap this component in a container
     'sidebars'  => array(), // Accepts a multidimensional array with the grid classes under the key grid and sidebar names under the key name
     'socket'    => false,
     'style'     => 'default',
 ) ); ?>
 
-<footer class="atom-footer <?php echo $atom['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+<footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
     
-    <?php if( $atom['sidebars'] ) { ?>
-        <div class="atom-footer-sidebars">
+    <?php do_action( 'components_footer_before', $molecule ); ?>
+    
+    <?php if( $molecule['sidebars'] ) { ?>
+        <div class="molecule-footer-sidebars">
 
-            <?php if( $atom['container'] ) { ?>
+            <?php if( $molecule['container'] ) { ?>
                 <div class="container"> 
             <?php } ?>        
 
             <?php 
 
-                foreach( $atom['sidebars'] as $sidebar ) { 
+                foreach( $molecule['sidebars'] as $sidebar ) { 
 
                     if( is_active_sidebar($sidebar['name']) ) { ?> 
 
-                        <aside class="atom-footer-sidebar <?php echo $sidebar['grid']; ?>" role="complementary">
+                        <aside class="molecule-footer-sidebar <?php echo $sidebar['grid']; ?>" role="complementary">
                             <?php dynamic_sidebar( $sidebar['name'] ); ?>
                         </aside>
 
@@ -36,27 +38,29 @@ $atom = wp_parse_args( $atom, array(
 
             ?>
 
-            <?php if( $atom['container'] ) { ?>
+            <?php if( $molecule['container'] ) { ?>
                 </div>
             <?php } ?>                 
 
         </div>
     <?php } ?>
     
-    <?php if( $atom['socket'] ) { ?>
-        <div class="atom-footer-socket">
+    <?php if( $molecule['socket'] ) { ?>
+        <div class="molecule-footer-socket">
             
-            <?php if( $atom['container'] ) { ?>
+            <?php if( $molecule['container'] ) { ?>
                 <div class="container"> 
             <?php } ?>              
             
-                <?php echo $atom['socket']; ?>
+                <?php echo $molecule['socket']; ?>
                     
-            <?php if( $atom['container'] ) { ?>
+            <?php if( $molecule['container'] ) { ?>
                 </div>
             <?php } ?>
             
         </div>
     <?php } ?>
+    
+    <?php do_action( 'components_footer_after', $molecule ); ?>
     
 </footer>

@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$molecule = wp_parse_args( $molecule, array(
     'after'     => '', // Custom content at the end of the footer
     'atoms'     => array(), // Accepts a multidimensional array with the element name as key and the value for the component variables
     'before'    => '', // Custom content at the beginning of the footer  
@@ -12,25 +12,27 @@ $atom = wp_parse_args( $atom, array(
     'style'     => 'default entry-footer',
 ) ); ?>
 
-<footer class="atom-post-footer <?php echo $atom['style']; ?>">
+<footer class="molecule-post-footer <?php echo $molecule['style']; ?>">
     
-    <?php if( $atom['container'] ) { ?>
+    <?php do_action( 'components_post_footer_before', $molecule ); ?>
+    
+    <?php if( $molecule['container'] ) { ?>
          <div class="container"> 
     <?php } ?>  
              
         <?php 
-             if($atom['before'])
-                echo $atom['before']; 
+             if($molecule['before'])
+                echo $molecule['before']; 
         ?>     
     
-        <?php if( $atom['atoms'] ) { ?>
-            <div class="atom-post-footer-elements">
+        <?php if( $molecule['atoms'] ) { ?>
+            <div class="molecule-post-footer-atoms">
 
                 <?php 
 
-                    foreach( $atom['atoms'] as $name => $variables ) { 
+                    foreach( $molecule['atoms'] as $name => $variables ) { 
 
-                        Components::atom( $name, $element );
+                        Components::atom( $name, $variables );
 
                     } 
 
@@ -40,12 +42,14 @@ $atom = wp_parse_args( $atom, array(
         <?php } ?>
              
         <?php 
-             if($atom['after'])
-                echo $atom['after']; 
+             if($molecule['after'])
+                echo $molecule['after']; 
         ?>            
              
-    <?php if( $atom['container'] ) { ?>
+    <?php if( $molecule['container'] ) { ?>
         </div> 
     <?php } ?>
+    
+    <?php do_action( 'components_post_footer_after', $molecule ); ?>
 
 </footer>

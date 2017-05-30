@@ -7,13 +7,13 @@
 $atom = wp_parse_args( $atom, array(
     'iconAfter'  => '',
     'iconBefore' => '',
+    'link'       => '#', 
     'title'      => '',
     'style'      => 'default',
-    'target'     => '_self',
-    'url'        => '#', 
+    'target'     => '_self'
 ) ); ?>
 
-<a class="atom-button <?php echo $atom['style']; ?>" href="<?php echo $atom['url']; ?>" target="<?php echo $atom['target']; ?>">
+<a class="atom-button <?php echo $atom['style']; ?>" href="<?php echo $atom['link']; ?>" target="<?php echo $atom['target']; ?>">
     
     <?php if( $atom['iconBefore'] ) { ?> 
         <i class="fa fa-<?php echo $atom['iconBefore']; ?>"></i>
