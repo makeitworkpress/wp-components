@@ -79,11 +79,11 @@ class Build {
      */
     protected static function template( $type = 'atom', $template, $properties ) {
         
-        $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . '/' . $type . 's/' . $template . '.php', $template);
+        $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . $type . 's/' . $template . '.php', $template);
         
         if( file_exists($path) ) {
             ${$type} = apply_filters('components_' . $type . '_properties', $properties, $template);
-            require_once($path);  
+            require($path);  
         } else {
             _e('The given template for the molecule or atom does not exist', 'components');
         }

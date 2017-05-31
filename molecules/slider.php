@@ -5,74 +5,96 @@
 
 // Molecule values
 $molecule = wp_parse_args( $molecule, array(
-    'data'          => '',
+    'height'        => 'normal',
+    'id'            => uniqid(),            // Used to link the slider to it's variables
     'options'       => array(
         'animation'         => 'fade',      // Type of animation
         'animationSpeed'    => 500,         // Speed of animation
-        'itemMargin'        => '',          // Margin between items
-        'itemWidth'         => '',          // Allows for a carousel
-        'minItems'          => '',          // Allows for a carousel
-        'maxItems'          => '',          // Allows for a carousel
         'nextText'          => '&rsaquo;',  // Next indicator 
         'prevText'          => '&lsaquo;',  // Prev indicator
         'slideshowSpeed'    => 5000 ,       // Speed of slideshow
-        'smoothHeight'      => true         // Smoothes the height
+        'smoothHeight'      => false         // Smoothes the height
     ),
-    'position'      => 'normal',    // Position of captions
-    'slides'        => array(),     // Supports a array with after, before, button, description, image, title and video as keys.
+    'scheme'        => 'http://www.schema.org/CreativeWork',     
+    'scroll'        => false,     
+    'slides'        => array(),     // Supports a array with position, background (url or color value), video, image and atoms as keys.
     'size'          => 'full',      // The default size for images
-    'style'         => 'default'    // Supports default and fullscreen (fullscreen sized slider)
+    'style'         => 'default'    
 ) ); 
 
-// Set the data options
-if( ! $molecule['data'] ) {
-    foreach( $molecule['options'] as $key => $option ) {
-        $molecule['data'] .= ' data-' . $key . '="' . $option . '"';
-    }
+// Set our variables
+if( $molecule['options'] ) {
+    
+    add_action( 'wp_footer', function() use($molecule) {
+        echo '<script type="text/javascript">var slider' . $molecule['id'] . ' = ' . json_encode($molecule['options']) . ';</script>';    
+    } );
+    
 }
 
+// Fullscreen slider
+if( $molecule['height'] == 'full' )
+    $molecule['style'] .= ' components-fullscreen';
+
+if( $molecule['height'] == 'normal' )
+    $molecule['style'] .= ' components-normalscreen';
+
+if( $molecule['height'] == 'half' )
+    $molecule['style'] .= ' components-halfscreen';
+
+// Enqueue our script
 if( ! wp_script_is('components-slider') || apply_filters('components_slider_script', true) )
     wp_enqueue_script('components-slider'); ?>
 
-<div class="molecule-slider <?php echo $molecule['style']; ?>" <?php echo $molecule['data']; ?>>
+<div class="molecule-slider <?php echo $molecule['style']; ?>" data-id="<?php echo $molecule['id']; ?>">
+    
+    <?php do_action( 'components_slider_before', $molecule ); ?>
     
     <ul class="slides">
         
-        <?php foreach( $molecule['slides'] as $slide ) { ?>
+        <?php foreach( $molecule['slides'] as $slide ) { 
+        
+            // Background in a slider
+            if( isset($slide['background']) ) {
+                $slide['background'] = strpos($slide['background'], 'http') === 0 
+                    ? 'style="background-image: url(' . $slide['background'] . ');"' 
+                    : 'style="background-color: ' . $slide['background'] . ';"';
+            } else {
+                $slide['background'] = '';   
+            }
+    
+            // Position of elements
+            $slide['position'] = $slide['position'] ? 'components-position-' . $slide['position'] : ''; ?>
 
-            <li class="molecule-slide" itemscope="itemscope" itemtype="http://www.schema.org/CreativeWork">
+            <li class="molecule-slide" itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+                
+                <?php 
+    
+                    // Atoms
+                    if( isset($slide['atoms']) ) { 
+                
+                ?> 
 
-                <div class="molecule-slider-caption components-position-<?php echo $slide['position']; ?>">
+                    <div class="molecule-slide-wrapper <?php echo $slide['position']; ?>" <?php echo $slide['background']; ?>>
+                        <div class="molecule-slide-caption">
 
-                    <?php 
+                            <?php
 
-                        // Slide Title
-                        if( isset($slide['title']) ) {
-                            Components\Build::atom( 'title', array($slide['title']) );
-                        } 
+                                // Add our custom atoms for this caption                                
+                                foreach( $slide['atoms'] as $name => $variables ) {
+                                    Components\Build::atom($name, $variables);    
+                                }
+                            ?>
 
-                        // Slide Description
-                        if( isset($slide['description']) ) { 
-                            Components\Build::atom( 'description', array($slide['description']) );
-                        }
-
-                        // Slide button Description                                
-                        if( isset($slide['button']) ) { 
-                            Components\Build::atom( 'button', array($slide['button']) );
-                        } 
-
-                    ?>
-
-                </div>
+                        </div>
+                    </div>
 
                 <?php 
 
-                    // Slide video or image
-                    if( isset($slide['image']) ) { 
+                    // Or... slide video or image
+                    } elseif( isset($slide['image']) ) { 
                         Components\Build::atom( 'image', array($slide['image']) );
                     } elseif( isset($slide['video']) ) { 
                         Components\Build::atom( 'video', array($slide['video']) );
-
                     }
 
                 ?>
@@ -82,5 +104,16 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
         <?php } ?>
         
     </ul>
+    
+    <?php 
+    
+        // Scroll-down button
+        if( $molecule['scroll'] ) { 
+            Components\Build::atom( 'scroll', $molecule['scroll'] );
+        }
+    
+    ?> 
+    
+    <?php do_action( 'components_slider_after', $molecule ); ?>
 
 </div>

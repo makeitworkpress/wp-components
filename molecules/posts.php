@@ -12,7 +12,7 @@ $molecule = wp_parse_args( $molecule, array(
     'footerAtoms'   => array(                           // Accepts a set of atoms
         'title' => array( 'link' => 'post', 'title' => __('View post', 'components')) 
     ),                                           
-    'grid'          => '',                              // Accepts a custom grid class to display the thing into coloms
+    'grid'          => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'headerAtoms'   => array(                           // Accepts a set of atoms
         'title' => array( 'tag' => 'h2', 'link' => 'post' ) 
     ),          
@@ -30,7 +30,7 @@ $molecule = wp_parse_args( $molecule, array(
 // Output our arguments if we have a filter
 if( $molecule['filter'] ) {
     add_action('wp_footer', function() use ($molecule) {
-        echo '<script type="text/javascript"> var posts' . $molecule['unique'] . '="' . json_encode($molecule) . '";</script>';
+        echo '<script type="text/javascript"> var posts' . $molecule['unique'] . '=' . json_encode($molecule) . ';</script>';
     });
 }
 
@@ -70,11 +70,19 @@ if( strpos($molecule['scheme'], 'BlogPosting') ) {
     
     <div class="molecule-posts-wrapper">
     
-        <?php foreach( $molecule['posts'] as $post ) { ?>
+        <?php foreach( $molecule['posts'] as $key => $post ) { ?>
 
-            <?php setup_postdata( $post ); ?>
+            <?php 
+                
+                // Allows for grid patterns
+                $grid = is_array($molecule['grid']) ? $molecule['grid'][$key] : $molecule['grid'];
+    
+                // Set-up our post data
+                setup_postdata( $post );
+    
+            ?>
 
-            <article class="molecule-posts-post <?php echo $molecule['grid']; ?>" <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+            <article class="molecule-post <?php echo $grid; ?>" <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
 
                 <?php
                     // Actions at beginning of a post

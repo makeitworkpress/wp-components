@@ -30,7 +30,7 @@ $emptyStars = $atom['max'] - $fullStars - $halfStars;
 
 // Output our variables for our rating element
 add_action( 'wp_footer', function() use($molecule) {
-    echo '<script type="text/javascript"> var rate' . $molecule['unique'] . '="' . json_encode($molecule) . '";</script>';
+    echo '<script type="text/javascript"> var rate' . $molecule['unique'] . '=' . json_encode($molecule) . ';</script>';
 } );
 
 // If we allow users to rate, we need to add a class so our JS can pick it up

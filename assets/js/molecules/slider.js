@@ -7,8 +7,9 @@ module.exports.initialize = function() {
     jQuery('.molecule-slider').each(function (index) {
 
         // Retrieve our option values
-        var options = jQuery(this).data();
-
+        var id = jQuery(this).data('id'),
+            options = window['slider' + id];
+        
         jQuery(this).flexslider(options);
 
     });

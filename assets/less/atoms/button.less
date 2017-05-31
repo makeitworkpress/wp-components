@@ -4,7 +4,9 @@
  * Styling for the buttons
  */
 .atom-button {
+    display: inline-block;
     padding: 16px 32px;
+    transition: all 350ms ease-out;
     &.components-rounded {
         border-radius: 50px;    
     }
@@ -15,5 +17,8 @@
     &.atom-button-large {
         font-size: 1.1em;
         padding: 24px 48px;
+    }
+    &:hover {
+        opacity: 0.9;
     }
 }

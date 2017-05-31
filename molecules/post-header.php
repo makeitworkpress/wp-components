@@ -41,9 +41,14 @@ $molecule = wp_parse_args( $molecule, array(
         </div> 
     <?php } ?>
     
-    <?php if( $molecule['scroll'] ) { 
-        Components\Build::atom( 'scroll', $molecule['scroll'] );
-    } ?>  
+    <?php 
+    
+        // Scroll-down button
+        if( $molecule['scroll'] ) { 
+            Components\Build::atom( 'scroll', $molecule['scroll'] );
+        }
+    
+    ?> 
     
     <?php do_action( 'components_post_header_after', $molecule ); ?>
     

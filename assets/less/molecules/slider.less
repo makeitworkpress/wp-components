@@ -1,0 +1,108 @@
+// main: ../components.less
+
+/**
+ * Styling for the slider component
+ */
+.molecule-slider {
+    max-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    img, video, iframe, embed {
+        display: block;
+        max-height: 100vh;      
+        width: auto;
+    }
+    ul, ol {
+        margin: 0;
+        list-style: none;
+    }
+    .slides {
+        overflow: hidden;
+    }
+}
+
+.molecule-slide {
+    display: none; 
+    -webkit-backface-visibility: hidden;     
+}
+
+.molecule-slide-wrapper {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .components-fullscreen & {
+        min-height: 100vh;
+    }
+    .components-normalscreen & {
+        min-height: 75vh;
+    }
+    .components-halfscreen & {
+        min-height: 50vh;
+    }    
+}
+
+.molecule-slide-caption {
+    margin: 32px;
+}
+
+.flex-control-nav {
+    bottom: 8px;
+    height: 16px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 10;
+    li {
+        display: inline-block;
+        margin: 0 3px;
+        a {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            display: block;
+            height: 16px;
+            text-indent: -9999px;
+            width: 16px;
+            &.flex-active, &:hover {
+                background: #333;
+            }            
+        }        
+    } 
+    
+}
+
+.flex-direction-nav  {
+    .flex-prev, .flex-next {
+        color: #fff;
+        font-size: 3em;
+        margin-top: -40px;
+        position: absolute;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        transition: all 350ms ease-in-out;
+        top: 50%;
+        z-index: 100;
+    }
+    .flex-prev {
+        left: -32px;
+        opacity: 0.3;
+    }
+    .flex-next {
+        opacity: 0.3;
+        right: -32px;
+    }
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
+
+.molecule-slider:hover .flex-direction-nav { 
+    .flex-prev {
+        left: 8px;
+        opacity: 1;
+    }
+    .flex-next {
+        opacity: 1;
+        right: 8px;
+    }    
+}

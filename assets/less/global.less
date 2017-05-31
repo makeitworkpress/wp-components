@@ -9,6 +9,21 @@
     transform: translate(-50%, 0);
 }
 
+.components-fullscreen {
+    min-height: 100vh;
+    width: 100%;
+}
+
+.components-halfscreen {
+    min-height: 50vh;
+    width: 100%;
+}
+
+.components-normalscreen {
+    min-height: 75vh;
+    width: 100%;
+}
+
 .components-left {
     float: left;
 }
@@ -56,39 +71,87 @@
 @orange: #f39c12;
 @purple: #8e44ad;
 @red: #e74c3c;
+@magenta: #ff3f72;
+@marine: #1abc9c;
+@yellow: #f1c40f;
 @white: #fff;
 
 /* Backgrounds */
 .components-background-blue {
     background-color: @blue;
+    &:hover {
+        background-color: darken(@blue, 10%); 
+    }
 }
 
 .components-background-dark {
     background-color: @dark;
+    &:hover {
+        background-color: darken(@dark, 10%); 
+    }    
 }
 
 .components-background-green {
     background-color: @green;
+    &:hover {
+        background-color: darken(@green, 10%); 
+    }    
 }
 
 .components-background-grey {
     background-color: @grey;
+    &:hover {
+        background-color: darken(@grey, 10%); 
+    }    
 }
 
 .components-background-light {
     background-color: @light;
+    &:hover {
+        background-color: darken(@light, 10%); 
+    }    
+}
+
+.components-background-magenta {
+    background-color: @magenta;
+    &:hover {
+        background-color: darken(@magenta, 10%); 
+    }    
+}
+
+.components-background-marine {
+    background-color: @marine;
+    &:hover {
+        background-color: darken(@marine, 10%); 
+    }    
 }
 
 .components-background-orange {
     background-color: @orange;
+    &:hover {
+        background-color: lighten(@orange, 3%); 
+    }    
 }
 
 .components-background-purple {
     background-color: @purple;
+    &:hover {
+        background-color: darken(@purple, 10%); 
+    }    
 }
 
 .components-background-red {
     background-color: @red;
+    &:hover {
+        background-color: darken(@red, 10%); 
+    }    
+}
+
+.components-background-yellow {
+    background-color: @yellow;
+    &:hover {
+        background-color: lighten(@yellow, 3%); 
+    }    
 }
 
 .components-background-white {
@@ -98,38 +161,86 @@
 /* Colors */
 .components-color-blue {
     color: @blue;
+    &:hover {
+        color: lighten(@blue, 10%); 
+    }      
 }
 
 .components-color-dark {
     color: @dark;
+    &:hover {
+        color: lighten(@dark, 10%); 
+    }     
 }
 
 .components-color-green {
     color: @green;
+    &:hover {
+        color: lighten(@green, 10%); 
+    }     
 }
 
 .components-color-grey {
     color: @grey;
+    &:hover {
+        color: darken(@grey, 10%); 
+    }     
 }
 
 .components-color-light {
     color: @light;
+    &:hover {
+        color: darken(@light, 10%); 
+    }     
+}
+
+.components-color-magenta {
+    color: @magenta;
+    &:hover {
+        color: lighten(@magenta, 5%); 
+    }     
+}
+
+.components-color-marine {
+    color: @marine;
+    &:hover {
+        color: lighten(@marine, 5%); 
+    }     
 }
 
 .components-color-orange {
     color: @orange;
+    &:hover {
+        color: lighten(@orange, 10%); 
+    }     
 }
 
 .components-color-purple {
     color: @purple;
+    &:hover {
+        color: lighten(@purple, 10%); 
+    }     
 }
 
 .components-color-red {
     color: @red;
+    &:hover {
+        color: lighten(@red, 5%); 
+    }     
+}
+
+.components-color-yellow {
+    color: @yellow;
+     &:hover {
+        color: lighten(@yellow, 10%); 
+    } 
 }
 
 .components-color-white {
     color: @white;
+     &:hover {
+        color: @white; 
+    } 
 }
 
 /**
@@ -148,60 +259,57 @@
  * Positions. @todo someday, make this dry!
  */
 .components-position-bottom-center {
-    bottom: 0;
-    left: 50%;
-    position: absolute; 
-    transform: translate(-50%, 0);
+    align-items: flex-end;
+    display: flex;
+    justify-content: center;
 }
 
 .components-position-bottom-left {
-    bottom: 0;
-    left: 0;
-    position: absolute; 
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .components-position-bottom-right {
-    bottom: 0;
-    position: absolute; 
-    right: 0;
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .components-position-middle-center {
-    left: 50%;
-    position: absolute; 
-    top: 50%;
-    transform: translate(-50%, -50%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .components-position-middle-left {
-    left: 0;
-    position: absolute;
-    top: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .components-position-middle-right {
-    position: absolute;
-    right: 0;
-    top: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .components-position-top-center {
-    left: 50%;
-    position: absolute;
-    top: 0;
-    transform: translate(-50%, 0);
+    align-items: flex-start;
+    display: flex;
+    justify-content: center;
 }
 
 .components-position-top-left {
-    left: 0;
-    position: absolute;
-    top: 0;
+    align-items: flex-start;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .components-position-top-right {
-    position: absolute;
-    right: 0;
-    top: 0;
+    align-items: flex-start;
+    display: flex;
+    justify-content: flex-end;
 }
 
 
