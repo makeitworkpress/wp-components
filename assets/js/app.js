@@ -5,9 +5,10 @@
 
 var header = require('./molecules/header');
 var menu = require('./atoms/menu');
-var postheader = require('./molecules/postheader');
+var modal = require('./atoms/modal');
 var posts = require('./molecules/posts');
 var rate = require('./atoms/rate');
+var scroll = require('./atoms/scroll');
 var slider = require('./molecules/slider'); 
 var tabs = require('./atoms/tabs');
 
@@ -15,9 +16,10 @@ var Components = {
     initialize: function() {
         header.initialize();
         menu.initialize();
-        postheader.initialize();
+        modal.initialize();
         posts.initialize();
         rate.initialize();
+        scroll.initialize();
         slider.initialize();
         tabs.initialize(); 
     }

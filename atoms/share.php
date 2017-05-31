@@ -21,7 +21,9 @@ $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 
 // Atom values
 $atom   = wp_parse_args( $atom, array(
-    'networks'  => array(
+    'background'    => true,
+    'fixed'         => false,
+    'networks'      => array(
         'facebook'      => array('url' => 'http://www.facebook.com/sharer.php?s=100&p[url]=' . $url, 'icon' => 'facebook'), 
         'twitter'       => array('url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter'), 
         'linkedin'      => array(
@@ -37,18 +39,28 @@ $atom   = wp_parse_args( $atom, array(
         'stumbleupon'   => array('url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon'),
         'pocket'        => array('url' => 'https://getpocket.com/edit.php?url=' . $url . '', 'icon' => 'get-pocket')
     ),
-    'style'     => 'default',
-) ); ?>
+    'rounded'       => true,
+    'style'         => 'default',
+) ); 
+
+if( $atom['rounded'] ) 
+    $atom['style'] .= ' components-rounded';
+
+if( $atom['fixed'] ) 
+    $atom['style'] .= ' atom-share-fixed'
+
+if( $atom['background'] ) 
+    $atom['style'] .= ' components-background'; ?>
 
 <div class="atom-share <?php echo $atom['style']; ?>">
     
     <?php foreach( $atom['networks'] as $network => $values ) { ?>
     
-        <a class="atom-share-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
-            <?php isset($values['icon']) { ?>
+        <a class="components-network components-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
+            <?php if( isset($values['icon']) ) { ?>
                 <i class="fa fa-<?php echo $values['icon']; ?>"></i>
             <?php } ?>
-            <?php isset($values['title']) { ?>
+            <?php if( isset($values['title']) ) { ?>
                 <span><?php echo $values['title']; ?></span>
             <?php } ?>
         </a>

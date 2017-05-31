@@ -7,6 +7,7 @@
 $atom = wp_parse_args( $atom, array(
     'image'     => '',      // Expects a custom image tag for the image, including the html.
     'link'      => '',      // A custom link from the image
+    'rounded'   => false,
     'size'      => 'large',
     'style'     => 'default entry-image'
 ) );
@@ -21,7 +22,9 @@ $atom['image'] = if( $atom['image'] ) ? $atom['image'] : get_the_post_thumbnail(
 if( ! $atom['image'] )
     return;
 
-?>
+if( $atom['rounded'] ) 
+    $atom['style'] .= ' components-rounded'; ?>
+
 <figure class="atom-image <?php echo $atom['style']; ?>">
     
     <?php if( $atom['link'] ) { ?>

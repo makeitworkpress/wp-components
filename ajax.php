@@ -3,7 +3,7 @@
  * Load our components using a static wrapper
  */
 namespace Components;
-use Components\Components as Components;
+use Components\Build as Build;
 
 class Ajax {
     
@@ -38,6 +38,47 @@ class Ajax {
      */
     public function publicRate() {
         
+        // Check nonce
+        check_ajax_referer('cucumber', 'nonce');
+        
+        // Check values       
+        if( ! is_numeric($_POST['id']) || ! is_numeric($_POST['rating']) )
+            wp_send_json_error();        
+        
+        $atom           = json_decode( sanitize_text_field($_POST['atom']) );
+        $userRating     = intval($_POST['rating']);
+        $id             = intval($_POST['id']);
+        
+        // Proceed if the rating is numeric, and between 0 and 5
+        if( $userRating <= 5 && $userRating > 0 ) {
+           
+            $count      = get_post_meta($id, 'components_rating_count', true);
+            $rating     = get_post_meta($id, 'components_rating', true);
+            
+            $newCount   = $count ? intval($count) + 1 : 1;
+            $newRating  = ($rating * $count + $userRating)/$newCount;
+            
+            update_post_meta($id, 'components_rating_count', $newCount);
+            update_post_meta($id, 'components_rating', $newRating);
+            
+            $atom       = wp_parse_args( array('count' => $newCount, 'value' => $newRating), $atom );
+            
+            ob_start();
+                Build::atom( 'rating', $atom );
+                $output = ob_get_contents(); 
+            ob_get_clean();
+            
+            wp_send_json_success( array('rating' => $newRating, 'count' => $newCount, 'output' => $output) );
+        
+        }
+        
     }
+    
+    /**
+     * Loads posts that are filtered
+     */
+    public function publicFilter() {
+        
+    }    
     
 }

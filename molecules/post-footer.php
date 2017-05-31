@@ -5,9 +5,7 @@
 
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
-    'after'     => '', // Custom content at the end of the footer
     'atoms'     => array(), // Accepts a multidimensional array with the element name as key and the value for the component variables
-    'before'    => '', // Custom content at the beginning of the footer  
     'container' => true,    // Wrap this component in a container
     'style'     => 'default entry-footer',
 ) ); ?>
@@ -18,12 +16,7 @@ $molecule = wp_parse_args( $molecule, array(
     
     <?php if( $molecule['container'] ) { ?>
          <div class="container"> 
-    <?php } ?>  
-             
-        <?php 
-             if( $molecule['before'] )
-                echo $molecule['before']; 
-        ?>     
+    <?php } ?>     
     
         <?php if( $molecule['atoms'] ) { ?>
             <div class="molecule-post-footer-atoms">
@@ -32,19 +25,14 @@ $molecule = wp_parse_args( $molecule, array(
 
                     foreach( $molecule['atoms'] as $name => $variables ) { 
 
-                        Components::atom( $name, $variables );
+                        Components\Build::atom( $name, $variables );
 
                     } 
 
                 ?>
 
             </div>
-        <?php } ?>
-             
-        <?php 
-             if( $molecule['after'] )
-                echo $molecule['after']; 
-        ?>            
+        <?php } ?>          
              
     <?php if( $molecule['container'] ) { ?>
         </div> 

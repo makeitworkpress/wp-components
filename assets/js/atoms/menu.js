@@ -7,12 +7,12 @@ module.exports.initialize = function() {
         
         var menu = this;
     
-        jQuery(this).find(".hamburger-menu").click( function(event) {
+        jQuery(this).find(".atom-menu-hamburger").click( function(event) {
             event.preventDefault();
-            jQuery(menu).find('.hamburger-menu').toggleClass('active');
+            jQuery(menu).find('.atom-menu-hamburger').toggleClass('active');
             jQuery(menu).find('.menu').slideToggle();
         });  
         
     });      
         
-}
+};

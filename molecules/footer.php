@@ -5,9 +5,9 @@
 
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
+    'atoms'     => false,   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
-    'sidebars'  => array(), // Accepts a multidimensional array with the grid classes under the key grid and sidebar names under the key name
-    'socket'    => false,
+    'sidebars'  => array(), // Accepts an array with the sidebar name as value and the grid for the key
     'style'     => 'default',
 ) ); ?>
 
@@ -24,12 +24,12 @@ $molecule = wp_parse_args( $molecule, array(
 
             <?php 
 
-                foreach( $molecule['sidebars'] as $sidebar ) { 
+                foreach( $molecule['sidebars'] as $grid => $sidebar ) { 
 
-                    if( is_active_sidebar($sidebar['name']) ) { ?> 
+                    if( is_active_sidebar($sidebar) ) { ?> 
 
-                        <aside class="molecule-footer-sidebar <?php echo $sidebar['grid']; ?>" role="complementary">
-                            <?php dynamic_sidebar( $sidebar['name'] ); ?>
+                        <aside class="molecule-footer-sidebar <?php echo $grid ?>" role="complementary">
+                            <?php dynamic_sidebar( $sidebar ); ?>
                         </aside>
 
                     <?php }
@@ -45,14 +45,22 @@ $molecule = wp_parse_args( $molecule, array(
         </div>
     <?php } ?>
     
-    <?php if( $molecule['socket'] ) { ?>
+    <?php if( $molecule['atoms'] ) { ?>
         <div class="molecule-footer-socket">
             
             <?php if( $molecule['container'] ) { ?>
                 <div class="container"> 
             <?php } ?>              
             
-                <?php echo $molecule['socket']; ?>
+                <?php 
+
+                    foreach( $molecule['atoms'] as $name => $variables ) { 
+
+                        Components\Build::atom( $name, $variables );
+
+                    } 
+
+                ?>
                     
             <?php if( $molecule['container'] ) { ?>
                 </div>

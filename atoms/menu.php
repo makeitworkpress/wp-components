@@ -5,20 +5,29 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'hamburger'  => true,
-    'location'   => '',
-    'iconBefore' => '',
+    'args'       => array(),
+    'hamburger'  => 'mobile', // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
+    'indicator'  => true,
+    'menu'       => '',
     'style'      => 'default',
-    'target'     => '_self',
-    'url'        => '#', 
 ) );
 
-if( $atom['hamburger'] )
-    $atom['style'] .= ' atom-menu-mobile';
+if( $atom['hamburger'] == 'mobile' )
+    $atom['style'] .= ' atom-menu-mobile-hamburger';
+
+if( $atom['hamburger'] == 'always' )
+    $atom['style'] .= ' atom-menu-always-hamburger';
+
+if( $atom['indicator'] )
+    $atom['style'] .= ' atom-menu-indicator';
+
+// Our echo is always false and or container empty (if set to a string)
+$atom['args']['container'] = 'nothing';
+$atom['args']['echo'] = false;
 
 // A menu can be set manually if preferred
-if( ! isset($atom['hamburger']) )
-    $atom['menu'] = wp_nav_menu( array('container' => '', 'echo' => false, 'theme_location' => $atom['location']) );
+if( ! $atom['menu'] )
+    $atom['menu'] = wp_nav_menu( $atom['args'] );
 
 ?>
 
@@ -27,7 +36,7 @@ if( ! isset($atom['hamburger']) )
     <?php echo $atom['menu']; ?>
     
     <?php if( $atom['hamburger'] ) { ?> 
-        <a class="atom-menu-hamburger" href="#"></a>
+        <a class="atom-menu-hamburger" href="#"><span></span><span></span><span></span></a>
     <?php } ?>
     
 </nav>

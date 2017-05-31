@@ -1,0 +1,165 @@
+// main: ../components.less
+
+/**
+ * Styling for the navigation menu
+ */
+
+// Mixin for mobile menu's
+.mobile-menu-mixin {
+    background: #fff;
+    display: none;
+    left: 0;
+    padding: 50px 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    > li {
+        display: block;
+    }
+    .sub-menu {
+        display: block;
+        opacity: 1;
+        position: relative;
+    }
+}
+
+/**
+ * General Menu
+ */
+.atom-menu { 
+    ul {
+        list-style: none;
+    }
+    .menu {
+        margin: 0;
+        a {
+            display: block;
+            line-height: 50px;
+            padding: 0 20px;
+        }       
+        > li {
+            display: inline-block;
+            &:hover .sub-menu {
+                display: block;
+                opacity: 1;
+            }
+        }
+    }
+    .sub-menu {
+        background: #fff;
+        display: none;
+        font-size: 0.9em;
+        min-width: 240px;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        transition: all 350ms ease-out;
+    }
+}
+
+/* Sub-menu's for left or centered menu's */
+.components-left .sub-menu {
+    left: 0;
+    right: inherit;
+}
+
+.components-center .sub-menu {
+    left: 50%;
+    right: inherit;
+    transform: translate(-50%, 0);
+}
+
+/**
+ * Menu Indicators
+ */
+.atom-menu-indicator .menu-item-has-children > a {
+    &:after {
+        content: '\f107';
+        font-family: 'FontAwesome';
+        line-height: 50px;
+        margin-left: 7px;  
+        transition: 350ms ease-out;
+    }
+    &:hover &:after {
+        margin-top: 3px;
+    }
+}
+
+/**
+ * Hamburger Conditions
+ */
+.atom-menu-hamburger {
+    display: none; 
+    height: 30px;
+    margin: 10px;
+    position: relative;
+    width: 30px;
+    z-index: 100;
+    span {
+        background-color: #000;
+        border-radius: 3px;
+        display: block;
+        height: 5px;
+        left: 0;
+        position: absolute;
+        transition: all 350ms ease-out;
+        width: 100%;
+    }
+    span:first-child {
+        top: 2px;
+    }
+    span:nth-child(2) {
+        top: 50%; 
+        transform: translate(0, -50%);
+    }    
+    span:last-child {
+        bottom: 2px; 
+    } 
+    &.active {
+        span:first-child {
+            margin-top: -2.5px;
+            top: 50%;
+            transform: rotate(-45deg)
+        }        
+        span:nth-child(2) {
+            opacity: 0;
+        }
+        span:last-child {
+            margin-top: -2.5px;
+            top: 50%;
+            transform: rotate(45deg)
+        }        
+    }
+}
+
+.atom-menu-always-hamburger {
+    text-align: center;
+    .menu {
+       .mobile-menu-mixin();
+    }
+    .atom-menu-hamburger {
+        display: block;
+    }
+}
+
+.atom-menu-mobile-hamburger {
+    @media screen and (max-width: 768px) {
+        .menu {
+            .mobile-menu-mixin();
+        }
+        .atom-menu-hamburger {
+            display: block;
+        }        
+    }
+}
+
+.atom-menu-tablet-hamburger {
+    @media screen and (max-width: 1024px) {
+        .menu {
+            .mobile-menu-mixin();
+        }
+        .atom-menu-hamburger {
+            display: block;
+        }        
+    }
+}

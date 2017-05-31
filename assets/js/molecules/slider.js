@@ -3,9 +3,10 @@
  */
 module.exports.initialize = function() {
      
-    // Retrieve our option values
+    // Set-up the slider
     jQuery('.molecule-slider').each(function (index) {
 
+        // Retrieve our option values
         var options = jQuery(this).data();
 
         jQuery(this).flexslider(options);
@@ -18,4 +19,4 @@ module.exports.initialize = function() {
         jQuery(".flex-viewport").css({"height" : imgHeight});
     });           
         
-}
+};

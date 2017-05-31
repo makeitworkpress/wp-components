@@ -4,11 +4,10 @@
  */
 module.exports.initialize = function() {
     
-    jQuery('.components-scroll-down').each( function(index) {
+    jQuery('.atom-scroll').each( function(index) {
         
         var away = jQuery(this).parent(),
-            awayHeight = jQuery(away).height(),
-            self = this;
+            awayHeight = jQuery(away).height();
     
         // Scroll down using the arrow 
         jQuery(this).click( function(event) {
@@ -37,4 +36,4 @@ module.exports.initialize = function() {
         
     });       
         
-}
+};

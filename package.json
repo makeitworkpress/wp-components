@@ -10,6 +10,6 @@
     },
     "scripts": {
         "build-js": "browserify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/components.js -o assets/js/components.min.js -c -m",
-        "watch-js": "watchify assets/js/app.js -o assets/js/components.js && uglifyjs assets/js/components.js -o assets/js/components.min.js -c -m",
+        "watch-js": "watchify assets/js/app.js -o assets/js/components.js -v"
     }    
 }

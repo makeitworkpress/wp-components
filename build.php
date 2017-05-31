@@ -4,7 +4,7 @@
  */
 namespace Components;
 
-class Components {
+class Build {
     
     /**
      * Holds our configurations
@@ -29,6 +29,9 @@ class Components {
         defined( 'COMPONENTS_ASSETS' ) or define( 'COMPONENTS_ASSETS', content_url() . $folder . '/assets/' );
         defined( 'COMPONENTS_PATH' ) or define( 'COMPONENTS_PATH', plugin_dir_path( __FILE__ ) );
         
+        // Register our ajax actions
+        $ajax = new Ajax();
+        
         // Hook actions
         $this->hook();
         
@@ -41,12 +44,12 @@ class Components {
         
         add_action('wp_enqueue_scripts', function() {
             
-            // If we are debugging, load the full scripts and css
+            // If we are debugging, load the full scripts
             $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
             
             // Enqueue our components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components', COMPONENTS_ASSETS . '/css/components' . $suffix . '.css');
+                wp_enqueue_style( 'components', COMPONENTS_ASSETS . '/css/components.min.css');
                 wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
             }            
             
@@ -74,7 +77,7 @@ class Components {
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
      * @param array     $properties The custom properties for the template     
      */
-    private static function template( $type = 'atom', $template, $properties ) {
+    protected static function template( $type = 'atom', $template, $properties ) {
         
         $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . '/' . $type . 's/' . $template . '.php', $template);
         
@@ -104,6 +107,7 @@ class Components {
      * @param array     $variables  The custom variables for a molecule
      */
     public static function molecule( $molecule, $variables = array() ) {
+        
         self::template( 'molecule', $molecule, $variables );
     }
     

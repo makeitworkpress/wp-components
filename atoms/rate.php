@@ -16,6 +16,7 @@ $atom = wp_parse_args( $atom, array(
     'reviewed'  => false, 
     'style'     => 'default',
     'type'      => 'Person',
+    'unique'    => uniqid(),
     'value'     => 0
 ) );
 
@@ -26,6 +27,11 @@ $fraction   = $atom['value'] - $whole;
 $fullStars  = $fraction >= 0.75 ? round( $atom['value'] ) : $floor;
 $halfStars  = $fraction < 0.75 && $fraction > 0.25 ? 1 : 0;
 $emptyStars = $atom['max'] - $fullStars - $halfStars;
+
+// Output our variables for our rating element
+add_action( 'wp_footer', function() use($molecule) {
+    echo '<script type="text/javascript"> var rate' . $molecule['unique'] . '="' . json_encode($molecule) . '";</script>';
+} );
 
 // If we allow users to rate, we need to add a class so our JS can pick it up
 $atom['style']  .= $atom['rate'] ? ' do-rate' : ''; ?>
@@ -49,7 +55,7 @@ $atom['style']  .= $atom['rate'] ? ' do-rate' : ''; ?>
     <?php } ?>
     
     <?php if( $atom['rate'] ) { ?>
-        <a href="#" data-id="<?php echo $atom['id']; ?>" >
+        <a href="#" data-id="<?php echo $atom['id']; ?>" data-unique="<?php echo $atom['unique']; ?>" >
             
             <span class="atom-rate-rate">
                 <i class="fa fa-star-o"></i>

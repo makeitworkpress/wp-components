@@ -29,7 +29,8 @@ if( $type == 'numbers' && ! isset($atom['pagination']) ) {
         'format'    => '/page/%#%',
         'next_text' => $atom['next'], 
         'prev_text' => $atom['prev'],      
-        'total'     => $wp_query->max_num_pages
+        'total'     => $wp_query->max_num_pages,
+        'show_all'  => true
     ));
     
 }

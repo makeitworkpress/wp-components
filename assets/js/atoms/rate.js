@@ -33,7 +33,8 @@ module.exports.initialize = function() {
     jQuery('body').on('click', '.atom-rate a', function (event) {
         event.preventDefault();
         
-        var rating = jQuery(this).find('.atom-rate-rate i.fa-star').length,
+        var atom = jQuery(this).data('unique'),
+            rating = jQuery(this).find('.atom-rate-rate i.fa-star').length,
             id = jQuery(this).data("id"),
             module = (this).closest('.atom-rate');
         
@@ -42,8 +43,9 @@ module.exports.initialize = function() {
         utils.ajax({
             data: {
                 action: 'publicRate',
-                blogRating: rating,
-                id: id
+                atom: 'rate' + atom,
+                id: id,
+                rating: rating
             },
             success: function(response) {
                 
@@ -64,4 +66,4 @@ module.exports.initialize = function() {
         });
     });      
         
-}
+};

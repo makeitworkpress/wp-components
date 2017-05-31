@@ -48,17 +48,17 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
 
                         // Slide Title
                         if( isset($slide['title']) ) {
-                            Components::atom( 'title', array($slide['title']) );
+                            Components\Build::atom( 'title', array($slide['title']) );
                         } 
 
                         // Slide Description
                         if( isset($slide['description']) ) { 
-                            Components::atom( 'description', array($slide['description']) );
+                            Components\Build::atom( 'description', array($slide['description']) );
                         }
 
                         // Slide button Description                                
                         if( isset($slide['button']) ) { 
-                            Components::atom( 'button', array($slide['button']) );
+                            Components\Build::atom( 'button', array($slide['button']) );
                         } 
 
                     ?>
@@ -69,9 +69,9 @@ if( ! wp_script_is('components-slider') || apply_filters('components_slider_scri
 
                     // Slide video or image
                     if( isset($slide['image']) ) { 
-                        Components::atom( 'image', array($slide['image']) );
+                        Components\Build::atom( 'image', array($slide['image']) );
                     } elseif( isset($slide['video']) ) { 
-                        Components::atom( 'video', array($slide['video']) );
+                        Components\Build::atom( 'video', array($slide['video']) );
 
                     }
 
