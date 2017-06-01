@@ -10,6 +10,7 @@ var modal = require('./atoms/modal');
 var posts = require('./molecules/posts');
 var rate = require('./atoms/rate');
 var scroll = require('./atoms/scroll');
+var share = require('./atoms/share');
 var slider = require('./molecules/slider'); 
 var tabs = require('./atoms/tabs');
 
@@ -21,6 +22,7 @@ var Components = {
         posts.initialize();
         rate.initialize();
         scroll.initialize();
+        share.initialize();
         slider.initialize();
         tabs.initialize(); 
     }
@@ -30,7 +32,7 @@ var Components = {
 jQuery(document).ready( function() {
     Components.initialize();
 });
-},{"./atoms/menu":2,"./atoms/modal":3,"./atoms/rate":4,"./atoms/scroll":5,"./atoms/tabs":6,"./molecules/header":7,"./molecules/posts":8,"./molecules/slider":9}],2:[function(require,module,exports){
+},{"./atoms/menu":2,"./atoms/modal":3,"./atoms/rate":4,"./atoms/scroll":5,"./atoms/share":6,"./atoms/tabs":7,"./molecules/header":8,"./molecules/posts":9,"./molecules/slider":10}],2:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -103,18 +105,20 @@ module.exports.initialize = function() {
     jQuery('body').on('click', '.atom-rate a', function (event) {
         event.preventDefault();
         
-        var atom = jQuery(this).data('unique'),
-            rating = jQuery(this).find('.atom-rate-rate i.fa-star').length,
-            id = jQuery(this).data("id"),
-            module = (this).closest('.atom-rate');
-        
-        jQuery(module).append('<i class="fa fa-spin fa-cog"></i>');
+        var id = jQuery(this).data('id'),
+            max = jQuery(this).data('max'),
+            min = jQuery(this).data('min'),
+            module = (this).closest('.atom-rate'),
+            rating = jQuery(this).find('.atom-rate-rate i.fa-star').length;
+
+        jQuery(module).append('<i class="fa fa-spin fa-circle-o-notch"></i>');
         
         utils.ajax({
             data: {
                 action: 'publicRate',
-                atom: 'rate' + atom,
                 id: id,
+                max: max,
+                min: min,
                 rating: rating
             },
             success: function(response) {
@@ -130,14 +134,14 @@ module.exports.initialize = function() {
             },
             complete: function() {
                 setTimeout( function() {
-                    jQuery(module).find('.fa-cog').remove();
+                    jQuery(module).find('.fa-circle-o-notch').remove();
                 }, 400)
             }
         });
     });      
         
 };
-},{"./../utils":10}],5:[function(require,module,exports){
+},{"./../utils":11}],5:[function(require,module,exports){
 /**
  * Defines a scroll element
  * The scroll element always scrolls away from it's parent element
@@ -147,7 +151,8 @@ module.exports.initialize = function() {
     jQuery('.atom-scroll').each( function(index) {
         
         var away = jQuery(this).parent(),
-            awayHeight = jQuery(away).height();
+            awayHeight = jQuery(away).height(),
+            self = this;
     
         // Scroll down using the arrow 
         jQuery(this).click( function(event) {
@@ -167,9 +172,9 @@ module.exports.initialize = function() {
                 scrollPosition = jQuery(this).scrollTop();
             
             if( scrollPosition > buttonPosition ) {
-                $(self).fadeOut();    
+                jQuery(self).fadeOut();    
             } else {
-                $(self).fadeIn();     
+                jQuery(self).fadeIn();     
             }
             
         });
@@ -178,6 +183,37 @@ module.exports.initialize = function() {
         
 };
 },{}],6:[function(require,module,exports){
+/**
+ * Defines a scroll element
+ * The scroll element always scrolls away from it's parent element
+ */
+module.exports.initialize = function() {
+    
+    jQuery('.atom-share-fixed').each( function(index) {
+        
+        var self = this;
+        
+        if ( jQuery(document).height() > jQuery(window).height()) {
+            // Hide the scroller if we're past
+            jQuery(window).scroll( function() {
+
+                var scrollPosition = jQuery(this).scrollTop();
+
+                if( scrollPosition > 5 ) {
+                    jQuery(self).fadeIn();    
+                } else {
+                    jQuery(self).fadeOut();     
+                }
+
+            });
+        } else {
+            jQuery(this).fadeIn();
+        }
+        
+    });       
+        
+};
+},{}],7:[function(require,module,exports){
 module.exports.initialize = function() {
     
     jQuery('.atom-menu').each( function(index) {
@@ -205,7 +241,7 @@ module.exports.initialize = function() {
     });
     
 };
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -253,7 +289,7 @@ module.exports.initialize = function() {
     });       
         
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -343,7 +379,7 @@ module.exports.initialize = function() {
     });      
         
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Defines the scripts slider
  */
@@ -367,7 +403,7 @@ module.exports.initialize = function() {
     });           
         
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Contains utility functions
  */

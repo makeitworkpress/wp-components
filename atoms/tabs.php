@@ -5,12 +5,17 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'position'  => 'top',
     'style'     => 'default',   // Also accepts atom-tabs-left or atom-tabs-top as style to set the tabs at a certain position.
     'tabs'      => array()      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
+);
 
-// Return if we do not have a video
+// Return if we do not have tabs
 if( ! $atom['tabs'] )
-    return; ?>
+    return;
+
+// Our tabs position
+$atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
 
 <div class="atom-tabs <?php echo $atom['style']; ?>">
     <ul class="atom-tabs-navigation">

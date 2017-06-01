@@ -3,38 +3,34 @@
  * Displays a rating component
  */
 
+$id = get_the_ID();
+
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'author'    => false,
-    'count'     => 0,
-    'id'        => 0,
+    'count'     => get_post_meta($id, 'components_rating_count', true),
+    'id'        => $id,
     'itemprop'  => 'aggregateRating',
     'itemtype'  => 'http://schema.org/AggregateRating',    
     'max'       => 5,
     'min'       => 0,
     'rate'      => true, 
-    'reviewed'  => false, 
-    'style'     => 'default',
+    'reviewed'  => false,
     'type'      => 'Person',
     'unique'    => uniqid(),
-    'value'     => 0
+    'value'     => get_post_meta($id, 'components_rating', true)
 ) );
 
 // Rating fractions
 $floor      = floor( $atom['value'] );
-$fraction   = $atom['value'] - $whole;
+$fraction   = $atom['value'] - $floor;
 
 $fullStars  = $fraction >= 0.75 ? round( $atom['value'] ) : $floor;
 $halfStars  = $fraction < 0.75 && $fraction > 0.25 ? 1 : 0;
 $emptyStars = $atom['max'] - $fullStars - $halfStars;
 
-// Output our variables for our rating element
-add_action( 'wp_footer', function() use($molecule) {
-    echo '<script type="text/javascript"> var rate' . $molecule['unique'] . '=' . json_encode($molecule) . ';</script>';
-} );
-
 // If we allow users to rate, we need to add a class so our JS can pick it up
-$atom['style']  .= $atom['rate'] ? ' do-rate' : ''; ?>
+$atom['style']  .= $atom['rate'] ? ' atom-rate-do' : ''; ?>
 
 <div class="atom-rate <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['itemprop']; ?>" itemscope="itemscope" itemtype="<?php echo $atom['itemtype']; ?>">
     
@@ -55,7 +51,7 @@ $atom['style']  .= $atom['rate'] ? ' do-rate' : ''; ?>
     <?php } ?>
     
     <?php if( $atom['rate'] ) { ?>
-        <a href="#" data-id="<?php echo $atom['id']; ?>" data-unique="<?php echo $atom['unique']; ?>" >
+        <a href="#" data-id="<?php echo $atom['id']; ?>" data-max="<?php echo $atom['max']; ?>" data-min="<?php echo $atom['min']; ?>">
             
             <span class="atom-rate-rate">
                 <i class="fa fa-star-o"></i>

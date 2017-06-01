@@ -3,61 +3,63 @@
 /**
  * Global classes
  */
-.components-center {
+.components-full-height {
+    min-height: 100vh;
+}
+
+.components-normal-height {
+    min-height: 75vh;
+}
+
+.components-half-height {
+    min-height: 50vh;
+}
+
+.components-third-height {
+    min-height: 33vh;
+}
+
+.components-quarter-height {
+    min-height: 25vh;
+}
+
+.components-center-float {
     left: 50%;
     position: relative;
     transform: translate(-50%, 0);
+    text-align: center;
 }
 
-.components-fullscreen {
-    min-height: 100vh;
-    width: 100%;
-}
-
-.components-halfscreen {
-    min-height: 50vh;
-    width: 100%;
-}
-
-.components-normalscreen {
-    min-height: 75vh;
-    width: 100%;
-}
-
-.components-left {
+.components-left-float {
     float: left;
 }
 
-.components-right {
+.components-right-float {
     float: right;
 }
 
-.components-block {
+.components-block-display {
     display: block;
 }
 
-.components-inline {
+.components-hidden-display {
+    visibility: hidden;
+}
+
+.components-inline-display {
     display: inline;
 }
 
-.components-inline-block {
+.components-inline-block-display {
     display: inline-block;
+}
+
+.components-none-display {
+    display: none;
 }
 
 .components-overflow {
     overflow: hidden;
-}
-
-.components-hidden {
-    visibility: hidden;
-}
-
-.components-none {
-    display: none;
-}
-
-.components-bold {
-    font-weight: bold;
 }
 
 /**
@@ -79,6 +81,7 @@
 /* Backgrounds */
 .components-background-blue {
     background-color: @blue;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@blue, 10%); 
     }
@@ -86,6 +89,7 @@
 
 .components-background-dark {
     background-color: @dark;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@dark, 10%); 
     }    
@@ -93,6 +97,7 @@
 
 .components-background-green {
     background-color: @green;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@green, 10%); 
     }    
@@ -100,6 +105,7 @@
 
 .components-background-grey {
     background-color: @grey;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@grey, 10%); 
     }    
@@ -107,6 +113,7 @@
 
 .components-background-light {
     background-color: @light;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@light, 10%); 
     }    
@@ -114,6 +121,7 @@
 
 .components-background-magenta {
     background-color: @magenta;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@magenta, 10%); 
     }    
@@ -121,6 +129,7 @@
 
 .components-background-marine {
     background-color: @marine;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@marine, 10%); 
     }    
@@ -128,6 +137,7 @@
 
 .components-background-orange {
     background-color: @orange;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: lighten(@orange, 3%); 
     }    
@@ -135,6 +145,7 @@
 
 .components-background-purple {
     background-color: @purple;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@purple, 10%); 
     }    
@@ -142,6 +153,7 @@
 
 .components-background-red {
     background-color: @red;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: darken(@red, 10%); 
     }    
@@ -149,6 +161,7 @@
 
 .components-background-yellow {
     background-color: @yellow;
+    transition: all 350ms ease-out;
     &:hover {
         background-color: lighten(@yellow, 3%); 
     }    
@@ -156,11 +169,13 @@
 
 .components-background-white {
     background-color: @white;
+    transition: all 350ms ease-out;
 }
 
 /* Colors */
 .components-color-blue {
     color: @blue;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@blue, 10%); 
     }      
@@ -168,6 +183,7 @@
 
 .components-color-dark {
     color: @dark;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@dark, 10%); 
     }     
@@ -175,6 +191,7 @@
 
 .components-color-green {
     color: @green;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@green, 10%); 
     }     
@@ -182,6 +199,7 @@
 
 .components-color-grey {
     color: @grey;
+    transition: all 350ms ease-out;
     &:hover {
         color: darken(@grey, 10%); 
     }     
@@ -189,6 +207,7 @@
 
 .components-color-light {
     color: @light;
+    transition: all 350ms ease-out;
     &:hover {
         color: darken(@light, 10%); 
     }     
@@ -196,6 +215,7 @@
 
 .components-color-magenta {
     color: @magenta;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@magenta, 5%); 
     }     
@@ -203,6 +223,7 @@
 
 .components-color-marine {
     color: @marine;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@marine, 5%); 
     }     
@@ -210,6 +231,7 @@
 
 .components-color-orange {
     color: @orange;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@orange, 10%); 
     }     
@@ -217,6 +239,7 @@
 
 .components-color-purple {
     color: @purple;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@purple, 10%); 
     }     
@@ -224,6 +247,7 @@
 
 .components-color-red {
     color: @red;
+    transition: all 350ms ease-out;
     &:hover {
         color: lighten(@red, 5%); 
     }     
@@ -231,6 +255,7 @@
 
 .components-color-yellow {
     color: @yellow;
+    transition: all 350ms ease-out;
      &:hover {
         color: lighten(@yellow, 10%); 
     } 
@@ -238,6 +263,7 @@
 
 .components-color-white {
     color: @white;
+    transition: all 350ms ease-out;
      &:hover {
         color: @white; 
     } 

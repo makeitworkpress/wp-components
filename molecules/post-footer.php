@@ -6,11 +6,10 @@
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
     'atoms'     => array(), // Accepts a multidimensional array with the element name as key and the value for the component variables
-    'container' => true,    // Wrap this component in a container
-    'style'     => 'default entry-footer',
+    'container' => true     // Wrap this component in a container
 ) ); ?>
 
-<footer class="molecule-post-footer <?php echo $molecule['style']; ?>">
+<footer class="molecule-post-footer <?php echo $molecule['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php do_action( 'components_post_footer_before', $molecule ); ?>
     

@@ -10,9 +10,8 @@ $molecule = wp_parse_args( $molecule, array(
     'fixed'         => true,    // If we have a fixed header
     'headroom'      => true,    // If we apply a headroom effect to the header
     'socketAtoms'   => false,   // An extra bottom part in the header
-    'style'         => 'default',
     'transparent'   => false,   // If the header is transparent
-    'topAtoms'      => false,   // An extra top part in the header
+    'topAtoms'      => false    // An extra top part in the header
 ) ); 
 
 if( $molecule['fixed'] ) 

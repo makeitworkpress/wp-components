@@ -8,7 +8,6 @@ $author = '';
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'style'     => 'default',
     'types'     => array(
         'author'    => sprintf( __( 'Posts written by: %s', 'components' ),  '<span>' . $current_author->display_name . '</span>' ),
         'category'  => single_cat_title( '', false ),

@@ -45,12 +45,13 @@ class Ajax {
         if( ! is_numeric($_POST['id']) || ! is_numeric($_POST['rating']) )
             wp_send_json_error();        
         
-        $atom           = json_decode( sanitize_text_field($_POST['atom']) );
         $userRating     = intval($_POST['rating']);
         $id             = intval($_POST['id']);
+        $max            = intval($_POST['max']);
+        $min            = intval($_POST['min']);
         
         // Proceed if the rating is numeric, and between 0 and 5
-        if( $userRating <= 5 && $userRating > 0 ) {
+        if( $userRating <= $max && $userRating > $min ) {
            
             $count      = get_post_meta($id, 'components_rating_count', true);
             $rating     = get_post_meta($id, 'components_rating', true);
@@ -61,10 +62,8 @@ class Ajax {
             update_post_meta($id, 'components_rating_count', $newCount);
             update_post_meta($id, 'components_rating', $newRating);
             
-            $atom       = wp_parse_args( array('count' => $newCount, 'value' => $newRating), $atom );
-            
             ob_start();
-                Build::atom( 'rating', $atom );
+                Build::atom( 'rate', array('count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min) );
                 $output = ob_get_contents(); 
             ob_get_clean();
             

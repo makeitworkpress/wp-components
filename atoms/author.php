@@ -13,8 +13,7 @@ $atom = wp_parse_args( $atom, array(
     'url'               => esc_url( get_author_posts_url( $post->post_author ) ),
     'scheme'            => 'http://schema.org/Person',
     'showAvatar'        => true, 
-    'showDescription'   => true,
-    'style'             => 'default'
+    'showDescription'   => true
 ) );
 
 ?>

@@ -8,8 +8,7 @@ $atom = wp_parse_args( $atom, array(
     'args'       => array(),
     'hamburger'  => 'mobile', // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
     'indicator'  => true,
-    'menu'       => '',
-    'style'      => 'default',
+    'menu'       => ''
 ) );
 
 if( $atom['hamburger'] == 'mobile' )

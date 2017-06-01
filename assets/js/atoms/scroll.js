@@ -7,7 +7,8 @@ module.exports.initialize = function() {
     jQuery('.atom-scroll').each( function(index) {
         
         var away = jQuery(this).parent(),
-            awayHeight = jQuery(away).height();
+            awayHeight = jQuery(away).height(),
+            self = this;
     
         // Scroll down using the arrow 
         jQuery(this).click( function(event) {
@@ -27,9 +28,9 @@ module.exports.initialize = function() {
                 scrollPosition = jQuery(this).scrollTop();
             
             if( scrollPosition > buttonPosition ) {
-                $(self).fadeOut();    
+                jQuery(self).fadeOut();    
             } else {
-                $(self).fadeIn();     
+                jQuery(self).fadeIn();     
             }
             
         });

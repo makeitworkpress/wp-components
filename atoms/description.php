@@ -7,7 +7,6 @@
 $atom = wp_parse_args( $atom, array(
     'description'   => '',
     'schema'        => 'description',
-    'style'         => 'default',
     'tag'           => 'p',
 ) );
 

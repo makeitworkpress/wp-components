@@ -75,18 +75,85 @@ class Build {
      *
      * @param string    $type       The type, either a molecule or atom
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
-     * @param array     $properties The custom properties for the template     
+     * @param array     $properties The custom properties for the template    
+     *
+     * @todo DRY properties that are common under multiple components and possible define them here alltogether. 
      */
-    protected static function template( $type = 'atom', $template, $properties ) {
+    private static function template( $type = 'atom', $template, $properties ) {
         
-        $path = apply_filters('components_' . $type . '_path', COMPONENTS_PATH . $type . 's/' . $template . '.php', $template);
+        $path = apply_filters( 'components_' . $type . '_path', COMPONENTS_PATH . $type . 's/' . $template . '.php', $template );
         
         if( file_exists($path) ) {
-            ${$type} = apply_filters('components_' . $type . '_properties', $properties, $template);
+            ${$type} = apply_filters( 'components_' . $type . '_properties', self::defaultProperties($template, $properties), $template );
             require($path);  
         } else {
             _e('The given template for the molecule or atom does not exist', 'components');
         }
+        
+    }
+    
+    /**
+     * Define the default properties per template, which are occuring in multiple templates. 
+     * 
+     * @param   string  $template   The template to load
+     * @param   array   $properties The custom properties defined by the developer
+     *
+     * @return  array   $properties The custom properties merged with the defaults
+     */ 
+    private static function defaultProperties( $template, $properties ) {
+
+        // Generic style and inlineStyle properties
+        $properties['inlineStyle'] = isset($properties['inlineStyle']) ? $properties['inlineStyle'] : '';
+        $properties['style'] = isset($properties['style']) ? $properties['style'] : 'default';
+        
+        // Animation
+        if( isset($properties['animation']) ) {
+            $properties['style'] .= ' components-' . $properties['animation'] . '-animation'; 
+        }        
+        
+        // Background color
+        if( isset($properties['background']) ) {
+            if( strpos($properties['background'], '#') === 0 || strpos($properties['background'], 'rgb') === 0 || strpos($properties['background'], 'linear-gradient') === 0 ) {
+                $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
+            } elseif( $properties['background'] ) {
+                $properties['style'] .= ' components-background-' . $properties['background'];
+            }
+        }
+        
+        // Display
+        if( isset($properties['display']) ) {
+            $properties['style'] .= ' components-' . $properties['display'] . '-display'; 
+        } 
+        
+        // Floats
+        if( isset($properties['float']) ) {
+            $properties['style'] .= ' components-' . $properties['float'] . '-float'; 
+        }        
+        
+        // Heights
+        if( isset($properties['height']) ) {
+            $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
+        }
+        
+        // Overflow
+        if( isset($properties['overflow']) ) {
+            $properties['style'] .= ' components-overflow'; 
+        }          
+
+        // Text color
+        if( isset($properties['color']) ) {
+            if( strpos($properties['color'], '#') === 0 || strpos($properties['color'], 'rgb') === 0 ) {
+                $properties['inlineStyle'] .= 'color:' . $properties['color'] . ';';
+            } elseif( $properties['color'] ) {
+                $properties['style'] .= ' components-color-' . $properties['color'];
+            }
+        }
+
+        // If we have inline styles, we make them
+        if( $properties['inlineStyle'] )
+            $properties['inlineStyle'] = 'style=" ' . $properties['inlineStyle'] . ' "';
+        
+        return $properties;
         
     }
     

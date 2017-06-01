@@ -2,7 +2,6 @@
 /**
  * Displays an adapted comments template
  */
-global $post;
 
 // Retrieve our list
 ob_start();
@@ -23,8 +22,7 @@ $atom = wp_parse_args( $atom, array(
     'list'          => $list,
     'next'          => '&rsaquo;',
     'paged'         => get_comment_pages_count() > 1 && get_option( 'page_comments' ) ? true : false,
-    'prev'          => '&lsaquo;',    
-    'style'         => 'default',    
+    'prev'          => '&lsaquo;',
     'title'         => sprintf( 
         _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'components' ),
         number_format_i18n( get_comments_number() ),

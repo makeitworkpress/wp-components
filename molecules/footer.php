@@ -7,8 +7,7 @@
 $molecule = wp_parse_args( $molecule, array(
     'atoms'     => false,   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
-    'sidebars'  => array(), // Accepts an array with the sidebar name as value and the grid for the key
-    'style'     => 'default',
+    'sidebars'  => array() // Accepts an array with the sidebar name as value and the grid for the key
 ) ); ?>
 
 <footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">

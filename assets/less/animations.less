@@ -1,0 +1,31 @@
+// main: components.less
+
+/**
+ * Default animations
+ */
+@speed: 1000ms;
+
+// FadeIn
+.fadeIn-frames {
+    from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes opacity {.fadeIn-frames;}
+
+// FadeInDown
+.fadeInDown-frames {
+    0% { opacity: 0; transform: translateY(-20px); } 
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes fadeInDown {.fadeInDown-frames;}
+
+/**
+ * Animation classes
+ */
+.components-fadein-animation {
+    animation: fadeIn @speed ease-in-out;
+}
+
+.components-fadeindown-animation {
+    animation: fadeInDown @speed ease-in-out;
+}

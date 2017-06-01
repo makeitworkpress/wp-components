@@ -8,8 +8,7 @@ $atom = wp_parse_args( $atom, array(
     'copyright'     => '©',
     'date'          => date('Y'),
     'name'          => '',
-    'schema'        => 'http://schema.org/Organization',
-    'style'         => 'default',
+    'schema'        => 'http://schema.org/Organization'
 ) ); ?>
 
 <div class="atom-copyright <?php echo $atom['style']; ?>">

@@ -5,18 +5,21 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html.
     'link'      => '',      // A custom link from the image
     'rounded'   => false,
-    'size'      => 'large',
-    'style'     => 'default entry-image'
+    'size'      => 'large'
 ) );
 
 // Custom link to a post
 if( $atom['link'] == 'post' )
     $atom['link'] = esc_url( get_permalink() );
 
-$atom['image'] = if( $atom['image'] ) ? $atom['image'] : get_the_post_thumbnail( null, $atom['size'], array('itemprop' => 'image') );
+if( $atom['enlarge'] )
+    $atom['style'] .= ' atom-image-enlarge';
+
+$atom['image'] = $atom['image'] ? $atom['image'] : get_the_post_thumbnail( null, $atom['size'], array('itemprop' => 'image') );
 
 // We should have an image
 if( ! $atom['image'] )
@@ -37,4 +40,4 @@ if( $atom['rounded'] )
         </a>
     <?php } ?>
     
-</figure>>
+</figure>

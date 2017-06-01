@@ -5,8 +5,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'icon'      => '',
-    'style'     => 'default',
+    'icon'      => ''
 ) );  
 
 // If we have a custom icon, we add an style
@@ -15,6 +14,6 @@ if( $atom['icon'] )
 
 <a class="atom-scroll <?php echo $atom['style']; ?>" href="#">
     <?php if( $atom['icon'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['icon']; ?>"></i>
+        <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x"></i>
     <?php } ?>
 </a> 

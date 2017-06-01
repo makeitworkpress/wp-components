@@ -9,6 +9,7 @@ var modal = require('./atoms/modal');
 var posts = require('./molecules/posts');
 var rate = require('./atoms/rate');
 var scroll = require('./atoms/scroll');
+var share = require('./atoms/share');
 var slider = require('./molecules/slider'); 
 var tabs = require('./atoms/tabs');
 
@@ -20,6 +21,7 @@ var Components = {
         posts.initialize();
         rate.initialize();
         scroll.initialize();
+        share.initialize();
         slider.initialize();
         tabs.initialize(); 
     }

@@ -2,11 +2,10 @@
 /**
  * Displays a social links component
  */
-global $post;
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'background'        => true,
+    'colorBackground'   => true,
     'rounded'           => true,
     'icons'  => array(
         'email'         => 'envelope', 
@@ -21,14 +20,13 @@ $atom = wp_parse_args( $atom, array(
     ),
     'urls'      => array(),
     'rounded'   => true,
-    'style'     => 'default',   // Also accepts components-background
     'titles'    => array()
 ) ); 
 
 if( $atom['rounded'] ) 
     $atom['style'] .= ' components-rounded';
 
-if( $atom['background'] ) 
+if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 
 <div class="atom-social <?php echo $atom['style']; ?>">

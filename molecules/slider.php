@@ -5,7 +5,6 @@
 
 // Molecule values
 $molecule = wp_parse_args( $molecule, array(
-    'height'        => 'normal',
     'id'            => uniqid(),            // Used to link the slider to it's variables
     'options'       => array(
         'animation'         => 'fade',      // Type of animation
@@ -18,8 +17,7 @@ $molecule = wp_parse_args( $molecule, array(
     'scheme'        => 'http://www.schema.org/CreativeWork',     
     'scroll'        => false,     
     'slides'        => array(),     // Supports a array with position, background (url or color value), video, image and atoms as keys.
-    'size'          => 'full',      // The default size for images
-    'style'         => 'default'    
+    'size'          => 'full'       // The default size for images    
 ) ); 
 
 // Set our variables
@@ -30,16 +28,6 @@ if( $molecule['options'] ) {
     } );
     
 }
-
-// Fullscreen slider
-if( $molecule['height'] == 'full' )
-    $molecule['style'] .= ' components-fullscreen';
-
-if( $molecule['height'] == 'normal' )
-    $molecule['style'] .= ' components-normalscreen';
-
-if( $molecule['height'] == 'half' )
-    $molecule['style'] .= ' components-halfscreen';
 
 // Enqueue our script
 if( ! wp_script_is('components-slider') || apply_filters('components_slider_script', true) )

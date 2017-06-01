@@ -8,8 +8,7 @@ $atom = wp_parse_args( $atom, array(
     'content'   => '',                      // Allows developers to set their own string of content 
     'pages'     => wp_link_pages( array('echo' => false) ),
     'scheme'    => 'text',                  // Can also be set to description as a custom microscheme
-    'style'     => 'default entry-content',
-    'type'      => 'content',               // Accepts content, excerpt;
+    'type'      => 'content'                // Accepts content, excerpt;
 ) ); 
 
 if( ! $atom['content'] ) {

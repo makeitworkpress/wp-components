@@ -10,7 +10,6 @@ $atom = wp_parse_args( $atom, array(
     'height'    => '', 
     'image'     => '', // The logo img element or src
     'scheme'    => 'http://schema.org/Organization',
-    'style'     => 'default',
     'title'     => esc_attr( get_bloginfo('name') ),
     'url'       => esc_url( home_url('/') ),
     'width'     => '',

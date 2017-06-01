@@ -9,9 +9,8 @@ $atom = wp_parse_args( $atom, array(
     'args'      => array('taxonomy' => 'post_tag'), // Arguments for retrieving the tags 
     'before'    => '',                              // Content before each tag
     'seperator' => '',                              // Content that seperates tags
-    'style'     => 'default',
     'terms'      => array(),                        // Accepts a custom array of terms
-    'tagstyle'  => 'default',                       // Way of displaying individual terms, also accepts atom-button
+    'tagstyle'  => 'default'                        // Way of displaying individual terms, also accepts atom-button
 ) );
 
 if( ! $atom['terms'] )

@@ -33,18 +33,20 @@ module.exports.initialize = function() {
     jQuery('body').on('click', '.atom-rate a', function (event) {
         event.preventDefault();
         
-        var atom = jQuery(this).data('unique'),
-            rating = jQuery(this).find('.atom-rate-rate i.fa-star').length,
-            id = jQuery(this).data("id"),
-            module = (this).closest('.atom-rate');
-        
-        jQuery(module).append('<i class="fa fa-spin fa-cog"></i>');
+        var id = jQuery(this).data('id'),
+            max = jQuery(this).data('max'),
+            min = jQuery(this).data('min'),
+            module = (this).closest('.atom-rate'),
+            rating = jQuery(this).find('.atom-rate-rate i.fa-star').length;
+
+        jQuery(module).append('<i class="fa fa-spin fa-circle-o-notch"></i>');
         
         utils.ajax({
             data: {
                 action: 'publicRate',
-                atom: 'rate' + atom,
                 id: id,
+                max: max,
+                min: min,
                 rating: rating
             },
             success: function(response) {
@@ -60,7 +62,7 @@ module.exports.initialize = function() {
             },
             complete: function() {
                 setTimeout( function() {
-                    jQuery(module).find('.fa-cog').remove();
+                    jQuery(module).find('.fa-circle-o-notch').remove();
                 }, 400)
             }
         });

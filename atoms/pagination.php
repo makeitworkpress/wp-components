@@ -7,8 +7,7 @@
 $atom = wp_parse_args( $atom, array(
     'next'      => '&rsaquo;',
     'prev'      => '&lsaquo;',
-    'size'      => 2,
-    'style'     => 'default',
+    'size'      => 2
     'type'      => 'default'
 ) ); 
 

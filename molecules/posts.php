@@ -22,9 +22,8 @@ $molecule = wp_parse_args( $molecule, array(
     'paginate'      => array( 'type' => 'default' ),    // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'posts'         => array(),                         // Accepts a custom array of posts. Pretty useful in existing WordPress templates. 
     'scheme'        => 'http://schema.org/BlogPosting',
-    'style'         => 'default',                       // If components-list or components-grid are added as a class, the display might vary
     'type'          => '',
-    'unique'        => uniqid();                        // Used to match requests
+    'unique'        => uniqid()                         // Used to match requests
 ) ); 
 
 // Output our arguments if we have a filter

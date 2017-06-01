@@ -1,0 +1,51 @@
+// main: ../components.less
+
+/**
+ * Styling for the social atom
+ */
+.atom-share {
+    overflow: hidden;
+    a {
+        display: inline-block;
+        line-height: 40px;
+        height: 40px;
+        width: 40px;
+        padding: 0 8px;
+        text-align: center;
+        transition: all 350ms ease-out;
+        vertical-align: top;
+        &:hover {
+            width: 48px;
+        }
+    }
+}
+
+.atom-share-fixed {
+    display: none;
+    left: 0;
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 999;
+    a {
+        display: block;
+    }
+    @media screen and (max-width: 480px) {
+        align-items: flex-end;
+        bottom: 0;
+        display: flex;
+        transform: none;
+        top: inherit;  
+        width: 100%; 
+        a {
+            display: inline;
+            flex-grow: 1;
+            width: inherit;
+            &:hover {
+                height: 48px;
+                line-height: 48px;
+                width: inherit;
+            }
+        }
+    }    
+}

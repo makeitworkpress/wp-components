@@ -5,8 +5,7 @@
 
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
-    'sidebars'  => array(), // Accepts a multidimensional array with the sidebar names as values
-    'style'     => 'default',
+    'sidebars'  => array() // Accepts a multidimensional array with the sidebar names as values
 ) ); ?>
 
 <aside class="molecule-sidebar <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://www.schema.org/WPSideBar" role="complementary">
