@@ -28,7 +28,7 @@ if( ! $atom['image'] )
 if( $atom['rounded'] ) 
     $atom['style'] .= ' components-rounded'; ?>
 
-<figure class="atom-image <?php echo $atom['style']; ?>">
+<figure class="atom-image <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php if( $atom['link'] ) { ?>
         <a href="<?php echo $atom['link']; ?>" rel="bookmark">

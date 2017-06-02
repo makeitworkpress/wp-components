@@ -6,9 +6,8 @@
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'position'  => 'top',
-    'style'     => 'default',   // Also accepts atom-tabs-left or atom-tabs-top as style to set the tabs at a certain position.
     'tabs'      => array()      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
-);
+) );
 
 // Return if we do not have tabs
 if( ! $atom['tabs'] )
@@ -17,11 +16,17 @@ if( ! $atom['tabs'] )
 // Our tabs position
 $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
 
-<div class="atom-tabs <?php echo $atom['style']; ?>">
+<div class="atom-tabs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     <ul class="atom-tabs-navigation">
-        <?php foreach( $atom['tabs'] as $key => $tab ) { ?>
+        <?php 
+            $count = 0;
+            foreach( $atom['tabs'] as $key => $tab ) { 
+                $active = $count === 0 ? ' active' : 'inactive';
+                $count++;
+                
+        ?>
             <li>
-                <a href="<?php echo $tab['link'] ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
+                <a class="atom-tab <?php echo $active; ?>" href="<?php echo $tab['link'] ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
                     
                     <?php if( isset($tab['icon']) ) { ?> 
                         <i class="fa fa-<?php echo $tab['icon']; ?>"></i>
@@ -34,17 +39,26 @@ $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
                     ?>    
                 </a>
             </li>
-        <?php } ?>
+        <?php 
+            } 
+        ?>
     </ul>
     <div class="atom-tabs-content">
-        <?php foreach( $atom['tabs'] as $key => $tab ) { ?>
-            <section data-id="<?php echo $key; ?>">
+        <?php 
+            $count = 0;
+            foreach( $atom['tabs'] as $key => $tab ) { 
+                $active = $count === 0 ? ' active' : '';
+                $count++;
+        ?>
+            <section class="atom-tab <?php echo $active; ?>" data-id="<?php echo $key; ?>">
                 <?php 
                     // Our definite tab content                                
                     if( isset($tab['content']) )    
                         echo $tab['content']; 
                 ?>
             </section>
-        <?php } ?>
+        <?php 
+            } 
+        ?>
     </div>
 </div>

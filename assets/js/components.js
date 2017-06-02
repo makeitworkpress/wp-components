@@ -216,7 +216,7 @@ module.exports.initialize = function() {
 },{}],7:[function(require,module,exports){
 module.exports.initialize = function() {
     
-    jQuery('.atom-menu').each( function(index) {
+    jQuery('.atom-tabs').each( function(index) {
         
         var tabButton = jQuery(this).find('.atom-tabs-navigation a'),
             tabContent = jQuery(this).find('.atom-tabs-content section');
@@ -226,7 +226,7 @@ module.exports.initialize = function() {
             event.preventDefault();
 
             var target = jQuery(this).data("target"),
-                activeContent = jQuery(this).closest('.atom-menu').find('.atom-tabs-content section[data-id="' + target + '"]');
+                activeContent = jQuery(this).closest('.atom-tabs').find('.atom-tabs-content section[data-id="' + target + '"]');
 
             // Remove current active classes
             jQuery(tabButton).removeClass("active");
@@ -302,7 +302,7 @@ module.exports.initialize = function() {
             postsHeight = jQuery(this).height,
             postsPosition = jQuery(this).offset().top,
             self = this,
-            unique = jQuery(this).data('unique'),
+            id = jQuery(this).data('id'),
             url = false;
         
         // Infinite scrolling
@@ -329,7 +329,7 @@ module.exports.initialize = function() {
                     }
 
                     jQuery.get(url, function(data) {
-                        var posts = jQuery(data).find('.molecule-posts[data-unique="' + unique + '"] .molecule-posts-post');
+                        var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
 
                         jQuery(self).find('.molecule-posts-wrapper').append(posts);
 
@@ -343,13 +343,15 @@ module.exports.initialize = function() {
             
         }
         
-        
         // Normal Pagination
-        if( jQuery(this).hasClass('do-ajax') ) {
+        if( jQuery(this).hasClass('molecule-posts-ajax') ) {
         
-            jQuery(this).on('click', '.atom-pagination a', function() {
+            jQuery('body').on('click', '.atom-pagination a', function(event) {
+                
+                event.preventDefault();
 
-                var current = jQuery(self).find('.atom-pagination current'),
+                var self = jQuery(this).closest('.molecule-posts'),
+                    current = jQuery(self).find('.atom-pagination .current'),
                     currentPage = jQuery(current).text(),
                     page = jQuery(this).attr('href'),
                     pageCurrent = page.replace(/\/page\/[0-9]+/, '/page/' + currentPage );
@@ -358,12 +360,14 @@ module.exports.initialize = function() {
                  * Update our pagination and add the right classes
                  */
                 jQuery(current).replaceWith('<a class="page-numbers" href="' + pageCurrent + '">' + currentPage + '</a>');
-                jQuery(this).addClass('current'); 
+                jQuery(this).addClass('current');
+                jQuery(self).addClass('components-loading');
 
                 // Load our data
                 jQuery.get(page, function(data) {
-                    var posts = jQuery(data).find('.molecule-posts[data-unique="' + unique + '"] .molecule-posts-post');
+                    var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
 
+                    jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
 
                 });             

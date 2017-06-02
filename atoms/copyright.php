@@ -11,7 +11,7 @@ $atom = wp_parse_args( $atom, array(
     'schema'        => 'http://schema.org/Organization'
 ) ); ?>
 
-<div class="atom-copyright <?php echo $atom['style']; ?>">
+<div class="atom-copyright <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php echo $atom['copyright']; ?> <span itemprop="copyrightYear"><?php echo $atom['date']; ?></span> 
 

@@ -10,7 +10,7 @@ $molecule = wp_parse_args( $molecule, array(
     'scroll'        => false    // A scroll down button.
 ) ); ?>
 
-<header class="molecule-post-header <?php echo $molecule['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<header class="molecule-post-header <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?>>
     
     <?php do_action( 'components_post_header_before', $molecule ); ?>
     

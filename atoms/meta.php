@@ -17,7 +17,7 @@ foreach( $atom['meta'] as $taxonomy => $properties ) {
     $atom['meta'][$taxonomy]['list'] = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
 } ?>
 
-<div class="atom-meta entry-meta <?php echo $atom['style']; ?>">
+<div class="atom-meta entry-meta <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     <?php foreach( $atom['meta'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
             <div class="atom-meta-item entry-<?php echo $taxonomy; ?>" itemprop="<?php echo $properties['schema']; ?>">

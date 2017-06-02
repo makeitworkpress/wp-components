@@ -3,6 +3,8 @@
 /**
  * Global classes
  */
+
+/* Heights */
 .components-full-height {
     min-height: 100vh;
 }
@@ -23,6 +25,7 @@
     min-height: 25vh;
 }
 
+/* Floats */
 .components-center-float {
     left: 50%;
     position: relative;
@@ -38,6 +41,7 @@
     float: right;
 }
 
+/* Display */
 .components-block-display {
     display: block;
 }
@@ -58,8 +62,17 @@
     display: none;
 }
 
-.components-overflow {
-    overflow: hidden;
+/* Loading Areas */
+.components-loading {
+    opacity: 0.5;  
+}
+
+.components-loading-element {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
 }
 
 /**
@@ -79,7 +92,7 @@
 @white: #fff;
 
 /* Backgrounds */
-.components-background-blue {
+.components-blue-background {
     background-color: @blue;
     transition: all 350ms ease-out;
     &:hover {
@@ -87,7 +100,7 @@
     }
 }
 
-.components-background-dark {
+.components-dark-background {
     background-color: @dark;
     transition: all 350ms ease-out;
     &:hover {
@@ -95,7 +108,7 @@
     }    
 }
 
-.components-background-green {
+.components-green-background {
     background-color: @green;
     transition: all 350ms ease-out;
     &:hover {
@@ -103,7 +116,7 @@
     }    
 }
 
-.components-background-grey {
+.components-grey-background {
     background-color: @grey;
     transition: all 350ms ease-out;
     &:hover {
@@ -111,15 +124,15 @@
     }    
 }
 
-.components-background-light {
+.components-light-background {
     background-color: @light;
     transition: all 350ms ease-out;
     &:hover {
-        background-color: darken(@light, 10%); 
+        background-color: darken(@light, 5%); 
     }    
 }
 
-.components-background-magenta {
+.components-magenta-background {
     background-color: @magenta;
     transition: all 350ms ease-out;
     &:hover {
@@ -127,7 +140,7 @@
     }    
 }
 
-.components-background-marine {
+.components-marine-background {
     background-color: @marine;
     transition: all 350ms ease-out;
     &:hover {
@@ -135,7 +148,7 @@
     }    
 }
 
-.components-background-orange {
+.components-orange-background {
     background-color: @orange;
     transition: all 350ms ease-out;
     &:hover {
@@ -143,7 +156,7 @@
     }    
 }
 
-.components-background-purple {
+.components-purple-background {
     background-color: @purple;
     transition: all 350ms ease-out;
     &:hover {
@@ -151,7 +164,7 @@
     }    
 }
 
-.components-background-red {
+.components-red-background {
     background-color: @red;
     transition: all 350ms ease-out;
     &:hover {
@@ -159,7 +172,7 @@
     }    
 }
 
-.components-background-yellow {
+.components-yellow-background {
     background-color: @yellow;
     transition: all 350ms ease-out;
     &:hover {
@@ -167,13 +180,13 @@
     }    
 }
 
-.components-background-white {
+.components-white-background {
     background-color: @white;
     transition: all 350ms ease-out;
 }
 
 /* Colors */
-.components-color-blue {
+.components-blue-color {
     color: @blue;
     transition: all 350ms ease-out;
     &:hover {
@@ -181,7 +194,7 @@
     }      
 }
 
-.components-color-dark {
+.components-dark-color {
     color: @dark;
     transition: all 350ms ease-out;
     &:hover {
@@ -189,7 +202,7 @@
     }     
 }
 
-.components-color-green {
+.components-green-color {
     color: @green;
     transition: all 350ms ease-out;
     &:hover {
@@ -197,7 +210,7 @@
     }     
 }
 
-.components-color-grey {
+.components-grey-color {
     color: @grey;
     transition: all 350ms ease-out;
     &:hover {
@@ -205,15 +218,15 @@
     }     
 }
 
-.components-color-light {
+.components-light-color {
     color: @light;
     transition: all 350ms ease-out;
     &:hover {
-        color: darken(@light, 10%); 
+        color: lighten(@light, 3%); 
     }     
 }
 
-.components-color-magenta {
+.components-magenta-color {
     color: @magenta;
     transition: all 350ms ease-out;
     &:hover {
@@ -221,7 +234,7 @@
     }     
 }
 
-.components-color-marine {
+.components-marine-color {
     color: @marine;
     transition: all 350ms ease-out;
     &:hover {
@@ -229,7 +242,7 @@
     }     
 }
 
-.components-color-orange {
+.components-orange-color {
     color: @orange;
     transition: all 350ms ease-out;
     &:hover {
@@ -237,7 +250,7 @@
     }     
 }
 
-.components-color-purple {
+.components-purple-color {
     color: @purple;
     transition: all 350ms ease-out;
     &:hover {
@@ -245,7 +258,7 @@
     }     
 }
 
-.components-color-red {
+.components-red-color {
     color: @red;
     transition: all 350ms ease-out;
     &:hover {
@@ -253,7 +266,7 @@
     }     
 }
 
-.components-color-yellow {
+.components-yellow-color {
     color: @yellow;
     transition: all 350ms ease-out;
      &:hover {
@@ -261,7 +274,7 @@
     } 
 }
 
-.components-color-white {
+.components-white-color {
     color: @white;
     transition: all 350ms ease-out;
      &:hover {
@@ -273,8 +286,12 @@
  * Rounded values
  */
 .components-rounded {
-    .components-network {
+    border-radius: 50px;
+    .atom-network {
         border-radius: 25px;    
+    }
+    .atom-term {
+        border-radius: 50px;
     }
     img {
         border-radius: 50%;

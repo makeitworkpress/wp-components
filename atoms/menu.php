@@ -30,7 +30,7 @@ if( ! $atom['menu'] )
 
 ?>
 
-<nav class="atom-menu <?php echo $atom['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+<nav class="atom-menu <?php echo $atom['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" <?php echo $atom['inlineStyle']; ?>>
     
     <?php echo $atom['menu']; ?>
     

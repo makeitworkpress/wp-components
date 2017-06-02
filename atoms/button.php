@@ -9,10 +9,13 @@ $atom = wp_parse_args( $atom, array(
     'iconBefore'    => '',
     'link'          => '#', 
     'title'         => '',
-    'rounded'       => true,
     'size'          => '',
     'target'        => '_self'
 ) ); 
+
+// Default background
+if( ! isset($atom['background']) )
+    $atom['style'] .= ' components-light-background';
 
 // Rounded
 if( $atom['rounded'] )

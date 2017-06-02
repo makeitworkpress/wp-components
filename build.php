@@ -49,14 +49,14 @@ class Build {
             
             // Enqueue our components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components', COMPONENTS_ASSETS . '/css/components.min.css');
+                wp_enqueue_style( 'components', COMPONENTS_ASSETS . 'css/components.min.css');
                 wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
             }            
             
             // Enqueue our components JS
             if( $this->configurations['js'] ) {
-                wp_register_script( 'components-slider', COMPONENTS_ASSETS . '/js/vendor/flexslider.min.js', array('jquery'), NULL, true);
-                wp_enqueue_script( 'components', COMPONENTS_ASSETS . '/js/components' . $suffix . '.js', array('jquery'), NULL, true);
+                wp_register_script( 'components-slider', COMPONENTS_ASSETS . 'js/vendor/flexslider.min.js', array('jquery'), NULL, true);
+                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery'), NULL, true);
                 
                 // Localize our script
                 wp_localize_script( 'components', 'components', array(
@@ -116,7 +116,7 @@ class Build {
             if( strpos($properties['background'], '#') === 0 || strpos($properties['background'], 'rgb') === 0 || strpos($properties['background'], 'linear-gradient') === 0 ) {
                 $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
             } elseif( $properties['background'] ) {
-                $properties['style'] .= ' components-background-' . $properties['background'];
+                $properties['style'] .= ' components-' . $properties['background'] . '-background';
             }
         }
         
@@ -128,7 +128,12 @@ class Build {
         // Floats
         if( isset($properties['float']) ) {
             $properties['style'] .= ' components-' . $properties['float'] . '-float'; 
-        }        
+        } 
+        
+        // Floats
+        if( isset($properties['grid']) ) {
+            $properties['style'] .= ' components-' . $properties['grid'] . '-grid components-grid-item'; 
+        }          
         
         // Heights
         if( isset($properties['height']) ) {
@@ -138,14 +143,19 @@ class Build {
         // Overflow
         if( isset($properties['overflow']) ) {
             $properties['style'] .= ' components-overflow'; 
-        }          
+        } 
+        
+        // Rounded
+        if( isset($properties['rounded']) ) {
+            $properties['style'] .= ' components-rounded'; 
+        }         
 
         // Text color
         if( isset($properties['color']) ) {
             if( strpos($properties['color'], '#') === 0 || strpos($properties['color'], 'rgb') === 0 ) {
                 $properties['inlineStyle'] .= 'color:' . $properties['color'] . ';';
             } elseif( $properties['color'] ) {
-                $properties['style'] .= ' components-color-' . $properties['color'];
+                $properties['style'] .= ' components-' . $properties['color'] . '-color';
             }
         }
 

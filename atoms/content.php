@@ -1,6 +1,7 @@
 <?php
 /**
  * Represents a post content or excerpt
+ * Must be in the loop to work properly
  */
 
 // Atom values
@@ -30,7 +31,7 @@ if( ! $atom['content'] ) {
     
 } ?>
 
-<div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>">
+<div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
     <?php 
         echo $atom['content'];
     

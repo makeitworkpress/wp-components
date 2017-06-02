@@ -25,7 +25,7 @@ $atom = wp_parse_args( $atom, array(
     )
 ) ); ?>
 
-<h1 class="atom-archive-title">
+<h1 class="atom-archive-title <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     <?php foreach($atom['types'] as $type => $title ) {
     
         // Condition for showing the archive                                           

@@ -17,7 +17,7 @@ $atom = wp_parse_args( $atom, array(
 ) );
 
 ?>
-<div class="atom-author <?php echo $atom['style']; ?>" itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>">
+<div class="atom-author <?php echo $atom['style']; ?>" itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php if( $atom['showAvatar'] ) { ?> 
     

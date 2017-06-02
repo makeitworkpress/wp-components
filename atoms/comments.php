@@ -40,7 +40,7 @@ if ( post_password_required() ) {
 	return;
 } ?>
 
-<div class="atom-comments <?php echo $atom['style']; ?>">
+<div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php if( $atom['closed'] ) { ?> 
         <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>

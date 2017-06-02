@@ -1,6 +1,6 @@
 module.exports.initialize = function() {
     
-    jQuery('.atom-menu').each( function(index) {
+    jQuery('.atom-tabs').each( function(index) {
         
         var tabButton = jQuery(this).find('.atom-tabs-navigation a'),
             tabContent = jQuery(this).find('.atom-tabs-content section');
@@ -10,7 +10,7 @@ module.exports.initialize = function() {
             event.preventDefault();
 
             var target = jQuery(this).data("target"),
-                activeContent = jQuery(this).closest('.atom-menu').find('.atom-tabs-content section[data-id="' + target + '"]');
+                activeContent = jQuery(this).closest('.atom-tabs').find('.atom-tabs-content section[data-id="' + target + '"]');
 
             // Remove current active classes
             jQuery(tabButton).removeClass("active");

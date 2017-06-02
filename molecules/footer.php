@@ -10,7 +10,7 @@ $molecule = wp_parse_args( $molecule, array(
     'sidebars'  => array() // Accepts an array with the sidebar name as value and the grid for the key
 ) ); ?>
 
-<footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+<footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo" <?php echo $molecule['inlineStyle']; ?>>
     
     <?php do_action( 'components_footer_before', $molecule ); ?>
     

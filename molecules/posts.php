@@ -5,58 +5,83 @@
 
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
-    'ajax'          => true,                         // To paginate using ajax
+    'ajax'          => true,                            // To paginate using ajax
     'args'          => array(),                         // Query arguments for retrieving posts
     'content'       => array( 'type' => 'excerpt' ),    
+    'id'            => 'molecule-posts',                // Used to match requests for ajax
     'filter'        => false,                           // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.
     'footerAtoms'   => array(                           // Accepts a set of atoms
-        'title' => array( 'link' => 'post', 'title' => __('View post', 'components')) 
+        'button' => array( 'link' => 'post', 'title' => __('View post', 'components')) 
     ),                                           
-    'grid'          => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'headerAtoms'   => array(                           // Accepts a set of atoms
         'title' => array( 'tag' => 'h2', 'link' => 'post' ) 
     ),          
     'image'         => array( 'link' => 'post', 'size' => 'medium' ),
     'infinite'      => false,    
     'itemprop'      => '',
-    'paginate'      => array( 'type' => 'default' ),    // Pagination settings. If you remove this but have infinite enabled, infinite will break
-    'posts'         => array(),                         // Accepts a custom array of posts. Pretty useful in existing WordPress templates. 
+    'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
+    'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
+    'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
     'scheme'        => 'http://schema.org/BlogPosting',
     'type'          => '',
-    'unique'        => uniqid()                         // Used to match requests
-) ); 
+    'view'          => 'list',                          // Type of display. Accepts list, grid or a custom class.
+    'wrapper'       => ''                               // Wrapper class for our posts-wrapper
+) );
+
+// Query vars for pagination
+if( get_query_var('paged') )
+    $molecule['args']['paged'] = get_query_var('paged');
+
+// Get our posts
+if( ! $molecule['query'] )
+    $molecule['query'] = new WP_Query( $molecule['args'] );
+
+// Return if there are no posts to show
+if( ! $molecule['query']->have_posts() )
+    return;
+
+// Set the query for our pagination
+$molecule['pagination']['query'] = $molecule['query'];
 
 // Output our arguments if we have a filter
 if( $molecule['filter'] ) {
     add_action('wp_footer', function() use ($molecule) {
-        echo '<script type="text/javascript"> var posts' . $molecule['unique'] . '=' . json_encode($molecule) . ';</script>';
+        echo '<script type="text/javascript"> var posts' . $molecule['id'] . '=' . json_encode($molecule) . ';</script>';
     });
 }
 
 // Ajax pagination
-if( $molecule['ajax'] ) {
-    $molecule['style'] .= ' do-ajax'; 
-}
+if( $molecule['ajax'] )
+    $molecule['style'] .= ' molecule-posts-ajax'; 
+
+// Display style
+if( $molecule['view'] )
+    $molecule['style'] .= ' molecule-posts-' . $molecule['view']; 
+
+// Individal posts grid
+if( $molecule['postsGrid'] )
+    $molecule['wrapper'] .= ' components-grid-wrapper'; 
 
 // Infinite scroll
 if( $molecule['infinite'] ) 
-    $molecule['style'] .= ' do-infinite'; 
+    $molecule['style'] .= ' molecule-posts-infinite'; 
 
 // Fallback if a users by accident removes the pagination
-if( $molecule['infinite'] ) 
-    $molecule['paginate'] = array( 'type' => 'numbers' ); 
-
-// Get our posts
-if( ! $molecule['posts'] )
-    $molecule['posts'] = get_posts( $molecule['args'] );
+if( $molecule['infinite'] ) {
+    $molecule['pagination']['size'] = 99999; 
+    $molecule['pagination']['type'] = 'numbers'; 
+}
 
 // Alternate schemes for blogposting
 if( strpos($molecule['scheme'], 'BlogPosting') ) {
     $molecule['itemprop']   = 'itemprop="blogPost"'; 
     $molecule['type']       = 'itemscope="itemscope" itemtype="http://schema.org/Blog"'; 
-} ?>
+} 
 
-<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['type']; ?> data-unique="<?php echo $molecule['unique']; ?>">
+// Key for counting grid patterns
+$key = 0; ?>
+
+<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['type']; ?> data-id="<?php echo $molecule['id']; ?>" <?php echo $molecule['inlineStyle']; ?>>
     
     <?php do_action( 'components_posts_before', $molecule ); ?>
     
@@ -67,17 +92,23 @@ if( strpos($molecule['scheme'], 'BlogPosting') ) {
         } 
     ?>
     
-    <div class="molecule-posts-wrapper">
-    
-        <?php foreach( $molecule['posts'] as $key => $post ) { ?>
+    <div class="molecule-posts-wrapper <?php echo $molecule['wrapper']; ?>">
+        
+        <?php while ( $molecule['query']->have_posts() ) { ?>
 
-            <?php 
+            <?php
+     
+                // Set-up our post data
+                $molecule['query']->the_post();
                 
                 // Allows for grid patterns
-                $grid = is_array($molecule['grid']) ? $molecule['grid'][$key] : $molecule['grid'];
+                if( $molecule['postsGrid'] ) {
+                    $grid = is_array($molecule['postsGrid']) ? 'components-' . $molecule['postsGrid'][$key] . '-grid' : 'components-' . $molecule['postsGrid'] . '-grid';
+                } else {
+                    $grid = '';
+                }
     
-                // Set-up our post data
-                setup_postdata( $post );
+                $key++;
     
             ?>
 
@@ -144,14 +175,14 @@ if( strpos($molecule['scheme'], 'BlogPosting') ) {
 
     <?php 
         // Pagination
-        if( $molecule['paginate'] ) { 
-            Components\Build::atom( 'paginate', $molecule['paginate'] );
+        if( $molecule['pagination'] ) { 
+            Components\Build::atom( 'pagination', $molecule['pagination'] );
         } 
     ?>
     
     <?php 
         // Reset our postdata so our main queries keep working well
-        wp_reset_postdata(); 
+        wp_reset_query(); 
     
         do_action( 'components_posts_after', $molecule ); 
     ?>

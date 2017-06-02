@@ -6,7 +6,6 @@
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'colorBackground'   => true,
-    'rounded'           => true,
     'icons'  => array(
         'email'         => 'envelope', 
         'facebook'      => 'facebook', 
@@ -19,7 +18,6 @@ $atom = wp_parse_args( $atom, array(
         'stumbleupon'   => 'stumbleupon',
     ),
     'urls'      => array(),
-    'rounded'   => true,
     'titles'    => array()
 ) ); 
 
@@ -29,11 +27,11 @@ if( $atom['rounded'] )
 if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 
-<div class="atom-social <?php echo $atom['style']; ?>">
+<div class="atom-social <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php foreach( $atom['urls'] as $network => $url ) { ?>
     
-        <a class="components-network components-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
+        <a class="atom-network components-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
             
             <?php if( isset($atom['icons'][$network]) ) { ?>
                 <i class="fa fa-<?php echo $atom['icons'][$network]; ?>"></i>

@@ -12,7 +12,7 @@ $atom = wp_parse_args( $atom, array(
 if( $atom['icon'] ) 
     $atom['style'] .= ' atom-scroll-hasicon'; ?>     
 
-<a class="atom-scroll <?php echo $atom['style']; ?>" href="#">
+<a class="atom-scroll <?php echo $atom['style']; ?>" href="#" <?php echo $atom['inlineStyle']; ?>>
     <?php if( $atom['icon'] ) { ?> 
         <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x"></i>
     <?php } ?>

@@ -38,8 +38,7 @@ $atom   = wp_parse_args( $atom, array(
         'reddit'        => array('url' => 'http://www.reddit.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'reddit-alien'), 
         'stumbleupon'   => array('url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon'),
         'pocket'        => array('url' => 'https://getpocket.com/edit.php?url=' . $url . '', 'icon' => 'get-pocket')
-    ),
-    'rounded'       => false
+    )
 ) ); 
 
 if( $atom['rounded'] ) 
@@ -51,11 +50,11 @@ if( $atom['fixed'] )
 if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 
-<div class="atom-share <?php echo $atom['style']; ?>">
+<div class="atom-share <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
     <?php foreach( $atom['networks'] as $network => $values ) { ?>
     
-        <a class="components-network components-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
+        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
             <?php if( isset($values['icon']) ) { ?>
                 <i class="fa fa-<?php echo $values['icon']; ?>"></i>
             <?php } ?>

@@ -18,7 +18,7 @@ $atom = wp_parse_args( $atom, array(
 if( ! $atom['image'] )
     return; ?>
 
-<a class="atom-logo" href="<?php echo $atom['url']; ?>" title="<?php echo $atom['title']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>">
+<a class="atom-logo" href="<?php echo $atom['url']; ?>" title="<?php echo $atom['title']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
 
     <?php 
         // Default image
