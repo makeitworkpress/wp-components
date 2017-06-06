@@ -21,9 +21,6 @@ $atom = wp_parse_args( $atom, array(
     'titles'    => array()
 ) ); 
 
-if( $atom['rounded'] ) 
-    $atom['style'] .= ' components-rounded';
-
 if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 

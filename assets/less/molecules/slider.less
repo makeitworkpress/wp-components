@@ -1,7 +1,7 @@
 // main: ../components.less
 
 /**
- * Styling for the slider component
+ * Styling for the slider molecule
  */
 .molecule-slider {
     max-height: 100vh;
@@ -82,10 +82,10 @@
     .flex-prev, .flex-next {
         color: #fff;
         font-size: 3em;
-        margin-top: -40px;
         position: absolute;
-        text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        transform: translate(0, -50%);
         transition: all 350ms ease-in-out;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
         top: 50%;
         z-index: 100;
     }

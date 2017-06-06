@@ -3,34 +3,36 @@
  * All modules are bundled into one application
  */
 'use strict';
-
-var header = require('./molecules/header');
-var menu = require('./atoms/menu');
-var modal = require('./atoms/modal');
-var posts = require('./molecules/posts');
-var rate = require('./atoms/rate');
-var scroll = require('./atoms/scroll');
-var share = require('./atoms/share');
-var slider = require('./molecules/slider'); 
-var tabs = require('./atoms/tabs');
-
-var Components = {
+var App = {
+    atoms: {
+        menu: require('./atoms/menu'),
+        modal: require('./atoms/modal'),
+        rate: require('./atoms/rate'),
+        scroll: require('./atoms/scroll'),
+        share: require('./atoms/share'),
+        tabs: require('./atoms/tabs')
+    },     
+    molecules: {
+        header: require('./molecules/header'),
+        posts: require('./molecules/posts'),
+        slider: require('./molecules/slider'),
+    },  
     initialize: function() {
-        header.initialize();
-        menu.initialize();
-        modal.initialize();
-        posts.initialize();
-        rate.initialize();
-        scroll.initialize();
-        share.initialize();
-        slider.initialize();
-        tabs.initialize(); 
+
+        for( var key in this.atoms ) {
+            this.atoms[key].initialize();
+        }
+        
+        for( var key in this.molecules ) {
+            this.molecules[key].initialize();
+        }
+        
     }
 }
 
 // Boot our application
 jQuery(document).ready( function() {
-    Components.initialize();
+    App.initialize();
 });
 },{"./atoms/menu":2,"./atoms/modal":3,"./atoms/rate":4,"./atoms/scroll":5,"./atoms/share":6,"./atoms/tabs":7,"./molecules/header":8,"./molecules/posts":9,"./molecules/slider":10}],2:[function(require,module,exports){
 /**
@@ -223,18 +225,23 @@ module.exports.initialize = function() {
     
         jQuery(tabButton).click( function(event) {
 
-            event.preventDefault();
-
             var target = jQuery(this).data("target"),
                 activeContent = jQuery(this).closest('.atom-tabs').find('.atom-tabs-content section[data-id="' + target + '"]');
+            
+            // If the tab has a real link, we use that
+            if( tabButton.attr('href') === '#' ) {
+                
+                event.preventDefault();
 
-            // Remove current active classes
-            jQuery(tabButton).removeClass("active");
-            jQuery(tabContent).removeClass("active");
+                // Remove current active classes
+                jQuery(tabButton).removeClass("active");
+                jQuery(tabContent).removeClass("active");
 
-            // Add active class to our new things
-            jQuery(this).addClass("active");      
-            jQuery(activeContent).addClass("active");
+                // Add active class to our new things
+                jQuery(this).addClass("active");      
+                jQuery(activeContent).addClass("active");
+                
+            }
 
         });
         
@@ -291,40 +298,54 @@ module.exports.initialize = function() {
 };
 },{}],9:[function(require,module,exports){
 /**
- * Defines the custom header scripts
+ * Defines the custom posts scripts
  */
 module.exports.initialize = function() {
     
     jQuery('.molecule-posts').each( function(index) {
         
-        var paginate = jQuery(this).find('.atom-pagination .page-numbers'),
-            pagenumber = 1,
-            postsHeight = jQuery(this).height,
-            postsPosition = jQuery(this).offset().top,
-            self = this,
-            id = jQuery(this).data('id'),
-            url = false;
+        var id = jQuery(this).data('id'),
+            isSet = false,
+            paginate = jQuery(this).find('.atom-pagination .page-numbers'),
+            position = jQuery(this).offset().top,
+            pageNumber = 1,
+            self = this;
         
-        // Infinite scrolling
-        if( jQuery(this).hasClass('do-infinite') ) {
+        /**
+         * Infinite scrolling
+         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
+         */
+        if( jQuery(this).hasClass('molecule-posts-infinite') ) {
+            
+            // Pagination is hidden by JS instead of css. Clients that don't support JS, do see pagination
+            jQuery(this).find('.atom-pagination').hide();
             
             jQuery(window).scroll( function() {
+                
+                var url = false,
+                    postsHeight = jQuery(self).height();
 
-                if( (jQuery(window).scrollTop() + jQuery(window).height()) > (postsPosition + postsHeight - 320) ) {
+                if( (jQuery(window).scrollTop() + jQuery(window).height()) > (position + postsHeight) ) {
+                    
+                    if( ! isSet ) {
+                        
+                        pageNumber++;
 
-                    pageNumber++;
+                        // Check our pagination and retrieve our urls
+                        jQuery(paginate).each( function(index) {
 
-                    // Check our pagination and retrieve our urls
-                    jQuery(paginate).each( function(index) {
+                            if( jQuery(this).text() == pageNumber ) {
+                                url = jQuery(this).attr('href');
+                                isSet = true;
+                            }
 
-                        if( jQuery(this).text() == pageNumber ) {
-                            url = jQuery(this).attr('href');
-                        }
-
-                    });
+                        });
+                        
+                    }
 
                     // We've exceeded our urls
                     if( ! url ) {
+                        isSet = true;
                         return;
                     }
 
@@ -332,9 +353,11 @@ module.exports.initialize = function() {
                         var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
 
                         jQuery(self).find('.molecule-posts-wrapper').append(posts);
+                        
+                        // Update our pagenumber and posts height
+                        isSet = false;
 
-                    });                
-
+                    });
 
 
                 }
@@ -343,7 +366,10 @@ module.exports.initialize = function() {
             
         }
         
-        // Normal Pagination
+        /**
+         * Normal Pagination
+         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
+         */
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
         
             jQuery('body').on('click', '.atom-pagination a', function(event) {

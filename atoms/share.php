@@ -41,9 +41,6 @@ $atom   = wp_parse_args( $atom, array(
     )
 ) ); 
 
-if( $atom['rounded'] ) 
-    $atom['style'] .= ' components-rounded';
-
 if( $atom['fixed'] ) 
     $atom['style'] .= ' atom-share-fixed';
 

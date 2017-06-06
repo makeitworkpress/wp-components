@@ -1,33 +1,35 @@
 <?php
 /**
- * Displays a pagination section
+ * Retrieves post metadata from the key
  */
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'id'        => get_the_ID(),
-    'meta'      => array(
-        'category'   => array( 'after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ' ),
-        'post_tag'  => array( 'after' => '', 'before' => '','icon' => 'tags', 'schema' => 'keywords', 'seperator' => ', ' ),
-    )
-) ); 
+    'after'     => '', // Custom string echoed before the meta information
+    'before'    => '', // Custom string echoed after the meta information
+    'key'       => '', // Key for retrieving meta information
+    'id'        => get_the_ID(), // The post id
+    'meta'      => '' //The meta information it self
+) );
 
-// Retrieve our lists
-foreach( $atom['meta'] as $taxonomy => $properties ) { 
-    $atom['meta'][$taxonomy]['list'] = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
-} ?>
+if( ! $atom['meta'] && $atom['key'] )
+    $atom['meta'] = get_post_meta( $atom['id'], $atom['key'], true );
 
-<div class="atom-meta entry-meta <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
-    <?php foreach( $atom['meta'] as $taxonomy => $properties ) { ?>
-        <?php if( $properties['list'] ) { ?> 
-            <div class="atom-meta-item entry-<?php echo $taxonomy; ?>" itemprop="<?php echo $properties['schema']; ?>">
-                <?php if( $properties['icon'] ) { ?>
-                    <i class="fa fa-<?php echo $properties['icon']; ?>"></i>
-                <?php } ?>
-                <?php                                               
-                    echo $properties['list']; 
-                ?> 
-            </div>  
-        <?php } ?> 
-    <?php } ?>
+// Return if we do not have a video
+if( ! $atom['meta'] )
+    return; ?>
+
+<div class="atom-meta <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+    <?php 
+        // String before meta information
+        if( $atom['before'] )
+            echo $atom['before'];
+        
+        // Meta information itself    
+        echo $atom['meta'];
+         
+        // Key afterwards    
+        if( $atom['after'] )
+            echo $atom['after']; 
+    ?>
 </div>

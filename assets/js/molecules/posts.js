@@ -1,38 +1,52 @@
 /**
- * Defines the custom header scripts
+ * Defines the custom posts scripts
  */
 module.exports.initialize = function() {
     
     jQuery('.molecule-posts').each( function(index) {
         
-        var paginate = jQuery(this).find('.atom-pagination .page-numbers'),
-            pagenumber = 1,
-            postsHeight = jQuery(this).height,
-            postsPosition = jQuery(this).offset().top,
-            self = this,
-            id = jQuery(this).data('id'),
-            url = false;
+        var id = jQuery(this).data('id'),
+            isSet = false,
+            paginate = jQuery(this).find('.atom-pagination .page-numbers'),
+            position = jQuery(this).offset().top,
+            pageNumber = 1,
+            self = this;
         
-        // Infinite scrolling
-        if( jQuery(this).hasClass('do-infinite') ) {
+        /**
+         * Infinite scrolling
+         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
+         */
+        if( jQuery(this).hasClass('molecule-posts-infinite') ) {
+            
+            // Pagination is hidden by JS instead of css. Clients that don't support JS, do see pagination
+            jQuery(this).find('.atom-pagination').hide();
             
             jQuery(window).scroll( function() {
+                
+                var url = false,
+                    postsHeight = jQuery(self).height();
 
-                if( (jQuery(window).scrollTop() + jQuery(window).height()) > (postsPosition + postsHeight - 320) ) {
+                if( (jQuery(window).scrollTop() + jQuery(window).height()) > (position + postsHeight) ) {
+                    
+                    if( ! isSet ) {
+                        
+                        pageNumber++;
 
-                    pageNumber++;
+                        // Check our pagination and retrieve our urls
+                        jQuery(paginate).each( function(index) {
 
-                    // Check our pagination and retrieve our urls
-                    jQuery(paginate).each( function(index) {
+                            if( jQuery(this).text() == pageNumber ) {
+                                url = jQuery(this).attr('href');
+                                isSet = true;
+                            }
 
-                        if( jQuery(this).text() == pageNumber ) {
-                            url = jQuery(this).attr('href');
-                        }
-
-                    });
+                        });
+                        
+                    }
 
                     // We've exceeded our urls
                     if( ! url ) {
+                        isSet = true;
                         return;
                     }
 
@@ -40,9 +54,11 @@ module.exports.initialize = function() {
                         var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
 
                         jQuery(self).find('.molecule-posts-wrapper').append(posts);
+                        
+                        // Update our pagenumber and posts height
+                        isSet = false;
 
-                    });                
-
+                    });
 
 
                 }
@@ -51,7 +67,10 @@ module.exports.initialize = function() {
             
         }
         
-        // Normal Pagination
+        /**
+         * Normal Pagination
+         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
+         */
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
         
             jQuery('body').on('click', '.atom-pagination a', function(event) {

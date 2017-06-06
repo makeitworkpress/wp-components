@@ -1,0 +1,33 @@
+// main: ../components.less
+
+/**
+ * Styling for the posts
+ */
+
+/* Grid display of posts */
+.molecule-posts-grid {
+    .molecule-post {
+        background: #fdfdfd;
+        position: relative;
+        > .atom-image img {
+            width: 100%;
+        } 
+        &:hover .atom-image-enlarge img {
+            transform: scale(1.05);        
+        }
+    }
+    .molecule-post-content {
+        left: 0;
+        padding: 32px;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+    .has-post-thumbnail .molecule-post-content {
+        background: linear-gradient(to bottom, #000, rgba(0,0,0,0));
+        color: #fff;
+        a {
+            color: #fff;
+        }
+    }
+}

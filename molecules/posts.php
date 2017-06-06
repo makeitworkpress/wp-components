@@ -1,13 +1,16 @@
 <?php
 /**
  * Displays a generic post grid or list
+ * This element is kinda ugly, but just has to have a lot of options
  */
 
 // Atom values
 $molecule = wp_parse_args( $molecule, array(
     'ajax'          => true,                            // To paginate using ajax
     'args'          => array(),                         // Query arguments for retrieving posts
-    'content'       => array( 'type' => 'excerpt' ),    
+    'contentAtoms'   => array(                          // Accepts a set of atoms for within the content
+        'content' => array( 'type' => 'excerpt') 
+    ),          
     'id'            => 'molecule-posts',                // Used to match requests for ajax
     'filter'        => false,                           // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.
     'footerAtoms'   => array(                           // Accepts a set of atoms
@@ -22,8 +25,8 @@ $molecule = wp_parse_args( $molecule, array(
     'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
-    'scheme'        => 'http://schema.org/BlogPosting',
-    'type'          => '',
+    'scheme'        => 'http://schema.org/BlogPosting', // Grand scheme
+    'type'          => '',                              // Itemtype
     'view'          => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'       => ''                               // Wrapper class for our posts-wrapper
 ) );
@@ -100,6 +103,7 @@ $key = 0; ?>
      
                 // Set-up our post data
                 $molecule['query']->the_post();
+                $id = get_the_ID();
                 
                 // Allows for grid patterns
                 if( $molecule['postsGrid'] ) {
@@ -112,57 +116,74 @@ $key = 0; ?>
     
             ?>
 
-            <article class="molecule-post <?php echo $grid; ?>" <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+            <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
 
                 <?php
                     // Actions at beginning of a post
-                    do_action('components_posts_post_before', $post);
+                    do_action('components_posts_post_before', $id);
 
                     if( $molecule['image'] ) {
                         Components\Build::atom( 'image', $molecule['image'] );  
-                    }                                                
-
-                    // Header of this post                                
-                    if( $molecule['headerAtoms'] ) { 
-                ?>
-                    <header class="entry-header">    
-                        <?php
-                            foreach( $molecule['headerAtoms'] as $name => $variables ) { 
-
-                                Components\Build::atom( $name, $variables );
-
-                            } 
-                        ?>
-                    </header>   
-
-                <?php
-
-                    }                                  
-
-                    // Content within the post  
-                    if( $molecule['content'] ) {
-                        Components\Build::atom( 'content', $molecule['content'] ); 
-                    }
-
-                    // Footer of this post                                
-                    if( $molecule['footerAtoms'] ) { 
-                ?>
-                    <footer class="entry-footer">    
-                        <?php
-                            foreach( $molecule['footerAtoms'] as $name => $variables ) { 
-
-                                Components\Build::atom( $name, $variables );
-
-                            } 
-                        ?>
-                    </footer>   
-
-                <?php
-
                     } 
+                ?>
+                
+                <div class="molecule-post-content">
+                    
+                    <?php
+                        // Header of this post                                
+                        if( $molecule['headerAtoms'] ) { 
+                    ?>
+                        <header class="entry-header">    
+                            <?php
+                                foreach( $molecule['headerAtoms'] as $name => $variables ) { 
 
+                                    Components\Build::atom( $name, $variables );
+
+                                } 
+                            ?>
+                        </header>   
+
+                    <?php
+
+                        }                                  
+
+                        // Header of this post                                
+                        if( $molecule['contentAtoms'] ) { 
+                    ?>
+                        <div class="entry-content">    
+                            <?php
+                                foreach( $molecule['contentAtoms'] as $name => $variables ) { 
+
+                                    Components\Build::atom( $name, $variables );
+
+                                } 
+                            ?>
+                        </div>   
+
+                    <?php
+
+                        } 
+
+                        // Footer of this post                                
+                        if( $molecule['footerAtoms'] ) { 
+                    ?>
+                        <footer class="entry-footer">    
+                            <?php
+                                foreach( $molecule['footerAtoms'] as $name => $variables ) { 
+
+                                    Components\Build::atom( $name, $variables );
+
+                                } 
+                            ?>
+                        </footer>   
+
+                    <?php } ?>
+                    
+                </div>
+                
+                <?php
                     // Actions at end of a post
-                    do_action('components_posts_post_after', $post);
+                    do_action('components_posts_post_after', $id);
                 ?>
 
             </article>

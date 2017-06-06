@@ -18,8 +18,6 @@ if( ! isset($atom['background']) )
     $atom['style'] .= ' components-light-background';
 
 // Rounded
-if( $atom['rounded'] )
-    $atom['style'] .= ' components-rounded';
 
 // Size
 if( $atom['size'] )

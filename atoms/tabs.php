@@ -26,7 +26,7 @@ $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
                 
         ?>
             <li>
-                <a class="atom-tab <?php echo $active; ?>" href="<?php echo $tab['link'] ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
+                <a class="atom-tab <?php echo $active; ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
                     
                     <?php if( isset($tab['icon']) ) { ?> 
                         <i class="fa fa-<?php echo $tab['icon']; ?>"></i>
