@@ -6,32 +6,44 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'altImage'  => '', // The alternate logo image element or src
-    'height'    => '', 
-    'image'     => '', // The logo img element or src
-    'scheme'    => 'http://schema.org/Organization',
-    'title'     => esc_attr( get_bloginfo('name') ),
-    'url'       => esc_url( home_url('/') ),
-    'width'     => '',
+    'data'              => '', // The data attributes for the logo
+    'height'            => '', 
+    'image'             => '', // The logo src
+    'mobile'            => '', // The logo src for mobile display
+    'mobileScrolled'    => '', // The logo src for scrolled mobile display
+    'scheme'            => 'http://schema.org/Organization',
+    'scrolled'          => '', // The scrolled logosrc
+    'title'             => esc_attr( get_bloginfo('name') ),
+    'url'               => esc_url( home_url('/') ),
+    'width'             => ''
 ) ); 
 
 if( ! $atom['image'] )
-    return; ?>
+    return; 
 
-<a class="atom-logo" href="<?php echo $atom['url']; ?>" title="<?php echo $atom['title']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
+// If the height or width are not defined, we retrieve them with PHP
+if( ! $atom['height'] || ! $atom['width']) {
+    list($width, $height) = getimagesize( $atom['image'] );
+    $atom['height'] = $height;
+    $atom['width'] = $width;
+} 
+
+// Declare our scrolled and mobile views
+$data = array( 'mobile', 'mobileScrolled', 'scrolled' );
+
+foreach($data as $type) {
+    if( $atom[$type] ) {
+        $atom['data'] .= ' data-' . $type . '="' . $atom[$type]  . '"';
+    }
+} ?>
+
+<a class="atom-logo" href="<?php echo $atom['url']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
 
     <?php 
         // Default image
-        if( $atom['image'] )
-            echo strpos($atom['image'], 'http') === 0 
-                ? '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['height'] . '" width="' . $atom['width'] . '" />' 
-                : $atom['image'];     
-        
-        // Alternate image
-        if( $atom['altImage'] )
-            echo strpos($atom['altImage'], 'http') === 0 
-                ? '<img src="' . $atom['altImage'] . '" itemprop="image" height="' . $atom['height'] . '" width="' . $atom['width'] . '" />' 
-                : $atom['altImage'];   
+        if( $atom['image'] ) {
+            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['height'] . '" width="' . $atom['width'] . '" ' . $atom['data'] . ' />';    
+        } 
     
     ?>
     <meta itemprop="name" content="<?php echo $atom['title']; ?>" />
