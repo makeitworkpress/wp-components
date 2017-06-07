@@ -91,7 +91,7 @@ $key = 0; ?>
     <?php 
         // Filter
         if( $molecule['filter'] ) { 
-            Components\Build::atom( 'tags', $molecule['filter'] );
+            WP_Components\Build::atom( 'terms', $molecule['filter'] );
         } 
     ?>
     
@@ -123,7 +123,7 @@ $key = 0; ?>
                     do_action('components_posts_post_before', $id);
 
                     if( $molecule['image'] ) {
-                        Components\Build::atom( 'image', $molecule['image'] );  
+                        WP_Components\Build::atom( 'image', $molecule['image'] );  
                     } 
                 ?>
                 
@@ -137,7 +137,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['headerAtoms'] as $name => $variables ) { 
 
-                                    Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $name, $variables );
 
                                 } 
                             ?>
@@ -154,7 +154,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['contentAtoms'] as $name => $variables ) { 
 
-                                    Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $name, $variables );
 
                                 } 
                             ?>
@@ -171,7 +171,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['footerAtoms'] as $name => $variables ) { 
 
-                                    Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $name, $variables );
 
                                 } 
                             ?>
@@ -197,7 +197,7 @@ $key = 0; ?>
     <?php 
         // Pagination
         if( $molecule['pagination'] ) { 
-            Components\Build::atom( 'pagination', $molecule['pagination'] );
+            WP_Components\Build::atom( 'pagination', $molecule['pagination'] );
         } 
     ?>
     

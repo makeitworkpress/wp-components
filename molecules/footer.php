@@ -55,7 +55,7 @@ $molecule = wp_parse_args( $molecule, array(
 
                     foreach( $molecule['atoms'] as $name => $variables ) { 
 
-                        Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $name, $variables );
 
                     } 
 

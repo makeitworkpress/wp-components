@@ -2,7 +2,7 @@
 /**
  * Load our components using a static wrapper
  */
-namespace Components;
+namespace WP_Components;
 
 class Build {
     

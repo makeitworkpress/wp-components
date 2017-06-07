@@ -38,7 +38,7 @@ if( $molecule['transparent'] )
 
                     foreach( $molecule['topAtoms'] as $name => $variables ) { 
 
-                        Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $name, $variables );
 
                     } 
 
@@ -61,7 +61,7 @@ if( $molecule['transparent'] )
 
                 foreach( $molecule['atoms'] as $name => $variables ) { 
 
-                    Components\Build::atom( $name, $variables );
+                    WP_Components\Build::atom( $name, $variables );
 
                 } 
 
@@ -84,7 +84,7 @@ if( $molecule['transparent'] )
 
                     foreach( $molecule['socketAtoms'] as $name => $variables ) { 
 
-                        Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $name, $variables );
 
                     } 
 

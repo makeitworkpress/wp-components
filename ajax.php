@@ -2,8 +2,8 @@
 /**
  * Load our components using a static wrapper
  */
-namespace Components;
-use Components\Build as Build;
+namespace WP_Components;
+use WP_Components\Build as Build;
 
 class Ajax {
     

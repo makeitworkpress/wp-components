@@ -1,9 +1,11 @@
 /**
  * All modules are bundled into one application
  */
+
 'use strict';
 var App = {
     atoms: {
+        logo: require('./atoms/logo'),
         menu: require('./atoms/menu'),
         modal: require('./atoms/modal'),
         rate: require('./atoms/rate'),
