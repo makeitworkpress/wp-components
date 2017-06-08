@@ -11,11 +11,8 @@ $atom = wp_parse_args( $atom, array(
     'menu'       => ''
 ) );
 
-if( $atom['hamburger'] == 'mobile' )
-    $atom['style'] .= ' atom-menu-mobile-hamburger';
-
-if( $atom['hamburger'] == 'always' )
-    $atom['style'] .= ' atom-menu-always-hamburger';
+if( $atom['hamburger'] )
+    $atom['style'] .= ' atom-menu-' . $atom['hamburger'] . '-hamburger';
 
 if( $atom['indicator'] )
     $atom['style'] .= ' atom-menu-indicator';

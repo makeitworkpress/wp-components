@@ -7,7 +7,7 @@
 $molecule = wp_parse_args( $molecule, array(
     'atoms'     => false,   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
-    'sidebars'  => array() // Accepts an array with the sidebar name as value and the grid for the key
+    'sidebars'  => array()  // Accepts an array with the sidebar name as key and the grid for the value
 ) ); ?>
 
 <footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo" <?php echo $molecule['inlineStyle']; ?>>
@@ -23,7 +23,7 @@ $molecule = wp_parse_args( $molecule, array(
 
             <?php 
 
-                foreach( $molecule['sidebars'] as $grid => $sidebar ) { 
+                foreach( $molecule['sidebars'] as $sidebar => $gid ) { 
 
                     if( is_active_sidebar($sidebar) ) { ?> 
 
