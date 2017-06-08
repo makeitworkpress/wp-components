@@ -20,13 +20,23 @@ var App = {
     },  
     initialize: function() {
 
+        // Initialize atoms
         for( var key in this.atoms ) {
             this.atoms[key].initialize();
         }
         
+        // Initialize molecules
         for( var key in this.molecules ) {
             this.molecules[key].initialize();
         }
+        
+        // Execute our scroll-reveal
+        window.sr = ScrollReveal();
+        
+        sr.reveal( '.components-bottom-appear', { origin: 'bottom'} );
+        sr.reveal( '.components-left-appear', { origin: 'left'} );
+        sr.reveal( '.components-right-appear', { origin: 'right'} );
+        sr.reveal( '.components-top-appear', { origin: 'top'} );
         
     }
 }
