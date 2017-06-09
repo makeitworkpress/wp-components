@@ -56,8 +56,8 @@ class Build {
             // Enqueue our components JS
             if( $this->configurations['js'] ) {
                 wp_register_script( 'components-slider', COMPONENTS_ASSETS . 'js/vendor/flexslider.min.js', array('jquery'), NULL, true);
-                wp_enqueue_script( 'scrollreveal', COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
-                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery', 'scrollreveal'), NULL, true);
+                wp_register_script( 'scrollreveal', COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
+                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery'), NULL, true);
                 
                 // Localize our script
                 wp_localize_script( 'components', 'components', array(
@@ -114,8 +114,16 @@ class Build {
         
         // Scrollreveal. Accepts top, bottom, left, right
         if( isset($properties['appear']) ) {
-            $properties['style'] .= ' components-' . $properties['appear'] . '-appear'; 
-        }         
+            $properties['style'] .= ' components-' . $properties['appear'] . '-appear';          
+        } 
+                    
+        // Also enqueue scrollreveal if it is not enqueued yet
+        if( isset($properties['appear']) || isset($properties['postsAppear']) ) {
+
+            if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) )
+                wp_enqueue_script('scrollreveal');
+            
+        }
         
         // Background color
         if( isset($properties['background']) ) {

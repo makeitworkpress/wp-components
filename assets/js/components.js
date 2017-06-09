@@ -2,8 +2,9 @@
 /**
  * All modules are bundled into one application
  */
-
 'use strict';
+var utils = require('./utils');
+
 var App = {
     atoms: {
         logo: require('./atoms/logo'),
@@ -32,12 +33,7 @@ var App = {
         }
         
         // Execute our scroll-reveal
-        window.sr = ScrollReveal();
-        
-        sr.reveal( '.components-bottom-appear', { origin: 'bottom'} );
-        sr.reveal( '.components-left-appear', { origin: 'left'} );
-        sr.reveal( '.components-right-appear', { origin: 'right'} );
-        sr.reveal( '.components-top-appear', { origin: 'top'} );
+        utils.scrollReveal();
         
     }
 }
@@ -46,7 +42,7 @@ var App = {
 jQuery(document).ready( function() {
     App.initialize();
 });
-},{"./atoms/logo":2,"./atoms/menu":3,"./atoms/modal":4,"./atoms/rate":5,"./atoms/scroll":6,"./atoms/share":7,"./atoms/tabs":8,"./molecules/header":9,"./molecules/posts":10,"./molecules/slider":11}],2:[function(require,module,exports){
+},{"./atoms/logo":2,"./atoms/menu":3,"./atoms/modal":4,"./atoms/rate":5,"./atoms/scroll":6,"./atoms/share":7,"./atoms/tabs":8,"./molecules/header":9,"./molecules/posts":10,"./molecules/slider":11,"./utils":12}],2:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -355,6 +351,8 @@ module.exports.initialize = function() {
 /**
  * Defines the custom posts scripts
  */
+var utils = require('./../utils');
+
 module.exports.initialize = function() {
     
     jQuery('.molecule-posts').each( function(index) {
@@ -411,6 +409,10 @@ module.exports.initialize = function() {
                         
                         // Update our pagenumber and posts height
                         isSet = false;
+                        
+                        // Sync scrollReveal with newly added items
+                        if( typeof sr !== "undefined" ) 
+                            sr.sync();
 
                     });
 
@@ -450,6 +452,10 @@ module.exports.initialize = function() {
 
                     jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
+                    
+                    // Sync scrollReveal with newly added items
+                    if( typeof sr !== "undefined" ) 
+                        sr.sync();
 
                 });             
 
@@ -464,7 +470,7 @@ module.exports.initialize = function() {
     });      
         
 };
-},{}],11:[function(require,module,exports){
+},{"./../utils":12}],11:[function(require,module,exports){
 /**
  * Defines the scripts slider
  */
@@ -492,6 +498,8 @@ module.exports.initialize = function() {
 /**
  * Contains utility functions
  */
+
+/* Simplified wrapper for ajax calls */
 module.exports.ajax = function(options) {
     
     var options = options;
@@ -501,6 +509,22 @@ module.exports.ajax = function(options) {
     options.url = components.ajaxUrl;
     
     return jQuery.ajax(options);
+    
+}
+
+/* Initialize scrollReveal */
+module.exports.scrollReveal = function() {
+    
+    // Execute our scroll-reveal
+    if( typeof ScrollReveal !== "undefined" ) {
+        
+        window.sr = ScrollReveal();
+
+        sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
+        sr.reveal( '.components-left-appear', { origin: 'left'}, 50 );
+        sr.reveal( '.components-right-appear', { origin: 'right'}, 50 );
+        sr.reveal( '.components-top-appear', { origin: 'top'}, 50 );
+    }
     
 }
 },{}]},{},[1]);

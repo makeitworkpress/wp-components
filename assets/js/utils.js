@@ -1,6 +1,8 @@
 /**
  * Contains utility functions
  */
+
+/* Simplified wrapper for ajax calls */
 module.exports.ajax = function(options) {
     
     var options = options;
@@ -10,5 +12,21 @@ module.exports.ajax = function(options) {
     options.url = components.ajaxUrl;
     
     return jQuery.ajax(options);
+    
+}
+
+/* Initialize scrollReveal */
+module.exports.scrollReveal = function() {
+    
+    // Execute our scroll-reveal
+    if( typeof ScrollReveal !== "undefined" ) {
+        
+        window.sr = ScrollReveal();
+
+        sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
+        sr.reveal( '.components-left-appear', { origin: 'left'}, 50 );
+        sr.reveal( '.components-right-appear', { origin: 'right'}, 50 );
+        sr.reveal( '.components-top-appear', { origin: 'top'}, 50 );
+    }
     
 }

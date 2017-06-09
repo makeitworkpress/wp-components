@@ -1,8 +1,9 @@
 /**
  * All modules are bundled into one application
  */
-
 'use strict';
+var utils = require('./utils');
+
 var App = {
     atoms: {
         logo: require('./atoms/logo'),
@@ -31,12 +32,7 @@ var App = {
         }
         
         // Execute our scroll-reveal
-        window.sr = ScrollReveal();
-        
-        sr.reveal( '.components-bottom-appear', { origin: 'bottom'} );
-        sr.reveal( '.components-left-appear', { origin: 'left'} );
-        sr.reveal( '.components-right-appear', { origin: 'right'} );
-        sr.reveal( '.components-top-appear', { origin: 'top'} );
+        utils.scrollReveal();
         
     }
 }

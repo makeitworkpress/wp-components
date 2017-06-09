@@ -24,6 +24,7 @@ $molecule = wp_parse_args( $molecule, array(
     'itemprop'      => '',
     'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
+    'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
     'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
     'scheme'        => 'http://schema.org/BlogPosting', // Grand scheme
     'type'          => '',                              // Itemtype
@@ -81,6 +82,14 @@ if( strpos($molecule['scheme'], 'BlogPosting') ) {
     $molecule['type']       = 'itemscope="itemscope" itemtype="http://schema.org/Blog"'; 
 } 
 
+// Basic grid class for individual posts
+$grid = '';
+
+// Appearing for individual posts_clauses
+if( $molecule['postsAppear'] ) {
+    $grid .= 'components-' . $molecule['postsAppear'] . '-appear';
+}
+
 // Key for counting grid patterns
 $key = 0; ?>
 
@@ -107,9 +116,9 @@ $key = 0; ?>
                 
                 // Allows for grid patterns
                 if( $molecule['postsGrid'] ) {
-                    $grid = is_array($molecule['postsGrid']) ? 'components-' . $molecule['postsGrid'][$key] . '-grid' : 'components-' . $molecule['postsGrid'] . '-grid';
+                    $grid .= is_array($molecule['postsGrid']) ? ' components-' . $molecule['postsGrid'][$key] . '-grid' : ' components-' . $molecule['postsGrid'] . '-grid';
                 } else {
-                    $grid = '';
+                    $grid .= '';
                 }
     
                 $key++;

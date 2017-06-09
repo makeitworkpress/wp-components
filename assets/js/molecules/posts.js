@@ -1,6 +1,8 @@
 /**
  * Defines the custom posts scripts
  */
+var utils = require('./../utils');
+
 module.exports.initialize = function() {
     
     jQuery('.molecule-posts').each( function(index) {
@@ -57,6 +59,10 @@ module.exports.initialize = function() {
                         
                         // Update our pagenumber and posts height
                         isSet = false;
+                        
+                        // Sync scrollReveal with newly added items
+                        if( typeof sr !== "undefined" ) 
+                            sr.sync();
 
                     });
 
@@ -96,6 +102,10 @@ module.exports.initialize = function() {
 
                     jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
+                    
+                    // Sync scrollReveal with newly added items
+                    if( typeof sr !== "undefined" ) 
+                        sr.sync();
 
                 });             
 

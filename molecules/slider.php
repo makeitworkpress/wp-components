@@ -30,7 +30,7 @@ if( $molecule['options'] ) {
 }
 
 // Enqueue our script
-if( ! wp_script_is('components-slider') || apply_filters('components_slider_script', true) )
+if( ! wp_script_is('components-slider') && apply_filters('components_slider_script', true) )
     wp_enqueue_script('components-slider'); ?>
 
 <div class="molecule-slider <?php echo $molecule['style']; ?>" data-id="<?php echo $molecule['id']; ?>" <?php echo $molecule['inlineStyle']; ?>>
