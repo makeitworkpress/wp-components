@@ -23,7 +23,7 @@ $molecule = wp_parse_args( $molecule, array(
 
             <?php 
 
-                foreach( $molecule['sidebars'] as $sidebar => $gid ) { 
+                foreach( $molecule['sidebars'] as $sidebar => $grid ) { 
 
                     if( is_active_sidebar($sidebar) ) { ?> 
 
