@@ -35,10 +35,14 @@
 
 /* Floats */
 .components-center-float {
+    display: inline-block;
     left: 50%;
-    position: relative;
+    position: absolute;
     transform: translate(-50%, 0);
     text-align: center;
+    @media screen and (max-width: 768px) {
+        position: relative;
+    }
 }
 
 .components-left-float {
