@@ -41,12 +41,6 @@ if( get_query_var('paged') )
 if( ! $molecule['query'] )
     $molecule['query'] = new WP_Query( $molecule['args'] );
 
-// If no query and arguments are defined, we use the default query from WordPress
-if( ! $molecule['args'] && ! $molecule['query'] ) {
-    global $wp_query;
-    $molecule['query'] = $wp_query;
-}
-
 // Set the query for our pagination
 if( $molecule['pagination'] )
     $molecule['pagination']['query'] = $molecule['query'];

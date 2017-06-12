@@ -5,6 +5,8 @@
 namespace WP_Components;
 use WP_Components\Build as Build;
 
+defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
+
 class Ajax {
     
     /**
