@@ -5,19 +5,17 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'iconAfter'     => '',
-    'iconBefore'    => '',
-    'link'          => '#', 
-    'title'         => '',
-    'size'          => '',
+    'iconAfter'     => '',      // Icon before the button
+    'iconBefore'    => '',      // Icon after the button
+    'link'          => '#',     // The link of the button
+    'title'         => '',      // The button label
+    'size'          => '',      // Defines the size of the button. If set to none, displays a button without background, border and padding.
     'target'        => '_self'
 ) ); 
 
 // Default background
 if( ! isset($atom['background']) )
     $atom['style'] .= ' components-light-background';
-
-// Rounded
 
 // Size
 if( $atom['size'] )

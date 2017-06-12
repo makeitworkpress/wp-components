@@ -78,6 +78,10 @@ module.exports.initialize = function() {
          * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
          */
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
+            
+            // These are not supported yet
+            jQuery(this).find('.atom-pagination .next').remove();
+            jQuery(this).find('.atom-pagination .prev').remove();
         
             jQuery('body').on('click', '.atom-pagination a', function(event) {
                 

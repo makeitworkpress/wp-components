@@ -1,0 +1,62 @@
+// main: ../components.less
+
+/**
+ * Styling for the search atom
+ */
+.atom-search {
+    position: relative;
+    .fa-circle-o-notch {
+        position: absolute;
+        right: 48px;
+        top: 12px;
+    }
+    input {
+        min-width: 200px;
+    }
+}
+
+.atom-search-collapse {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    .search-form {
+        display: none;
+        position: absolute;
+        right: 48px;
+        top: 0;
+        z-index: 999;
+        min-width: ~"calc(100% - 48px)";
+    }
+}
+
+.atom-search-expand {
+    padding: 8px 16px;
+    text-align: center;
+    width: 48px;
+}
+
+.atom-search-results {
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    display: none;
+    left: 0;
+    padding: 16px;    
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 100;
+    .molecule-post {
+        border-bottom: 1px solid #eee;
+        margin: 0 0 16px 0;
+        overflow: hidden;
+        padding: 0 0 16px 0;
+        > .atom-image {
+            float: left;
+            margin-right: 16px;
+            width: 48px;
+        }
+        h4 {
+            clear: none;
+        }
+    }
+}

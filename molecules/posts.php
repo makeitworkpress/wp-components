@@ -11,7 +11,7 @@ $molecule = wp_parse_args( $molecule, array(
     'contentAtoms'   => array(                          // Accepts a set of atoms for within the content
         'content' => array( 'type' => 'excerpt') 
     ),          
-    'id'            => 'molecule-posts',                // Used to match requests for ajax
+    'id'            => 'molecule-posts',                // Used to match requests for ajax. Must be unique if multiple elements are on one page
     'filter'        => false,                           // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.
     'footerAtoms'   => array(                           // Accepts a set of atoms
         'button' => array( 'link' => 'post', 'title' => __('View post', 'components')) 
@@ -22,6 +22,7 @@ $molecule = wp_parse_args( $molecule, array(
     'image'         => array( 'link' => 'post', 'size' => 'medium' ),
     'infinite'      => false,    
     'itemprop'      => '',
+    'none'          => __('Bummer! No posts found.'),
     'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
@@ -40,12 +41,15 @@ if( get_query_var('paged') )
 if( ! $molecule['query'] )
     $molecule['query'] = new WP_Query( $molecule['args'] );
 
-// Return if there are no posts to show
-if( ! $molecule['query']->have_posts() )
-    return;
+// If no query and arguments are defined, we use the default query from WordPress
+if( ! $molecule['args'] && ! $molecule['query'] ) {
+    global $wp_query;
+    $molecule['query'] = $wp_query;
+}
 
 // Set the query for our pagination
-$molecule['pagination']['query'] = $molecule['query'];
+if( $molecule['pagination'] )
+    $molecule['pagination']['query'] = $molecule['query'];
 
 // Output our arguments if we have a filter
 if( $molecule['filter'] ) {
@@ -70,8 +74,8 @@ if( $molecule['postsGrid'] )
 if( $molecule['infinite'] ) 
     $molecule['style'] .= ' molecule-posts-infinite'; 
 
-// Fallback if a users by accident removes the pagination
-if( $molecule['infinite'] ) {
+// Fallback if a users by accident removes the pagination and we have infinite or ajax pagination
+if( $molecule['infinite'] || $molecule['ajax'] ) {
     $molecule['pagination']['size'] = 99999; 
     $molecule['pagination']['type'] = 'numbers'; 
 }
@@ -106,100 +110,108 @@ $key = 0; ?>
     
     <div class="molecule-posts-wrapper <?php echo $molecule['wrapper']; ?>">
         
-        <?php while ( $molecule['query']->have_posts() ) { ?>
-
-            <?php
-     
-                // Set-up our post data
-                $molecule['query']->the_post();
-                $id = get_the_ID();
-                
-                // Allows for grid patterns
-                if( $molecule['postsGrid'] ) {
-                    $grid .= is_array($molecule['postsGrid']) ? ' components-' . $molecule['postsGrid'][$key] . '-grid' : ' components-' . $molecule['postsGrid'] . '-grid';
-                } else {
-                    $grid .= '';
-                }
-    
-                $key++;
-    
-            ?>
-
-            <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+        <?php if( $molecule['query']->have_posts() ) { ?>
+        
+            <?php while( $molecule['query']->have_posts() ) { ?>
 
                 <?php
-                    // Actions at beginning of a post
-                    do_action('components_posts_post_before', $id);
 
-                    if( $molecule['image'] ) {
-                        WP_Components\Build::atom( 'image', $molecule['image'] );  
-                    } 
+                    // Set-up our post data
+                    $molecule['query']->the_post();
+                    $id = get_the_ID();
+
+                    // Allows for grid patterns
+                    if( $molecule['postsGrid'] ) {
+                        $grid .= is_array($molecule['postsGrid']) ? ' components-' . $molecule['postsGrid'][$key] . '-grid' : ' components-' . $molecule['postsGrid'] . '-grid';
+                    } else {
+                        $grid .= '';
+                    }
+
+                    $key++;
+
                 ?>
-                
-                <div class="molecule-post-content">
-                    
-                    <?php
-                        // Header of this post                                
-                        if( $molecule['headerAtoms'] ) { 
-                    ?>
-                        <header class="entry-header">    
-                            <?php
-                                foreach( $molecule['headerAtoms'] as $name => $variables ) { 
 
-                                    WP_Components\Build::atom( $name, $variables );
-
-                                } 
-                            ?>
-                        </header>   
+                <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
 
                     <?php
+                        // Actions at beginning of a post
+                        do_action('components_posts_post_before', $id);
 
-                        }                                  
-
-                        // Header of this post                                
-                        if( $molecule['contentAtoms'] ) { 
-                    ?>
-                        <div class="entry-content">    
-                            <?php
-                                foreach( $molecule['contentAtoms'] as $name => $variables ) { 
-
-                                    WP_Components\Build::atom( $name, $variables );
-
-                                } 
-                            ?>
-                        </div>   
-
-                    <?php
-
+                        if( $molecule['image'] ) {
+                            WP_Components\Build::atom( 'image', $molecule['image'] );  
                         } 
-
-                        // Footer of this post                                
-                        if( $molecule['footerAtoms'] ) { 
                     ?>
-                        <footer class="entry-footer">    
-                            <?php
-                                foreach( $molecule['footerAtoms'] as $name => $variables ) { 
 
-                                    WP_Components\Build::atom( $name, $variables );
+                    <div class="molecule-post-content">
 
-                                } 
-                            ?>
-                        </footer>   
+                        <?php
+                            // Header of this post                                
+                            if( $molecule['headerAtoms'] ) { 
+                        ?>
+                            <header class="entry-header">    
+                                <?php
+                                    foreach( $molecule['headerAtoms'] as $name => $variables ) { 
 
-                    <?php } ?>
-                    
-                </div>
-                
-                <?php
-                    // Actions at end of a post
-                    do_action('components_posts_post_after', $id);
-                ?>
+                                        WP_Components\Build::atom( $name, $variables );
 
-            </article>
+                                    } 
+                                ?>
+                            </header>   
 
-        <?php                                        
-            } 
-        ?>
+                        <?php
+
+                            }                                  
+
+                            // Header of this post                                
+                            if( $molecule['contentAtoms'] ) { 
+                        ?>
+                            <div class="entry-content">    
+                                <?php
+                                    foreach( $molecule['contentAtoms'] as $name => $variables ) { 
+
+                                        WP_Components\Build::atom( $name, $variables );
+
+                                    } 
+                                ?>
+                            </div>   
+
+                        <?php
+
+                            } 
+
+                            // Footer of this post                                
+                            if( $molecule['footerAtoms'] ) { 
+                        ?>
+                            <footer class="entry-footer">    
+                                <?php
+                                    foreach( $molecule['footerAtoms'] as $name => $variables ) { 
+
+                                        WP_Components\Build::atom( $name, $variables );
+
+                                    } 
+                                ?>
+                            </footer>   
+
+                        <?php } ?>
+
+                    </div>
+
+                    <?php
+                        // Actions at end of a post
+                        do_action('components_posts_post_after', $id);
+                    ?>
+
+                </article>
+
+            <?php } ?>
+        
+        <?php } else { ?>
+        
+            <p class="atom-posts-none">
+                <?php echo $molecule['none']; ?>
+            </p>
+        
+        <?php } ?>
         
     </div>
 

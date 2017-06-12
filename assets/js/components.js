@@ -12,6 +12,7 @@ var App = {
         modal: require('./atoms/modal'),
         rate: require('./atoms/rate'),
         scroll: require('./atoms/scroll'),
+        search: require('./atoms/search'),
         share: require('./atoms/share'),
         tabs: require('./atoms/tabs')
     },     
@@ -42,7 +43,7 @@ var App = {
 jQuery(document).ready( function() {
     App.initialize();
 });
-},{"./atoms/logo":2,"./atoms/menu":3,"./atoms/modal":4,"./atoms/rate":5,"./atoms/scroll":6,"./atoms/share":7,"./atoms/tabs":8,"./molecules/header":9,"./molecules/posts":10,"./molecules/slider":11,"./utils":12}],2:[function(require,module,exports){
+},{"./atoms/logo":2,"./atoms/menu":3,"./atoms/modal":4,"./atoms/rate":5,"./atoms/scroll":6,"./atoms/search":7,"./atoms/share":8,"./atoms/tabs":9,"./molecules/header":10,"./molecules/posts":11,"./molecules/slider":12,"./utils":13}],2:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -99,7 +100,24 @@ module.exports.initialize = function() {
             event.preventDefault();
             jQuery(menu).find('.atom-menu-hamburger').toggleClass('active');
             jQuery(menu).find('.menu').slideToggle();
-        });  
+        }); 
+        
+        if( jQuery(this).hasClass('atom-menu-collapse') ) {
+            jQuery(this).find('.menu-item-has-children > a').append('<i class="fa fa-angle-down"></i>');
+            
+            var expandable = jQuery(this).find('.fa-angle-down');
+            
+            jQuery('body').on('click', '.menu-item-has-children .fa-angle-down', function(event) {
+                
+                event.preventDefault();
+                
+                jQuery(this).closest('.menu-item').find('> .sub-menu').slideToggle();
+                jQuery(this).toggleClass('fa-angle-down');
+                jQuery(this).toggleClass('fa-angle-up');
+                
+            });
+            
+        }
         
     });      
         
@@ -194,7 +212,7 @@ module.exports.initialize = function() {
     });      
         
 };
-},{"./../utils":12}],6:[function(require,module,exports){
+},{"./../utils":13}],6:[function(require,module,exports){
 /**
  * Defines a scroll element
  * The scroll element always scrolls away from it's parent element
@@ -237,6 +255,103 @@ module.exports.initialize = function() {
 };
 },{}],7:[function(require,module,exports){
 /**
+ * Custom scripts for a search element
+ * If enabled, the script will loads results through ajax
+ * @todo Might make this more OOP and split up functionalities in different methods.
+ */
+var utils = require('./../utils');
+
+module.exports.initialize = function() {
+    
+    jQuery('.atom-search').each( function(index) {
+        
+        var delay = jQuery(this).data('delay'),
+            form = jQuery(this).find('.search-form'),
+            length = jQuery(this).data('length'),
+            loadIcon = '<i class="fa fa-spin fa-circle-o-notch"></i>',
+            input = jQuery(this).find('.search-field'),
+            more = jQuery(this).find('.atom-search-all'),
+            moreLink = jQuery(more).attr('href'),
+            number = jQuery(this).data('number'),
+            results = jQuery(this).find('.atom-search-results'),
+            self = this,
+            timer = false,
+            value = '';
+        
+        if( jQuery(this).hasClass('atom-search-ajax') ) {
+        
+            // Upon entering results, we'll look if we can search
+            jQuery(input).keyup( function(event) {
+
+                // Clear out the timer so we do not fire events immediately after each other once the delay is passed
+                clearTimeout(timer);
+
+                var currentEvent = event;
+
+                if( event.currentTarget.value.length >= length && value != jQuery.trim(event.currentTarget.value) ) {
+
+                    timer = setTimeout( function(event) {
+
+                        value = currentEvent.currentTarget.value;
+                        
+                        // Substitute our more link
+                        jQuery(more).attr('href', moreLink + encodeURI(value) );
+
+                        utils.ajax({
+                            data: {
+                                action: 'publicSearch', 
+                                number: number,
+                                search: value
+                            },
+                            beforeSend: function() {
+                                jQuery(form).append(loadIcon);    
+                                jQuery(results).find('.atom-search-all').remove();    
+                                jQuery(results).addClass('components-loading');    
+                            },
+                            success: function(response) {
+
+                                if( components.debug )
+                                    console.log(response); 
+
+                                if( response.data ) {
+                                    jQuery(results).fadeIn();
+                                    jQuery(results).html(response.data);    
+                                    jQuery(results).append(more);    
+                                }   
+
+                            },
+                            complete: function() {
+                                jQuery(self).find('.fa-circle-o-notch').remove();
+                                jQuery(results).removeClass('components-loading'); 
+                            }
+                        });
+
+                    }, delay);
+
+                }    
+
+            });
+            
+        }
+        
+        // If we have a smaller form, we can expand it
+        jQuery(this).find('.atom-search-expand').click( function(event) {
+            
+            event.preventDefault();
+            
+            // Toggle display of expand
+            jQuery(this).find('.fa').toggleClass('fa-search');
+            jQuery(this).find('.fa').toggleClass('fa-times');
+            
+            jQuery(form).fadeToggle();
+            jQuery(results).fadeOut();
+                                                       
+        });
+    });       
+        
+};
+},{"./../utils":13}],8:[function(require,module,exports){
+/**
  * Defines a scroll element
  * The scroll element always scrolls away from it's parent element
  */
@@ -266,7 +381,7 @@ module.exports.initialize = function() {
     });       
         
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports.initialize = function() {
     
     jQuery('.atom-tabs').each( function(index) {
@@ -299,7 +414,7 @@ module.exports.initialize = function() {
     });
     
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Defines the custom header scripts
  */
@@ -347,7 +462,7 @@ module.exports.initialize = function() {
     });       
         
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Defines the custom posts scripts
  */
@@ -428,6 +543,10 @@ module.exports.initialize = function() {
          * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
          */
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
+            
+            // These are not supported yet
+            jQuery(this).find('.atom-pagination .next').remove();
+            jQuery(this).find('.atom-pagination .prev').remove();
         
             jQuery('body').on('click', '.atom-pagination a', function(event) {
                 
@@ -470,7 +589,7 @@ module.exports.initialize = function() {
     });      
         
 };
-},{"./../utils":12}],11:[function(require,module,exports){
+},{"./../utils":13}],12:[function(require,module,exports){
 /**
  * Defines the scripts slider
  */
@@ -494,7 +613,7 @@ module.exports.initialize = function() {
     });           
         
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Contains utility functions
  */

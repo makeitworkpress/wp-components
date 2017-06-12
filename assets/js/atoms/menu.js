@@ -11,7 +11,24 @@ module.exports.initialize = function() {
             event.preventDefault();
             jQuery(menu).find('.atom-menu-hamburger').toggleClass('active');
             jQuery(menu).find('.menu').slideToggle();
-        });  
+        }); 
+        
+        if( jQuery(this).hasClass('atom-menu-collapse') ) {
+            jQuery(this).find('.menu-item-has-children > a').append('<i class="fa fa-angle-down"></i>');
+            
+            var expandable = jQuery(this).find('.fa-angle-down');
+            
+            jQuery('body').on('click', '.menu-item-has-children .fa-angle-down', function(event) {
+                
+                event.preventDefault();
+                
+                jQuery(this).closest('.menu-item').find('> .sub-menu').slideToggle();
+                jQuery(this).toggleClass('fa-angle-down');
+                jQuery(this).toggleClass('fa-angle-up');
+                
+            });
+            
+        }
         
     });      
         

@@ -62,6 +62,7 @@ class Build {
                 // Localize our script
                 wp_localize_script( 'components', 'components', array(
                     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                    'restUrl' => esc_url_raw( rest_url() ),
                     'debug'   => defined('WP_DEBUG') && WP_DEBUG ? true : false,
                     'nonce'   => wp_create_nonce( 'cucumber' ),
                 ) );
@@ -77,18 +78,41 @@ class Build {
      * @param string    $type       The type, either a molecule or atom
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
      * @param array     $properties The custom properties for the template    
+     * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
      *
      * @todo DRY properties that are common under multiple components and possible define them here alltogether. 
      */
-    private static function template( $type = 'atom', $template, $properties ) {
+    private static function template( $type = 'atom', $template, $properties, $render = true ) {
         
+        // Properties should be an array
+        if( ! is_array($properties) ) {
+            
+            printf( __('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template );
+            return;    
+        }
+            
+        // Our template path
         $path = apply_filters( 'components_' . $type . '_path', COMPONENTS_PATH . $type . 's/' . $template . '.php', $template );
         
         if( file_exists($path) ) {
+            
             ${$type} = apply_filters( 'components_' . $type . '_properties', self::defaultProperties($template, $properties), $template );
-            require($path);  
+            
+            // If we do not render, we return
+            if( $render == false ) {
+                
+                ob_start();
+                    require($path); 
+                $output = ob_get_clean();
+
+                return $output;
+                
+            } else {
+                require($path); 
+            }
+            
         } else {
-            _e('The given template for the molecule or atom does not exist', 'components');
+            printf( __('The given template for the molecule or atom called %s does not exist.', 'components'), $template );
         }
         
     }
@@ -187,8 +211,14 @@ class Build {
      * @param string $atom  The atom to load
      * @param array $variables  The custom variables for a molecule
      */
-    public static function atom( $atom, $variables = array() ) {
+    public static function atom( $atom, $variables = array(), $render = true ) {
+        
+        if( $render == false ) {
+            return self::template( 'atom', $atom, $variables, $render );    
+        }
+        
         self::template( 'atom', $atom, $variables );
+        
     }
     
     /**
@@ -197,9 +227,14 @@ class Build {
      * @param string    $molecule   The atom to load
      * @param array     $variables  The custom variables for a molecule
      */
-    public static function molecule( $molecule, $variables = array() ) {
+    public static function molecule( $molecule, $variables = array(), $render = true ) {
+        
+        if( $render == false ) {
+            return self::template( 'molecule', $molecule, $variables, $render );    
+        }
         
         self::template( 'molecule', $molecule, $variables );
+        
     }
     
 }

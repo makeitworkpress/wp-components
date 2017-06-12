@@ -6,10 +6,14 @@
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'args'       => array(),
-    'hamburger'  => 'mobile', // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
+    'collapse'   => false,      // If you want to collapse the mobile menu by default
+    'hamburger'  => 'mobile',   // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
     'indicator'  => true,
     'menu'       => ''
 ) );
+
+if( $atom['collapse'] )
+    $atom['style'] .= ' atom-menu-collapse';
 
 if( $atom['hamburger'] )
     $atom['style'] .= ' atom-menu-' . $atom['hamburger'] . '-hamburger';

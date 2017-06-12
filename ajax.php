@@ -61,11 +61,8 @@ class Ajax {
             
             update_post_meta($id, 'components_rating_count', $newCount);
             update_post_meta($id, 'components_rating', $newRating);
-            
-            ob_start();
-                Build::atom( 'rate', array('count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min) );
-                $output = ob_get_contents(); 
-            ob_get_clean();
+
+            $output = Build::atom( 'rate', array('count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min), false );
             
             wp_send_json_success( array('rating' => $newRating, 'count' => $newCount, 'output' => $output) );
         
@@ -77,6 +74,41 @@ class Ajax {
      * Loads posts that are filtered
      */
     public function publicFilter() {
+        
+    }
+    
+    /**
+     * Loads posts that are searched
+     */
+    public function publicSearch() {
+        
+        // Check nonce
+        check_ajax_referer('cucumber', 'nonce');
+        
+        if( empty($_POST['search']) || ! is_numeric($_POST['number']) )
+            wp_send_json_error();
+        
+        $number     = intval( $_POST['number'] );
+        $search     = sanitize_text_field( $_POST['search'] );
+        
+        // Developers can filter the arguments
+        $args       = apply_filters( 'components_ajax_search_posts_args', array(
+            'args'          => array('posts_per_page' => $number, 's' => $search, 'post_type' => 'any'),
+            'contentAtoms'  => array(),
+            'footerAtoms'   => array(),           
+            'headerAtoms'   => array(
+                'title' => array( 'tag' => 'h4', 'link' => 'post' ),
+                'type'  => array() 
+            ),
+            'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),            
+            'pagination'    => false
+        ) );
+        
+        $list       = Build::molecule( 'posts', $args , false );        
+        
+        // Return search results
+        if( $list )
+            wp_send_json_success($list); 
         
     }    
     

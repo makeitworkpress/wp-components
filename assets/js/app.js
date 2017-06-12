@@ -11,6 +11,7 @@ var App = {
         modal: require('./atoms/modal'),
         rate: require('./atoms/rate'),
         scroll: require('./atoms/scroll'),
+        search: require('./atoms/search'),
         share: require('./atoms/share'),
         tabs: require('./atoms/tabs')
     },     

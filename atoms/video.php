@@ -1,7 +1,6 @@
 <?php
 /**
  * Represents a video object
- * @todo Support url only video's, such as video's uploaded by self.
  */
 
 // Atom values
