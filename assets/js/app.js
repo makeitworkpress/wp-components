@@ -35,6 +35,17 @@ var App = {
         // Execute our scroll-reveal
         utils.scrollReveal();
         
+        // Execute parallax backgrounds
+        $(window).scroll(function() {
+            
+            var scrollPosition  = $(this).scrollTop();
+            
+            $('.components-parallax').css({
+                'backgroundPosition' : '50% ' + (50 - (scrollPosition/3)) + "%"
+            });
+            
+        });
+        
     }
 }
 
