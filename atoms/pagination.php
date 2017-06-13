@@ -43,10 +43,10 @@ if( $atom['type'] == 'links' && ! $atom['pagination'] ) {
 if( $atom['type'] == 'post' && ! $atom['pagination'] ) {
     
     if( $atom['next'] == '&rsaquo;' )
-        $atom['next'] = '%title <span>&rsaquo;</span> '
+        $atom['next'] = '%title <span>&rsaquo;</span> ';
     
     if( $atom['prev'] == '&lsaquo;' )
-        $atom['prev'] = '<span>&lsaquo;</span> %title'
+        $atom['prev'] = '<span>&lsaquo;</span> %title';
 
     $atom['pagination']  = get_previous_post_link( '%link', $atom['prev'] ); 
     $atom['pagination'] .= get_next_post_link( '%link', $atom['next'] );
