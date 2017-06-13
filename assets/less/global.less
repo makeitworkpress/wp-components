@@ -40,13 +40,11 @@
 
 /* Floats */
 .components-center-float {
-    display: inline-block;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, 0);
+    clear: both;
+    display: block;
     text-align: center;
-    @media screen and (max-width: 768px) {
-        position: relative;
+    > * {
+        display: inline-block;
     }
 }
 
