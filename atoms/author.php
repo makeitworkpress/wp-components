@@ -10,8 +10,9 @@ $atom = wp_parse_args( $atom, array(
     'description'       => get_the_author_meta('description'),
     'imageFloat'        => 'none',
     'name'              => get_the_author(),
-    'url'               => esc_url( get_author_posts_url( $post->post_author ) ),
-    'schema'            => 'http://schema.org/Person'
+    'prepend'           => '',  // Prepend the author name with a custom description
+    'schema'            => 'http://schema.org/Person',
+    'url'               => esc_url( get_author_posts_url( $post->post_author ) )
 ) );
 
 ?>
@@ -23,18 +24,23 @@ $atom = wp_parse_args( $atom, array(
             <a class="url fn vcard" href="<?php echo $atom['url']; ?>" rel="author">
                 <?php echo $atom['avatar']; ?>
             </a>
-            <?php if( ! $atom['description'] ) { ?> 
-                <meta itemprop="name" content="<?php echo $atom['name']; ?>" /> 
-            <?php } ?>
+            <meta itemprop="name" content="<?php echo $atom['name']; ?>" /> 
         </figure>
     
     <?php } ?>
     
-    <?php if( $atom['description'] ) { ?> 
+    <?php if( $atom['description'] || $atom['name'] ) { ?> 
     
         <div class="atom-author-description">
-            <h4 itemprop="name"><?php echo $atom['name']; ?></h4>
-            <p itemprop="text"><?php echo $atom['description']; ?></p>
+            
+            <?php if( $atom['name'] ) { ?> 
+                <h4><?php echo $atom['prepend'] . $atom['name']; ?></h4>
+            <?php } ?>
+            
+            <?php if( $atom['description'] ) { ?>
+                <p itemprop="text"><?php echo $atom['description']; ?></p>
+            <?php } ?>
+            
         </div>
     
     <?php } ?>

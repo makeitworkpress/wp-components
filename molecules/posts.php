@@ -69,7 +69,7 @@ if( $molecule['infinite'] )
     $molecule['style'] .= ' molecule-posts-infinite'; 
 
 // Fallback if a users by accident removes the pagination and we have infinite or ajax pagination
-if( $molecule['infinite'] || $molecule['ajax'] ) {
+if( $molecule['infinite'] ) {
     $molecule['pagination']['size'] = 99999; 
     $molecule['pagination']['type'] = 'numbers'; 
 }
