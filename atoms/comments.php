@@ -26,7 +26,7 @@ $atom = wp_parse_args( $atom, array(
     'title'         => sprintf( 
         _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'components' ),
         number_format_i18n( get_comments_number() ),
-        get_the_title();
+        get_the_title()
     )
 ) ); 
 
