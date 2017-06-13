@@ -20,7 +20,7 @@ $atom = wp_parse_args( $atom, array(
     
     <?php if( $atom['avatar'] ) { ?> 
     
-        <figure class="atom-author-avatar components-<?php echo $atom['imageFloat']; ?>-float">
+        <figure class="atom-author-avatar components-<?php echo $atom['imageFloat']; ?>-float components-rounded">
             <a class="url fn vcard" href="<?php echo $atom['url']; ?>" rel="author">
                 <?php echo $atom['avatar']; ?>
             </a>
