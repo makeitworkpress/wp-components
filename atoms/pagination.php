@@ -42,7 +42,8 @@ if( $atom['type'] == 'links' && ! $atom['pagination'] ) {
 // Pagination with next and previous posts links within a post
 if( $atom['type'] == 'post' && ! $atom['pagination'] ) {
 
-    $atom['pagination'] = get_the_post_pagination(); 
+    $atom['pagination']  = get_previous_post_link( '%link', $atom['prev'] ); 
+    $atom['pagination'] .= get_next_post_link( '%link', $atom['next'] );
     
 } ?>
 
