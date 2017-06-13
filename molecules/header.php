@@ -31,7 +31,7 @@ if( $molecule['transparent'] )
         <div class="molecule-header-top">
             
             <?php if( $molecule['container'] ) { ?>
-                 <div class="container"> 
+                 <div class="components-container"> 
             <?php } ?>                
             
                 <?php 
@@ -54,7 +54,7 @@ if( $molecule['transparent'] )
     <div class="molecule-header-primary">
         
         <?php if( $molecule['container'] ) { ?>
-             <div class="container"> 
+             <div class="components-container"> 
         <?php } ?>            
     
             <?php 
@@ -77,7 +77,7 @@ if( $molecule['transparent'] )
         <div class="molecule-header-socket">
             
             <?php if( $molecule['container'] ) { ?>
-                 <div class="container"> 
+                 <div class="components-container"> 
             <?php } ?>    
             
                 <?php 

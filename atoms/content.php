@@ -6,6 +6,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'container' => false,
     'content'   => '',                      // Allows developers to set their own string of content 
     'pages'     => wp_link_pages( array('echo' => false) ),
     'scheme'    => 'text',                  // Can also be set to description as a custom microscheme
@@ -32,11 +33,21 @@ if( ! $atom['content'] ) {
 } ?>
 
 <div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
-    <?php 
-        echo $atom['content'];
     
-        // Linked pages within the content
-        if( $atom['type'] == 'content' )
-            echo $atom['pages'];
-    ?>         	
+    <?php if( $atom['container'] ) { ?>
+         <div class="components-container"> 
+    <?php } ?>     
+    
+        <?php 
+            echo $atom['content'];
+
+            // Linked pages within the content
+            if( $atom['type'] == 'content' )
+                echo $atom['pages'];
+        ?>
+
+    <?php if( $atom['container'] ) { ?>
+        </div> 
+    <?php } ?>              
+             
 </div><!-- .entry-content -->

@@ -4,6 +4,17 @@
  * Basic grid system based upon flexbox
  */
 
+.components-container {
+    margin: 0 auto;
+    width: 1280px;
+    @media only screen and (max-width: 1280px) {
+        padding: 0 32px;
+    }
+    @media only screen and (max-width: 320px) {
+        padding: 0 16px;
+    }    
+}
+
 /* Grid Columns */
 @marge: 2%;
 @half: (100% - @marge)/2;

@@ -18,7 +18,7 @@ $molecule = wp_parse_args( $molecule, array(
         <div class="molecule-footer-sidebars">
 
             <?php if( $molecule['container'] ) { ?>
-                <div class="container"> 
+                <div class="components-container"> 
             <?php } ?>        
 
             <?php 
@@ -48,7 +48,7 @@ $molecule = wp_parse_args( $molecule, array(
         <div class="molecule-footer-socket">
             
             <?php if( $molecule['container'] ) { ?>
-                <div class="container"> 
+                <div class="components-container"> 
             <?php } ?>              
             
                 <?php 

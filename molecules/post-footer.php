@@ -14,7 +14,7 @@ $molecule = wp_parse_args( $molecule, array(
     <?php do_action( 'components_post_footer_before', $molecule ); ?>
     
     <?php if( $molecule['container'] ) { ?>
-         <div class="container"> 
+         <div class="components-container"> 
     <?php } ?>     
     
         <?php if( $molecule['atoms'] ) { ?>
