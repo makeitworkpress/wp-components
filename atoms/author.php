@@ -11,28 +11,26 @@ $atom = wp_parse_args( $atom, array(
     'imageFloat'        => 'none',
     'name'              => get_the_author(),
     'url'               => esc_url( get_author_posts_url( $post->post_author ) ),
-    'scheme'            => 'http://schema.org/Person',
-    'showAvatar'        => true, 
-    'showDescription'   => true
+    'schema'            => 'http://schema.org/Person'
 ) );
 
 ?>
-<div class="atom-author <?php echo $atom['style']; ?>" itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-author <?php echo $atom['style']; ?>" itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['schema']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
-    <?php if( $atom['showAvatar'] ) { ?> 
+    <?php if( $atom['avatar'] ) { ?> 
     
         <figure class="atom-author-avatar float-<?php echo $atom['imageFloat']; ?>">
             <a class="url fn vcard" href="<?php echo $atom['url']; ?>" rel="author">
                 <?php echo $atom['avatar']; ?>
             </a>
-            <?php if( ! $atom['showDescription'] ) { ?> 
+            <?php if( ! $atom['description'] ) { ?> 
                 <meta itemprop="name" content="<?php echo $atom['name']; ?>" /> 
             <?php } ?>
         </figure>
     
     <?php } ?>
     
-    <?php if( $atom['showDescription'] ) { ?> 
+    <?php if( $atom['description'] ) { ?> 
     
         <div class="atom-author-description">
             <h4 itemprop="name"><?php echo $atom['name']; ?></h4>
