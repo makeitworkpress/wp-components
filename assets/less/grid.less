@@ -8,13 +8,19 @@
     box-sizing: border-box;
     margin: 0 auto;
     max-width: 1280px;
+    position: relative;
     width: 100%;
     @media only screen and (max-width: 1280px) {
         padding: 0 32px;
     }
     @media only screen and (max-width: 320px) {
         padding: 0 16px;
-    }    
+    }
+    &:after {
+        clear: both;
+        content: '';
+        display: table;
+    }
 }
 
 /* Grid Columns */
