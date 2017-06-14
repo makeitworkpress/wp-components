@@ -6,10 +6,10 @@ global $wp_query;
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'archive'   => true,        // Shows an post archive link in the breadcrumbs if a post has one. Also accepts title/url array for custom values
+    'archive'   => false,       // Shows an post archive link in the breadcrumbs if a post has one. Also accepts title/url array for custom values
     'crumbs'    => array(),
     'home'      => __('Home', 'components'), // Text to homepage
-    'seperator' => '&rsaquo;',   // The seperator between breadcrumbs
+    'seperator' => '&rsaquo;',  // The seperator between breadcrumbs
     'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one
     'locations' => array(   // Locations for the breadcrumbs
         '404'       => __('404', 'components'),
