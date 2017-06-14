@@ -89,6 +89,7 @@ module.exports.initialize = function() {
             
             jQuery(form).fadeToggle();
             jQuery(results).fadeOut();
+            jQuery(self).toggleClass('atom-search-expanded');
                                                        
         });
     });       
