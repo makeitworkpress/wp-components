@@ -35,8 +35,17 @@
     justify-content: flex-end;
     .search-form {
         display: none;
+        min-width: calc(100% - 48px);
+        position: relative;
         z-index: 999;
-        min-width: ~"calc(100% - 48px)";
+        label, input[type="search"] {
+            width: 100%;
+        }
+        input[type="submit"] {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
     }
 }
 
