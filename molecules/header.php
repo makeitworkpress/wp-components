@@ -23,7 +23,7 @@ if( $molecule['headroom'] )
 if( $molecule['transparent'] ) 
     $molecule['style'] .= ' molecule-header-transparent'; ?>
 
-<header class="molecule-header <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner" <?php echo $molecule['inlineStyle']; ?>>
+<header class="molecule-header molecule-header-top <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner" <?php echo $molecule['inlineStyle']; ?>>
     
     <?php do_action( 'components_header_before', $molecule ); ?>
     

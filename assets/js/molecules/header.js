@@ -18,8 +18,10 @@ module.exports.initialize = function() {
                 
                 if( position > 5 ) {
                     jQuery(self).addClass('molecule-header-scrolled');
+                    jQuery(self).removeClass('molecule-header-top');
                 } else {
                     jQuery(self).removeClass('molecule-header-scrolled');
+                    jQuery(self).addClass('molecule-header-top');
                 }               
             }
 

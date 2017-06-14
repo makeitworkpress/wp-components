@@ -37,12 +37,12 @@ var App = {
         utils.scrollReveal();
         
         // Execute parallax backgrounds
-        jQuery(window).scroll(function() {
+        $(window).scroll(function() {
             
-            var scrollPosition  = jQuery(this).scrollTop();
+            var scrollPosition  = $(this).scrollTop();
             
-            jQuery('.components-parallax').css({
-                'backgroundPosition' : '50% ' + (50 - (scrollPosition/7)) + "%"
+            $('.components-parallax').css({
+                'backgroundPosition' : '50% ' + (50 - (scrollPosition/3)) + "%"
             });
             
         });
@@ -446,8 +446,10 @@ module.exports.initialize = function() {
                 
                 if( position > 5 ) {
                     jQuery(self).addClass('molecule-header-scrolled');
+                    jQuery(self).removeClass('molecule-header-top');
                 } else {
                     jQuery(self).removeClass('molecule-header-scrolled');
+                    jQuery(self).addClass('molecule-header-top');
                 }               
             }
 
