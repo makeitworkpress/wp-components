@@ -37,11 +37,11 @@ var App = {
         utils.scrollReveal();
         
         // Execute parallax backgrounds
-        $(window).scroll(function() {
+        jQuery(window).scroll(function() {
             
-            var scrollPosition  = $(this).scrollTop();
+            var scrollPosition  = jQuery(this).scrollTop();
             
-            $('.components-parallax').css({
+            jQuery('.components-parallax').css({
                 'backgroundPosition' : '50% ' + (50 - (scrollPosition/3)) + "%"
             });
             
