@@ -12,6 +12,7 @@ $atom = wp_parse_args( $atom, array(
     'seperator' => '&rsaquo;',   // The seperator between breadcrumbs
     'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one
     'locations' => array(   // Locations for the breadcrumbs
+        '404'       => __('404', 'components'),
         'archive'   => isset(get_queried_object()->labels->name) ? get_queried_object()->labels->name : '',
         'author'    => '',
         'category'  => single_cat_title( '', false),
@@ -58,6 +59,10 @@ if( is_home() || is_front_page() )
                 $url         = '';
                 
                 // Archives
+                if( $location == '404' ) {
+                    $url    = '#';
+                }                  
+                
                 if( $location == 'archive' ) {
                     $url    = get_post_type_archive_link( get_queried_object()->name );
                 }               
