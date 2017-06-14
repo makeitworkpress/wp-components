@@ -5,6 +5,9 @@
  */
 .atom-search {
     position: relative;
+    .screen-reader-text {
+        display: none;
+    }
     .fa-circle-o-notch {
         position: absolute;
         right: 48px;
@@ -12,6 +15,16 @@
     }
     input {
         min-width: 200px;
+    }
+    .search-submit {
+        text-align: center;
+        vertical-align: middle;
+        width: 32px;
+        &:before {
+            content: "\f002";
+            display: inline-block;
+            font-family: 'FontAwesome';
+        } 
     }
 }
 
@@ -21,9 +34,6 @@
     justify-content: flex-end;
     .search-form {
         display: none;
-        position: absolute;
-        right: 48px;
-        top: 0;
         z-index: 999;
         min-width: ~"calc(100% - 48px)";
     }

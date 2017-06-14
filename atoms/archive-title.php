@@ -45,7 +45,6 @@ $atom = wp_parse_args( $atom, array(
 
                 $archiveTitle = $title;
 
-            // Default title
             } 
 
         } 

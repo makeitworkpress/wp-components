@@ -42,6 +42,8 @@ if ( post_password_required() ) {
 
 <div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
+    <?php echo $atom['form']; ?>
+    
     <?php if( $atom['closed'] ) { ?> 
         <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>
     <?php } else { ?> 

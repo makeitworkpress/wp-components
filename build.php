@@ -65,7 +65,7 @@ class Build {
 
         // Generic style and inlineStyle properties
         $properties['inlineStyle'] = isset($properties['inlineStyle']) ? $properties['inlineStyle'] : '';
-        $properties['style'] = isset($properties['style']) ? $properties['style'] : 'default';
+        $properties['style'] = isset($properties['style']) ? $properties['style'] : '';
         
         // Animation
         if( isset($properties['animation']) ) {
@@ -91,10 +91,23 @@ class Build {
                 $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
             } elseif( strpos($properties['background'], 'http') === 0 ) {
                 $properties['inlineStyle'] .= 'background-image: url(' . $properties['background'] . ');';
+                $properties['style'] .= ' components-image-background';
             } elseif( $properties['background'] ) {
                 $properties['style'] .= ' components-' . $properties['background'] . '-background';
             }
         }
+        
+        // Border color
+        if( isset($properties['border']) ) {
+            if( strpos($properties['border'], '#') === 0 || strpos($properties['border'], 'rgb') === 0 ) {
+               $properties['inlineStyle'] .= 'border: 2px solid' . $properties['border'] . ';';
+            } elseif( strpos($properties['border'], 'linear-gradient') === 0 ) {
+                $properties['inlineStyle'] .= 'border: 2px solid transparent;';
+                $properties['inlineStyle'] .= 'border-image: ' . $properties['border'] . '; border-image-slice: 1;';
+            } elseif( $properties['border'] ) {
+                $properties['style'] .= ' components-' . $properties['border'] . '-border';
+            }
+        }        
         
         // Display
         if( isset($properties['display']) ) {
@@ -115,6 +128,11 @@ class Build {
         if( isset($properties['height']) ) {
             $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
         }
+        
+        // Heights
+        if( isset($properties['hover']) ) {
+            $properties['style'] .= ' components-' . $properties['hover'] . '-hover'; 
+        }        
         
         // Parallax effect for backgrounds
         if( isset($properties['parallax']) ) {

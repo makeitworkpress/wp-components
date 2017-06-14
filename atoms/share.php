@@ -22,6 +22,7 @@ $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 // Atom properties
 $atom   = wp_parse_args( $atom, array(
     'colorBackground'   => true,
+    'enabled'           => array('facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket'),
     'fixed'             => false,
     'networks'          => array(
         'facebook'      => array('url' => 'http://www.facebook.com/sharer.php?s=100&p[url]=' . $url, 'icon' => 'facebook'), 
@@ -49,14 +50,14 @@ if( $atom['colorBackground'] )
 
 <div class="atom-share <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
     
-    <?php foreach( $atom['networks'] as $network => $values ) { ?>
+    <?php foreach( $atom['enabled'] as $network ) { ?>
     
-        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $values['url']; ?>" target="_blank" rel="_nofollow">
-            <?php if( isset($values['icon']) ) { ?>
-                <i class="fa fa-<?php echo $values['icon']; ?>"></i>
+        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="_nofollow">
+            <?php if( isset($atom['networks'][$network]['icon']) ) { ?>
+                <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?>"></i>
             <?php } ?>
-            <?php if( isset($values['title']) ) { ?>
-                <span><?php echo $values['title']; ?></span>
+            <?php if( isset($atom['networks'][$network]['title']) ) { ?>
+                <span><?php echo $atom['networks'][$network]['title']; ?></span>
             <?php } ?>
         </a>
     

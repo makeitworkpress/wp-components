@@ -9,8 +9,8 @@ $molecule = wp_parse_args( $molecule, array(
     'options'       => array(
         'animation'         => 'fade',      // Type of animation
         'animationSpeed'    => 500,         // Speed of animation
-        'nextText'          => '&rsaquo;',  // Next indicator 
-        'prevText'          => '&lsaquo;',  // Prev indicator
+        'nextText'          => '<i class="fa fa-angle-right"></i>',  // Next indicator 
+        'prevText'          => '<i class="fa fa-angle-left"></i>',  // Prev indicator
         'slideshowSpeed'    => 5000 ,       // Speed of slideshow
         'smoothHeight'      => false         // Smoothes the height
     ),

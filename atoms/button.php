@@ -5,13 +5,16 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'iconAfter'     => '',      // Icon before the button
-    'iconBefore'    => '',      // Icon after the button
-    'link'          => '#',     // The link of the button
-    'title'         => '',      // The button label
-    'size'          => '',      // Defines the size of the button. If set to none, displays a button without background, border and padding.
+    'iconAfter'     => '',          // Icon before the button
+    'iconBefore'    => '',          // Icon after the button
+    'iconVisible'   => 'standard',  // When the icon becomes visible. Accepts standard or hover
+    'link'          => '#',         // The link of the button
+    'label'         => '',          // The button label
+    'size'          => '',          // Defines the size of the button. If set to none, displays a button without background, border and padding.
     'target'        => '_self'
 ) ); 
+
+$atom['style'] .= ' atom-button-' . $atom['iconVisible'];
 
 // Default background
 if( ! isset($atom['background']) )
@@ -31,8 +34,8 @@ if( $atom['link'] == 'post' )
         <i class="fa fa-<?php echo $atom['iconBefore']; ?>"></i>
     <?php } ?>
     
-    <span class="atom-button-title">
-        <?php echo $atom['title']; ?>
+    <span class="atom-button-label">
+        <?php echo $atom['label']; ?>
     </span>
     
     <?php if( $atom['iconAfter'] ) { ?> 

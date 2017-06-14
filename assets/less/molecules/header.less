@@ -3,6 +3,16 @@
 /**
  * Styling for the header
  */
+.molecule-header {
+    .molecule-header-primary, .molecule-header-socket, .molecule-header-top {
+        &:after {
+            content: "";
+            display: table;
+            clear: both;       
+        }  
+    }
+}
+
 .molecule-header-fixed {
     background: #fff;
     left: 0;
