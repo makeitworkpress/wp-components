@@ -53,6 +53,7 @@
     padding: 8px 16px;
     text-align: center;
     width: 48px;
+    z-index: 1;
 }
 
 .atom-search-results {
@@ -66,6 +67,9 @@
     top: 100%;
     width: ~"calc(100% - 48px)";
     z-index: 100;
+    @media screen and (min-width: 480px) {
+        min-width: 320px;
+    }    
     &.components-loading {
         position: absolute;
     }

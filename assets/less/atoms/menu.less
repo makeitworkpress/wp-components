@@ -23,6 +23,7 @@
         background: #fff;
         display: none;
         left: 0;
+        overflow-y: scroll;
         opacity: 0;
         padding: 50px 0;
         position: absolute;
@@ -44,8 +45,12 @@
             position: static;
         }
         .search-form {
-            display: block;
+            display: block !important;
+            position: static;
             width: 100%;
+        }
+        .atom-search-results, .search-form .fa-circle-o-notch {
+            display: none !important;
         }
         .atom-search-expand {
             display: none;
@@ -60,7 +65,7 @@
 .dark-menu-mixin {
     .menu {
         background: none;
-        a {
+        .menu-item > a {
             color: @white;
         }
         &:after {
@@ -107,6 +112,13 @@
                 opacity: 1;
             }
         }
+        .search-form {
+            position: absolute;
+            right: 48px;
+            @media screen and (min-width: 480px) {
+                min-width: 320px;
+            }
+        }        
     }
     .sub-menu {
         background: #fff;
@@ -123,6 +135,14 @@
             right: 100%;
             top: 0;
         }
+    }
+    .atom-search-expanded:after {
+        background: rgba(255, 255, 255, 0.8);
+        content: '';
+        height: 100%;
+        position: absolute;
+        right: 0;
+        width: 100vw;
     }
 }
 
@@ -150,7 +170,6 @@
 /**
  * Menu Indicators
  */
-
 .menu-item-has-children > a:after {
     .atom-menu-indicator & {
         content: '\f107';
