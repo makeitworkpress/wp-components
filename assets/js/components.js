@@ -438,12 +438,13 @@ module.exports.initialize = function() {
     jQuery('.molecule-header').each( function(index) {
     
         var newScroll = 0,
-            position = jQuery(window).scrollTop(),
             self = this,
             up = false;
 
         // Allows our header to behave as a headroom
         jQuery(window).scroll( function() {
+            
+            var position = jQuery(window).scrollTop();
             
             // Dynamic header classes
             if( jQuery(self).hasClass('molecule-header-fixed') ) {
