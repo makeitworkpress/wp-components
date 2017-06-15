@@ -31,6 +31,8 @@ if( $atom['type'] == 'numbers' && ! $atom['pagination'] ) {
     
 }
 
+$atom['style'] .= ' atom-pagination-' . $atom['type'];
+
 // Pagination with next and previous posts links. Only works in archives where a query is already set.
 if( $atom['type'] == 'arrows' && ! $atom['pagination'] ) {
 

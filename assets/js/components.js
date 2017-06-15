@@ -567,7 +567,7 @@ module.exports.initialize = function() {
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
             
             // These are not supported yet
-            jQuery('body').on('click', '.atom-pagination a', function(event) {
+            jQuery('body').on('click', '.molecule-posts .atom-pagination a', function(event) {
                 
                 event.preventDefault();
 

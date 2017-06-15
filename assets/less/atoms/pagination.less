@@ -1,0 +1,21 @@
+// main: ../components.less
+
+/**
+ * Styling for the pagination element
+ */
+.atom-pagination-posts {
+    display: flex;
+    justify-content: space-between;
+    a {
+        display: block; 
+        span {
+            display: block;
+        }
+        &:last-child {
+            text-align: right;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        display: block;    
+    }
+}
