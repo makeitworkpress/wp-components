@@ -109,8 +109,11 @@ module.exports.initialize = function() {
     
         jQuery(this).find(".atom-menu-hamburger").click( function(event) {
             event.preventDefault();
+            
+            jQuery(menu).toggleClass('atom-menu-expanded');
             jQuery(menu).find('.atom-menu-hamburger').toggleClass('active');
-            jQuery(menu).find('.menu').slideToggle();
+            jQuery(menu).find('.menu').toggleClass('active');
+            
         }); 
         
         if( jQuery(this).hasClass('atom-menu-collapse') ) {
@@ -118,7 +121,7 @@ module.exports.initialize = function() {
             
             var expandable = jQuery(this).find('.fa-angle-down');
             
-            jQuery('body').on('click', '.menu-item-has-children .fa-angle-down', function(event) {
+            jQuery('body').on('click', '.menu-item-has-children a > i', function(event) {
                 
                 event.preventDefault();
                 
@@ -559,32 +562,26 @@ module.exports.initialize = function() {
         if( jQuery(this).hasClass('molecule-posts-ajax') ) {
             
             // These are not supported yet
-            jQuery(this).find('.atom-pagination .next').remove();
-            jQuery(this).find('.atom-pagination .prev').remove();
-        
             jQuery('body').on('click', '.atom-pagination a', function(event) {
                 
                 event.preventDefault();
 
                 var self = jQuery(this).closest('.molecule-posts'),
-                    current = jQuery(self).find('.atom-pagination .current'),
-                    currentPage = jQuery(current).text(),
-                    page = jQuery(this).attr('href'),
-                    pageCurrent = page.replace(/\/page\/[0-9]+/, '/page/' + currentPage );
+                    target = jQuery(this).attr('href');
 
                 /**
                  * Update our pagination and add the right classes
                  */
-                jQuery(current).replaceWith('<a class="page-numbers" href="' + pageCurrent + '">' + currentPage + '</a>');
-                jQuery(this).addClass('current');
                 jQuery(self).addClass('components-loading');
 
                 // Load our data
-                jQuery.get(page, function(data) {
-                    var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
+                jQuery.get(target, function(data) {
+                    var pagination = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .atom-pagination'),
+                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
 
                     jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
+                    jQuery(self).find('.atom-pagination').replaceWith(pagination);
                     
                     // Sync scrollReveal with newly added items
                     if( typeof sr !== "undefined" ) 

@@ -4,7 +4,6 @@
  * Styling for the social atom
  */
 .atom-social {
-    overflow: hidden;
     a {
         display: inline-block;
         line-height: 32px;
@@ -17,5 +16,10 @@
         &:hover {
             opacity: 0.8;
         }
+    }
+    &:after {
+        clear: both;
+        content: '';
+        display: table;
     }
 }

@@ -9,8 +9,11 @@ module.exports.initialize = function() {
     
         jQuery(this).find(".atom-menu-hamburger").click( function(event) {
             event.preventDefault();
+            
+            jQuery(menu).toggleClass('atom-menu-expanded');
             jQuery(menu).find('.atom-menu-hamburger').toggleClass('active');
-            jQuery(menu).find('.menu').slideToggle();
+            jQuery(menu).find('.menu').toggleClass('active');
+            
         }); 
         
         if( jQuery(this).hasClass('atom-menu-collapse') ) {
@@ -18,7 +21,7 @@ module.exports.initialize = function() {
             
             var expandable = jQuery(this).find('.fa-angle-down');
             
-            jQuery('body').on('click', '.menu-item-has-children .fa-angle-down', function(event) {
+            jQuery('body').on('click', '.menu-item-has-children a > i', function(event) {
                 
                 event.preventDefault();
                 

@@ -26,6 +26,8 @@ $molecule = wp_parse_args( $molecule, array(
     'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
+    'postsAnimation' => '',                              // Accepts a custom animation class for posts
+    'postsHover'    => '',                              // Accepts a custom hover class for posts
     'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
     'scheme'        => 'http://schema.org/BlogPosting', // Grand scheme
     'type'          => '',                              // Itemtype
@@ -84,9 +86,14 @@ if( strpos($molecule['scheme'], 'BlogPosting') ) {
 $grid = '';
 
 // Appearing for individual posts_clauses
-if( $molecule['postsAppear'] ) {
+if( $molecule['postsAppear'] )
     $grid .= 'components-' . $molecule['postsAppear'] . '-appear';
-}
+
+if( $molecule['postsAnimation'] )
+    $grid .= 'components-' . $molecule['postsAnimation'] . '-animation';
+
+if( $molecule['postsHover'] )
+    $grid .= 'components-' . $molecule['postsHover'] . '-hover';
 
 // Key for counting grid patterns
 $key = 0; ?>

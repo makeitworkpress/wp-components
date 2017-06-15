@@ -18,21 +18,64 @@
 
 // Mixin for mobile menu's
 .mobile-menu-mixin {
-    background: #fff;
-    display: none;
-    left: 0;
-    padding: 50px 0;
-    position: absolute;
-    top: 100%;
-    width: 100%;
-    > li {
-        display: block;
+    .menu {
+        animation: fadeIn 500ms ease-in-out;
+        background: #fff;
+        display: none;
+        left: 0;
+        opacity: 0;
+        padding: 50px 0;
+        position: absolute;
+        top: 100%;
+        transition: all 500ms ease-out;
+        width: 100%;
+        &.active {
+            display: block;
+            opacity: 1;
+        }    
+        > li {
+            display: block;
+        }
+        .sub-menu {
+            background: none;
+            border: none;
+            display: block;
+            opacity: 1;
+            position: static;
+        }
+        .search-form {
+            display: block;
+            width: 100%;
+        }
+        .atom-search-expand {
+            display: none;
+        }
+        .atom-menu-item-social, .atom-menu-item-search {
+            padding: 8px 16px;
+        }        
     }
-    .sub-menu {
-        border: none;
-        display: block;
-        opacity: 1;
-        position: static;
+}
+
+// Mixin for a dark mobile menu
+.dark-menu-mixin {
+    .menu {
+        background: none;
+        a {
+            color: @white;
+        }
+        &:after {
+            background: rgba(0, 0, 0, 0.8);
+            content: '';
+            height: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: -1;
+        }
+    }
+    .atom-menu-hamburger.active span {
+        background-color: #fff;
     }
 }
 
@@ -46,10 +89,13 @@
         padding: 0;
     }
     .menu {
-        a {
+        li > a {
             display: block;
             line-height: 50px;
-            padding: 0 20px;
+            padding: 0 16px;
+            &:focus {
+                outline: none;
+            }
         }       
         > li {
             display: inline-block;
@@ -84,21 +130,22 @@
     margin-left: 8px;
 }
 
-/* Sub-menu's for left or centered menu's */
-.components-left-float .sub-menu {
-    left: 0;
-    right: inherit;
-    .sub-menu {
-        left: 100%;
-        right: inherit;
-    }    
+.atom-menu-item-social, .atom-menu-item-search {
+    padding: 0 8px;
 }
 
-.components-center-float .sub-menu {
-    left: 50%;
-    right: inherit;
-    transform: translate(-50%, 0);
+/* Sub-menu's for left or centered menu's */
+.components-left-float, .components-center-float  {
+    .sub-menu  {
+        left: 0;
+        right: inherit;
+        .sub-menu {
+            left: 100%;
+            right: inherit;
+        }    
+    }
 }
+
 
 /**
  * Menu Indicators
@@ -116,7 +163,6 @@
         display: none;
     }
 }
-
 
 /**
  * Hamburger Conditions
@@ -150,7 +196,7 @@
     } 
     &.active {
         span:first-child {
-            margin-top: -2.5px;
+            margin-top: -2px;
             top: 50%;
             transform: rotate(-45deg)
         }        
@@ -158,7 +204,7 @@
             opacity: 0;
         }
         span:last-child {
-            margin-top: -2.5px;
+            margin-top: -2px;
             top: 50%;
             transform: rotate(45deg)
         }        
@@ -167,41 +213,94 @@
 
 .atom-menu-always-hamburger {
     text-align: center;
-    .menu {
-       .mobile-menu-mixin();
-    }
+    .mobile-menu-mixin();
     .atom-menu-hamburger {
         display: block;
     }
     &.atom-menu-collapse {
         .collapsable-mixin();    
     }
+    &.atom-menu-dark {
+        .dark-menu-mixin();
+    }    
 }
 
 .atom-menu-tablet-hamburger {
     @media screen and (max-width: 1024px) {
-        .menu {
-            .mobile-menu-mixin();
-        }
+        .mobile-menu-mixin();
         .atom-menu-hamburger {
             display: block;
         }
         &.atom-menu-collapse {
             .collapsable-mixin();    
+        }
+        &.atom-menu-dark {
+            .dark-menu-mixin();
         }        
     }
 }
 
 .atom-menu-mobile-hamburger {
     @media screen and (max-width: 768px) {
-        .menu {
-            .mobile-menu-mixin();
-        }
+        .mobile-menu-mixin();
         .atom-menu-hamburger {
             display: block;
         } 
         &.atom-menu-collapse {
             .collapsable-mixin();    
-        }        
+        } 
+        &.atom-menu-dark {
+            .dark-menu-mixin();
+        }
     }
+}
+
+
+/**
+ * Fixed menu
+ */
+.atom-menu-fixed {
+    .atom-menu-always-hamburger();
+    .menu {
+        align-content: center;
+        background: rgba(0, 0, 0, 0.8);
+        flex-wrap: wrap;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        &.active {
+            display: flex;
+        }
+        li {
+            width: 100%;
+        }
+        a {
+            color: @white;
+        }
+    }
+    .atom-menu-hamburger.active span {
+        background-color: #fff;
+    }
+}
+
+.atom-menu-right, .atom-menu-left {
+    .atom-menu-always-hamburger();
+    text-align: left;
+    .menu {
+        animation: slideInLeft 300ms ease-in-out;
+        background: rgba(0, 0, 0, 0.8);
+        height: 100%;
+        position: fixed;
+        top: 0;
+        width: 320px;
+    }
+    .atom-menu-hamburger.active span {
+        background-color: #fff;
+    }    
+}
+
+.atom-menu-right .menu {
+    animation: slideInRight 300ms ease-in-out;
+    left: inherit;
+    right: 0;
 }

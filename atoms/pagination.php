@@ -11,7 +11,7 @@ $atom = wp_parse_args( $atom, array(
     'pagination'    => '',
     'prev'          => '&lsaquo;',
     'size'          => 2,
-    'type'          => 'numbers',
+    'type'          => 'numbers',       // Accepts arrows, numbers or post (for in post navigation)
     'query'         => $wp_query
 ) ); 
 
@@ -32,7 +32,7 @@ if( $atom['type'] == 'numbers' && ! $atom['pagination'] ) {
 }
 
 // Pagination with next and previous posts links. Only works in archives where a query is already set.
-if( $atom['type'] == 'links' && ! $atom['pagination'] ) {
+if( $atom['type'] == 'arrows' && ! $atom['pagination'] ) {
 
     $atom['pagination']  = get_previous_posts_link( $atom['prev'] ); 
     $atom['pagination'] .= get_next_posts_link( $atom['next'] );
