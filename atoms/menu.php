@@ -28,7 +28,7 @@ if( $atom['view'] )
     $atom['style'] .= ' atom-menu-' . $atom['view'];
 
 // Extra menu items
-$social = $atom['social'] ? '<li class="atom-menu-item-social">' . WP_Components\Build::atom('social', array('urls' => $atom['social']), false) . '</li>' : '';
+$social = $atom['social'] ? '<li class="atom-menu-item-social">' . WP_Components\Build::atom('social', array('urls' => $atom['social'], 'rounded' => true), false) . '</li>' : '';
 $search = $atom['search'] ? '<li class="atom-menu-item-search">' . WP_Components\Build::atom('search', array('ajax' => true, 'collapse' => true), false) . '</li>' : '';
 
 // Our echo is always false and or container empty (if set to a string and defined as menu)
