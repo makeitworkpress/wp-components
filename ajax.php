@@ -103,7 +103,8 @@ class Ajax {
                 'type'  => array() 
             ),
             'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),            
-            'pagination'    => false
+            'pagination'    => false,
+            'postsAppear'   => 'bottom'
         ) );
         
         $list       = Build::molecule( 'posts', $args , false );        

@@ -19,7 +19,7 @@ $molecule = wp_parse_args( $molecule, array(
     'headerAtoms'   => array(                           // Accepts a set of atoms
         'title' => array( 'tag' => 'h2', 'link' => 'post' ) 
     ),          
-    'image'         => array( 'link' => 'post', 'size' => 'medium' ),
+    'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
     'itemprop'      => '',
     'none'          => __('Bummer! No posts found.'),

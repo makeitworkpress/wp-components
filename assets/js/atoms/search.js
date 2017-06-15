@@ -61,7 +61,11 @@ module.exports.initialize = function() {
                                     jQuery(results).fadeIn();
                                     jQuery(results).html(response.data);    
                                     jQuery(results).append(more);    
-                                }   
+                                }
+                                
+                                // Sync scrollReveal with newly added items
+                                if( typeof sr !== "undefined" ) 
+                                    sr.sync();                            
 
                             },
                             complete: function() {
