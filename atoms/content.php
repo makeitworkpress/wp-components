@@ -26,7 +26,7 @@ if( ! $atom['content'] ) {
         }
     
     } elseif( $atom['type'] == 'content' ) {
-        $atom['content'] = get_the_content();
+        $atom['content'] = apply_filters( 'the_content', get_the_content() );
     }
     
 } ?>
