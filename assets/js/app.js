@@ -41,7 +41,7 @@ var App = {
             var scrollPosition  = jQuery(this).scrollTop();
             
             jQuery('.components-parallax').css({
-                'backgroundPosition' : '50% ' + (50 - (scrollPosition/3)) + "%"
+                'backgroundPosition' : '50% ' + (50 + (scrollPosition/8)) + "%"
             });
             
         });

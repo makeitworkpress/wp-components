@@ -5,9 +5,17 @@ module.exports.initialize = function() {
     
     jQuery('.molecule-header').each( function(index) {
     
-        var newScroll = 0,
+        var height = jQuery(this).height(),
+            newScroll = 0,
             self = this,
             up = false;
+        
+        if( jQuery(this).hasClass('molecule-header-fixed') ) {
+            
+            jQuery(this).next('main').css({
+                'paddingTop' : height
+            });    
+        }
 
         // Allows our header to behave as a headroom
         jQuery(window).scroll( function() {
@@ -23,7 +31,9 @@ module.exports.initialize = function() {
                 } else {
                     jQuery(self).removeClass('molecule-header-scrolled');
                     jQuery(self).addClass('molecule-header-top');
-                }               
+                }
+                
+                
             }
 
             // Headroom navigation
