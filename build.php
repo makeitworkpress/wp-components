@@ -68,6 +68,10 @@ class Build {
         $properties['style'] = isset($properties['style']) ? $properties['style'] : '';
         
         // Animation
+        if( isset($properties['align']) ) {
+            $properties['style'] .= ' components-' . $properties['align'] . '-align'; 
+        }        
+        
         if( isset($properties['animation']) ) {
             $properties['style'] .= ' components-' . $properties['animation'] . '-animation'; 
         }
