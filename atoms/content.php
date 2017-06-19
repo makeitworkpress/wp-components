@@ -20,9 +20,9 @@ if( ! $atom['content'] ) {
         // Set our more to zero and retrieve the text before the more tag
         if( strpos($post->post_content, '<!--more-->') >= 1 ) {
             global $more; $more = 0; 
-            $atom['content'] = get_the_content(); 
+            $atom['content'] = wpautop( get_the_content() ); 
         } else {
-            $atom['content'] = get_the_excerpt(); 
+            $atom['content'] = wpautop( get_the_excerpt() ); 
         }
     
     } elseif( $atom['type'] == 'content' ) {
