@@ -17,7 +17,7 @@ $molecule = wp_parse_args( $molecule, array(
         'button' => array( 'link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small') 
     ),                                           
     'headerAtoms'   => array(                           // Accepts a set of atoms
-        'title' => array( 'tag' => 'h2', 'link' => 'post' ) 
+        'title' => array( 'tag' => 'h2', 'link' => 'post', 'style' => 'entry-title' ) 
     ),          
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    

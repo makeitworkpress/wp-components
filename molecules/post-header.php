@@ -5,7 +5,7 @@
 
 // Molecule values
 $molecule = wp_parse_args( $molecule, array(
-    'atoms'         => array ('title' => array('tag' => 'h1') ), // Accepts a multidimensional array with the element name as key and the value for the component variables
+    'atoms'         => array ('title' => array('tag' => 'h1', 'style' => 'entry-title') ), // Accepts a multidimensional array with the element name as key and the value for the component variables
     'container'     => true,    // Wrap this component in a container
     'scroll'        => false    // A scroll down button.
 ) ); ?>
