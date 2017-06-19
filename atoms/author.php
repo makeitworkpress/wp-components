@@ -31,7 +31,7 @@ $atom = wp_parse_args( $atom, array(
     
     <?php if( $atom['description'] || $atom['name'] ) { ?> 
     
-        <div class="atom-author-description">
+        <div class="atom-author-description components-<?php echo $atom['imageFloat']; ?>-float">
             
             <?php if( $atom['name'] ) { ?> 
                 <h4 itemprop="name"><?php echo $atom['prepend'] . $atom['name']; ?></h4>
