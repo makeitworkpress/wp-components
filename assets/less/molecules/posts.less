@@ -11,10 +11,45 @@
         background-position: center;
         background-size: cover;
         box-sizing: border-box;
-        padding: 32px;        
+        padding: 32px; 
+        > .atom-image {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 0;
+            a {
+                height: 100%;
+                &:after {
+                    background: linear-gradient(to bottom, #000, rgba(0,0,0,0));
+                    content: '';
+                    height: 100%;
+                    left: 0;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                }                
+            }
+            img {
+                height: 100%;
+                left: 50%;
+                max-width: none;
+                position: absolute; 
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: auto;
+            }
+        }
+        > .atom-image-enlarge:hover img {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        .entry-header, .entry-content, .entry-footer {
+            position: relative;
+            z-index: 1;
+        }
     }
-    .has-post-thumbnail .molecule-post-content {
-        background: linear-gradient(to bottom, #000, rgba(0,0,0,0));
+    .has-post-thumbnail {
         color: #fff;
         a {
             color: #fff;

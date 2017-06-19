@@ -66,12 +66,6 @@ if( $molecule['ajax'] )
 if( $molecule['view'] )
     $molecule['style'] .= ' molecule-posts-' . $molecule['view']; 
 
-// Set-up the grid style
-if( $molecule['view'] == 'grid' ) {
-    $size = $molecule['image']['size'];
-    $molecule['image'] = false;
-}
-
 // Individal posts grid
 if( $molecule['postsGrid'] )
     $molecule['wrapper'] .= ' components-grid-wrapper'; 
@@ -148,10 +142,7 @@ $key = 0; ?>
                         $grid .= '';
                     }
     
-                    // Inline styles
-                    if( $molecule['view'] == 'grid' )
-                        $molecule['postsInlineStyle'] .= 'background-image: url(' . get_the_post_thumbnail_url($id, $size) . ');';
-                        
+                    // Inline styles   
                     if( $molecule['postsInlineStyle'] )
                         $molecule['postsInlineStyle'] = 'style="' . $molecule['postsInlineStyle'] . '"';
 
