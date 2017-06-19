@@ -8,22 +8,10 @@
 .molecule-posts-grid {
     .molecule-post {
         background: #fdfdfd;
-        min-height: 256px;
-        position: relative;
-        > .atom-image img {
-            width: 100%;
-        } 
-        &:hover .atom-image-enlarge img {
-            transform: scale(1.05);        
-        }
-    }
-    .molecule-post-content {
+        background-position: center;
+        background-size: cover;
         box-sizing: border-box;
-        left: 0;
-        padding: 32px;
-        position: absolute;
-        top: 0;
-        width: 100%;
+        padding: 32px;        
     }
     .has-post-thumbnail .molecule-post-content {
         background: linear-gradient(to bottom, #000, rgba(0,0,0,0));

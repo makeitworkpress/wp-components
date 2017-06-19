@@ -26,8 +26,12 @@ $molecule = wp_parse_args( $molecule, array(
     'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
-    'postsAnimation' => '',                              // Accepts a custom animation class for posts
+    'postsAnimation' => '',                             // Accepts a custom animation class for posts
+    'postsBackground' => '',                            // Accepts a custom background class for posts
+    'postsBorder'   => '',                              // Accepts a custom border class for posts
+    'postsColor'    => '',                              // Accepts a custom color class for bosts
     'postsHover'    => '',                              // Accepts a custom hover class for posts
+    'postsInlineStyle' => '',                           // Accepts a custom inline style for posts
     'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
     'scheme'        => 'http://schema.org/BlogPosting', // Grand scheme
     'type'          => '',                              // Itemtype
@@ -62,6 +66,12 @@ if( $molecule['ajax'] )
 if( $molecule['view'] )
     $molecule['style'] .= ' molecule-posts-' . $molecule['view']; 
 
+// Set-up the grid style
+if( $molecule['view'] == 'grid' ) {
+    $size = $molecule['image']['size'];
+    $molecule['image'] = false;
+}
+
 // Individal posts grid
 if( $molecule['postsGrid'] )
     $molecule['wrapper'] .= ' components-grid-wrapper'; 
@@ -91,6 +101,16 @@ if( $molecule['postsAppear'] )
 
 if( $molecule['postsAnimation'] )
     $grid .= 'components-' . $molecule['postsAnimation'] . '-animation';
+
+if( $molecule['postsBackground'] )
+    $grid .= 'components-' . $molecule['postsBackground'] . '-background';
+
+
+if( $molecule['postsBorder'] )
+    $grid .= 'components-' . $molecule['postsBorder'] . '-border';
+
+if( $molecule['postsColor'] )
+    $grid .= 'components-' . $molecule['postsColor'] . '-color';
 
 if( $molecule['postsHover'] )
     $grid .= 'components-' . $molecule['postsHover'] . '-hover';
@@ -127,12 +147,19 @@ $key = 0; ?>
                     } else {
                         $grid .= '';
                     }
+    
+                    // Inline styles
+                    if( $molecule['view'] == 'grid' )
+                        $molecule['postsInlineStyle'] .= 'background-image: url(' . get_the_post_thumbnail_url($id, $size) . ');';
+                        
+                    if( $molecule['postsInlineStyle'] )
+                        $molecule['postsInlineStyle'] = 'style="' . $molecule['postsInlineStyle'] . '"';
 
                     $key++;
 
                 ?>
 
-                <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+                <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>" <?php echo $molecule['postsInlineStyle']; ?>>
 
                     <?php
                         // Actions at beginning of a post
@@ -143,59 +170,55 @@ $key = 0; ?>
                         } 
                     ?>
 
-                    <div class="molecule-post-content">
+                    <?php
+                        // Header of this post                                
+                        if( $molecule['headerAtoms'] ) { 
+                    ?>
+                        <header class="entry-header">    
+                            <?php
+                                foreach( $molecule['headerAtoms'] as $name => $variables ) { 
 
-                        <?php
-                            // Header of this post                                
-                            if( $molecule['headerAtoms'] ) { 
-                        ?>
-                            <header class="entry-header">    
-                                <?php
-                                    foreach( $molecule['headerAtoms'] as $name => $variables ) { 
+                                    WP_Components\Build::atom( $name, $variables );
 
-                                        WP_Components\Build::atom( $name, $variables );
+                                } 
+                            ?>
+                        </header>   
 
-                                    } 
-                                ?>
-                            </header>   
+                    <?php
 
-                        <?php
+                        }                                  
 
-                            }                                  
+                        // Header of this post                                
+                        if( $molecule['contentAtoms'] ) { 
+                    ?>
+                        <div class="entry-content">    
+                            <?php
+                                foreach( $molecule['contentAtoms'] as $name => $variables ) { 
 
-                            // Header of this post                                
-                            if( $molecule['contentAtoms'] ) { 
-                        ?>
-                            <div class="entry-content">    
-                                <?php
-                                    foreach( $molecule['contentAtoms'] as $name => $variables ) { 
+                                    WP_Components\Build::atom( $name, $variables );
 
-                                        WP_Components\Build::atom( $name, $variables );
+                                } 
+                            ?>
+                        </div>   
 
-                                    } 
-                                ?>
-                            </div>   
+                    <?php
 
-                        <?php
+                        } 
 
-                            } 
+                        // Footer of this post                                
+                        if( $molecule['footerAtoms'] ) { 
+                    ?>
+                        <footer class="entry-footer">    
+                            <?php
+                                foreach( $molecule['footerAtoms'] as $name => $variables ) { 
 
-                            // Footer of this post                                
-                            if( $molecule['footerAtoms'] ) { 
-                        ?>
-                            <footer class="entry-footer">    
-                                <?php
-                                    foreach( $molecule['footerAtoms'] as $name => $variables ) { 
+                                    WP_Components\Build::atom( $name, $variables );
 
-                                        WP_Components\Build::atom( $name, $variables );
+                                } 
+                            ?>
+                        </footer>   
 
-                                    } 
-                                ?>
-                            </footer>   
-
-                        <?php } ?>
-
-                    </div>
+                    <?php } ?>
 
                     <?php
                         // Actions at end of a post
