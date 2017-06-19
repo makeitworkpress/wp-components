@@ -28,7 +28,7 @@ if( $molecule['transparent'] )
     <?php do_action( 'components_header_before', $molecule ); ?>
     
     <?php if( $molecule['topAtoms'] ) { ?>
-        <div class="molecule-header-top">
+        <div class="molecule-header-top-atoms">
             
             <?php if( $molecule['container'] ) { ?>
                  <div class="components-container"> 
@@ -51,30 +51,34 @@ if( $molecule['transparent'] )
         </div>
     <?php } ?>
     
-    <div class="molecule-header-primary">
-        
-        <?php if( $molecule['container'] ) { ?>
-             <div class="components-container"> 
-        <?php } ?>            
+    <?php if( $molecule['atoms'] ) { ?>
     
-            <?php 
+        <div class="molecule-header-atoms">
 
-                foreach( $molecule['atoms'] as $name => $variables ) { 
+            <?php if( $molecule['container'] ) { ?>
+                 <div class="components-container"> 
+            <?php } ?>            
 
-                    WP_Components\Build::atom( $name, $variables );
+                <?php 
 
-                } 
+                    foreach( $molecule['atoms'] as $name => $variables ) { 
 
-            ?>
-                 
-        <?php if( $molecule['container'] ) { ?>
-            </div> 
-        <?php } ?>                  
-        
-    </div>
+                        WP_Components\Build::atom( $name, $variables );
+
+                    } 
+
+                ?>
+
+            <?php if( $molecule['container'] ) { ?>
+                </div> 
+            <?php } ?>                  
+
+        </div>
+    
+    <?php } ?> 
     
     <?php if( $molecule['socketAtoms'] ) { ?>
-        <div class="molecule-header-socket">
+        <div class="molecule-header-socket-atoms">
             
             <?php if( $molecule['container'] ) { ?>
                  <div class="components-container"> 
