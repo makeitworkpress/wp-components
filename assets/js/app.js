@@ -36,15 +36,7 @@ var App = {
         utils.scrollReveal();
         
         // Execute parallax backgrounds
-        jQuery(window).scroll(function() {
-            
-            var scrollPosition  = jQuery(this).scrollTop();
-            
-            jQuery('.components-parallax').css({
-                'backgroundPosition' : '50% ' + (50 + (scrollPosition/8)) + "%"
-            });
-            
-        });
+        utils.parallax();
         
     }
 }

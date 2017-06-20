@@ -17,10 +17,10 @@ module.exports.ajax = function(options) {
 
 /* Initialize scrollReveal */
 module.exports.scrollReveal = function() {
-    
+
     // Execute our scroll-reveal
     if( typeof ScrollReveal !== "undefined" ) {
-        
+
         window.sr = ScrollReveal();
 
         sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
@@ -28,5 +28,20 @@ module.exports.scrollReveal = function() {
         sr.reveal( '.components-right-appear', { origin: 'right'}, 50 );
         sr.reveal( '.components-top-appear', { origin: 'top'}, 50 );
     }
+    
+}
+
+/* Initialize parallax */
+module.exports.parallax = function() {
+    
+    jQuery(window).scroll(function() {
+
+        var scrollPosition  = jQuery(this).scrollTop();
+
+        jQuery('.components-parallax').css({
+            'backgroundPosition' : '50% ' + (50 + (scrollPosition/8)) + "%"
+        });
+
+    });
     
 }

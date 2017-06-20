@@ -37,15 +37,7 @@ var App = {
         utils.scrollReveal();
         
         // Execute parallax backgrounds
-        jQuery(window).scroll(function() {
-            
-            var scrollPosition  = jQuery(this).scrollTop();
-            
-            jQuery('.components-parallax').css({
-                'backgroundPosition' : '50% ' + (50 + (scrollPosition/8)) + "%"
-            });
-            
-        });
+        utils.parallax();
         
     }
 }
@@ -333,10 +325,17 @@ module.exports.initialize = function() {
                                     jQuery(results).html(response.data);    
                                     jQuery(results).append(more);    
                                 }
+
                                 
                                 // Sync scrollReveal with newly added items
-                                if( typeof sr !== "undefined" ) 
-                                    sr.sync();                            
+                                if( typeof sr !== "undefined" ) {
+                                    
+                                    // Reinit if we have not initialzied
+                                    if( sr.initialized === false )                                 
+                                        utils.scrollReveal();
+                                    
+                                    sr.sync();                   
+                                }
 
                             },
                             complete: function() {
@@ -363,6 +362,7 @@ module.exports.initialize = function() {
             jQuery(this).find('.fa').toggleClass('fa-times');
             
             jQuery(form).fadeToggle();
+            jQuery(form).find('.search-field').focus();
             jQuery(results).fadeOut();
             jQuery(self).toggleClass('atom-search-expanded');
                                                        
@@ -593,11 +593,16 @@ module.exports.initialize = function() {
                 // Load our data
                 jQuery.get(target, function(data) {
                     var pagination = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .atom-pagination'),
-                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
+                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post'),
+                        scrollHeight = jQuery('.molecule-header').hasClass('molecule-header-fixed') ? jQuery('.molecule-header').height() : 0;
 
                     jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
                     jQuery(self).find('.atom-pagination').replaceWith(pagination);
+                    
+                    jQuery('html, body').animate({
+                        scrollTop: jQuery(self).offset().top - scrollHeight
+                    }, 555);                    
                     
                     // Sync scrollReveal with newly added items
                     if( typeof sr !== "undefined" ) 
@@ -660,10 +665,10 @@ module.exports.ajax = function(options) {
 
 /* Initialize scrollReveal */
 module.exports.scrollReveal = function() {
-    
+
     // Execute our scroll-reveal
     if( typeof ScrollReveal !== "undefined" ) {
-        
+
         window.sr = ScrollReveal();
 
         sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
@@ -671,6 +676,21 @@ module.exports.scrollReveal = function() {
         sr.reveal( '.components-right-appear', { origin: 'right'}, 50 );
         sr.reveal( '.components-top-appear', { origin: 'top'}, 50 );
     }
+    
+}
+
+/* Initialize parallax */
+module.exports.parallax = function() {
+    
+    jQuery(window).scroll(function() {
+
+        var scrollPosition  = jQuery(this).scrollTop();
+
+        jQuery('.components-parallax').css({
+            'backgroundPosition' : '50% ' + (50 + (scrollPosition/8)) + "%"
+        });
+
+    });
     
 }
 },{}]},{},[1]);

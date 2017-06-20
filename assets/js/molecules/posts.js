@@ -95,11 +95,16 @@ module.exports.initialize = function() {
                 // Load our data
                 jQuery.get(target, function(data) {
                     var pagination = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .atom-pagination'),
-                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
+                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post'),
+                        scrollHeight = jQuery('.molecule-header').hasClass('molecule-header-fixed') ? jQuery('.molecule-header').height() : 0;
 
                     jQuery(self).removeClass('components-loading');
                     jQuery(self).find('.molecule-posts-wrapper').html(posts);
                     jQuery(self).find('.atom-pagination').replaceWith(pagination);
+                    
+                    jQuery('html, body').animate({
+                        scrollTop: jQuery(self).offset().top - scrollHeight
+                    }, 555);                    
                     
                     // Sync scrollReveal with newly added items
                     if( typeof sr !== "undefined" ) 

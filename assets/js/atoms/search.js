@@ -62,10 +62,17 @@ module.exports.initialize = function() {
                                     jQuery(results).html(response.data);    
                                     jQuery(results).append(more);    
                                 }
+
                                 
                                 // Sync scrollReveal with newly added items
-                                if( typeof sr !== "undefined" ) 
-                                    sr.sync();                            
+                                if( typeof sr !== "undefined" ) {
+                                    
+                                    // Reinit if we have not initialzied
+                                    if( sr.initialized === false )                                 
+                                        utils.scrollReveal();
+                                    
+                                    sr.sync();                   
+                                }
 
                             },
                             complete: function() {
@@ -92,6 +99,7 @@ module.exports.initialize = function() {
             jQuery(this).find('.fa').toggleClass('fa-times');
             
             jQuery(form).fadeToggle();
+            jQuery(form).find('.search-field').focus();
             jQuery(results).fadeOut();
             jQuery(self).toggleClass('atom-search-expanded');
                                                        

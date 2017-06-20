@@ -30,9 +30,10 @@ if( ! $atom['data'] ) {
 if( $atom['collapse'] ) 
     $atom['style'] .= ' atom-search-collapse';
 
-// If we have an ajax action, we add it
-if( $atom['ajax'] ) 
-    $atom['style'] .= ' atom-search-ajax'; ?>     
+// If we have an ajax action, we add it and enqueue the script if necessary
+if( $atom['ajax'] ) {
+    $atom['style'] .= ' atom-search-ajax'; 
+} ?>     
 
 <div class="atom-search <?php echo $atom['style']; ?>" href="#" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     

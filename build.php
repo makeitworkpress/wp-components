@@ -82,7 +82,7 @@ class Build {
         } 
                     
         // Also enqueue scrollreveal if it is not enqueued yet
-        if( isset($properties['appear']) || isset($properties['postsAppear']) ) {
+        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') ) {
 
             if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) )
                 wp_enqueue_script('scrollreveal');
