@@ -22,7 +22,7 @@ module.exports.initialize = function() {
         // And if we're scrolling, the transparency is removed
         jQuery(window).scroll( function() {
             
-            var position = jQuery(window).scrollTop(),
+            var position = jQuery(window).scrollTop();
             
             // Dynamic header classes
             if( jQuery(header).hasClass('molecule-header-fixed') && jQuery(header).hasClass('molecule-header-transparent') ) {
