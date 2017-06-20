@@ -10,7 +10,6 @@ module.exports.initialize = function() {
             img = jQuery(this).find('img'),
             defaultSrc = agent ? jQuery(img).data('mobile') : jQuery(img).attr('src'),  
             transparentSrc = agent ? jQuery(img).data('mobiletransparent') : jQuery(img).data('transparent')       ,
-            position = jQuery(window).scrollTop(),
             self = this;
         
         // Fade-in logo so we do not see the src change flickr
@@ -22,6 +21,8 @@ module.exports.initialize = function() {
         
         // And if we're scrolling, the transparency is removed
         jQuery(window).scroll( function() {
+            
+            var position = jQuery(window).scrollTop(),
             
             // Dynamic header classes
             if( jQuery(header).hasClass('molecule-header-fixed') && jQuery(header).hasClass('molecule-header-transparent') ) {
