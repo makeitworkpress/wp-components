@@ -14,7 +14,7 @@ $molecule = wp_parse_args( $molecule, array(
     'id'            => 'molecule-posts',                // Used to match requests for ajax. Must be unique if multiple elements are on one page
     'filter'        => false,                           // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.
     'footerAtoms'   => array(                           // Accepts a set of atoms
-        'button' => array( 'link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small') 
+        'button' => array( 'link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small', 'float' => 'right') 
     ),                                           
     'headerAtoms'   => array(                           // Accepts a set of atoms
         'title' => array( 'tag' => 'h2', 'link' => 'post', 'style' => 'entry-title' ) 
