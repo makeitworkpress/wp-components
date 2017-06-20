@@ -4,12 +4,20 @@
  * Styling for the header
  */
 .molecule-header {
+    background: #fff;
     .molecule-header-top-atoms, .molecule-header-socket-atoms, .molecule-header-atoms {
         &:after {
             clear: both;  
             content: "";
             display: table;     
         }  
+    }
+    &.molecule-header-transparent {
+        background: transparent;
+        border: none;
+        &.molecule-header-scrolled {
+            background: #fff;
+        }
     }
 }
 
@@ -20,18 +28,9 @@
 }
 
 .molecule-header-fixed {
-    background: #fff;
     left: 0;
     top: 0;
     position: fixed;
     width: 100%;
     z-index: 100;
-}
-
-.molecule-header-transparent {
-    background: transparent;
-    border: none;
-    &.molecule-header-scrolled {
-        background: #fff;
-    }
 }
