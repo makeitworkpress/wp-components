@@ -32,7 +32,7 @@ $social = $atom['social'] ? '<li class="atom-menu-item-social">' . WP_Components
 $search = $atom['search'] ? '<li class="atom-menu-item-search">' . WP_Components\Build::atom('search', array('ajax' => true, 'collapse' => true), false) . '</li>' : '';
 
 // Our echo is always false and or container empty (if set to a string and defined as menu)
-$atom['args']['container'] = 'div';
+$atom['args']['container'] = 'nothing';
 $atom['args']['echo'] = false;
 
 if( $social || $search )
