@@ -220,6 +220,38 @@ $key = 0; ?>
 
             <?php } ?>
         
+            <?php
+                /**
+                 * Fills the remainder of the articles with empty spans, so our styling comes out nicely. 
+                 * For now, only possible with non-patterns
+                 */
+                if( ! is_array($molecule['postsGrid']) ) {
+                    
+                    switch( $molecule['postsGrid'] ) {
+                        case 'half';
+                            $columns = 2;
+                            break;                        
+                        case 'third';
+                            $columns = 3;
+                            break;                        
+                        case 'fourth';
+                            $columns = 4;
+                            break;                        
+                        case 'fifth';
+                            $columns = 5;
+                            break;
+                        default:
+                            $columns = 1;
+                    }
+                    
+                    $remainder = $columns - ($molecule['query']->post_count % $columns);
+                    
+                    for( $i = 1; $i <= $remainder; $i++ ) {
+                        echo '<span class="components-' . $molecule['postsGrid']  . 'grid"></span>';
+                    }
+                }
+            ?>
+        
         <?php } else { ?>
         
             <p class="atom-posts-none">

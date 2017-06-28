@@ -16,6 +16,7 @@ $atom = wp_parse_args( $atom, array(
         'pinterest'     => 'pinterest', 
         'reddit'        => 'reddit-alien', 
         'stumbleupon'   => 'stumbleupon',
+        'whatsapp'      => 'whatsapp'
     ),
     'urls'      => array(),
     'titles'    => array()

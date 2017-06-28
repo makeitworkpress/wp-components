@@ -18,7 +18,7 @@ $atom = wp_parse_args( $atom, array(
     'reviewed'  => false,
     'type'      => 'Person',
     'unique'    => uniqid(),
-    'value'     => get_post_meta($id, 'components_rating', true)
+    'value'     => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
 ) );
 
 // Rating fractions

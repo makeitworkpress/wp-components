@@ -25,6 +25,11 @@ module.exports.initialize = function() {
             jQuery(this).fadeIn();
         }
         
+        // Show whats-app sharing on mobiles
+        if( navigator.userAgent.toLowerCase().match(/(iphone|android|windows phone|iemobile|wpdesktop)/) ) {
+            jQuery(this).find('.components-whatsapp').show();
+        }        
+        
     });       
         
 };

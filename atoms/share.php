@@ -22,23 +22,24 @@ $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 // Atom properties
 $atom   = wp_parse_args( $atom, array(
     'colorBackground'   => true,
-    'enabled'           => array('facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket'),
+    'enabled'           => array( 'facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ),
     'fixed'             => false,
     'networks'          => array(
-        'facebook'      => array('url' => 'http://www.facebook.com/sharer.php?s=100&p[url]=' . $url, 'icon' => 'facebook'), 
-        'twitter'       => array('url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter'), 
+        'facebook'      => array( 'url' => 'http://www.facebook.com/sharer.php?s=100&p[url]=' . $url, 'icon' => 'facebook' ), 
+        'twitter'       => array( 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ), 
         'linkedin'      => array(
             'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&source=' . $source, 
             'icon'  => 'linkedin'
         ), 
-        'google-plus'   => array('url' => 'https://plus.google.com/share?url=' . $url, 'icon' => 'google-plus'), 
+        'google-plus'   => array( 'url' => 'https://plus.google.com/share?url=' . $url, 'icon' => 'google-plus' ), 
         'pinterest'     => array(
             'url'   => 'http://pinterest.com/pin/create/button/?url=' . $url . '&description=' . $title . '&media=' . $image, 
             'icon'  => 'pinterest'
         ), 
-        'reddit'        => array('url' => 'http://www.reddit.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'reddit-alien'), 
-        'stumbleupon'   => array('url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon'),
-        'pocket'        => array('url' => 'https://getpocket.com/edit.php?url=' . $url . '', 'icon' => 'get-pocket')
+        'reddit'        => array( 'url' => 'http://www.reddit.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'reddit-alien' ), 
+        'stumbleupon'   => array( 'url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon' ),
+        'pocket'        => array( 'url' => 'https://getpocket.com/edit.php?url=' . $url, 'icon' => 'get-pocket' ),
+        'whatsapp'      => array( 'url' => 'whatsapp://send?text=' . $title . ' ' . $url, 'icon' => 'whatsapp' ),
     )
 ) ); 
 

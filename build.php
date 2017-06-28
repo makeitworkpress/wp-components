@@ -130,7 +130,11 @@ class Build {
         
         // Heights
         if( isset($properties['height']) ) {
-            $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
+            if( is_numeric($properties['height']) ) {
+                $properties['inlineStyle'] .= 'min-height: ' . $properties['height'] . 'px;';
+            } else {
+                $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
+            }
         }
         
         // Heights
