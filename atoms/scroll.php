@@ -5,8 +5,13 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'icon'      => ''
+    'icon'      => '',
+    'top'       => false
 ) );  
+
+// Scrolls to top
+if( $atom['top'] )
+    $atom['style'] .= 'atom-scroll-top';
 
 // If we have a custom icon, we add an style
 if( $atom['icon'] ) 
