@@ -64,20 +64,20 @@ class Build {
     private static function defaultProperties( $template, $properties ) {
 
         // Generic style and inlineStyle properties
-        $properties['inlineStyle'] = isset($properties['inlineStyle']) ? $properties['inlineStyle'] : '';
-        $properties['style'] = isset($properties['style']) ? $properties['style'] : '';
+        $properties['inlineStyle'] = isset($properties['inlineStyle']) && $properties['inlineStyle'] ? $properties['inlineStyle'] : '';
+        $properties['style'] = isset($properties['style']) && $properties['style'] ? $properties['style'] : '';
         
         // Animation
-        if( isset($properties['align']) ) {
+        if( isset($properties['align']) && $properties['align'] ) {
             $properties['style'] .= ' components-' . $properties['align'] . '-align'; 
         }        
         
-        if( isset($properties['animation']) ) {
+        if( isset($properties['animation']) && $properties['animation'] ) {
             $properties['style'] .= ' components-' . $properties['animation'] . '-animation'; 
         }
         
         // Scrollreveal. Accepts top, bottom, left, right
-        if( isset($properties['appear']) ) {
+        if( isset($properties['appear']) && $properties['appear'] ) {
             $properties['style'] .= ' components-' . $properties['appear'] . '-appear';          
         } 
                     
@@ -90,7 +90,7 @@ class Build {
         }
         
         // Background color
-        if( isset($properties['background']) ) {
+        if( isset($properties['background']) && $properties['background'] ) {
             if( strpos($properties['background'], '#') === 0 || strpos($properties['background'], 'rgb') === 0 || strpos($properties['background'], 'linear-gradient') === 0 ) {
                 $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
             } elseif( strpos($properties['background'], 'http') === 0 ) {
@@ -102,7 +102,7 @@ class Build {
         }
         
         // Border color
-        if( isset($properties['border']) ) {
+        if( isset($properties['border']) && $properties['border'] ) {
             if( strpos($properties['border'], '#') === 0 || strpos($properties['border'], 'rgb') === 0 ) {
                $properties['inlineStyle'] .= 'border: 2px solid' . $properties['border'] . ';';
             } elseif( strpos($properties['border'], 'linear-gradient') === 0 ) {
@@ -114,7 +114,7 @@ class Build {
         }        
         
         // Display
-        if( isset($properties['display']) ) {
+        if( isset($properties['display']) && $properties['display'] ) {
             $properties['style'] .= ' components-' . $properties['display'] . '-display'; 
         } 
         
@@ -124,12 +124,12 @@ class Build {
         } 
         
         // Floats
-        if( isset($properties['grid']) ) {
+        if( isset($properties['grid']) && $properties['grid'] ) {
             $properties['style'] .= ' components-' . $properties['grid'] . '-grid components-grid-item'; 
         }          
         
         // Heights
-        if( isset($properties['height']) ) {
+        if( isset($properties['height']) && $properties['height'] ) {
             if( is_numeric($properties['height']) ) {
                 $properties['inlineStyle'] .= 'min-height: ' . $properties['height'] . 'px;';
             } else {
@@ -138,22 +138,22 @@ class Build {
         }
         
         // Heights
-        if( isset($properties['hover']) ) {
+        if( isset($properties['hover']) && $properties['hover'] ) {
             $properties['style'] .= ' components-' . $properties['hover'] . '-hover'; 
         }        
         
         // Parallax effect for backgrounds
-        if( isset($properties['parallax']) ) {
+        if( isset($properties['parallax']) && $properties['parallax'] ) {
             $properties['style'] .= ' components-parallax'; 
         } 
         
         // Rounded
-        if( isset($properties['rounded']) ) {
+        if( isset($properties['rounded']) && $properties['rounded'] ) {
             $properties['style'] .= ' components-rounded'; 
         }         
 
         // Text color
-        if( isset($properties['color']) ) {
+        if( isset($properties['color']) && $properties['color'] ) {
             if( strpos($properties['color'], '#') === 0 || strpos($properties['color'], 'rgb') === 0 ) {
                 $properties['inlineStyle'] .= 'color:' . $properties['color'] . ';';
             } elseif( $properties['color'] ) {
