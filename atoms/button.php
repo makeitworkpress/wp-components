@@ -14,6 +14,10 @@ $atom = wp_parse_args( $atom, array(
     'target'        => '_self'
 ) ); 
 
+// Buttons should have a label
+if( ! $atom['label'] )
+    return;
+
 $atom['style'] .= ' atom-button-' . $atom['iconVisible'];
 
 // Default background
