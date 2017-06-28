@@ -707,7 +707,7 @@ module.exports.parallax = function() {
         var scrollPosition  = jQuery(this).scrollTop();
 
         jQuery('.components-parallax').css({
-            'backgroundPosition' : '50% ' + -scrollPosition/10 + "px"
+            'backgroundPosition' : 'calc(50%) ' + 'calc(50% + ' + scrollPosition/5+"px" + ')'
         });
 
     });
