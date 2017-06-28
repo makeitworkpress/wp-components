@@ -13,7 +13,7 @@ $atom = wp_parse_args( $atom, array(
     'form'      => get_search_form(false),      
     'length'    => 3,       // The length to start querying with ajax
     'link'      => esc_url( get_search_link('') ), 
-    'number'    => 10       // The amount of posts to query with ajax
+    'number'    => 5       // The amount of posts to query with ajax
 ) );  
 
 if( ! $atom['data'] ) {
