@@ -621,7 +621,7 @@ module.exports.initialize = function() {
                     jQuery(self).find('.atom-pagination').replaceWith(pagination);
                     
                     jQuery('html, body').animate({
-                        scrollTop: jQuery(self).offset().top - scrollHeight
+                        scrollTop: jQuery(self).offset().top - (scrollHeight + 100)
                     }, 555);                    
                     
                     // Sync scrollReveal with newly added items
