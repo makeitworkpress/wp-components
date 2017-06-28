@@ -247,7 +247,7 @@ $key = 0; ?>
                     $remainder = $columns - ($molecule['query']->post_count % $columns);
                     
                     for( $i = 1; $i <= $remainder; $i++ ) {
-                        echo '<span class="components-' . $molecule['postsGrid']  . 'grid"></span>';
+                        echo '<span class="components-' . $molecule['postsGrid']  . '-grid"></span>';
                     }
                 }
             ?>
