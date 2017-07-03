@@ -103,9 +103,10 @@ if( is_home() || is_front_page() )
                     // Ancestors can display if we do not display our taxonomies
                     $ancestors = get_ancestors($post->ID, $post->post_type);
 
-                    if( $ancestors && ! $atom['taxonomy'] ) {
-
-                        $key = count($breadcrumbs);
+                    if( ($ancestors && ! $atom['taxonomy']) || ($ancestors && $location == 'page') ) {
+                        
+                        $ancestors  = array_reverse($ancestors);
+                        $key        = count($breadcrumbs);
 
                         foreach($ancestors as $ancestor) {
                             $breadcrumbs[$key]['title'] = get_the_title( $ancestor );
