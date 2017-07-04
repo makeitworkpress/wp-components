@@ -9,6 +9,7 @@ $author = '';
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'custom'    => '',
     'types'     => array(
         'author'    => sprintf( __( 'Posts written by: %s', 'components' ),  '<span>' . $author . '</span>' ),
         'category'  => single_cat_title( '', false ),
@@ -51,6 +52,9 @@ $atom = wp_parse_args( $atom, array(
 
         if( ! $archiveTitle )
             $archiveTitle = $atom['types']['default'];
+    
+        if( $atom['custom'] )
+            $archiveTitle = $atom['custom'];
 
         echo $archiveTitle;
     
