@@ -94,16 +94,19 @@ if( is_home() || is_front_page() )
                         if( isset($atom['archive']['title']) && isset($atom['archive']['url']) ) {
                             $breadcrumbs[$key]['title'] = $atom['archive']['title'];
                             $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
+                        } elseif( $post->post_type = 'product' && class_exists('WooCommerce') ) {
+                            $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );;
+                            $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );;                              
                         } else {
                             $breadcrumbs[$key]['title'] = get_post_type_object( $post->post_type )->labels->name;
                             $breadcrumbs[$key]['url']   = get_post_type_archive_link( $post->post_type ); 
                         }
                     }
 
-                    // Ancestors can display if we do not display our taxonomies
+                    // Page/Post Ancestors can display if we do not display our taxonomies
                     $ancestors = get_ancestors($post->ID, $post->post_type);
 
-                    if( ($ancestors && ! $atom['taxonomy']) || ($ancestors && $location == 'page') ) {
+                    if( $ancestors && ! $atom['taxonomy'] ) {
                         
                         $ancestors  = array_reverse($ancestors);
                         $key        = count($breadcrumbs);
@@ -120,39 +123,68 @@ if( is_home() || is_front_page() )
                     if( $atom['taxonomy'] && $location == 'single' ) {
 
                         $term = false;
-
-                        if( $atom['taxonomy'] === true ) {
-
-                            $taxonomies = get_post_taxonomies( $post );
-                            $taxonomy   = $taxonomies ? $taxonomies[0] :  false;
+                        
+                        // Products are an exception, we always look for the product category
+                        if( $post->post_type == 'product' && class_exists('WooCommerce') ) {
+                            
+                            $terms      = get_the_terms( $post, 'product_cat' );
+                            $term       = is_array($terms) ? $terms[0] : false;
+                            $taxonomy   = 'product_cat';
+                            
                         } else {
-                            $taxonomy = $atom['taxonomy'];
+
+                            if( $atom['taxonomy'] === true ) {
+
+                                $taxonomies = get_post_taxonomies( $post );
+                                $taxonomy   = is_array($taxonomies) ? $taxonomies[0] :  false;
+                            } else {
+                                $taxonomy = $atom['taxonomy'];
+                            }
+
+                            if( $taxonomy ) {
+                                $terms = get_the_terms( $post, $taxonomy );
+                                $term = is_array($terms) ? $terms[0] : false;
+                            }
                         }
 
-                        if( $taxonomy ) {
-                            $terms = get_the_terms( $post, $taxonomy );
-                            $term = $terms ? $terms[0] : false;
-                        }
-
+                        // If we have a term, add it
                         if( $term ) {
 
                             $key = count($breadcrumbs);
 
-                            $breadcrumbs[$key]['title'] = $term->name;
-                            $breadcrumbs[$key]['url']   = get_term_link( $term );                                
-
+                            // Term ancestors
                             $ancestors = get_ancestors( $term->term_id, $taxonomy );
 
-                            // Term ancestors
                             if( $ancestors ) {
 
                                 foreach( $ancestors as $ancestor ) {
                                     $breadcrumbs[$key]['title'] = get_term( $ancestor )->name;
                                     $breadcrumbs[$key]['url']   = get_term_link( $ancestor );
                                     $key++;
+
                                 }                                   
 
                             }
+                            
+                            $breadcrumbs[$key]['title'] = $term->name;
+                            $breadcrumbs[$key]['url']   = get_term_link( $term );                             
+                            
+                            // Term Children
+                            $children = get_term_children( $term->term_id, $taxonomy );
+                            
+                            if( $children ) {
+                                
+                                $key = count($breadcrumbs);
+                                
+                                foreach( $children as $child ) {
+                                    $breadcrumbs[$key]['title'] = get_term( $child )->name;
+                                    $breadcrumbs[$key]['url']   = get_term_link( $child );
+                                    $key++;
+                                                                     
+                                }
+                                
+                            }
+                            
                         }
 
                     }                   
