@@ -12,7 +12,7 @@ module.exports.initialize = function() {
         
         if( jQuery(this).hasClass('molecule-header-fixed') ) {
             
-            jQuery(this).next('main').css({
+            jQuery(this).next('.main').css({
                 'paddingTop' : height
             });    
         }

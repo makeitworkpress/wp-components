@@ -330,3 +330,50 @@
     left: inherit;
     right: 0;
 }
+
+/**
+ * Menu-Chart for WooCommerce
+ */
+.atom-menu-chart-count {
+    background @red;
+    color: #fff;
+    border-radius: 50%;
+    height: 16px;
+    display: block;
+    line-height: 16px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 16px;
+    width: 16px;
+}
+
+.atom-menu-item-cart {
+    .sub-menu {
+        min-width: 240px;
+        padding: 16px;
+    }
+    .woocommerce-mini-cart-item {
+        border-bottom: 1px solid #eee;
+        padding-left: 32px;
+        a {
+            padding: 0;
+        }
+        .remove {
+            color: @red;
+            left: 0;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%)l
+        }
+        .quantity {
+            font-size: 0.9em;    
+        }
+    }
+    .checkout {
+        float: right;
+    }
+    .total {
+        font-size: 1.1em;
+    }
+}

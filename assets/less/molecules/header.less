@@ -5,7 +5,11 @@
  */
 .molecule-header {
     background: #fff;
-    transition: all 350ms ease-out;
+    left: 0; 
+    top: 0;  
+    transition: all 350ms ease-out; 
+    width: 100%;
+    z-index: 100;    
     .molecule-header-top-atoms, .molecule-header-socket-atoms, .molecule-header-atoms {
         &:after {
             clear: both;  
@@ -22,16 +26,19 @@
     }
 }
 
+.molecule-header-transparent {
+    position: absolute;
+    + .main {
+        padding-top: 0 !important;
+    }
+}
+
 .molecule-header-top-atoms,
 .molecule-header-atoms,
 .molecule-header-socket-atoms {
     width: 100%;
 }
 
-.molecule-header-fixed {
-    left: 0;
-    top: 0;
+.molecule-header-fixed, {
     position: fixed;
-    width: 100%;
-    z-index: 100;
 }
