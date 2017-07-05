@@ -340,6 +340,7 @@
     border-radius: 50%;
     height: 16px;
     display: block;
+    font-size: 0.7em;
     line-height: 16px;
     position: absolute;
     right: 0;
@@ -348,12 +349,12 @@
     width: 16px;
 }
 
-.atom-menu-item-cart {
+.woocommerce .atom-menu-item-cart {
     .sub-menu {
         min-width: 240px;
         padding: 16px;
     }
-    .woocommerce-mini-cart-item {
+    .woocommerce-mini-cart .woocommerce-mini-cart-item {
         border-bottom: 1px solid #eee;
         padding-left: 32px;
         a {
@@ -368,6 +369,9 @@
         }
         .quantity {
             font-size: 0.9em;    
+        }
+        &:last-child {
+            margin-bottom: 8px;
         }
     }
     .checkout {
