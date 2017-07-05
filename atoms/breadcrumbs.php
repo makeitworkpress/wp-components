@@ -65,6 +65,11 @@ if( is_home() || is_front_page() )
                 
                 if( $location == 'archive' ) {
                     $url    = get_post_type_archive_link( get_queried_object()->name );
+                    
+                    if( is_archive('product') && class_exists('WooCommerce') ) {
+                        $url    = get_the_title( wc_get_page_id( 'shop' ) );
+                        $title  = get_the_title( wc_get_page_id( 'shop' ) );
+                    }
                 }               
                 
                 // Author Archives
@@ -95,8 +100,8 @@ if( is_home() || is_front_page() )
                             $breadcrumbs[$key]['title'] = $atom['archive']['title'];
                             $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
                         } elseif( $post->post_type = 'product' && class_exists('WooCommerce') ) {
-                            $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );;
-                            $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );;                              
+                            $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
+                            $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );                              
                         } else {
                             $breadcrumbs[$key]['title'] = get_post_type_object( $post->post_type )->labels->name;
                             $breadcrumbs[$key]['url']   = get_post_type_archive_link( $post->post_type ); 
@@ -200,13 +205,26 @@ if( is_home() || is_front_page() )
                 if( $location == 'category' || $location == 'tag' || $location == 'tax' ) {
                     $url = get_term_link( get_queried_object() );
                     
+                    if( is_archive('product') && class_exists('WooCommerce') ) {
+                        $key = count($breadcrumbs);
+                        
+                        $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
+                        $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );
+                        
+                    }
+                    
+                    // Ancestors
                     $ancestors = get_ancestors( get_queried_object()->term_id, get_queried_object()->taxonomy );
                     
-                    if( $ancestors ) {
+                    if( is_array($ancestors) && $ancestors ) {
+                                       
+                        $key        = count($breadcrumbs);
+                        $ancestors  = array_reverse($ancestors);
                         
-                        foreach( $ancestors as $key => $ancestor ) {
+                        foreach( $ancestors as $ancestor ) {
                             $breadcrumbs[$key]['title'] = get_term( $ancestor )->name;
                             $breadcrumbs[$key]['url']   = get_term_link( $ancestor );
+                            $key++;
                         }                         
                         
                     }
