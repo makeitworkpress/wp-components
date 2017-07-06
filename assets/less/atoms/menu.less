@@ -64,10 +64,15 @@
         }
         .atom-menu-item-social, .atom-menu-item-search {
             padding: 8px 16px;
+        }
+        .atom-menu-item-cart-count {
+            right: 16px;    
+        }
+        .atom-menu-item-cart {
+            border: none;
+            border-bottom: 1px solid #eee;
+            border-top: 1px solid #eee;
         }        
-    }
-    .atom-menu-item-cart-count {
-        right: 16px;    
     }
 }
 
@@ -347,13 +352,18 @@
     font-size: 0.7em;
     line-height: 16px;
     position: absolute;
-    right: 0;
+    right: 4px;
     text-align: center;
     top: 16px;
     width: 16px;
 }
 
 .atom-menu .atom-menu-item-cart {
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    i {
+        font-size: 1.2em;
+    }
     .sub-menu {
         min-width: 240px;
         padding: 16px;
