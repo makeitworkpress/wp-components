@@ -355,22 +355,28 @@
     }
     .woocommerce-mini-cart .woocommerce-mini-cart-item {
         border-bottom: 1px solid #eee;
-        padding-left: 32px;
+        overflow: hidden;
+        padding: 4px 0 4px 32px;
         a {
             padding: 0;
         }
         .remove {
             color: @red;
+            font-weight: bold;
             left: 0;
             position: absolute;
             top: 50%;
-            transform: translate(0, -50%)l
+            transform: translate(0, -50%);
         }
         .quantity {
             font-size: 0.9em;    
         }
         &:last-child {
             margin-bottom: 8px;
+        }
+        img {
+            float: right;
+            width: 48px;    
         }
     }
     .checkout {
