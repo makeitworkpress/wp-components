@@ -99,7 +99,7 @@ if( is_home() || is_front_page() )
                         if( isset($atom['archive']['title']) && isset($atom['archive']['url']) ) {
                             $breadcrumbs[$key]['title'] = $atom['archive']['title'];
                             $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
-                        } elseif( $post->post_type = 'product' && class_exists('WooCommerce') ) {
+                        } elseif( $post->post_type == 'product' && class_exists('WooCommerce') ) {
                             $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
                             $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );                              
                         } else {
