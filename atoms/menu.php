@@ -44,7 +44,12 @@ if( $atom['cart'] && class_exists('WooCommerce') ) {
     $cart    = '<li class="atom-menu-item-cart menu-item">';
     $cart   .= '    <a href="' . $cartUrl . '">';
     $cart   .= '        <i class="fa fa-shopping-cart"></i>';
-    $cart   .= '        <span class="atom-menu-item-cart-count">' . $count . '</span>';
+    
+    // Only show counter if we have items
+    if( $count > 0 ) {
+        $cart   .= '        <span class="atom-menu-item-cart-count">' . $count . '</span>';
+    }
+    
     $cart   .= '    </a>';
     $cart   .= '    <div class="sub-menu"><div class="widget_shopping_cart_content">' . $miniCart . '</div></div>';
     $cart   .= '</li>';
