@@ -41,7 +41,7 @@ if( $atom['cart'] && class_exists('WooCommerce') ) {
         woocommerce_mini_cart();
     $miniCart = ob_get_clean();    
     
-    $cart    = '<li class="atom-menu-item-cart">';
+    $cart    = '<li class="atom-menu-item-cart menu-item">';
     $cart   .= '    <a href="' . $cartUrl . '">';
     $cart   .= '        <i class="fa fa-shopping-cart"></i>';
     $cart   .= '        <span class="atom-menu-item-cart-count">' . $count . '</span>';
@@ -52,8 +52,8 @@ if( $atom['cart'] && class_exists('WooCommerce') ) {
     $cart = '';
 }
 
-$social = $atom['social'] ? '<li class="atom-menu-item-social">' . WP_Components\Build::atom( 'social', array('urls' => $atom['social'], 'rounded' => true), false ) . '</li>' : '';
-$search = $atom['search'] ? '<li class="atom-menu-item-search">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true), false ) . '</li>' : '';
+$social = $atom['social'] ? '<li class="atom-menu-item-social menu-item">' . WP_Components\Build::atom( 'social', array('urls' => $atom['social'], 'rounded' => true), false ) . '</li>' : '';
+$search = $atom['search'] ? '<li class="atom-menu-item-search menu-item">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true), false ) . '</li>' : '';
 
 // Our echo is always false and or container empty (if set to a string and defined as menu in the menu editor)
 $atom['args']['container'] = 'nothing';

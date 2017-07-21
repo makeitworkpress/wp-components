@@ -24,10 +24,11 @@
         box-shadow: 0 3px 9px rgba(0, 0, 0, 0.3);
         border-bottom: 1px solid #eee;
         display: none;
+        height: ~"calc(100vh - 100%)";
         left: 0;
         overflow-y: scroll;
         opacity: 0;
-        padding: 50px 0;
+        padding: 16px 0 64px 0;
         position: absolute;
         top: 100%;
         transition: all 500ms ease-out;
@@ -45,6 +46,9 @@
             display: block;
             opacity: 1;
             position: static;
+            li > a {
+                padding: 8px 16px;
+            }
         }
         .search-form {
             display: block !important;
@@ -96,6 +100,17 @@
     }
     .atom-menu-hamburger.active span {
         background-color: #fff;
+    }
+    .atom-menu-item-cart {
+        a {
+            color: @white;
+        }
+        .quantity, .total {
+            color: @grey;
+        }
+        .woocommerce-mini-cart-item {
+            border-color: @grey;
+        }
     }
 }
 
@@ -168,6 +183,9 @@
 
 .atom-menu-item-social, .atom-menu-item-search {
     padding: 0 8px;
+    i.fa {
+        margin-left: 0;
+    }
 }
 
 /* Sub-menu's for left or centered menu's */
@@ -361,8 +379,9 @@
 .atom-menu .atom-menu-item-cart {
     border-left: 1px solid #eee;
     border-right: 1px solid #eee;
-    i {
+    i.fa {
         font-size: 1.2em;
+        margin-left: 0;
     }
     .sub-menu {
         min-width: 280px;
