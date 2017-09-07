@@ -2,6 +2,7 @@
  * Social Networks. @todo Someday, make this dry  
  * Because these classes are used in multiple atoms, these are prefixed with components. 
  */
+@phone: #333333; 
 @email: #F8694D; 
 @facebook: #3B5998; 
 @instagram: #405de6;
@@ -13,6 +14,14 @@
 @pocket: #EF4056; 
 @stumbleupon: #EB4924; 
 @whatsapp: #25d366; 
+
+.components-phone {
+    color: @phone;
+    .components-background & {
+        background: @phone;
+        color: #fff;
+    }        
+}
 
 .components-email {
     color: @email;
