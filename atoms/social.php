@@ -8,6 +8,7 @@ $atom = wp_parse_args( $atom, array(
     'colorBackground'   => true,
     'icons'  => array(
         'email'         => 'envelope', 
+        'telephone'     => 'phone', 
         'facebook'      => 'facebook', 
         'instagram'     => 'instagram', 
         'twitter'       => 'twitter', 
