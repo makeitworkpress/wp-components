@@ -8,8 +8,9 @@ $atom = wp_parse_args( $atom, array(
     'args'       => array(),
     'cart'       => false,
     'checkout'   => __('Checkout', 'components'),
-    'collapse'   => false,      // If you want to collapse the mobile menu by default
-    'hamburger'  => 'mobile',   // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
+    'collapse'   => false,      // If you want to collapse to the mobile menu by default, and expandable with clicking
+    'dropdown'   => false,      // If you want to remove dropdowns
+    'hamburger'  => 'mobile',   // Accepts mobile (768px), tablet (1024px) always (always hamburger) or false (never hamburger)
     'indicator'  => true,
     'menu'       => '',
     'none'       => __('Bummer! No results found', 'components'),
@@ -21,6 +22,9 @@ $atom = wp_parse_args( $atom, array(
 
 if( $atom['collapse'] )
     $atom['style'] .= ' atom-menu-collapse';
+
+if( ! $atom['dropdown'] )
+    $atom['style'] .= ' atom-menu-plain';
 
 if( $atom['hamburger'] )
     $atom['style'] .= ' atom-menu-' . $atom['hamburger'] . '-hamburger';
