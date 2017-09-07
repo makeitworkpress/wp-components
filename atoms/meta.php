@@ -19,7 +19,7 @@ if( ! $atom['meta'] && $atom['key'] )
 if( ! $atom['meta'] )
     return; ?>
 
-<div class="atom-meta <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-meta <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php 
         // String before meta information
         if( $atom['before'] )

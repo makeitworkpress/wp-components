@@ -17,7 +17,7 @@ foreach( $atom['taxonomies'] as $taxonomy => $properties ) {
     $atom['taxonomies'][$taxonomy]['list'] = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
 } ?>
 
-<div class="atom-termlist <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-termlist <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php foreach( $atom['taxonomies'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
             <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" itemprop="<?php echo $properties['schema']; ?>">

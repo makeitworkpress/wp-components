@@ -32,7 +32,7 @@ if( $atom['size'] )
 if( $atom['link'] == 'post' )
     $atom['link'] = esc_url( get_permalink() ); ?>
 
-<a class="atom-button <?php echo $atom['style']; ?>" href="<?php echo $atom['link']; ?>" target="<?php echo $atom['target']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<a class="atom-button <?php echo $atom['style']; ?>" href="<?php echo $atom['link']; ?>" target="<?php echo $atom['target']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php if( $atom['iconBefore'] ) { ?> 
         <i class="fa fa-<?php echo $atom['iconBefore']; ?>"></i>

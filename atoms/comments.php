@@ -40,7 +40,7 @@ if ( post_password_required() ) {
 	return;
 } ?>
 
-<div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php echo $atom['form']; ?>
     

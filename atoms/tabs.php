@@ -16,7 +16,7 @@ if( ! $atom['tabs'] )
 // Our tabs position
 $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
 
-<div class="atom-tabs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-tabs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <ul class="atom-tabs-navigation">
         <?php 
             $count = 0;

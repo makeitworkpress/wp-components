@@ -7,30 +7,26 @@
 $atom = wp_parse_args( $atom, array(
     'ajax'      => false,   // Enables the ajax search action,
     'all'       => __('View all search results', 'components'),
-    'collapse'  => false,   // If collapsed, only shows a search form that can be opened
+    'collapse'  => false,   // If collapsed, only shows a search icon that opens a form upon click
     'data'      => '',      // Custom data attributes
     'delay'     => 300,     
     'form'      => get_search_form(false),      
     'length'    => 3,       // The length to start querying with ajax
     'link'      => esc_url( get_search_link('') ), 
+    'none'      => __('Bummer! No results found', 'components'), 
     'number'    => 5       // The amount of posts to query with ajax
 ) );  
-
-if( ! $atom['data'] ) {
-    
-    $data = array( 'delay', 'length', 'number' );
-    
-    foreach( $data as $key => $data ) {  
-        $atom['data'] .= ' data-' . $data . '="' . $atom[$data] . '"';
-    }
-    
+ 
+// Our data attributes
+$data = array( 'delay', 'length', 'none', 'number' );
+foreach( $data as $key => $data ) {  
+    $atom['data'] .= ' data-' . $data . '="' . $atom[$data] . '"';
 }
 
-// If we have an ajax action, we add it
-if( $atom['collapse'] ) 
+if( $atom['collapse'] ) {
     $atom['style'] .= ' atom-search-collapse';
+}
 
-// If we have an ajax action, we add it and enqueue the script if necessary
 if( $atom['ajax'] ) {
     $atom['style'] .= ' atom-search-ajax'; 
 } ?>     

@@ -27,7 +27,7 @@ $atom = wp_parse_args( $atom, array(
     )
 ) ); ?>
 
-<h1 class="atom-archive-title <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<h1 class="atom-archive-title <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php 
         /**
          * Loop through our types and see what title matches

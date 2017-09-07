@@ -16,6 +16,7 @@ module.exports.initialize = function() {
             input = jQuery(this).find('.search-field'),
             more = jQuery(this).find('.atom-search-all'),
             moreLink = jQuery(more).attr('href'),
+            none = jQuery(this).data('none'),
             number = jQuery(this).data('number'),
             results = jQuery(this).find('.atom-search-results'),
             self = this,
@@ -44,6 +45,7 @@ module.exports.initialize = function() {
                         utils.ajax({
                             data: {
                                 action: 'publicSearch', 
+                                none: none,
                                 number: number,
                                 search: value
                             },

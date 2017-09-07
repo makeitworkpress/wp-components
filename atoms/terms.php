@@ -23,10 +23,14 @@ if( ! $atom['terms'] )
 if( $atom['termStyle'] )
     $atom['termStyle'] = 'atom-term-style-' . $atom['termStyle'];
 
+// Save the taxonomy for filtering
+$atom['data'] .= ' data-taxonomy="' . $atom['args']['taxonomy'] . '"';
+
+// So we can check our seprator
 $count = count($atom['terms']);
 $i = 0; ?>
 
-<ul class="atom-terms <?php echo $atom['style']; ?>" data-taxonomy="<?php echo $atom['args']['taxonomy']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<ul class="atom-terms <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php foreach( $atom['terms'] as $term ) { ?>
         <li>

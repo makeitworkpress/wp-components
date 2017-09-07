@@ -62,40 +62,57 @@ class Build {
      * @return  array   $properties The custom properties merged with the defaults
      */ 
     private static function defaultProperties( $template, $properties ) {
-
-        // Generic style and inlineStyle properties
-        $properties['inlineStyle'] = isset($properties['inlineStyle']) && $properties['inlineStyle'] ? $properties['inlineStyle'] : '';
-        $properties['style'] = isset($properties['style']) && $properties['style'] ? $properties['style'] : '';
         
-        // Animation
-        if( isset($properties['align']) && $properties['align'] ) {
-            $properties['style'] .= ' components-' . $properties['align'] . '-align'; 
-        }        
-        
-        if( isset($properties['animation']) && $properties['animation'] ) {
-            $properties['style'] .= ' components-' . $properties['animation'] . '-animation'; 
+        /**
+         * Generic variables properties
+         */
+        $generics = array('data', 'inlineStyle', 'style');
+        foreach( $generics as $generic ) {
+            $properties[$generic] = isset( $properties[$generic] ) && $properties[$generic] ? $properties[$generic] : '';    
         }
         
-        // Scrollreveal. Accepts top, bottom, left, right
-        if( isset($properties['appear']) && $properties['appear'] ) {
-            $properties['style'] .= ' components-' . $properties['appear'] . '-appear';          
-        } 
+        /**
+         * Properties that generate a specific class for a style
+         */
+        $classes = array( 'align', 'animation', 'appear', 'display', 'float', 'grid', 'hover', 'parallax', 'rounded' );    
+        
+        foreach( $classes as $class ) {
+            if( isset($properties[$class]) && $properties[$class] )
+                $properties['style'] .= is_bool($properties[$class]) ? ' components-' . $class : ' components-' . $properties[$class] . '-' . $class;
+        }      
                     
-        // Also enqueue scrollreveal if it is not enqueued yet
-        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') ) {
+        /**
+         * Enqueue scripts of not enqueued yet
+         */
+        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') 
+        ) {
 
             if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) )
                 wp_enqueue_script('scrollreveal');
             
         }
         
+        if( isset($properties['lazyload']) && $properties['lazyload'] ) {
+            if( ! wp_script_is('lazyload') && apply_filters('components_lazyload_script', true) )
+                wp_enqueue_script('lazyload');        
+        }
+        
+        /**
+         * Specific selectors
+         */
+        
         // Background color
         if( isset($properties['background']) && $properties['background'] ) {
             if( strpos($properties['background'], '#') === 0 || strpos($properties['background'], 'rgb') === 0 || strpos($properties['background'], 'linear-gradient') === 0 ) {
                 $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
             } elseif( strpos($properties['background'], 'http') === 0 ) {
-                $properties['inlineStyle'] .= 'background-image: url(' . $properties['background'] . ');';
-                $properties['style'] .= ' components-image-background';
+                if( isset($properties['lazyload']) && $properties['lazyload'] ) {
+                    $properties['data']  .= ' data-src="' . $properties['background'] . '"';
+                    $properties['style'] .= ' components-image-background components-lazyload'; 
+                } else {
+                    $properties['inlineStyle'] .= 'background-image: url(' . $properties['background'] . ');';
+                    $properties['style'] .= ' components-image-background';                    
+                }
             } elseif( $properties['background'] ) {
                 $properties['style'] .= ' components-' . $properties['background'] . '-background';
             }
@@ -111,22 +128,7 @@ class Build {
             } elseif( $properties['border'] ) {
                 $properties['style'] .= ' components-' . $properties['border'] . '-border';
             }
-        }        
-        
-        // Display
-        if( isset($properties['display']) && $properties['display'] ) {
-            $properties['style'] .= ' components-' . $properties['display'] . '-display'; 
-        } 
-        
-        // Floats
-        if( isset($properties['float']) ) {
-            $properties['style'] .= ' components-' . $properties['float'] . '-float'; 
-        } 
-        
-        // Floats
-        if( isset($properties['grid']) && $properties['grid'] ) {
-            $properties['style'] .= ' components-' . $properties['grid'] . '-grid components-grid-item'; 
-        }          
+        }                
         
         // Heights
         if( isset($properties['height']) && $properties['height'] ) {
@@ -135,22 +137,7 @@ class Build {
             } else {
                 $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
             }
-        }
-        
-        // Heights
-        if( isset($properties['hover']) && $properties['hover'] ) {
-            $properties['style'] .= ' components-' . $properties['hover'] . '-hover'; 
-        }        
-        
-        // Parallax effect for backgrounds
-        if( isset($properties['parallax']) && $properties['parallax'] ) {
-            $properties['style'] .= ' components-parallax'; 
-        } 
-        
-        // Rounded
-        if( isset($properties['rounded']) && $properties['rounded'] ) {
-            $properties['style'] .= ' components-rounded'; 
-        }         
+        }             
 
         // Text color
         if( isset($properties['color']) && $properties['color'] ) {
@@ -161,7 +148,9 @@ class Build {
             }
         }
 
-        // If we have inline styles, we make them
+        /**
+         * If we have inline styles, we add them
+         */
         if( $properties['inlineStyle'] )
             $properties['inlineStyle'] = 'style=" ' . $properties['inlineStyle'] . ' "';
         

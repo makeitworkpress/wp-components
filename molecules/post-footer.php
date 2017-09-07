@@ -9,7 +9,7 @@ $molecule = wp_parse_args( $molecule, array(
     'container' => true     // Wrap this component in a container
 ) ); ?>
 
-<footer class="molecule-post-footer <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?>>
+<footer class="molecule-post-footer <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
     
     <?php do_action( 'components_post_footer_before', $molecule ); ?>
     

@@ -19,7 +19,7 @@ if( strpos($atom['video'], 'http') === 0 ) {
     $atom['placer'] = 'atom-video-wp';
 } ?>
 
-<div class="atom-video <?php echo $atom['style']; ?>" itemprop="video" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-video <?php echo $atom['style']; ?>" itemprop="video" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <div class="<?php echo $atom['placer']; ?>" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
         <?php echo $atom['video']; ?>
     </div>

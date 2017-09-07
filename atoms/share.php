@@ -49,7 +49,7 @@ if( $atom['fixed'] )
 if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 
-<div class="atom-share <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-share <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php foreach( $atom['enabled'] as $network ) { ?>
     

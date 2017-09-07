@@ -32,7 +32,7 @@ $emptyStars = $atom['max'] - $fullStars - $halfStars;
 // If we allow users to rate, we need to add a class so our JS can pick it up
 $atom['style']  .= $atom['rate'] ? ' atom-rate-do' : ''; ?>
 
-<div class="atom-rate <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['itemprop']; ?>" itemscope="itemscope" itemtype="<?php echo $atom['itemtype']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-rate <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['itemprop']; ?>" itemscope="itemscope" itemtype="<?php echo $atom['itemtype']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <meta itemprop="ratingValue" content="<?php echo $atom['value']; ?>" />
     <meta itemprop="bestRating" content="<?php echo $atom['max']; ?>" />

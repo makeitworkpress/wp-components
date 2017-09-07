@@ -22,8 +22,8 @@ $molecule = wp_parse_args( $molecule, array(
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
     'itemprop'      => '',
-    'none'          => __('Bummer! No posts found.'),
-    'pagination'    => array('type' => 'numbers'),      // Pagination settings. If you remove this but have infinite enabled, infinite will break
+    'none'          => __('Bummer! No posts found.', 'components'),
+    'pagination'    => array('type' => 'numbers'),      // Pagination settings.
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
     'postsAnimation' => '',                             // Accepts a custom animation class for posts
@@ -109,10 +109,13 @@ if( $molecule['postsColor'] )
 if( $molecule['postsHover'] )
     $grid .= 'components-' . $molecule['postsHover'] . '-hover';
 
+// And our data
+$molecule['data'] .= ' data-id="' . $molecule['id'] . '"';
+
 // Key for counting grid patterns
 $key = 0; ?>
 
-<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['type']; ?> data-id="<?php echo $molecule['id']; ?>" <?php echo $molecule['inlineStyle']; ?>>
+<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['type']; ?> <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
     
     <?php do_action( 'components_posts_before', $molecule ); ?>
     

@@ -17,7 +17,7 @@ if( $atom['top'] )
 if( $atom['icon'] ) 
     $atom['style'] .= ' atom-scroll-hasicon'; ?>     
 
-<a class="atom-scroll <?php echo $atom['style']; ?>" href="#" <?php echo $atom['inlineStyle']; ?>>
+<a class="atom-scroll <?php echo $atom['style']; ?>" href="#" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php if( $atom['icon'] ) { ?> 
         <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x"></i>
     <?php } ?>

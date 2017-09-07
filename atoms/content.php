@@ -31,7 +31,7 @@ if( ! $atom['content'] ) {
     
 } ?>
 
-<div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?>>  
+<div class="atom-content <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>  
     
     <?php 
         echo $atom['content'];

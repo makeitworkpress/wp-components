@@ -25,7 +25,7 @@ $atom = wp_parse_args( $atom, array(
 if( $atom['colorBackground'] ) 
     $atom['style'] .= ' components-background'; ?>
 
-<div class="atom-social <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-social <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php foreach( $atom['urls'] as $network => $url ) { ?>
     

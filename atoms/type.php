@@ -9,7 +9,7 @@ $atom = wp_parse_args( $atom, array(
     'type'  => get_post_type()
 ) );
 
-// Return if we do not have a video
+// Return if we do not have a type
 if( ! $atom['type'] )
     return;
 
@@ -19,6 +19,6 @@ if( ! $atom['name'] ) {
     $atom['name']   = $postObject->labels->singular_name;
 } ?>
 
-<div class="atom-type <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<div class="atom-type <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php echo $atom['name']; ?>
 </div>

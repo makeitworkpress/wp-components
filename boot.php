@@ -60,6 +60,7 @@ class Boot {
             if( $this->configurations['js'] ) {
                 wp_register_script( 'components-slider', COMPONENTS_ASSETS . 'js/vendor/flexslider.min.js', array('jquery'), NULL, true);
                 wp_register_script( 'scrollreveal', COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
+                wp_register_script( 'lazyload', COMPONENTS_ASSETS . 'js/vendor/lazyload.min.js', array(), NULL, true);
                 wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery'), NULL, true);
                 
                 // Localize our script

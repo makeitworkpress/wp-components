@@ -39,6 +39,9 @@ var App = {
         // Execute parallax backgrounds
         utils.parallax();
         
+        // Set-up lazy loading
+        utils.lazyLoad();        
+        
     }
 }
 
@@ -57,8 +60,8 @@ module.exports.initialize = function() {
         var agent = navigator.userAgent.toLowerCase().match(/(iphone|android|windows phone|iemobile|wpdesktop)/),
             header = jQuery(this).closest('.molecule-header'),
             img = jQuery(this).find('img'),
-            defaultSrc = agent ? jQuery(img).data('mobile') : jQuery(img).attr('src'),  
-            transparentSrc = agent ? jQuery(img).data('mobiletransparent') : jQuery(img).data('transparent')       ,
+            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).attr('src'),  
+            transparentSrc = agent ? jQuery(this).data('mobiletransparent') : jQuery(this).data('transparent'),
             self = this;
         
         // Fade-in logo so we do not see the src change flickr
@@ -294,6 +297,7 @@ module.exports.initialize = function() {
             input = jQuery(this).find('.search-field'),
             more = jQuery(this).find('.atom-search-all'),
             moreLink = jQuery(more).attr('href'),
+            none = jQuery(this).data('none'),
             number = jQuery(this).data('number'),
             results = jQuery(this).find('.atom-search-results'),
             self = this,
@@ -322,6 +326,7 @@ module.exports.initialize = function() {
                         utils.ajax({
                             data: {
                                 action: 'publicSearch', 
+                                none: none,
                                 number: number,
                                 search: value
                             },
@@ -469,7 +474,7 @@ module.exports.initialize = function() {
         
         if( jQuery(this).hasClass('molecule-header-fixed') ) {
             
-            jQuery(this).next('main').css({
+            jQuery(this).next('.main').css({
                 'paddingTop' : height
             });    
         }
@@ -581,6 +586,8 @@ module.exports.initialize = function() {
                         // Sync scrollReveal with newly added items
                         if( typeof sr !== "undefined" ) 
                             sr.sync();
+                        
+                        lazyload.update();
 
                     });
 
@@ -627,6 +634,8 @@ module.exports.initialize = function() {
                     // Sync scrollReveal with newly added items
                     if( typeof sr !== "undefined" ) 
                         sr.sync();
+                    
+                    lazyload.update();
 
                 });             
 
@@ -710,6 +719,15 @@ module.exports.parallax = function() {
             'backgroundPosition' : 'calc(50%) ' + 'calc(50% + ' + scrollPosition/5+"px" + ')'
         });
 
+    });
+    
+}
+
+/* Initializes lazyload */
+module.exports.lazyLoad = function() {
+    
+    window.lazyload = new LazyLoad({
+        elements_selector: ".components-lazyload"
     });
     
 }

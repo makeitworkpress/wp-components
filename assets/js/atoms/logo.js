@@ -8,8 +8,8 @@ module.exports.initialize = function() {
         var agent = navigator.userAgent.toLowerCase().match(/(iphone|android|windows phone|iemobile|wpdesktop)/),
             header = jQuery(this).closest('.molecule-header'),
             img = jQuery(this).find('img'),
-            defaultSrc = agent ? jQuery(img).data('mobile') : jQuery(img).attr('src'),  
-            transparentSrc = agent ? jQuery(img).data('mobiletransparent') : jQuery(img).data('transparent')       ,
+            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).attr('src'),  
+            transparentSrc = agent ? jQuery(this).data('mobiletransparent') : jQuery(this).data('transparent'),
             self = this;
         
         // Fade-in logo so we do not see the src change flickr

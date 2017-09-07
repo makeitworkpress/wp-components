@@ -55,7 +55,7 @@ if( $atom['type'] == 'post' && ! $atom['pagination'] ) {
     
 } ?>
 
-<nav class="atom-pagination <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?>>
+<nav class="atom-pagination <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php echo $atom['pagination']; ?>
     

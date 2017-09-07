@@ -90,6 +90,7 @@ class Ajax {
         if( empty($_POST['search']) || ! is_numeric($_POST['number']) )
             wp_send_json_error();
         
+        $none       = sanitize_text_field( $_POST['none'] );
         $number     = intval( $_POST['number'] );
         $search     = sanitize_text_field( $_POST['search'] );
         
@@ -102,12 +103,13 @@ class Ajax {
                 'title' => array( 'tag' => 'h4', 'link' => 'post' ),
                 'type'  => array() 
             ),
-            'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),            
+            'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),
+            'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
             'pagination'    => false,
             'postsAppear'   => 'bottom'
         ) );
         
-        $list       = Build::molecule( 'posts', $args , false );        
+        $list = Build::molecule( 'posts', $args , false );        
         
         // Return search results
         if( $list )

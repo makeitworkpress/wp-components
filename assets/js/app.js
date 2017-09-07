@@ -38,6 +38,9 @@ var App = {
         // Execute parallax backgrounds
         utils.parallax();
         
+        // Set-up lazy loading
+        utils.lazyLoad();        
+        
     }
 }
 

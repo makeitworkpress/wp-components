@@ -63,6 +63,8 @@ module.exports.initialize = function() {
                         // Sync scrollReveal with newly added items
                         if( typeof sr !== "undefined" ) 
                             sr.sync();
+                        
+                        lazyload.update();
 
                     });
 
@@ -109,6 +111,8 @@ module.exports.initialize = function() {
                     // Sync scrollReveal with newly added items
                     if( typeof sr !== "undefined" ) 
                         sr.sync();
+                    
+                    lazyload.update();
 
                 });             
 

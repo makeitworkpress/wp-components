@@ -16,7 +16,7 @@ $molecule = wp_parse_args( $molecule, array(
     ),
     'scheme'        => 'http://www.schema.org/CreativeWork',     
     'scroll'        => false,     
-    'slides'        => array(),     // Supports a array with position, background (url or color value), video, image and atoms as keys.
+    'slides'        => array(),     // Supports a array with class, position, background (url or color value), video, image and atoms as keys.
     'size'          => 'full'       // The default size for images    
 ) ); 
 
@@ -29,29 +29,39 @@ if( $molecule['options'] ) {
     
 }
 
+// Add our data
+$molecule['data'] .= ' data-id="' . $molecule['id'] . '"';
+
 // Enqueue our script
 if( ! wp_script_is('components-slider') && apply_filters('components_slider_script', true) )
     wp_enqueue_script('components-slider'); ?>
 
-<div class="molecule-slider <?php echo $molecule['style']; ?>" data-id="<?php echo $molecule['id']; ?>" <?php echo $molecule['inlineStyle']; ?>>
+<div class="molecule-slider <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
     
     <?php do_action( 'components_slider_before', $molecule ); ?>
     
     <ul class="slides">
         
         <?php foreach( $molecule['slides'] as $slide ) { 
+    
+            // No class has been set 
+            if( ! isset($slide['class']) )
+                $slide['class'] = '';
         
             // Background in a slider
             if( isset($slide['background']) ) {
-                $slide['background'] = strpos($slide['background'], 'http') === 0 
-                    ? 'style="background-image: url(' . $slide['background'] . ');"' 
-                    : 'style="background-color: ' . $slide['background'] . ';"';
+                if( isset($molecule['lazyload']) && $molecule['lazyload'] && strpos($slide['background'], 'http') === 0 ) {
+                    $slide['background'] = 'data-src="' . $slide['background'] . '"';
+                    $slide['class'] .= ' components-lazyload';
+                } else {
+                    $slide['background'] = strpos($slide['background'], 'http') === 0 ? 'style="background-image: url(' . $slide['background'] . ');"' : 'style="background-color: ' . $slide['background'] . ';"';
+                }
             } else {
                 $slide['background'] = '';   
             }
     
             // Position of elements
-            $slide['position'] = $slide['position'] ? 'components-position-' . $slide['position'] : ''; ?>
+            $slide['position'] = isset($slide['position']) ? 'components-position-' . $slide['position'] : ''; ?>
 
             <li class="molecule-slide" itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
                 
@@ -62,7 +72,7 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
                 
                 ?> 
 
-                    <div class="molecule-slide-wrapper <?php echo $slide['position']; ?>" <?php echo $slide['background']; ?>>
+                    <div class="molecule-slide-wrapper <?php echo $slide['position']; ?> <?php echo $slide['class']; ?>" <?php echo $slide['background']; ?>>
                         <div class="molecule-slide-caption">
 
                             <?php

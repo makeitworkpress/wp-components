@@ -12,6 +12,7 @@ $atom = wp_parse_args( $atom, array(
     'hamburger'  => 'mobile',   // Accepts mobile (768px), tablet (1024px) or always (always hamburger)
     'indicator'  => true,
     'menu'       => '',
+    'none'       => __('Bummer! No results found', 'components'),
     'search'     => false,
     'social'     => array(),
     'view'       => '',         // Accepts dark to display a dark mobile menu, fixed, left or right to display the hamburger with a special menu
@@ -58,7 +59,7 @@ if( $atom['cart'] && class_exists('WooCommerce') ) {
 }
 
 $social = $atom['social'] ? '<li class="atom-menu-item-social menu-item">' . WP_Components\Build::atom( 'social', array('urls' => $atom['social'], 'rounded' => true), false ) . '</li>' : '';
-$search = $atom['search'] ? '<li class="atom-menu-item-search menu-item">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true), false ) . '</li>' : '';
+$search = $atom['search'] ? '<li class="atom-menu-item-search menu-item">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true, 'none' => $atom['none']), false ) . '</li>' : '';
 
 // Our echo is always false and or container empty (if set to a string and defined as menu in the menu editor)
 $atom['args']['container'] = 'nothing';
@@ -73,7 +74,7 @@ if( ! $atom['menu'] )
 
 ?>
 
-<nav class="atom-menu <?php echo $atom['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" <?php echo $atom['inlineStyle']; ?> role="navigation">
+<nav class="atom-menu <?php echo $atom['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" <?php echo $atom['inlineStyle']; ?> role="navigation" <?php echo $atom['data']; ?>>
     
     <?php echo $atom['menu']; ?>
     
