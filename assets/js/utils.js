@@ -49,8 +49,10 @@ module.exports.parallax = function() {
 /* Initializes lazyload */
 module.exports.lazyLoad = function() {
     
-    window.lazyload = new LazyLoad({
-        elements_selector: ".components-lazyload"
-    });
+    if( typeof LazyLoad !== "undefined" ) {
+        window.lazyload = new LazyLoad({
+            elements_selector: ".components-lazyload"
+        });
+    }
     
 }

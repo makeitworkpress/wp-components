@@ -587,7 +587,8 @@ module.exports.initialize = function() {
                         if( typeof sr !== "undefined" ) 
                             sr.sync();
                         
-                        lazyload.update();
+                        if( typeof lazyload !== "undefined" ) 
+                            lazyload.update();
 
                     });
 
@@ -726,9 +727,11 @@ module.exports.parallax = function() {
 /* Initializes lazyload */
 module.exports.lazyLoad = function() {
     
-    window.lazyload = new LazyLoad({
-        elements_selector: ".components-lazyload"
-    });
+    if( typeof LazyLoad !== "undefined" ) {
+        window.lazyload = new LazyLoad({
+            elements_selector: ".components-lazyload"
+        });
+    }
     
 }
 },{}]},{},[1]);
