@@ -5,6 +5,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'all'        => __('View all search results', 'components'),
     'args'       => array(),
     'cart'       => false,
     'checkout'   => __('Checkout', 'components'),
@@ -63,7 +64,7 @@ if( $atom['cart'] && class_exists('WooCommerce') ) {
 }
 
 $social = $atom['social'] ? '<li class="atom-menu-item-social menu-item">' . WP_Components\Build::atom( 'social', array('urls' => $atom['social'], 'rounded' => true), false ) . '</li>' : '';
-$search = $atom['search'] ? '<li class="atom-menu-item-search menu-item">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true, 'none' => $atom['none']), false ) . '</li>' : '';
+$search = $atom['search'] ? '<li class="atom-menu-item-search menu-item">' . WP_Components\Build::atom( 'search', array('ajax' => true, 'collapse' => true, 'none' => $atom['none'], 'all' => $atom['all']), false ) . '</li>' : '';
 
 // Our echo is always false and or container empty (if set to a string and defined as menu in the menu editor)
 $atom['args']['container'] = 'nothing';
