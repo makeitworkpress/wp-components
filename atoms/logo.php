@@ -6,8 +6,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'data'              => '', // The data attributes for the logo
-    'height'            => '', 
+    'logoHeight'        => '', 
     'image'             => '', // The logo src
     'mobile'            => '', // The logo src for mobile display
     'mobileTransparent' => '', // The logo src for transparent mobile display
@@ -15,17 +14,17 @@ $atom = wp_parse_args( $atom, array(
     'title'             => esc_attr( get_bloginfo('name') ),
     'transparent'       => '', // The transparent logosrc
     'url'               => esc_url( home_url('/') ),
-    'width'             => ''
+    'logoWidth'         => ''
 ) ); 
 
 if( ! $atom['image'] )
     return; 
 
 // If the height or width are not defined, we retrieve them with PHP. Throws an error if OpenSSL is not enabled!
-if( ! $atom['height'] || ! $atom['width']) {
+if( ! $atom['logoHeight'] || ! $atom['logoWidth']) {
     list($width, $height) = getimagesize( $atom['image'] );
-    $atom['height'] = $height;
-    $atom['width'] = $width;
+    $atom['logoHeight'] = $height;
+    $atom['logoWidth'] = $width;
 } 
 
 // Declare our scrolled and mobile views
@@ -48,7 +47,7 @@ if( $atom['data'] ) {
     <?php 
         // Default image
         if( $atom['image'] ) {
-            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['height'] . '" width="' . $atom['width'] . '" />';    
+            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['logoHeight'] . '" width="' . $atom['logoWidth'] . '" />';    
         } 
     
     ?>
