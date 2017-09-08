@@ -21,7 +21,7 @@ $atom = wp_parse_args( $atom, array(
 if( ! $atom['image'] )
     return; 
 
-// If the height or width are not defined, we retrieve them with PHP
+// If the height or width are not defined, we retrieve them with PHP. Throws an error if OpenSSL is not enabled!
 if( ! $atom['height'] || ! $atom['width']) {
     list($width, $height) = getimagesize( $atom['image'] );
     $atom['height'] = $height;
