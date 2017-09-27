@@ -159,6 +159,7 @@ $key = 0; ?>
                         /**
                          * This indicates our Structured data that is required according to Google Structured data testing
                          */
+                    ?>
                     <span class="components-structured-data" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
                         <meta itemprop="name" content="<?php the_author(); ?>">
                     </span>
