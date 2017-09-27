@@ -31,7 +31,7 @@ $atom = wp_parse_args( $atom, array(
 if( is_home() || is_front_page() ) 
     return; ?>
 
-<nav class="atom-breadcrumbs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> role="navigation" itemscope="itemscope"  itemtype="http://schema.org/Breadcrumb" <?php echo $atom['data']; ?>>
+<nav class="atom-breadcrumbs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> itemscope="itemscope"  itemtype="http://schema.org/Breadcrumb" <?php echo $atom['data']; ?>>
     
     <ol itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList">
         

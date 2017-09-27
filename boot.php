@@ -53,7 +53,7 @@ class Boot {
             // Enqueue our components CSS
             if( $this->configurations['css'] ) {
                 wp_enqueue_style( 'components', COMPONENTS_ASSETS . 'css/components.min.css');
-                wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+                wp_enqueue_style( 'font-awesome', COMPONENTS_ASSETS . 'css/vendor/font-awesome.min.css');
             }            
             
             // Enqueue our components JS
