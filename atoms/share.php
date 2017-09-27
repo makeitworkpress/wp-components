@@ -15,8 +15,8 @@ if( has_post_thumbnail($postID) ) {
 // Predefined atom properties
 $image  = isset( $atom['image'] )   ? $atom['image']    : $image;
 $source = isset( $atom['source'] )  ? $atom['source']   : get_bloginfo('name');
-$title  = isset( $atom['title'] )   ? $atom['title']    : urlencode( get_the_title($postID) );
-$url    = isset( $atom['url'] )     ? $atom['url']      : urlencode( get_permalink($postID) );
+$title  = isset( $atom['title'] )   ? $atom['title']    : rawurlencode( get_the_title($postID) );
+$url    = isset( $atom['url'] )     ? $atom['url']      : rawurlencode( get_permalink($postID) );
 $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 
 // Atom properties
@@ -53,7 +53,7 @@ if( $atom['colorBackground'] )
     
     <?php foreach( $atom['enabled'] as $network ) { ?>
     
-        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="_nofollow">
+        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
             <?php if( isset($atom['networks'][$network]['icon']) ) { ?>
                 <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?>"></i>
             <?php } ?>

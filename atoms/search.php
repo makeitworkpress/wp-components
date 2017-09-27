@@ -31,7 +31,7 @@ if( $atom['ajax'] ) {
     $atom['style'] .= ' atom-search-ajax'; 
 } ?>     
 
-<div class="atom-search <?php echo $atom['style']; ?>" href="#" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+<div class="atom-search <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php echo $atom['form']; ?>
     

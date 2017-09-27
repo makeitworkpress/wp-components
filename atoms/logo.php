@@ -6,6 +6,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
+    'alt'               => __('Logo', 'components')
     'logoHeight'        => '', 
     'image'             => '', // The logo src
     'mobile'            => '', // The logo src for mobile display
@@ -47,7 +48,7 @@ if( $atom['data'] ) {
     <?php 
         // Default image
         if( $atom['image'] ) {
-            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['logoHeight'] . '" width="' . $atom['logoWidth'] . '" />';    
+            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['logoHeight'] . '" width="' . $atom['logoWidth'] . '" alt="' . $atom['alt'] . '" />';    
         } 
     
     ?>

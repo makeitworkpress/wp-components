@@ -17,7 +17,7 @@ $molecule = wp_parse_args( $molecule, array(
         'button' => array( 'link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small', 'float' => 'right') 
     ),                                           
     'headerAtoms'   => array(                           // Accepts a set of atoms
-        'title' => array( 'tag' => 'h2', 'link' => 'post', 'style' => 'entry-title' ) 
+        'title' => array( 'tag' => 'h2', 'link' => 'post', 'style' => 'entry-title', 'schema' => 'name headline' ) 
     ),          
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
@@ -154,6 +154,22 @@ $key = 0; ?>
                 ?>
 
                 <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>" <?php echo $molecule['postsInlineStyle']; ?>>
+
+                    <?php
+                        /**
+                         * This indicates our Structured data that is required according to Google Structured data testing
+                         */
+                    <span class="components-structured-data" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+                        <meta itemprop="name" content="<?php the_author(); ?>">
+                    </span>
+
+                    <span class="components-structured-data" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Person">
+                        <meta itemprop="name" content="<?php the_author(); ?>">
+                    </span>                    
+
+                    <meta itemprop="mainEntityOfPage" content="<?php the_permalink(); ?>" />
+                    <meta itemprop="datePublished" content="<?php the_date('c') ?>" />
+                    <meta itemprop="dateModified" content="<?php the_modified_date('c') ?>" />
 
                     <?php
                         // Actions at beginning of a post

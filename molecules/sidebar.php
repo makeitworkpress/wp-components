@@ -8,7 +8,7 @@ $molecule = wp_parse_args( $molecule, array(
     'sidebars'  => array() // Accepts a multidimensional array with the sidebar names as values
 ) ); ?>
 
-<aside class="molecule-sidebar <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://www.schema.org/WPSideBar" role="complementary" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+<aside class="molecule-sidebar <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://www.schema.org/WPSideBar" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
     
     <?php do_action( 'components_sidebar_before', $molecule ); ?>
     

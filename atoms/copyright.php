@@ -15,7 +15,7 @@ $atom = wp_parse_args( $atom, array(
     
     <?php echo $atom['copyright']; ?> <span itemprop="copyrightYear"><?php echo $atom['date']; ?></span> 
 
-    <span itemprop="copyrightHolder" itemscope="itemscope" itemtype=" <?php echo $atom['schema']; ?>">
+    <span itemprop="copyrightHolder" itemscope="itemscope" itemtype="<?php echo $atom['schema']; ?>">
         <span itemprop="name"><?php echo $atom['name']; ?></span>    
     </span>
     

@@ -24,9 +24,11 @@ if( $atom['enlarge'] )
 $class = isset($properties['lazyload']) && $properties['lazyload'] ? ' components-lazyload' : '';
 $atom['image'] = $atom['image'] ? $atom['image'] : get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 
-// We have a lazyloading image
-if( isset($properties['lazyload']) && $properties['lazyload'] )
-    $atom['image'] = str_replace( 'src', 'data-src', $atom['image'] );   
+// We have a lazyloading image, so we need to replace our attributes
+if( isset($properties['lazyload']) && $properties['lazyload'] ) {
+    $atom['image'] = str_replace( 'src=', 'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=', $atom['image'] );   
+    $atom['image'] = str_replace( 'srcset', 'data-srcset', $atom['image'] );   
+}
 
 // We should have an image
 if( ! $atom['image'] )
