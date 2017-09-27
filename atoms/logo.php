@@ -6,7 +6,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, array(
-    'alt'               => __('Logo', 'components')
+    'alt'               => __('Logo', 'components'),
     'logoHeight'        => '', 
     'image'             => '', // The logo src
     'mobile'            => '', // The logo src for mobile display

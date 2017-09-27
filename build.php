@@ -15,14 +15,11 @@ class Build {
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
      * @param array     $properties The custom properties for the template    
      * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
-     *
-     * @todo DRY properties that are common under multiple components and possible define them here alltogether. 
      */
     private static function template( $type = 'atom', $template, $properties, $render = true ) {
         
         // Properties should be an array
         if( ! is_array($properties) ) {
-            
             printf( __('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template );
             return;    
         }
@@ -161,8 +158,8 @@ class Build {
     /**
      * Displays any atom
      *
-     * @param string $atom  The atom to load
-     * @param array $variables  The custom variables for a molecule
+     * @param string    $atom       The atom to load
+     * @param array     $variables  The custom variables for a molecule
      */
     public static function atom( $atom, $variables = array(), $render = true ) {
         
