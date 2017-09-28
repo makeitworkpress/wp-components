@@ -17,7 +17,7 @@ if( $atom['link'] == 'post' )
 
 <<?php echo $atom['tag']; ?> class="atom-title <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php if( $atom['link'] ) { ?>
-        <a href="<?php echo $atom['link']; ?>" rel="bookmark" itemprop="url">
+        <a href="<?php echo $atom['link']; ?>" rel="bookmark" itemprop="url" title="<?php echo $atom['title']; ?>">
     <?php } ?>
         <?php echo $atom['title']; ?>
     <?php if( $atom['link'] ) { ?>

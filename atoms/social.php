@@ -29,9 +29,20 @@ if( $atom['colorBackground'] )
 <div class="atom-social <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
     <?php foreach( $atom['urls'] as $network => $url ) { ?>
+
+        <?php
+            // Modify urls for mail and telephone
+            if( $network == 'email' ) {
+                $url = 'mailto:' . $url;
+            }
+
+            if( $network == 'telephone' ) {
+                $url = 'tel:' . $url;    
+            }
+            
+        ?>
     
         <a class="atom-network components-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
-            
             <?php if( isset($atom['icons'][$network]) ) { ?>
                 <i class="fa fa-<?php echo $atom['icons'][$network]; ?>"></i>
             <?php } ?>

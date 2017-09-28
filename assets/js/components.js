@@ -69,6 +69,20 @@ module.exports.initialize = function() {
             
         if( jQuery(header).hasClass('molecule-header-transparent') && transparentSrc ) {
             jQuery(img).attr('src', transparentSrc);    
+        } 
+
+        // Mobile logo's might have a different size. We have to insert that and define our mobile logo.
+        if( agent ) {
+
+            jQuery(img).attr('src', defaultSrc);
+
+            var imageLoad = new Image();
+            imageLoad.src = defaultSrc;
+            imageLoad.onload = function() {
+                jQuery(img).attr('height', this.height);
+                jQuery(img).attr('width', this.width);
+            }
+
         }
         
         // And if we're scrolling, the transparency is removed

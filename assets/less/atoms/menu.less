@@ -135,6 +135,7 @@
         }       
         > li {
             display: inline-block;
+            vertical-align: middle;
         }
         li {
             position: relative;
@@ -286,6 +287,11 @@
 }
 
 .atom-menu-tablet-hamburger {
+    @media screen and (min-width: 1025px) {
+        .menu {
+            background: none !important;
+        }
+    }
     @media screen and (max-width: 1024px) {
         .mobile-menu-mixin();
         .atom-menu-hamburger {
@@ -301,6 +307,11 @@
 }
 
 .atom-menu-mobile-hamburger {
+    @media screen and (min-width: 769px) {
+        .menu {
+            background: none !important;
+        }
+    }    
     @media screen and (max-width: 768px) {
         .mobile-menu-mixin();
         .atom-menu-hamburger {
