@@ -5,8 +5,8 @@ module.exports.initialize = function() {
     
     jQuery('.molecule-header').each( function(index) {
     
-        var height = jQuery(this).height(),
-            newScroll = 0,
+        var current = jQuery(window).scrollTop(),
+            height = jQuery(this).height(),
             self = this,
             up = false;
         
@@ -20,7 +20,7 @@ module.exports.initialize = function() {
         // Allows our header to behave as a headroom
         jQuery(window).scroll( function() {
             
-            var position = jQuery(window).scrollTop();
+            var position = jQuery(this).scrollTop();
             
             // Dynamic header classes
             if( jQuery(self).hasClass('molecule-header-fixed') ) {
@@ -39,17 +39,15 @@ module.exports.initialize = function() {
             // Headroom navigation
             if( jQuery(self).hasClass('molecule-header-headroom') ) {
 
-                newScroll = jQuery(window).scrollTop();
-
-                if( newScroll > position && ! up ) {
-                    jQuery(self).stop().slideToggle(500);
+                if( position > current && ! up ) {
+                    jQuery(self).stop().slideToggle();
                     up = ! up;
-                } else if( newScroll < position && up ) {
-                    jQuery(self).stop().slideToggle(500);
+                } else if( position < current && up ) {
+                    jQuery(self).stop().slideToggle();
                     up = ! up;
                 }
 
-                position = newScroll;
+                current = position;
 
             }
 

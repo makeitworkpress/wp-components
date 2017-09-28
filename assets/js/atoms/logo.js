@@ -8,16 +8,12 @@ module.exports.initialize = function() {
         var agent = navigator.userAgent.toLowerCase().match(/(iphone|android|windows phone|iemobile|wpdesktop)/),
             header = jQuery(this).closest('.molecule-header'),
             img = jQuery(this).find('img'),
-            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).attr('src'),  
+            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).find('img').attr('src'),  
             transparentSrc = agent ? jQuery(this).data('mobiletransparent') : jQuery(this).data('transparent'),
             self = this;
         
         // Fade-in logo so we do not see the src change flickr
-        jQuery(this).fadeIn();
-            
-        if( jQuery(header).hasClass('molecule-header-transparent') && transparentSrc ) {
-            jQuery(img).attr('src', transparentSrc);    
-        } 
+        jQuery(this).fadeIn(); 
 
         // Mobile logo's might have a different size. We have to insert that and define our mobile logo.
         if( agent ) {
@@ -32,6 +28,11 @@ module.exports.initialize = function() {
             }
 
         }
+
+        // And of course we need to apply our transparent image    
+        if( jQuery(header).hasClass('molecule-header-transparent') && transparentSrc ) {
+            jQuery(img).attr('src', transparentSrc);    
+        }        
         
         // And if we're scrolling, the transparency is removed
         jQuery(window).scroll( function() {

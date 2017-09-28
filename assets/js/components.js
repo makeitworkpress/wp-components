@@ -60,16 +60,12 @@ module.exports.initialize = function() {
         var agent = navigator.userAgent.toLowerCase().match(/(iphone|android|windows phone|iemobile|wpdesktop)/),
             header = jQuery(this).closest('.molecule-header'),
             img = jQuery(this).find('img'),
-            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).attr('src'),  
+            defaultSrc = agent ? jQuery(this).data('mobile') : jQuery(this).find('img').attr('src'),  
             transparentSrc = agent ? jQuery(this).data('mobiletransparent') : jQuery(this).data('transparent'),
             self = this;
         
         // Fade-in logo so we do not see the src change flickr
-        jQuery(this).fadeIn();
-            
-        if( jQuery(header).hasClass('molecule-header-transparent') && transparentSrc ) {
-            jQuery(img).attr('src', transparentSrc);    
-        } 
+        jQuery(this).fadeIn(); 
 
         // Mobile logo's might have a different size. We have to insert that and define our mobile logo.
         if( agent ) {
@@ -84,6 +80,11 @@ module.exports.initialize = function() {
             }
 
         }
+
+        // And of course we need to apply our transparent image    
+        if( jQuery(header).hasClass('molecule-header-transparent') && transparentSrc ) {
+            jQuery(img).attr('src', transparentSrc);    
+        }        
         
         // And if we're scrolling, the transparency is removed
         jQuery(window).scroll( function() {
@@ -481,8 +482,8 @@ module.exports.initialize = function() {
     
     jQuery('.molecule-header').each( function(index) {
     
-        var height = jQuery(this).height(),
-            newScroll = 0,
+        var current = jQuery(window).scrollTop(),
+            height = jQuery(this).height(),
             self = this,
             up = false;
         
@@ -496,7 +497,7 @@ module.exports.initialize = function() {
         // Allows our header to behave as a headroom
         jQuery(window).scroll( function() {
             
-            var position = jQuery(window).scrollTop();
+            var position = jQuery(this).scrollTop();
             
             // Dynamic header classes
             if( jQuery(self).hasClass('molecule-header-fixed') ) {
@@ -515,17 +516,15 @@ module.exports.initialize = function() {
             // Headroom navigation
             if( jQuery(self).hasClass('molecule-header-headroom') ) {
 
-                newScroll = jQuery(window).scrollTop();
-
-                if( newScroll > position && ! up ) {
-                    jQuery(self).stop().slideToggle(500);
+                if( position > current && ! up ) {
+                    jQuery(self).stop().slideToggle();
                     up = ! up;
-                } else if( newScroll < position && up ) {
-                    jQuery(self).stop().slideToggle(500);
+                } else if( position < current && up ) {
+                    jQuery(self).stop().slideToggle();
                     up = ! up;
                 }
 
-                position = newScroll;
+                current = position;
 
             }
 
