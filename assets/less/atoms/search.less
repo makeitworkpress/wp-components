@@ -35,6 +35,7 @@
     justify-content: flex-end;
     .search-form {
         display: none;
+        line-height: normal;
         min-width: ~"calc(100% - 48px)";
         position: relative;
         z-index: 999;
@@ -50,7 +51,7 @@
 }
 
 .atom-search-expand {
-    padding: 8px 16px;
+    padding: 0 16px;
     text-align: center;
     width: 48px;
     z-index: 1;
@@ -60,11 +61,12 @@
     background: #fff;
     border: 1px solid #eee;
     display: none;
-    right: 48px;
+    line-height: normal;
     min-width: 248px;
     padding: 16px;    
     position: absolute;
     top: 100%;
+    right: 48px;
     width: ~"calc(100% - 48px)";
     z-index: 100;
     @media screen and (min-width: 480px) {
