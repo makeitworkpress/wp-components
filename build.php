@@ -3,6 +3,7 @@
  * Load our components using a static wrapper
  */
 namespace WP_Components;
+use WP_Error as WP_Error;
 
 defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
 
@@ -16,12 +17,24 @@ class Build {
      * @param array     $properties The custom properties for the template    
      * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
      */
-    private static function template( $type = 'atom', $template, $properties, $render = true ) {
+    private static function template( $type = 'atom', $template, $properties = array(), $render = true ) {
         
         // Properties should be an array
         if( ! is_array($properties) ) {
-            printf( __('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template );
-            return;    
+            $error = new WP_Error( 'wrong', sprintf(__('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template) );
+            echo $error->get_error_message();    
+            return;
+        }
+
+        // If we have atom properties, they should have
+        if( isset($properties['atoms']) && is_array($properties['atoms']) ) {
+            foreach( $properties['atoms'] as $atom ) {
+                if( ! isset($atom['atom']) ) {
+                    $error = new WP_Error( 'wrong', sprintf(__('The custom atoms within %s are not properly formatted and miss the atom key.', 'components'), $template) );
+                    echo $error->get_error_message();  
+                    return;
+                }    
+            }
         }
             
         // Our template path
@@ -45,7 +58,8 @@ class Build {
             }
             
         } else {
-            printf( __('The given template for the molecule or atom called %s does not exist.', 'components'), $template );
+            $error = new WP_Error( 'wrong', sprintf( __('The given template for the molecule or atom called %s does not exist.', 'components'), $template ) );
+            echo $error->get_error_message();             
         }
         
     }

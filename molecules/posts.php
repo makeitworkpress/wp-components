@@ -9,15 +9,15 @@ $molecule = wp_parse_args( $molecule, array(
     'ajax'          => true,                            // To paginate using ajax
     'args'          => array(),                         // Query arguments for retrieving posts
     'contentAtoms'   => array(                          // Accepts a set of atoms for within the content
-        'content' => array( 'type' => 'excerpt') 
+        array( 'atom' => 'content', 'properties' => array('type' => 'excerpt') ) 
     ),          
     'id'            => 'molecule-posts',                // Used to match requests for ajax. Must be unique if multiple elements are on one page
     'filter'        => false,                           // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.
     'footerAtoms'   => array(                           // Accepts a set of atoms
-        'button' => array( 'link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small', 'float' => 'right') 
+        array( 'atom' => 'button', 'properties' => array('link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small', 'float' => 'right') )
     ),                                           
     'headerAtoms'   => array(                           // Accepts a set of atoms
-        'title' => array( 'tag' => 'h2', 'link' => 'post', 'style' => 'entry-title', 'schema' => 'name headline' ) 
+        array( 'atom' => 'title', 'properties' => array('tag' => 'h2', 'link' => 'post', 'style' => 'entry-title', 'schema' => 'name headline') ) 
     ),          
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
@@ -187,9 +187,9 @@ $key = 0; ?>
                     ?>
                         <header class="entry-header">    
                             <?php
-                                foreach( $molecule['headerAtoms'] as $name => $variables ) { 
+                                foreach( $molecule['headerAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>
@@ -204,9 +204,9 @@ $key = 0; ?>
                     ?>
                         <div class="entry-content">    
                             <?php
-                                foreach( $molecule['contentAtoms'] as $name => $variables ) { 
+                                foreach( $molecule['contentAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>
@@ -221,9 +221,9 @@ $key = 0; ?>
                     ?>
                         <footer class="entry-footer">    
                             <?php
-                                foreach( $molecule['footerAtoms'] as $name => $variables ) { 
+                                foreach( $molecule['footerAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $name, $variables );
+                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>

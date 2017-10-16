@@ -5,13 +5,13 @@
 
 // Molecule values
 $molecule = wp_parse_args( $molecule, array(
-    'atoms'         => array(), // Accepts a multidimensional array with the atom name as key and the value for the component variables
-    'container'     => true,    // Wrap this component in a container
-    'fixed'         => true,    // If we have a fixed header
-    'headroom'      => false,    // If we apply a headroom effect to the header
-    'socketAtoms'   => false,   // An extra bottom part in the header
-    'transparent'   => false,   // If the header is transparent
-    'topAtoms'      => false    // An extra top part in the header
+    'atoms'         => array(),     // Accepts a multidimensional array with the each of the atoms
+    'container'     => true,        // Wrap this component in a container
+    'fixed'         => true,        // If we have a fixed header
+    'headroom'      => false,       // If we apply a headroom effect to the header
+    'socketAtoms'   => array(),     // An extra bottom part in the header
+    'transparent'   => false,       // If the header is transparent
+    'topAtoms'      => array()      // An extra top part in the header
 ) ); 
 
 if( $molecule['fixed'] ) 
@@ -36,9 +36,9 @@ if( $molecule['transparent'] )
             
                 <?php 
 
-                    foreach( $molecule['topAtoms'] as $name => $variables ) { 
+                    foreach( $molecule['topAtoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
@@ -61,9 +61,9 @@ if( $molecule['transparent'] )
 
                 <?php 
 
-                    foreach( $molecule['atoms'] as $name => $variables ) { 
+                    foreach( $molecule['atoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
@@ -86,9 +86,9 @@ if( $molecule['transparent'] )
             
                 <?php 
 
-                    foreach( $molecule['socketAtoms'] as $name => $variables ) { 
+                    foreach( $molecule['socketAtoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 

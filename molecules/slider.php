@@ -78,8 +78,8 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
                             <?php
 
                                 // Add our custom atoms for this caption                                
-                                foreach( $slide['atoms'] as $name => $variables ) {
-                                    WP_Components\Build::atom($name, $variables);    
+                                foreach( $slide['atoms'] as $atom ) {
+                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );    
                                 }
                             ?>
 

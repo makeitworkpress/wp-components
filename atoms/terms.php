@@ -10,7 +10,7 @@ $atom = wp_parse_args( $atom, array(
     'before'    => '',                              // Content before each tag
     'seperator' => '/',                             // Content that seperates terms
     'terms'     => array(),                         // Accepts a custom array of terms
-    'termStyle' => 'normal',                        // Accepts a customs tyle
+    'termStyle' => 'normal'                         // Accepts a custom style, such as button
 ) );
 
 if( ! $atom['terms'] )

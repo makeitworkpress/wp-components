@@ -5,7 +5,7 @@
 
 // Molecule values
 $molecule = wp_parse_args( $molecule, array(
-    'atoms'         => array ('title' => array('tag' => 'h1', 'style' => 'entry-title') ), // Accepts a multidimensional array with the element name as key and the value for the component variables
+    'atoms'         => array ( array( 'atom' => 'title', 'properties' => array('tag' => 'h1', 'style' => 'entry-title')) ), // Accepts a multidimensional array with the element name as key and the value for the component variables
     'container'     => true,    // Wrap this component in a container
     'scroll'        => false    // A scroll down button.
 ) ); ?>
@@ -23,9 +23,9 @@ $molecule = wp_parse_args( $molecule, array(
 
                 <?php 
 
-                    foreach( $molecule['atoms'] as $name => $variables ) { 
+                    foreach( $molecule['atoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $name, $variables );
+                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
