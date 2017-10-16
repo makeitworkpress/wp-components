@@ -25,7 +25,7 @@ $atom   = wp_parse_args( $atom, array(
     'enabled'           => array( 'facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ),
     'fixed'             => false,
     'networks'          => array(
-        'facebook'      => array( 'url' => 'http://www.facebook.com/sharer.php?s=100&p[url]=' . $url, 'icon' => 'facebook' ), 
+        'facebook'      => array( 'url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook' ), 
         'twitter'       => array( 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ), 
         'linkedin'      => array(
             'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&source=' . $source, 
