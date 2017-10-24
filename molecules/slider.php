@@ -67,7 +67,7 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
             }
 
             // Thumbs
-            $thumb = $molecule['thumbnail'] && isset($slide['image']) && is_numeric($slide['image']) ? 'data-thumb="' . wp_get_attachment_image_url( $slide['image'], $molecule['thumbnail'] ) . '"' : '';
+            $thumb = $molecule['thumbnail'] && isset($slide['image']['image']) && is_numeric($slide['image']['image']) ? 'data-thumb="' . wp_get_attachment_image_url( $slide['image']['image'], $molecule['thumbnail'] ) . '"' : '';
 
             // Position of elements
             $slide['position'] = isset($slide['position']) ? 'components-position-' . $slide['position'] : ''; ?>
