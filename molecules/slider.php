@@ -17,11 +17,17 @@ $molecule = wp_parse_args( $molecule, array(
     'scheme'        => 'http://www.schema.org/CreativeWork',     
     'scroll'        => false,     
     'slides'        => array(),     // Supports a array with class, position, background (url or color value), video, image and atoms as keys.
-    'size'          => 'full'       // The default size for images    
+    'size'          => 'full',      // The default size for images,
+    'thumbnail'     => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.    
 ) ); 
 
 // Set our variables
 if( $molecule['options'] ) {
+
+    // Set our control navigation option
+    if( $molecule['thumbnail'] ) {
+        $molecule['options']['controlNav'] = 'thumbnails';
+    }
     
     add_action( 'wp_footer', function() use($molecule) {
         echo '<script type="text/javascript">var slider' . $molecule['id'] . ' = ' . json_encode($molecule['options']) . ';</script>';    
@@ -59,11 +65,14 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
             } else {
                 $slide['background'] = '';   
             }
-    
+
+            // Thumbs
+            $thumb = $molecule['thumbnail'] && isset($slide['image']) && is_numeric($slide['image']) ? 'data-thumb="' . wp_get_attachment_image_url( $slide['image'], $molecule['thumbnail'] ) . '"' : '';
+
             // Position of elements
             $slide['position'] = isset($slide['position']) ? 'components-position-' . $slide['position'] : ''; ?>
 
-            <li class="molecule-slide" itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>">
+            <li class="molecule-slide" itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>" <?php echo $thumb; ?>>
                 
                 <?php 
     
@@ -88,11 +97,15 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
 
                 <?php 
 
+                    }
+
                     // Or... slide video or image
-                    } elseif( isset($slide['image']) ) { 
-                        WP_Components\Build::atom( 'image', array($slide['image']) );
-                    } elseif( isset($slide['video']) ) { 
-                        WP_Components\Build::atom( 'video', array($slide['video']) );
+                    if( isset($slide['image']) ) { 
+                        WP_Components\Build::atom( 'image', array('image' => $slide['image']) );
+                    } 
+                    
+                    if( isset($slide['video']) ) { 
+                        WP_Components\Build::atom( 'video', array('video' => $slide['video']) );
                     }
 
                 ?>

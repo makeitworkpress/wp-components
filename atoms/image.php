@@ -21,9 +21,17 @@ if( $atom['link'] == 'post' )
 if( $atom['enlarge'] )
     $atom['style'] .= ' atom-image-enlarge';
 
-// Actual image
+// If we have a lazyload, we add something to the class
 $class              = $atom['lazyload'] ? ' components-lazyload' : '';
-$atom['image']      = $atom['image'] ? $atom['image'] : get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
+
+// Now, load our image based upon what we have
+if( is_numeric($atom['image']) ) {
+    $atom['image']  = wp_get_attachment_image( $atom['image'], $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
+} elseif( is_string($atom['image']) ) {
+    $atom['image']  = $atom['image'];
+} elseif( empty($atom['image'] ) ) {
+    $atom['image']  = get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
+}
 
 // We have a lazyloading image, so we need to replace our attributes
 if( $atom['lazyload'] ) {
