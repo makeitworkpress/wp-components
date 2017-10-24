@@ -101,11 +101,11 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
 
                     // Or... slide video or image
                     if( isset($slide['image']) ) { 
-                        WP_Components\Build::atom( 'image', array($slide['image']) );
+                        WP_Components\Build::atom( 'image', $slide['image'] );
                     } 
                     
                     if( isset($slide['video']) ) { 
-                        WP_Components\Build::atom( 'video', array($slide['video']) );
+                        WP_Components\Build::atom( 'video', $slide['video'] );
                     }
 
                 ?>
