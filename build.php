@@ -88,8 +88,9 @@ class Build {
         $classes = array( 'align', 'animation', 'appear', 'display', 'float', 'grid', 'hover', 'parallax', 'rounded' );    
         
         foreach( $classes as $class ) {
-            if( isset($properties[$class]) && $properties[$class] )
+            if( isset($properties[$class]) && $properties[$class] ) {
                 $properties['style'] .= is_bool($properties[$class]) ? ' components-' . $class : ' components-' . $properties[$class] . '-' . $class;
+            }
         }      
                     
         /**

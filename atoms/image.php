@@ -7,19 +7,20 @@
 $atom = wp_parse_args( $atom, array(
     'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html.
-    'lazyload'  => false,      // A custom link from the image
+    'lazyload'  => false,   // Lazyload an image
     'link'      => '',      // A custom link from the image
     'post'      => null,
-    'rounded'   => false,
     'size'      => 'large'
 ) );
 
 // Custom link to a post
-if( $atom['link'] == 'post' )
-    $atom['link']   = esc_url( get_permalink() );
+if( $atom['link'] == 'post' ) {
+    $atom['link'] = is_numeric( $atom['post'] ) || is_object( $atom['post']) ? esc_url( get_permalink( $atom['post']) ) : esc_url( get_permalink( $atom['post']) );
+}
 
-if( $atom['enlarge'] )
+if( $atom['enlarge'] ) {
     $atom['style'] .= ' atom-image-enlarge';
+}
 
 // If we have a lazyload, we add something to the class
 $class              = $atom['lazyload'] ? ' components-lazyload' : '';
@@ -40,11 +41,9 @@ if( $atom['lazyload'] ) {
 }
 
 // We should have an image
-if( ! $atom['image'] )
-    return;
-
-if( $atom['rounded'] ) 
-    $atom['style'] .= ' components-rounded'; ?>
+if( ! $atom['image'] ) {
+    return '';
+} ?>
 
 <figure class="atom-image <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     
