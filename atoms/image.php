@@ -15,7 +15,7 @@ $atom = wp_parse_args( $atom, array(
 
 // Custom link to a post
 if( $atom['link'] == 'post' ) {
-    $atom['link'] = is_numeric( $atom['post'] ) || is_object( $atom['post']) ? esc_url( get_permalink( $atom['post']) ) : esc_url( get_permalink( $atom['post']) );
+    $atom['link'] = is_numeric( $atom['post'] ) || is_object( $atom['post']) ? esc_url( get_permalink( $atom['post'] ) ) : esc_url( get_permalink() );
 }
 
 if( $atom['enlarge'] ) {
