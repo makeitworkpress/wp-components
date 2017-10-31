@@ -31,7 +31,7 @@ if( is_numeric($atom['image']) ) {
 } elseif( is_string($atom['image']) && strlen($atom['image']) > 3 ) {
     $atom['image']  = $atom['image'];
 } elseif( empty($atom['image'] ) ) {
-    $atom['image']  = get_the_post_image( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
+    $atom['image']  = get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 }
 
 // We have a lazyloading image, so we need to replace our attributes
