@@ -205,13 +205,21 @@ if( is_home() || is_front_page() )
                 if( $location == 'category' || $location == 'tag' || $location == 'tax' ) {
                     $url = get_term_link( get_queried_object() );
                     
+                    /**
+                     * We can prefix the post type for products or custom values
+                     */
                     if( is_archive('product') && class_exists('WooCommerce') ) {
                         $key = count($breadcrumbs);
                         
                         $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
                         $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );
                         
-                    }
+                    } elseif( isset($atom['archive']['title']) && isset($atom['archive']['url']) ) {
+                        $key = count($breadcrumbs);
+
+                        $breadcrumbs[$key]['title'] = $atom['archive']['title'];
+                        $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
+                    } 
                     
                     // Ancestors
                     $ancestors = get_ancestors( get_queried_object()->term_id, get_queried_object()->taxonomy );
