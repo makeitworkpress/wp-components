@@ -7,49 +7,38 @@
 // Atom values
 $atom = wp_parse_args( $atom, array(
     'alt'               => __('Logo', 'components'),
-    'logoHeight'        => '', 
-    'image'             => '', // The logo src
-    'mobile'            => '', // The logo src for mobile display
-    'mobileTransparent' => '', // The logo src for transparent mobile display
+    'image'             => ['src' => '', 'height' => '', 'width' => ''], // The logo src
+    'mobileImage'       => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
     'scheme'            => 'http://schema.org/Organization',
+    'tabletImage'       => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
     'title'             => esc_attr( get_bloginfo('name') ),
     'transparent'       => '', // The transparent logosrc
-    'url'               => esc_url( home_url('/') ),
-    'logoWidth'         => ''
+    'url'               => esc_url( home_url('/') )
 ) ); 
 
 if( ! $atom['image'] )
-    return; 
-
-// If the height or width are not defined, we retrieve them with PHP. Throws an error if OpenSSL is not enabled!
-if( ! $atom['logoHeight'] || ! $atom['logoWidth']) {
-    list($width, $height) = getimagesize( $atom['image'] );
-    $atom['logoHeight'] = $height;
-    $atom['logoWidth'] = $width;
-} 
-
-// Declare our scrolled and mobile views
-$data = array( 'mobile', 'mobileTransparent', 'transparent' );
-
-// Our data attributes
-foreach($data as $type) {
-    if( $atom[$type] ) {
-        $atom['data'] .= ' data-' . $type . '="' . $atom[$type]  . '"';
-    }
-}
-
-// Additional class to hide the logo if we have data. This prevents flickering when the logo loads.
-if( $atom['data'] ) {
-    $atom['style'] .= ' atom-logo-data';
-} ?>
+    return; ?>
 
 <a class="atom-logo <?php echo $atom['style']; ?>" href="<?php echo $atom['url']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
 
     <?php 
+
+        // Our mobile image
+        if( $atom['mobileImage']['src'] ) {
+            echo '<img class="atom-logo-mobile" src="' . $atom['mobileImage']['src'] . '" height="' .$atom['mobileImage']['height'] . '" width="' . $atom['mobileImage']['width'] . '" alt="' . $atom['alt'] . '" />';    
+        }
+        
+         // Our mobile image
+         if( $atom['tabletImage']['src'] ) {
+            echo '<img class="atom-logo-tablet" src="' . $atom['tabletImage']['src'] . '" height="' .$atom['tabletImage']['height'] . '" width="' . $atom['tabletImage']['width'] . '" alt="' . $atom['alt'] . '" />';    
+        }        
+
         // Default image
-        if( $atom['image'] ) {
-            echo '<img src="' . $atom['image'] . '" itemprop="image" height="' . $atom['logoHeight'] . '" width="' . $atom['logoWidth'] . '" alt="' . $atom['alt'] . '" />';    
+        if( $atom['image']['src'] ) {
+            echo '<img class="atom-logo-default" src="' . $atom['image']['src'] . '" itemprop="image" height="' .$atom['image']['height'] . '" width="' . $atom['image']['width'] . '" alt="' . $atom['alt'] . '" />';    
         } 
+
+        
     
     ?>
     <meta itemprop="name" content="<?php echo $atom['title']; ?>" />

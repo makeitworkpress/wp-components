@@ -113,7 +113,8 @@ module.exports.initialize = function() {
                     if( typeof sr !== "undefined" ) 
                         sr.sync();
                     
-                    lazyload.update();
+                    if( typeof lazyload !== "undefined" )
+                        lazyload.update();
 
                 });             
 

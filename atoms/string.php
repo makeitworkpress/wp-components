@@ -1,6 +1,11 @@
 <?php 
 /**
- * Echo's a simple string value from the $atom variable
+ * Echo's a simple string value or callback from the $atom variable
  */
-if( isset($atom['string']) )
-    echo $atom['string'];
+$atom = wp_parse_args( $atom, array(
+    'string'    => ''
+) ); 
+
+if( $atom['string'] ) {
+    echo $atom['string'];    
+}

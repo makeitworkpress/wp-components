@@ -6,7 +6,6 @@ var utils = require('./utils');
 
 var App = {
     atoms: {
-        logo: require('./atoms/logo'),
         menu: require('./atoms/menu'),
         modal: require('./atoms/modal'),
         rate: require('./atoms/rate'),

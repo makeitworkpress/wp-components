@@ -142,14 +142,19 @@ class Build {
             }
         }                
         
-        // Heights
+        // Min Heights
         if( isset($properties['height']) && $properties['height'] ) {
             if( is_numeric($properties['height']) ) {
                 $properties['inlineStyle'] .= 'min-height: ' . $properties['height'] . 'px;';
             } else {
                 $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
             }
-        }             
+        }  
+        
+        // Min Width
+        if( isset($properties['width']) && is_numeric($properties['width']) ) {
+            $properties['inlineStyle'] .= 'min-width: ' . $properties['width'] . 'px;';
+        }         
 
         // Text color
         if( isset($properties['color']) && $properties['color'] ) {

@@ -10,8 +10,8 @@ $atom = wp_parse_args( $atom, array(
     'crumbs'    => array(),
     'home'      => __('Home', 'components'), // Text to homepage
     'seperator' => '&rsaquo;',  // The seperator between breadcrumbs
-    'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one
-    'locations' => array(   // Locations for the breadcrumbs
+    'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one. If set to true, takes the first related taxonomy of a post. If set to string value, takes that taxonomy.
+    'locations' => array(       // Locations for the breadcrumbs
         '404'       => __('404', 'components'),
         'archive'   => isset(get_queried_object()->labels->name) ? get_queried_object()->labels->name : '',
         'author'    => '',
@@ -152,7 +152,7 @@ if( is_home() || is_front_page() )
                             }
                         }
 
-                        // If we have a term, add it
+                        // If we have a term, add it, including our children
                         if( $term ) {
 
                             $key = count($breadcrumbs);

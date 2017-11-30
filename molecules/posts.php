@@ -22,7 +22,9 @@ $molecule = wp_parse_args( $molecule, array(
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
     'itemprop'      => '',
+    'logo'          => 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
     'none'          => __('Bummer! No posts found.', 'components'),
+    'organization'  => get_bloginfo('name'),
     'pagination'    => array('type' => 'numbers'),      // Pagination settings.
     'postsGrid'     => '',                              // Accepts a custom grid class or pattern to display the thing into coloms
     'postsAppear'   => '',                              // Accepts a custom grid appear class for posts
@@ -164,8 +166,9 @@ $key = 0; ?>
                         <meta itemprop="name" content="<?php the_author(); ?>">
                     </span>
 
-                    <span class="components-structured-data" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Person">
-                        <meta itemprop="name" content="<?php the_author(); ?>">
+                    <span class="components-structured-data" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization">
+                        <meta itemprop="logo" content="<?php echo $molecule['logo']; ?>">
+                        <meta itemprop="name" content="<?php echo $molecule['organization']; ?>">
                     </span>                    
 
                     <meta itemprop="mainEntityOfPage" content="<?php the_permalink(); ?>" />
