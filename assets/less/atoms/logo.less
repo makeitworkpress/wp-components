@@ -5,6 +5,67 @@
  */
 .atom-logo {
     display: block;
+    position: relative;
+    img {
+        transition: opacity 350ms ease-out;
+    }
+}
+
+/**
+ * Transparent Logo's
+ */
+.atom-logo-defaultTransparent, .atom-logo-tabletTransparent, .atom-logo-mobileTransparent {
+    display: none;
+    opacity: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.molecule-header-transparent { 
+    .atom-logo-default, .atom-logo-tablet, .atom-logo-mobile {
+        opacity: 0;
+    }
+    .atom-logo-defaultTransparent {
+        display: block;
+        opacity: 1;
+        .molecule-header-scrolled&  {
+            opacity: 0;
+        }        
+    }  
+    .atom-logo-tabletTransparent {
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            display: block;
+            opacity: 1;
+            ~ .atom-logo-defaultTransparent  {
+                display: none;
+            }
+            .molecule-header-scrolled&  {
+                opacity: 0;
+            }
+        }                
+    }
+    .atom-logo-mobileTransparent {
+        @media screen and (max-width: 767px) {
+            display: block;
+            opacity: 1;
+            ~ .atom-logo-defaultTransparent {
+                display: none;
+            }   
+            .molecule-header-scrolled&  {
+                opacity: 0;
+            }
+        }    
+    }         
+}
+
+/**
+ * Default behaviour
+ */
+.atom-logo-default {
+    .molecule-header-scrolled & {
+        opacity: 1;
+    }    
 }
 
 .atom-logo-mobile {
@@ -14,6 +75,9 @@
         ~ .atom-logo-default {
             display: none;
         }
+        .molecule-header-scrolled & {
+            opacity: 1;
+        }        
     }
 }
 
@@ -23,6 +87,12 @@
         display: block;
         ~ .atom-logo-default {
             display: none;
-        }        
+        }
+        .molecule-header-scrolled & {
+            opacity: 1;
+        }                
     }
 }
+
+
+
