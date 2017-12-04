@@ -49,33 +49,6 @@
             li > a {
                 padding: 8px 16px;
             }
-        }
-        .search-form {
-            display: block !important;
-            position: static;
-            width: 100%;
-        }
-        .search-form .fa-circle-o-notch {
-            display: none !important;
-        }
-        .atom-search-results {
-            right: 0;
-            top: 100%;
-            width: 100%;
-        }
-        .atom-search-expand {
-            display: none;
-        }
-        .atom-menu-item-social, .atom-menu-item-search {
-            padding: 8px 16px;
-        }
-        .atom-menu-item-cart-count {
-            right: 16px;    
-        }
-        .atom-menu-item-cart {
-            border: none;
-            border-bottom: 1px solid #eee;
-            border-top: 1px solid #eee;
         }        
     }
 }
@@ -143,23 +116,6 @@
                 display: block;
                 opacity: 1;
             }
-        }
-        .search-form {
-            line-height: normal;
-            position: absolute;
-            right: 8px;
-            top: 100%;
-            @media screen and (min-width: 480px) {
-                min-width: 320px;
-            }
-        }
-        .atom-search-expand {
-            padding: 0 16px;
-        }
-        .atom-search-results {
-            line-height: normal;
-            right: 8px;
-            top: ~"calc(100% + 48px)";
         }        
     }
     .sub-menu {
@@ -192,13 +148,6 @@
 
 .menu-item .fa {
     margin-left: 8px;
-}
-
-.atom-menu-item-social, .atom-menu-item-search {
-    padding: 0 8px;
-    i.fa {
-        margin-left: 0;
-    }
 }
 
 /* Sub-menu's for left or centered menu's */
@@ -379,70 +328,4 @@
     animation: slideInRight 300ms ease-in-out;
     left: inherit;
     right: 0;
-}
-
-/**
- * Menu-Chart for WooCommerce
- */
-.atom-menu-item-cart-count {
-    background: @red;
-    color: #fff;
-    border-radius: 50%;
-    height: 16px;
-    display: block;
-    font-size: 0.7em;
-    line-height: 16px;
-    position: absolute;
-    right: 4px;
-    text-align: center;
-    top: 16px;
-    width: 16px;
-}
-
-.atom-menu .atom-menu-item-cart {
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee;
-    i.fa {
-        font-size: 1.2em;
-        margin-left: 0;
-    }
-    .sub-menu {
-        line-height: normal;
-        min-width: 280px;
-        padding: 16px;
-    }
-    .woocommerce-mini-cart .woocommerce-mini-cart-item {
-        border-bottom: 1px solid #eee;
-        overflow: hidden;
-        padding: 8px 0 8px 32px;
-        a {
-            padding: 0;
-        }
-        .remove {
-            color: @red;
-            font-size: 24px;
-            font-weight: bold;
-            left: 0;
-            line-height: 26px;
-            position: absolute;
-            top: 50%;
-            transform: translate(0, -50%);
-        }
-        .quantity {
-            font-size: 0.9em;    
-        }
-        &:last-child {
-            margin-bottom: 8px;
-        }
-        img {
-            float: right;
-            width: 48px;    
-        }
-    }
-    .checkout {
-        float: right;
-    }
-    .total {
-        font-size: 1.1em;
-    }
 }

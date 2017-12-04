@@ -25,6 +25,29 @@
             background: #fff;
         }
     }
+    .atom-search-collapse {
+        .search-form {
+            position: absolute;
+            right: 8px;
+            top: 100%;
+            @media screen and (min-width: 480px) {
+                min-width: 320px;
+            }
+        }
+        .atom-search-results {
+            right: 8px;
+            top: ~"calc(100% + 48px)";
+        }       
+    }
+    .atom-search-results, .search-form {
+        line-height: normal;
+    }
+    .atom-search-expand {
+        padding: 0 16px;
+    }
+    .atom-cart-content {
+        border: 1px solid #eee;        
+    }
 }
 
 .molecule-header-transparent {

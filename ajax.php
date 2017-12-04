@@ -91,29 +91,28 @@ class Ajax {
             wp_send_json_error();
         
         $none       = sanitize_text_field( $_POST['none'] );
-        $number     = intval( $_POST['number'] );
-        $search     = sanitize_text_field( $_POST['search'] );
         
         // Developers can filter the arguments
         $args       = apply_filters( 'components_ajax_search_posts_args', array(
-            'args'          => array('posts_per_page' => $number, 's' => $search, 'post_type' => 'any'),
+            'args'          => array('posts_per_page' => intval( $_POST['number'] ), 's' => sanitize_text_field( $_POST['search'] ), 'post_type' => 'any'),
             'contentAtoms'  => array(),
             'footerAtoms'   => array(),           
             'headerAtoms'   => array(
-                'title' => array( 'tag' => 'h4', 'link' => 'post' ),
-                'type'  => array() 
+                'title' => array( 'atom' => 'title', 'properties' => array( 'tag' => 'h4', 'link' => 'post' ) ),
+                'type'  => array( 'atom' => 'type' ) 
             ),
             'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),
             'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
             'pagination'    => false,
-            'postsAppear'   => 'bottom'
+            'postsAppear'   => sanitize_text_field( $_POST['appear'] )
         ) );
         
         $list = Build::molecule( 'posts', $args , false );        
         
         // Return search results
-        if( $list )
-            wp_send_json_success($list); 
+        if( $list ) {
+            wp_send_json_success( $list ); 
+        }
         
     }    
     

@@ -245,7 +245,8 @@ module.exports.initialize = function() {
     
     jQuery('.atom-search').each( function(index) {
         
-        var delay = jQuery(this).data('delay'),
+        var appear = jQuery(this).data('appear'),
+            delay = jQuery(this).data('delay'),
             form = jQuery(this).find('.search-form'),
             length = jQuery(this).data('length'),
             loadIcon = '<i class="fa fa-spin fa-circle-o-notch"></i>',
@@ -269,6 +270,7 @@ module.exports.initialize = function() {
 
                 var currentEvent = event;
 
+                // If we are surpassing our lengt and have a value, we go search
                 if( event.currentTarget.value.length >= length && value != jQuery.trim(event.currentTarget.value) ) {
 
                     timer = setTimeout( function(event) {
@@ -281,6 +283,7 @@ module.exports.initialize = function() {
                         utils.ajax({
                             data: {
                                 action: 'publicSearch', 
+                                appear: appear, 
                                 none: none,
                                 number: number,
                                 search: value
@@ -321,6 +324,9 @@ module.exports.initialize = function() {
 
                     }, delay);
 
+                // Else, we hide the thing
+                } else {
+                    jQuery(results).fadeOut();
                 }    
 
             });
@@ -468,7 +474,14 @@ module.exports.initialize = function() {
 
             }
 
-        });   
+        });
+        
+        
+        // The behaviour of a cart element is different within headers
+        jQuery('.molecule-header .atom-cart-icon').click( function(event) {
+            event.preventDefault();
+            jQuery(this).next('.atom-cart-content').fadeToggle();
+        });
         
     });       
         

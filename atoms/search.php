@@ -7,6 +7,7 @@
 $atom = wp_parse_args( $atom, array(
     'ajax'      => false,   // Enables the ajax search action,
     'all'       => __('View all search results', 'components'),
+    'appear'    => 'bottom', // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
     'collapse'  => false,   // If collapsed, only shows a search icon that opens a form upon click
     'data'      => '',      // Custom data attributes
     'delay'     => 300,     
@@ -18,7 +19,7 @@ $atom = wp_parse_args( $atom, array(
 ) );  
  
 // Our data attributes
-$data = array( 'delay', 'length', 'none', 'number' );
+$data = array( 'appear', 'delay', 'length', 'none', 'number' );
 foreach( $data as $key => $data ) {  
     $atom['data'] .= ' data-' . $data . '="' . $atom[$data] . '"';
 }

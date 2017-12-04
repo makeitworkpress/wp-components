@@ -51,7 +51,14 @@ module.exports.initialize = function() {
 
             }
 
-        });   
+        });
+        
+        
+        // The behaviour of a cart element is different within headers
+        jQuery('.molecule-header .atom-cart-icon').click( function(event) {
+            event.preventDefault();
+            jQuery(this).next('.atom-cart-content').fadeToggle();
+        });
         
     });       
         

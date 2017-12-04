@@ -19,6 +19,11 @@ class Build {
      */
     private static function template( $type = 'atom', $template, $properties = array(), $render = true ) {
         
+        // Empty properties can be neglected
+        if( empty($properties) ) {
+            $properties = array();
+        }
+
         // Properties should be an array
         if( ! is_array($properties) ) {
             $error = new WP_Error( 'wrong', sprintf(__('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template) );
