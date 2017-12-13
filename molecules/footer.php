@@ -15,10 +15,10 @@ $molecule = wp_parse_args( $molecule, array(
     <?php do_action( 'components_footer_before', $molecule ); ?>
     
     <?php if( $molecule['sidebars'] ) { ?>
-        <div class="molecule-footer-sidebars">
+        <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper <?php } ?>">
 
             <?php if( $molecule['container'] ) { ?>
-                <div class="components-container"> 
+                <div class="components-container components-grid-wrapper"> 
             <?php } ?>        
 
             <?php 

@@ -15,7 +15,7 @@ $molecule = wp_parse_args( $molecule, array(
         'smoothHeight'      => false         // Smoothes the height
     ),
     'scheme'        => 'http://www.schema.org/CreativeWork',     
-    'scroll'        => false,     
+    'scroll'        => false,       // Adds a scrolldown button     
     'slides'        => array(),     // Supports a array with class, position, background (url or color value), video, image and atoms as keys.
     'size'          => 'full',      // The default size for images,
     'thumbnail'     => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.    

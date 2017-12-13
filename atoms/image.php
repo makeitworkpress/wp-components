@@ -8,7 +8,7 @@ $atom = wp_parse_args( $atom, array(
     'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html.
     'lazyload'  => false,   // Lazyload an image
-    'link'      => '',      // A custom link from the image
+    'link'      => '',      // A custom link from the image. Also accepts post to load the permalink for the post
     'post'      => null,
     'size'      => 'large'
 ) );
