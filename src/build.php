@@ -2,7 +2,7 @@
 /**
  * Load our components using a static wrapper
  */
-namespace WP_Components;
+namespace MakeitWorkPress\WP_Components;
 use WP_Error as WP_Error;
 
 defined( 'ABSPATH' ) or die( 'Go eat veggies!' );

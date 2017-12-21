@@ -2,7 +2,7 @@
 /**
  * Initialize our components engine
  */
-namespace WP_Components;
+namespace MakeitWorkPress\WP_Components;
 
 defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
 

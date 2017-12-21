@@ -25,7 +25,7 @@ $molecule = wp_parse_args( $molecule, array(
 
                     foreach( $molecule['atoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                        MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
@@ -42,7 +42,7 @@ $molecule = wp_parse_args( $molecule, array(
     
         // Scroll-down button
         if( $molecule['scroll'] ) { 
-            WP_Components\Build::atom( 'scroll', $molecule['scroll'] );
+            MakeitWorkPress\WP_Components\Build::atom( 'scroll', $molecule['scroll'] );
         }
     
     ?> 

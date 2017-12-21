@@ -124,7 +124,7 @@ $key = 0; ?>
     <?php 
         // Filter
         if( $molecule['filter'] ) { 
-            WP_Components\Build::atom( 'terms', $molecule['filter'] );
+            MakeitWorkPress\WP_Components\Build::atom( 'terms', $molecule['filter'] );
         } 
     ?>
     
@@ -180,7 +180,7 @@ $key = 0; ?>
                         do_action('components_posts_post_before', $id);
 
                         if( $molecule['image'] ) {
-                            WP_Components\Build::atom( 'image', $molecule['image'] );  
+                            MakeitWorkPress\WP_Components\Build::atom( 'image', $molecule['image'] );  
                         } 
                     ?>
 
@@ -192,7 +192,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['headerAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                                    MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>
@@ -209,7 +209,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['contentAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                                    MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>
@@ -226,7 +226,7 @@ $key = 0; ?>
                             <?php
                                 foreach( $molecule['footerAtoms'] as $atom ) { 
 
-                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                                    MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                                 } 
                             ?>
@@ -288,7 +288,7 @@ $key = 0; ?>
     <?php 
         // Pagination
         if( $molecule['pagination'] ) { 
-            WP_Components\Build::atom( 'pagination', $molecule['pagination'] );
+            MakeitWorkPress\WP_Components\Build::atom( 'pagination', $molecule['pagination'] );
         } 
     ?>
     

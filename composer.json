@@ -1,3 +1,22 @@
 {
-    "name": "wp-components"
+    "name": "makeitworkpress/wp-components",
+    "description": "WP Components contains a wide selection of common elements that can be found on WordPress websites and can be used to speed up development.",
+    "license": "GPL",
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "MakeitWorkPress\\WP_Components\\": "src"
+        }
+    },
+    "homepage": "https://github.com/makeitworkpress/wp-components",
+    "authors": [ 
+        {
+            "name": "Michiel Tramper",
+            "email": "michiel@makeitworkpress.com",
+            "homepage": "https://www.makeitworkpress.com"
+
+        } 
+    ]           
 }

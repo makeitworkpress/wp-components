@@ -2,8 +2,8 @@
 /**
  * Load our components using a static wrapper
  */
-namespace WP_Components;
-use WP_Components\Build as Build;
+namespace MakeitWorkPress\WP_Components;
+use MakeitWorkPress\WP_Components\Build as Build;
 
 defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
 

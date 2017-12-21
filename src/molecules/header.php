@@ -38,7 +38,7 @@ if( $molecule['transparent'] )
 
                     foreach( $molecule['topAtoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                        MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
@@ -63,7 +63,7 @@ if( $molecule['transparent'] )
 
                     foreach( $molecule['atoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                        MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 
@@ -88,7 +88,7 @@ if( $molecule['transparent'] )
 
                     foreach( $molecule['socketAtoms'] as $atom ) { 
 
-                        WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
+                        MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
                     } 
 

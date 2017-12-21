@@ -88,7 +88,7 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
 
                                 // Add our custom atoms for this caption                                
                                 foreach( $slide['atoms'] as $atom ) {
-                                    WP_Components\Build::atom( $atom['atom'], $atom['properties'] );    
+                                    MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );    
                                 }
                             ?>
 
@@ -101,11 +101,11 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
 
                     // Or... slide video or image
                     if( isset($slide['image']) ) { 
-                        WP_Components\Build::atom( 'image', $slide['image'] );
+                        MakeitWorkPress\WP_Components\Build::atom( 'image', $slide['image'] );
                     } 
                     
                     if( isset($slide['video']) ) { 
-                        WP_Components\Build::atom( 'video', $slide['video'] );
+                        MakeitWorkPress\WP_Components\Build::atom( 'video', $slide['video'] );
                     }
 
                 ?>
@@ -120,7 +120,7 @@ if( ! wp_script_is('components-slider') && apply_filters('components_slider_scri
     
         // Scroll-down button
         if( $molecule['scroll'] ) { 
-            WP_Components\Build::atom( 'scroll', $molecule['scroll'] );
+            MakeitWorkPress\WP_Components\Build::atom( 'scroll', $molecule['scroll'] );
         }
     
     ?> 
