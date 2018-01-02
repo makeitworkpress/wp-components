@@ -18,7 +18,7 @@ $atom = wp_parse_args( $atom, array(
     'closed'        => ! comments_open(), 
     'closedText'    => __('Comments are closed.', 'components'), // May contain a string for the closed text
     'form'          => $form,
-    'haveComments'  => have_comments(),
+    'haveComments'  => get_comments_number(),
     'list'          => $list,
     'next'          => '&rsaquo;',
     'paged'         => get_comment_pages_count() > 1 && get_option( 'page_comments' ) ? true : false,
@@ -46,26 +46,22 @@ if ( post_password_required() ) {
     
     <?php if( $atom['closed'] ) { ?> 
         <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>
-    <?php } else { ?> 
+    <?php } elseif( $atom['haveComments'] ) { ?> 
     
-        <?php if( $atom['haveComments'] ) { ?> 
-    
-            <?php if( $atom['title'] ) { ?> 
+        <?php if( $atom['title'] ) { ?> 
 
-                <h3 class="atom-comments-title"><?php echo $atom['title']; ?></h3>
+            <h3 class="atom-comments-title"><?php echo $atom['title']; ?></h3>
 
-            <?php } ?>
-    
-            <ol>
-                <?php echo $atom['comments']; ?>
-            </ol>
-    
-            <?php if( $atom['paged'] ) { ?> 
-                <nav class="atom-comments-navigation">
-                    <?php echo $atom['pagination']; ?>    
-                </nav>
-            <?php } ?>
-    
+        <?php } ?>
+
+        <ol>
+            <?php echo $atom['list']; ?>
+        </ol>
+
+        <?php if( $atom['paged'] ) { ?> 
+            <nav class="atom-comments-navigation">
+                <?php echo $atom['pagination']; ?>    
+            </nav>
         <?php } ?>
     
     <?php } ?>
