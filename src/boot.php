@@ -45,10 +45,10 @@ class Boot {
      */
     private function hook() {
         
-        add_action('wp_enqueue_scripts', function() {
-            
+        add_action( 'wp_enqueue_scripts', function() {
+
             // If we are debugging, load the full scripts
-            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';              
             
             // Enqueue our components CSS
             if( $this->configurations['css'] ) {
@@ -61,8 +61,8 @@ class Boot {
                 wp_register_script( 'components-slider', COMPONENTS_ASSETS . 'js/vendor/flexslider.min.js', array('jquery'), NULL, true);
                 wp_register_script( 'scrollreveal', COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
                 wp_register_script( 'lazyload', COMPONENTS_ASSETS . 'js/vendor/lazyload.min.js', array(), NULL, true);
-                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery'), NULL, true);
-                
+                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery', 'components-slider', 'lazyload', 'scrollreveal'), NULL, true );
+
                 // Localize our script
                 wp_localize_script( 'components', 'components', array(
                     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
@@ -70,10 +70,10 @@ class Boot {
                     'debug'   => defined('WP_DEBUG') && WP_DEBUG ? true : false,
                     'nonce'   => wp_create_nonce( 'cucumber' ),
                 ) );
+
             }
             
-        });
-        
+        } );     
         
         // Specific WooCommerce Based Actions
         if( class_exists('WooCommerce') ) {

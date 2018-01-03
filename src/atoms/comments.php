@@ -3,12 +3,7 @@
  * Displays an adapted comments template
  */
 
-// Retrieve our list
-ob_start();
-wp_list_comments();
-$list = ob_get_clean();
-
-// Retrieve our form
+// Retrieve our form so that it can be altered through our arguments
 ob_start();
 comment_form();
 $form = ob_get_clean();
@@ -19,10 +14,11 @@ $atom = wp_parse_args( $atom, array(
     'closedText'    => __('Comments are closed.', 'components'), // May contain a string for the closed text
     'form'          => $form,
     'haveComments'  => get_comments_number(),
-    'list'          => $list,
     'next'          => '&rsaquo;',
     'paged'         => get_comment_pages_count() > 1 && get_option( 'page_comments' ) ? true : false,
     'prev'          => '&lsaquo;',
+    'seperate'      => false,
+    'template'      => '',
     'title'         => sprintf( 
         _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'components' ),
         number_format_i18n( get_comments_number() ),
@@ -30,6 +26,9 @@ $atom = wp_parse_args( $atom, array(
     )
 ) ); 
 
+/**
+ * Setup our pagination if we don't have it set-up
+ */
 if( ! isset($atom['pagination']) ) {
     $atom['pagination']  = get_previous_comments_link( $atom['prev'] );
     $atom['pagination'] .= get_next_comments_link( $atom['next'] );
@@ -38,32 +37,17 @@ if( ! isset($atom['pagination']) ) {
 // Return if a password is required
 if ( post_password_required() ) {
 	return;
-} ?>
+}
 
-<div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
-    
-    <?php echo $atom['form']; ?>
-    
-    <?php if( $atom['closed'] ) { ?> 
-        <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>
-    <?php } elseif( $atom['haveComments'] ) { ?> 
-    
-        <?php if( $atom['title'] ) { ?> 
+if( strpos(STYLESHEETPATH, dirname(__FILE__) . '/compatible/comments.php') !== false ) {
+    $file = str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
+} else {
+    $file = str_replace( TEMPLATEPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
+}
 
-            <h3 class="atom-comments-title"><?php echo $atom['title']; ?></h3>
+$GLOBALS['atom'] = $atom;
 
-        <?php } ?>
-
-        <ol>
-            <?php echo $atom['list']; ?>
-        </ol>
-
-        <?php if( $atom['paged'] ) { ?> 
-            <nav class="atom-comments-navigation">
-                <?php echo $atom['pagination']; ?>    
-            </nav>
-        <?php } ?>
-    
-    <?php } ?>
-
-</div>
+/**
+ * The following code is needed because of the way WordPress currently loads comments using the comments_template function.
+ */
+comments_template( str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php', $atom['seperate'] ); ?>

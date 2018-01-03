@@ -28,8 +28,9 @@ $atom = wp_parse_args( $atom, array(
 ) ); 
 
 // Return at the homepage
-if( is_home() || is_front_page() ) 
-    return; ?>
+if( is_home() || is_front_page() ) {
+    return; 
+} ?>
 
 <nav class="atom-breadcrumbs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> itemscope="itemscope"  itemtype="http://schema.org/Breadcrumb" <?php echo $atom['data']; ?>>
     

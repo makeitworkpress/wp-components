@@ -65,7 +65,7 @@ class Build {
         } else {
             $error = new WP_Error( 'wrong', sprintf( __('The given template for the molecule or atom called %s does not exist.', 'components'), $template ) );
             echo $error->get_error_message();             
-        }
+        }     
         
     }
     
@@ -101,17 +101,18 @@ class Build {
         /**
          * Enqueue scripts of not enqueued yet
          */
-        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') 
-        ) {
+        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') ) {
 
-            if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) )
+            if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) ) {
                 wp_enqueue_script('scrollreveal');
+            }
             
         }
         
         if( isset($properties['lazyload']) && $properties['lazyload'] ) {
-            if( ! wp_script_is('lazyload') && apply_filters('components_lazyload_script', true) )
-                wp_enqueue_script('lazyload');        
+            if( ! wp_script_is('lazyload') && apply_filters('components_lazyload_script', true) ) {
+                wp_enqueue_script('lazyload');  
+            }      
         }
         
         /**
