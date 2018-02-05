@@ -180,9 +180,20 @@ if( is_home() || is_front_page() ) {
                             
                             if( $children ) {
                                 
-                                $key = count($breadcrumbs);
+                                $key        = count($breadcrumbs);
+                                $termIDs    = array();
+
+                                foreach( $terms as $term ) {
+                                    $termIDs[] = $term ->term_id;
+                                }
                                 
                                 foreach( $children as $child ) {
+
+                                    // We only add children that are in the same array
+                                    if( ! in_array($child, $termIDs) ) {
+                                        continue;
+                                    }
+                                    
                                     $breadcrumbs[$key]['title'] = get_term( $child )->name;
                                     $breadcrumbs[$key]['url']   = get_term_link( $child );
                                     $key++;
