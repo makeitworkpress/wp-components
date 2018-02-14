@@ -21,7 +21,9 @@ $molecule = wp_parse_args( $molecule, array(
     ),          
     'image'         => array( 'link' => 'post', 'size' => 'medium', 'enlarge' => true ),
     'infinite'      => false,    
-    'itemprop'      => '',
+    'itemprop'      => '',                              // Itemprop
+    'itemscheme'    => '', // Grand scheme      
+    'itemtype'      => 'http://schema.org/BlogPosting', // Itemtype  
     'logo'          => 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
     'none'          => __('Bummer! No posts found.', 'components'),
     'organization'  => get_bloginfo('name'),
@@ -35,8 +37,6 @@ $molecule = wp_parse_args( $molecule, array(
     'postsHover'    => '',                              // Accepts a custom hover class for posts
     'postsInlineStyle' => '',                           // Accepts a custom inline style for posts
     'query'         => array(),                         // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
-    'scheme'        => 'http://schema.org/BlogPosting', // Grand scheme
-    'type'          => '',                              // Itemtype
     'view'          => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'       => ''                               // Wrapper class for our posts-wrapper
 ) );
@@ -83,9 +83,9 @@ if( $molecule['infinite'] ) {
 }
 
 // Alternate schemes for blogposting
-if( strpos($molecule['scheme'], 'BlogPosting') ) {
+if( strpos($molecule['itemtype'], 'BlogPosting') ) {
     $molecule['itemprop']   = 'itemprop="blogPost"'; 
-    $molecule['type']       = 'itemscope="itemscope" itemtype="http://schema.org/Blog"'; 
+    $molecule['itemscheme']   = 'itemscope="itemscope" itemtype="http://schema.org/Blog"'; 
 } 
 
 // Basic grid class for individual posts
@@ -117,7 +117,7 @@ $molecule['data'] .= ' data-id="' . $molecule['id'] . '"';
 // Key for counting grid patterns
 $key = 0; ?>
 
-<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['type']; ?> <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+<div class="molecule-posts <?php echo $molecule['style']; ?>" <?php echo $molecule['itemscheme']; ?> <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
     
     <?php do_action( 'components_posts_before', $molecule ); ?>
     
@@ -155,7 +155,7 @@ $key = 0; ?>
 
                 ?>
 
-                <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['scheme']; ?>" <?php echo $molecule['postsInlineStyle']; ?>>
+                <article <?php post_class('molecule-post ' . $grid); ?> <?php echo $molecule['itemprop']; ?> itemscope="itemscope" itemtype="<?php echo $molecule['itemtype']; ?>" <?php echo $molecule['postsInlineStyle']; ?>>
 
                     <?php
                         /**

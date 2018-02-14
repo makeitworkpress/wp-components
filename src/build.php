@@ -10,18 +10,18 @@ defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
 class Build {
     
     /**
-     * Retrieves the generic template for an atom or molecule.
+     * Renders generic template for an atom or molecule.
      *
      * @param string    $type       The type, either a molecule or atom
      * @param string    $template   The template to load, either a template in the molecule or atom's folder
      * @param array     $properties The custom properties for the template    
      * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
      */
-    private static function template( $type = 'atom', $template, $properties = array(), $render = true ) {
+    private static function render( $type = 'atom', $template, $properties = [], $render = true ) {
         
         // Empty properties can be neglected
         if( empty($properties) ) {
-            $properties = array();
+            $properties = [];
         }
 
         // Properties should be an array
@@ -31,7 +31,7 @@ class Build {
             return;
         }
 
-        // If we have atom properties, they should have
+        // If we have atom properties, they should have proper properties
         if( isset($properties['atoms']) && is_array($properties['atoms']) ) {
             foreach( $properties['atoms'] as $atom ) {
                 if( ! isset($atom['atom']) ) {
@@ -47,19 +47,17 @@ class Build {
         
         if( file_exists($path) ) {
             
-            ${$type} = apply_filters( 'components_' . $type . '_properties', self::defaultProperties($template, $properties), $template );
+            ${$type} = apply_filters( 'components_' . $type . '_properties', self::setDefaultProperties($template, $properties, $type), $template );
             
             // If we do not render, we return
             if( $render == false ) {
-                
                 ob_start();
-                    require($path); 
-                $output = ob_get_clean();
-
-                return $output;
-                
-            } else {
-                require($path); 
+            }
+            
+            require($path); 
+            
+            if( $render == false ) {
+                return ob_get_clean();
             }
             
         } else {
@@ -70,115 +68,109 @@ class Build {
     }
     
     /**
-     * Define the default properties per template, which are occuring in multiple templates. 
+     * Define the default attributes per template. This allows us to dynamically add attributes 
      * 
      * @param   string  $template   The template to load
      * @param   array   $properties The custom properties defined by the developer
+     * @param   string  $type       Whether we load an atom or an molecule
      *
      * @return  array   $properties The custom properties merged with the defaults
      */ 
-    private static function defaultProperties( $template, $properties ) {
-        
-        /**
-         * Generic variables properties
-         */
-        $generics = array('data', 'inlineStyle', 'style');
-        foreach( $generics as $generic ) {
-            $properties[$generic] = isset( $properties[$generic] ) && $properties[$generic] ? $properties[$generic] : '';    
-        }
-        
-        /**
-         * Properties that generate a specific class for a style
-         */
-        $classes = array( 'align', 'animation', 'appear', 'display', 'float', 'grid', 'hover', 'parallax', 'rounded' );    
-        
-        foreach( $classes as $class ) {
-            if( isset($properties[$class]) && $properties[$class] ) {
-                $properties['style'] .= is_bool($properties[$class]) ? ' components-' . $class : ' components-' . $properties[$class] . '-' . $class;
-            }
-        }      
-                    
-        /**
-         * Enqueue scripts of not enqueued yet
-         */
-        if( isset($properties['appear']) || isset($properties['postsAppear']) || (isset($properties['ajax']) && $properties['ajax'] == true && $template == 'search') ) {
+    private static function setDefaultProperties( $template, $properties, $type = 'atom' ) {
 
-            if( ! wp_script_is('scrollreveal') && apply_filters('components_scrollreveal_script', true) ) {
-                wp_enqueue_script('scrollreveal');
-            }
+        // Define our most basic property - the class
+        $properties['attributes']['class']  = isset($properties['attributes']['class']) ? $properties['attributes']['class'] : '';
+        $properties['attributes']['class'] .= $type . '-' . $property;
+
+        /**
+         * Properties that generate a specific class for a style or are generic
+         */
+        foreach( ['align', 'animation', 'appear', 'background', 'border', 'color', 'display', 'float', 'grid', 'height', 'hover', 'parallax', 'rounded', 'width'] as $class ) {
             
-        }
-        
-        if( isset($properties['lazyload']) && $properties['lazyload'] ) {
-            if( ! wp_script_is('lazyload') && apply_filters('components_lazyload_script', true) ) {
-                wp_enqueue_script('lazyload');  
-            }      
-        }
-        
-        /**
-         * Specific selectors
-         */
-        
-        // Background color
-        if( isset($properties['background']) && $properties['background'] ) {
-            if( strpos($properties['background'], '#') === 0 || strpos($properties['background'], 'rgb') === 0 || strpos($properties['background'], 'linear-gradient') === 0 ) {
-                $properties['inlineStyle'] .= 'background:' . $properties['background'] . ';';
-            } elseif( strpos($properties['background'], 'http') === 0 ) {
-                if( isset($properties['lazyload']) && $properties['lazyload'] ) {
-                    $properties['data']  .= ' data-src="' . $properties['background'] . '"';
-                    $properties['style'] .= ' components-image-background components-lazyload'; 
-                } else {
-                    $properties['inlineStyle'] .= 'background-image: url(' . $properties['background'] . ');';
-                    $properties['style'] .= ' components-image-background';                    
+            if( isset($properties[$class]) && $properties[$class] ) {
+
+                // Backgrounds
+                if( $class == 'background' && preg_match('/(hsl)(http)(rgb)(linear-gradient)(#)/', $properties[$class]) ) {
+
+                    if( preg_match('/(http)/', $properties[$class]) ) {
+                        
+                        if( isset($properties['lazyload']) && $properties['lazyload'] ) {
+                            $properties['attributes']['data']['src']                = $properties[$class];
+                            $properties['attributes']['class']                     .= ' components-image-background components-lazyload'; 
+                        } else {                        
+                            $properties['attributes']['style']['background']        = $properties[$class];
+                            $properties['attributes']['class']                     .= ' components-image-background components-lazyload'; 
+                        }
+
+                    } else {
+                        $properties['attributes']['style']['background']            = $properties[$class];
+                    }
+
+                    continue;
                 }
-            } elseif( $properties['background'] ) {
-                $properties['style'] .= ' components-' . $properties['background'] . '-background';
+
+                if( $class == 'border' && preg_match('/(hsl)(linear-gradient)(rgb)(#)/', $properties[$class]) ) {
+                    if( strpos($properties['border'], 'linear-gradient') === 0 ) {
+                        $properties['attributes']['style']['border']                = '2px solid transparent;';
+                        $properties['attributes']['style']['border-image']          = $properties[$class];                        
+                        $properties['attributes']['style']['border-image-slice']    = 1;                        
+                    } else {
+                        $properties['attributes']['style']['border']                = '2px solid ' . $properties[$class];
+                    }
+                    continue;
+                }
+                
+                // Color
+                if( $class == 'color' && preg_match('/(hsl)(rgb)(#)/', $properties[$class]) ) {
+                    $properties['attributes']['style']['color']                     = $properties[$class];
+                    continue;
+                }                
+
+                // Height and Width
+                if( ($class == 'height' || $class == 'width') && preg_match('/(ch)(em)(ex)(in)(mm)(pc)(pt)(px)(rem)(vh)(vw)(%)/', $properties[$class]) ) {
+                    $properties['attributes']['style']['min-' . $class]             = $properties[$class];
+                    continue;
+                }
+
+                // Set our definite class
+                $properties['attributes']['class'] .= is_bool($properties[$class]) ? ' components-' . $class : ' components-' . $properties[$class] . '-' . $class;
+
             }
         }
-        
-        // Border color
-        if( isset($properties['border']) && $properties['border'] ) {
-            if( strpos($properties['border'], '#') === 0 || strpos($properties['border'], 'rgb') === 0 ) {
-               $properties['inlineStyle'] .= 'border: 2px solid' . $properties['border'] . ';';
-            } elseif( strpos($properties['border'], 'linear-gradient') === 0 ) {
-                $properties['inlineStyle'] .= 'border: 2px solid transparent;';
-                $properties['inlineStyle'] .= 'border-image: ' . $properties['border'] . '; border-image-slice: 1;';
-            } elseif( $properties['border'] ) {
-                $properties['style'] .= ' components-' . $properties['border'] . '-border';
-            }
-        }                
-        
-        // Min Heights
-        if( isset($properties['height']) && $properties['height'] ) {
-            if( is_numeric($properties['height']) ) {
-                $properties['inlineStyle'] .= 'min-height: ' . $properties['height'] . 'px;';
-            } else {
-                $properties['style'] .= ' components-' . $properties['height'] . '-height'; 
-            }
-        }  
-        
-        // Min Width
-        if( isset($properties['width']) && is_numeric($properties['width']) ) {
-            $properties['inlineStyle'] .= 'min-width: ' . $properties['width'] . 'px;';
-        }         
-
-        // Text color
-        if( isset($properties['color']) && $properties['color'] ) {
-            if( strpos($properties['color'], '#') === 0 || strpos($properties['color'], 'rgb') === 0 ) {
-                $properties['inlineStyle'] .= 'color:' . $properties['color'] . ';';
-            } elseif( $properties['color'] ) {
-                $properties['style'] .= ' components-' . $properties['color'] . '-color';
-            }
-        }
-
-        /**
-         * If we have inline styles, we add them
-         */
-        if( $properties['inlineStyle'] )
-            $properties['inlineStyle'] = 'style=" ' . $properties['inlineStyle'] . ' "';
         
         return $properties;
         
+    }
+
+    /**
+     * Turns our attributes into a usuable string for use in our atoms
+     * 
+     * @param   array   $attributes The array with custom properties
+     * @return  string  $output     The attributes as a string
+     */
+    public static function attributes( $attributes = [] ) {
+
+        $output     = '';
+
+        foreach( $attributes as $key => $attribute ) {
+
+            if( $key == 'data' && is_array($attribute) ) {
+                foreach( $attribute as $data => $value ) {
+                    $output .= 'data-' . $data . '="' . $value . '"';
+                }
+            } elseif( $key == 'style' && is_array($attribute) ) {
+                $output .= $key . '="';
+                foreach( $attribute as $selector => $value ) {
+                    $output .= $selector . ':' . $value . ';';
+                } 
+                $output .= '"';               
+            } else {
+                $output .= $key .'="' . $attribute . '"';
+            }
+        }
+
+        return $output;
+
     }
     
     /**
@@ -190,10 +182,10 @@ class Build {
     public static function atom( $atom, $variables = array(), $render = true ) {
         
         if( $render == false ) {
-            return self::template( 'atom', $atom, $variables, $render );    
+            return self::render( 'atom', $atom, $variables, $render );    
         }
         
-        self::template( 'atom', $atom, $variables );
+        self::render( 'atom', $atom, $variables );
         
     }
     
@@ -206,10 +198,10 @@ class Build {
     public static function molecule( $molecule, $variables = array(), $render = true ) {
         
         if( $render == false ) {
-            return self::template( 'molecule', $molecule, $variables, $render );    
+            return self::render( 'molecule', $molecule, $variables, $render );    
         }
         
-        self::template( 'molecule', $molecule, $variables );
+        self::render( 'molecule', $molecule, $variables );
         
     }
     

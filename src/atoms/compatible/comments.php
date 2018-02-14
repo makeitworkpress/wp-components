@@ -6,8 +6,10 @@ global $atom;
 
 if( ! wp_script_is('comment-reply') && apply_filters('components_comment_script', true) ) {
     wp_enqueue_script('comment-reply'); 
-} ?>
-<div class="atom-comments <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+} 
+
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+<div <?php echo $attributes; ?>>
     
     <?php if( $atom['closed'] ) { ?> 
         <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>

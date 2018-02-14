@@ -5,13 +5,13 @@
 global $wp_query;
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'archive'   => false,       // Shows an post archive link in the breadcrumbs if a post has one. Also accepts title/url array for custom values
-    'crumbs'    => array(),
+    'crumbs'    => [],
     'home'      => __('Home', 'components'), // Text to homepage
     'seperator' => '&rsaquo;',  // The seperator between breadcrumbs
     'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one. If set to true, takes the first related taxonomy of a post. If set to string value, takes that taxonomy.
-    'locations' => array(       // Locations for the breadcrumbs
+    'locations' => [       // Locations for the breadcrumbs
         '404'       => __('404', 'components'),
         'archive'   => isset(get_queried_object()->labels->name) ? get_queried_object()->labels->name : '',
         'author'    => '',
@@ -24,15 +24,19 @@ $atom = wp_parse_args( $atom, array(
         'tag'       => single_tag_title( '', false ),
         'tax'       => single_term_title( '', false ), 
         'year'      => get_the_date('Y')
-    )
-) ); 
+    ]
+] ); 
 
 // Return at the homepage
 if( is_home() || is_front_page() ) {
     return; 
-} ?>
+}
 
-<nav class="atom-breadcrumbs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> itemscope="itemscope"  itemtype="http://schema.org/Breadcrumb" <?php echo $atom['data']; ?>>
+$atom['attributes']['itemscope']    = 'itemscope';
+$atom['attributes']['itemtype']     = 'http://schema.org/Breadcrumb';
+$attributes                         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<nav <?php echo $attributes; ?>>
     
     <ol itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList">
         

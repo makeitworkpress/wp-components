@@ -17,7 +17,7 @@ $atom = wp_parse_args( $atom, array(
     'next'          => '&rsaquo;',
     'paged'         => get_comment_pages_count() > 1 && get_option( 'page_comments' ) ? true : false,
     'prev'          => '&lsaquo;',
-    'seperate'      => false,
+    'seperate'      => false,                   // If comments should be seperated by type
     'template'      => '',
     'title'         => sprintf( 
         _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'components' ),
@@ -39,6 +39,7 @@ if ( post_password_required() ) {
 	return;
 }
 
+// When the component is overwritten, we use a different file
 if( strpos(STYLESHEETPATH, dirname(__FILE__) . '/compatible/comments.php') !== false ) {
     $file = str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
 } else {
@@ -50,4 +51,4 @@ $GLOBALS['atom'] = $atom;
 /**
  * The following code is needed because of the way WordPress currently loads comments using the comments_template function.
  */
-comments_template( str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php', $atom['seperate'] ); ?>
+comments_template( $file, $atom['seperate'] ); ?>

@@ -4,14 +4,11 @@
  */
 global $wp_query;
 
-$archiveTitle  = '';
-$author = '';
-
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'custom'    => '',
-    'types'     => array(
-        'author'    => sprintf( __( 'Posts written by: %s', 'components' ),  '<span>' . $author . '</span>' ),
+    'types'     => [
+        'author'    => __( 'Posts Author Archive: %s', 'components' ),
         'category'  => single_cat_title( '', false ),
         'day'       => sprintf( __( 'Daily Archives: %s', 'components' ), '<span>' . get_the_date() . '</span>' ),
         'default'   => __( 'Blog Archives', 'components' ),
@@ -24,10 +21,14 @@ $atom = wp_parse_args( $atom, array(
         'tag'       => sprintf( __( 'Posts tagged: %s', 'mt' ) , '<span>' . single_tag_title( '', false ) . '</span>' ),
         'tax'       => single_term_title( '', false ),
         'year'      => sprintf( __( 'Yearly Archives: <span>%s</span>', 'mt' ), get_the_date('Y') ),    
-    )
-) ); ?>
+    ]
+] ); 
 
-<h1 class="atom-archive-title <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+
+$archiveTitle   = '';
+$attributes     = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<h1 <?php echo $attributes; ?>>
     <?php 
         /**
          * Loop through our types and see what title matches
@@ -41,7 +42,7 @@ $atom = wp_parse_args( $atom, array(
 
                 if( $type == 'author' ) {
                     $current    = get_query_var('author_name') ? get_user_by('slug', get_query_var('author_name') ) : get_userdata( get_query_var('author') );
-                    $author     = $current->display_name;
+                    $title      = sprintf( __( 'Posts written by: %s', 'components' ),  '<span>' . $current->display_name . '</span>');
                 }
 
                 $archiveTitle = $title;
@@ -50,11 +51,13 @@ $atom = wp_parse_args( $atom, array(
 
         } 
 
-        if( ! $archiveTitle )
+        if( ! $archiveTitle ) {
             $archiveTitle = $atom['types']['default'];
+        }
     
-        if( $atom['custom'] )
+        if( $atom['custom'] ) {
             $archiveTitle = $atom['custom'];
+        }
 
         echo $archiveTitle;
     

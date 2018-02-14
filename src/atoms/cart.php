@@ -2,22 +2,24 @@
 /**
  * Displays a WooCommerce shopping cart which can be expended (or not)
  */
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'cart'          => true,        // Whether to show the cart content or not
     'collapse'      => true,        // Determines the behaviour of the cart. If we collapse, the cart is hidden by default.     
     'icon'          => true         // Shows a cart icon. Needed if we have collapsed our cart.
-) ); 
+] ); 
 
 if( $atom['collapse'] ) {
-    $atom['style'] .= ' atom-cart-collapsed';
+    $atom['attributes']['class'] .= ' atom-cart-collapsed';
 }
 
 // Woocommerce should be active
 if( ! class_exists('WooCommerce') ) {
     return;
-} ?>
+} 
+
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
     
-<div class="atom-cart <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+<div <?php echo $attributes; ?>>
     <?php 
         if( $atom['icon'] ) { 
               
