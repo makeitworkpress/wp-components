@@ -4,14 +4,14 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html or an id to an image.
     'lazyload'  => false,   // Lazyload an image
     'link'      => '',      // A custom link from the image. Also accepts post to load the permalink for the post
     'post'      => null,
     'size'      => 'large'
-) );
+ ] );
 
 // Custom link to a post
 if( $atom['link'] == 'post' ) {
@@ -43,9 +43,11 @@ if( $atom['lazyload'] ) {
 // We should have an image
 if( ! $atom['image'] ) {
     return '';
-} ?>
+} 
 
-<figure class="atom-image <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<figure <?php echo $attributes; ?>>
     
     <?php if( $atom['link'] ) { ?>
         <a href="<?php echo $atom['link']; ?>" rel="bookmark">

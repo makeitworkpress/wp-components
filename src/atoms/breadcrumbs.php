@@ -5,7 +5,11 @@
 global $wp_query;
 
 // Atom values
-$atom = wp_parse_args( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'    => [
+        'itemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/Breadcrumb'
+    ],
     'archive'   => false,       // Shows an post archive link in the breadcrumbs if a post has one. Also accepts title/url array for custom values
     'crumbs'    => [],
     'home'      => __('Home', 'components'), // Text to homepage
@@ -32,9 +36,7 @@ if( is_home() || is_front_page() ) {
     return; 
 }
 
-$atom['attributes']['itemscope']    = 'itemscope';
-$atom['attributes']['itemtype']     = 'http://schema.org/Breadcrumb';
-$attributes                         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <nav <?php echo $attributes; ?>>
     

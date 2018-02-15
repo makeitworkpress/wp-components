@@ -4,12 +4,16 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'content'   => '',
-    'id'        => uniqid()
-) ); ?>
+    'data'      => [
+        'id' => uniqid()
+    ]
+] ); 
 
-<div class="atom-modal <?php echo $atom['style']; ?>" data-id="<?php echo $atom['id']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<div <?php echo $attributes; ?>>
     <div class="atom-modal-container">
         <?php if( atom['content'] ) { ?>
             <div class="atom-modal-content">

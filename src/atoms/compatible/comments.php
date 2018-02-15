@@ -3,6 +3,7 @@
  * This is the actual output for the comments atom, as loaded through comments_template in atoms/comments.php.
  */
 global $atom;
+global $build;
 
 if( ! wp_script_is('comment-reply') && apply_filters('components_comment_script', true) ) {
     wp_enqueue_script('comment-reply'); 

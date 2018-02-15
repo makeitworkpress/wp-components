@@ -47,7 +47,7 @@ class Build {
         
         if( file_exists($path) ) {
             
-            ${$type} = apply_filters( 'components_' . $type . '_properties', self::setDefaultProperties($template, $properties, $type), $template );
+            ${$type}    = apply_filters( 'components_' . $type . '_properties', self::setDefaultProperties($template, $properties, $type), $template );
             
             // If we do not render, we return
             if( $render == false ) {
@@ -124,7 +124,12 @@ class Build {
                 if( $class == 'color' && preg_match('/(hsl)(rgb)(#)/', $properties[$class]) ) {
                     $properties['attributes']['style']['color']                     = $properties[$class];
                     continue;
-                }                
+                }  
+                
+                // Continue if our grid is an array
+                if( $class == 'grid' && is_array($properties[$class]) ) {
+                    continue;
+                }
 
                 // Height and Width
                 if( ($class == 'height' || $class == 'width') && preg_match('/(ch)(em)(ex)(in)(mm)(pc)(pt)(px)(rem)(vh)(vw)(%)/', $properties[$class]) ) {
@@ -142,37 +147,6 @@ class Build {
         
     }
 
-    /**
-     * Turns our attributes into a usuable string for use in our atoms
-     * 
-     * @param   array   $attributes The array with custom properties
-     * @return  string  $output     The attributes as a string
-     */
-    public static function attributes( $attributes = [] ) {
-
-        $output     = '';
-
-        foreach( $attributes as $key => $attribute ) {
-
-            if( $key == 'data' && is_array($attribute) ) {
-                foreach( $attribute as $data => $value ) {
-                    $output .= 'data-' . $data . '="' . $value . '"';
-                }
-            } elseif( $key == 'style' && is_array($attribute) ) {
-                $output .= $key . '="';
-                foreach( $attribute as $selector => $value ) {
-                    $output .= $selector . ':' . $value . ';';
-                } 
-                $output .= '"';               
-            } else {
-                $output .= $key .'="' . $attribute . '"';
-            }
-        }
-
-        return $output;
-
-    }
-    
     /**
      * Displays any atom
      *
@@ -204,5 +178,77 @@ class Build {
         self::render( 'molecule', $molecule, $variables );
         
     }
+
+    /**
+     * Turns our attributes into a usuable string for use in our atoms
+     * 
+     * @param   array   $attributes The array with custom properties
+     * @return  string  $output     The attributes as a string
+     */
+    public static function attributes( $attributes = [] ) {
+
+        $output     = '';
+
+        foreach( $attributes as $key => $attribute ) {
+
+            // Skip empty attributes
+            if( ! $attribute ) {
+                continue;
+            }
+
+            if( $key == 'data' && is_array($attribute) ) {
+                foreach( $attribute as $data => $value ) {
+                    $output .= 'data-' . $data . '="' . $value . '"';
+                }
+            } elseif( $key == 'style' && is_array($attribute) ) {
+                $output .= $key . '="';
+                foreach( $attribute as $selector => $value ) {
+                    $output .= $selector . ':' . $value . ';';
+                } 
+                $output .= '"';               
+            } else {
+                $output .= $key .'="' . $attribute . '"';
+            }
+        }
+
+        return $output;
+
+    }
+
+    /**
+     * Allows us to parse arguments in a multidimensional array
+     * 
+     * @param array $args The arguments to parse
+     * @param array $default The default arguments
+     * 
+     * @return array $array The merged array
+     */
+    public static function multiParseArgs( $args, $default ) {
+
+        if( ! is_array($default) ) {
+            return wp_parse_args( $args, $default );
+        }
+
+        $array = [];
+
+        // Loop through our multidimensional array
+        foreach( [$default, $args] as $elements ) {
+            foreach( $elements as $key => $element ) {
+
+                // If we have numbered keys
+                if( is_integer($key) ) {
+                    $array[] = $element;
+                } elseif( isset( $array[$key] ) && (is_array( $array[$key] )) ) {
+                    $array[$key] = self::multiParseArgs( $element, $array[$key] );
+                } else {
+                    $array[$key] = $element;
+                }
+
+            }
+        }
+
+        return $array;
+
+    }    
     
 }

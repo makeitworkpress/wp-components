@@ -4,12 +4,14 @@
  */
 
 // Atom values
-$molecule = wp_parse_args( $molecule, array(
-    'atoms'     => array(), // Accepts a multidimensional array with the element name as key and the value for the component variables
+$molecule = wp_parse_args( $molecule, [
+    'atoms'     => [], // Accepts a multidimensional array with the element name as key and the value for the component variables
     'container' => true     // Wrap this component in a container
-) ); ?>
+] ); 
 
-<footer class="molecule-post-footer <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
+
+<footer <?php echo $attributes; ?>>
     
     <?php do_action( 'components_post_footer_before', $molecule ); ?>
     

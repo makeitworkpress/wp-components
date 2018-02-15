@@ -4,13 +4,19 @@
  */
 
 // Atom values
-$molecule = wp_parse_args( $molecule, array(
+$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+    'attributes' => [
+        'itemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/WPFooter'
+    ],
     'atoms'     => false,   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
     'sidebars'  => array()  // Accepts an array with the sidebar name as key and the grid for the value
-) ); ?>
+] ); 
 
-<footer class="molecule-footer <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPFooter" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
+
+<footer <?php echo $attributes; ?>>
     
     <?php do_action( 'components_footer_before', $molecule ); ?>
     

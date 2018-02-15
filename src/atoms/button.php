@@ -4,8 +4,11 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, [
-    // 'attributes'    => ['href', 'target']  // This atom accepts an href button and target as one of the attributes   
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'    => [
+        'href'   => '#',
+        'target' => '_self'
+    ],
     'iconAfter'     => '',          // Icon before the button
     'iconBefore'    => '',          // Icon after the button
     'iconVisible'   => 'standard',  // When the icon becomes visible. Accepts standard or hover
@@ -18,6 +21,7 @@ if( ! $atom['label'] ) {
     return;
 }
 
+// Icon visibility
 $atom['attributes']['class'] .= ' atom-button-' . $atom['iconVisible'];
 
 // Default background
@@ -31,7 +35,7 @@ if( $atom['size'] ) {
 }
 
 // Custom link to a post
-if( $atom['href'] == 'post' ) {
+if( $atom['attributes']['href'] == 'post' ) {
     $atom['attributes']['href'] = esc_url( get_permalink() ); 
 } 
 

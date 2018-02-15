@@ -4,7 +4,7 @@
  * Echo's a simple callback from the $atom variable
  */
 $atom = wp_parse_args( $atom, array(
-    'callback'    => '' // Either a string or an array
+    'callback'    => '' // Either a string or an array for class methods
 ) ); 
 
 if( ! $atom['callback'] ) {

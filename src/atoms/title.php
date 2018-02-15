@@ -4,18 +4,23 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
-    'link'      => '',          
-    'schema'    => 'name',
-    'tag'       => 'h1',
-    'title'     => get_the_title()
-) ); 
+$atom =MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'    => [
+        'itemprop' =>  'name',
+    ],
+    'link'          => '',          
+    'tag'           => 'h1',
+    'title'         => get_the_title()
+] ); 
 
 // Custom link to a post
-if( $atom['link'] == 'post' )
-    $atom['link'] = esc_url( get_permalink() ); ?>
+if( $atom['link'] == 'post' ) {
+    $atom['link'] = esc_url( get_permalink() ); 
+} 
 
-<<?php echo $atom['tag']; ?> class="atom-title <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']);  ?>
+
+<<?php echo $atom['tag']; ?> <?php echo $attributes; ?>>
     <?php if( $atom['link'] ) { ?>
         <a href="<?php echo $atom['link']; ?>" rel="bookmark" itemprop="url" title="<?php echo $atom['title']; ?>">
     <?php } ?>

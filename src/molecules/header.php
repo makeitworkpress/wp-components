@@ -4,26 +4,36 @@
  */
 
 // Molecule values
-$molecule = wp_parse_args( $molecule, array(
-    'atoms'         => array(),     // Accepts a multidimensional array with the each of the atoms
+$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+    'atoms'         => [],          // Accepts a multidimensional array with the each of the atoms
+    'attributes'    => [
+        'class'     => 'molecule-header-top',
+        'ítemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/WPHeader'
+    ],
     'container'     => true,        // Wrap this component in a container
     'fixed'         => true,        // If we have a fixed header
     'headroom'      => false,       // If we apply a headroom effect to the header
-    'socketAtoms'   => array(),     // An extra bottom part in the header
+    'socketAtoms'   => [],          // An extra bottom part in the header
     'transparent'   => false,       // If the header is transparent
-    'topAtoms'      => array()      // An extra top part in the header
-) ); 
+    'topAtoms'      => []           // An extra top part in the header
+] ); 
 
-if( $molecule['fixed'] ) 
-    $molecule['style'] .= ' molecule-header-fixed';
+if( $molecule['fixed'] ) {
+    $molecule['attributes']['class'] .= ' molecule-header-fixed';
+}
 
-if( $molecule['headroom'] ) 
-    $molecule['style'] .= ' molecule-header-headroom';
+if( $molecule['headroom'] ) {
+    $molecule['attributes']['class'] .= ' molecule-header-headroom';
+}
 
-if( $molecule['transparent'] ) 
-    $molecule['style'] .= ' molecule-header-transparent'; ?>
+if( $molecule['transparent'] ) {
+    $molecule['attributes']['class'] .= ' molecule-header-transparent'; 
+}
+    
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
 
-<header class="molecule-header molecule-header-top <?php echo $molecule['style']; ?>" itemscope="itemscope" itemtype="http://schema.org/WPHeader" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+<header <?php echo $attributes; ?>>
     
     <?php do_action( 'components_header_before', $molecule ); ?>
     

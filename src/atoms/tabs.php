@@ -4,19 +4,22 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'position'  => 'top',
-    'tabs'      => array()      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
-) );
+    'tabs'      => []      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
+] );
 
 // Return if we do not have tabs
-if( ! $atom['tabs'] )
+if( ! $atom['tabs'] ) {
     return;
+}
 
 // Our tabs position
-$atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
+$atom['attributes']['class'] .= ' atom-tabs-' . $atom['position']; 
 
-<div class="atom-tabs <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<div <?php echo $attributes; ?>>
     <ul class="atom-tabs-navigation">
         <?php 
             $count = 0;
@@ -34,8 +37,9 @@ $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
                     
                     <?php 
                         // Our definite tab title                                
-                        if( isset($tab['title']) )    
+                        if( isset($tab['title']) ) {    
                             echo $tab['title']; 
+                        }
                     ?>    
                 </a>
             </li>
@@ -53,8 +57,9 @@ $atom['style'] .= ' atom-tabs-' . $atom['position']; ?>
             <section class="atom-tab <?php echo $active; ?>" data-id="<?php echo $key; ?>">
                 <?php 
                     // Our definite tab content                                
-                    if( isset($tab['content']) )    
-                        echo $tab['content']; 
+                    if( isset($tab['content']) ) {   
+                        echo $tab['content'];
+                    }
                 ?>
             </section>
         <?php 

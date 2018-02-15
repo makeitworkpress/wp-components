@@ -5,8 +5,12 @@
 global $post;
 
 // Atom values
-$atom = wp_parse_args( $atom, [
-    // 'attributes'        => ['itemtype'] // This element can use the itemtype to pass a default scheme
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'        => [
+        'itemprop'  => 'author',
+        'itemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/Person'
+    ], 
     'avatar'            => get_avatar( $post->post_author, 100 ),
     'description'       => get_the_author_meta('description'),
     'imageFloat'        => 'none',
@@ -18,12 +22,6 @@ $atom = wp_parse_args( $atom, [
  ] );
 
 $atom['imageRounded']               = $atom['imageRounded'] ? 'components-rounded' : ''; 
-$atom['attributes']['itemprop']     = "author";
-$atom['attributes']['itemscope']    = "itemscope";
-
-if( ! isset($atom['attributes']['itemtype']) ) {
-    $atom['attributes']['itemtype'] = 'http://schema.org/Person';
-}
 $attributes                         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>

@@ -5,8 +5,10 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, [
-    // 'attributes'        => ['itemprop']  // This element can use the itemprop to pass a default scheme    
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes' => [
+        'itemprop' => 'text'
+    ],  
     'content'   => '',                      // Allows developers to set their own string of content 
     'pages'     => wp_link_pages( ['echo' => false] ),
     'type'      => 'content'                // Accepts content, excerpt;
@@ -30,10 +32,6 @@ if( ! $atom['content'] ) {
     }
     
 } 
-
-if( ! isset($atom['attributes']['itemprop']) ) {
-    $atom['attributes']['itemprop'] = "text";    
-}
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 

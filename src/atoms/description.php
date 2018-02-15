@@ -4,15 +4,21 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'    => [
+        'itemprop' => 'description'
+    ],
     'description'   => '',
     'schema'        => 'description',
     'tag'           => 'p',
-) );
+ ] );
 
-if( ! $atom['description'] )
-    return; ?>
+if( ! $atom['description'] ) {
+    return; 
+}
+    
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
-<<?php echo $atom['tag']; ?> class="atom-description <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['schema']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+<<?php echo $atom['tag']; ?> <?php echo $attributes; ?>>
     <?php echo $atom['description']; ?>
 </<?php echo $atom['tag']; ?>>

@@ -4,33 +4,37 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'after'     => '',                              // Content after each tag
-    'args'      => array('taxonomy' => 'post_tag'), // Arguments for retrieving the tags 
+    'args'      => ['taxonomy' => 'post_tag'], // Arguments for retrieving the tags 
     'before'    => '',                              // Content before each tag
     'seperator' => '/',                             // Content that seperates terms
-    'terms'     => array(),                         // Accepts a custom array of terms
+    'terms'     => [],                         // Accepts a custom array of terms
     'termStyle' => 'normal'                         // Accepts a custom style, such as button
-) );
+] );
 
-if( ! $atom['terms'] )
+if( ! $atom['terms'] ) {
     $atom['terms'] = get_terms( $atom['args'] );
+}
 
 // Return if we do not have a video
-if( ! $atom['terms'] )
+if( ! $atom['terms'] ) {
     return;
+}
 
-if( $atom['termStyle'] )
+if( $atom['termStyle'] ) {
     $atom['termStyle'] = 'atom-term-style-' . $atom['termStyle'];
+}
 
-// Save the taxonomy for filtering
-$atom['data'] .= ' data-taxonomy="' . $atom['args']['taxonomy'] . '"';
+// Save the taxonomy for possible filtering
+$atom['attributes']['data']['taxonomy'] = $atom['args']['taxonomy'];
 
 // So we can check our seprator
-$count = count($atom['terms']);
-$i = 0; ?>
+$count      = count($atom['terms']);
+$i          = 0; 
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
-<ul class="atom-terms <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+<ul <?php echo $attributes; ?>>
     
     <?php foreach( $atom['terms'] as $term ) { ?>
         <li>

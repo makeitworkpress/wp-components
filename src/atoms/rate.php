@@ -6,20 +6,22 @@
 $id = get_the_ID();
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'    => [
+        'itemprop'  => 'aggregateRating',
+        'itemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/AggregateRating'
+    ],
     'author'    => false,
     'count'     => get_post_meta($id, 'components_rating_count', true),
-    'id'        => $id,
-    'itemprop'  => 'aggregateRating',
-    'itemtype'  => 'http://schema.org/AggregateRating',    
+    'id'        => $id,  
     'max'       => 5,
     'min'       => 0,
     'rate'      => true, 
     'reviewed'  => false,
     'type'      => 'Person',
-    'unique'    => uniqid(),
     'value'     => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
-) );
+] );
 
 // Rating fractions
 $floor      = floor( $atom['value'] );
@@ -30,15 +32,17 @@ $halfStars  = $fraction < 0.75 && $fraction > 0.25 ? 1 : 0;
 $emptyStars = $atom['max'] - $fullStars - $halfStars;
 
 // If we allow users to rate, we need to add a class so our JS can pick it up
-$atom['style']  .= $atom['rate'] ? ' atom-rate-do' : ''; ?>
+$atom['attributes']['class']  .= $atom['rate'] ? ' atom-rate-do' : ''; 
 
-<div class="atom-rate <?php echo $atom['style']; ?>" itemprop="<?php echo $atom['itemprop']; ?>" itemscope="itemscope" itemtype="<?php echo $atom['itemtype']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<div <?php echo $attributes; ?>>
     
     <meta itemprop="ratingValue" content="<?php echo $atom['value']; ?>" />
     <meta itemprop="bestRating" content="<?php echo $atom['max']; ?>" />
     <meta itemprop="worstRating" content="<?php echo $atom['min']; ?>" />
 
-    <?php if( $atom['itemtype'] == 'http://schema.org/AggregateRating' ) { ?>
+    <?php if( $atom['attributes']['itemtype'] == 'http://schema.org/AggregateRating' ) { ?>
         <meta itemprop="reviewCount" content="<?php echo $atom['count']; ?>" />
     <?php } ?>
     

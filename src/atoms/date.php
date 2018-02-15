@@ -4,12 +4,16 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes' => [
+        'datetime' => get_the_date('c')   
+    ],
     'date'      => get_the_date(),
-    'datetime'  => get_the_date('c'),
     'icon'      => '',
     'schema'    => 'datePublished'
-) ); ?>
+] ); 
+
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <time class="atom-date <?php echo $atom['style']; ?>" datetime="<?php echo $atom['datetime']; ?>" itemprop="<?php echo $atom['schema']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
     <?php if( $atom['icon'] ) { ?>

@@ -4,35 +4,34 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes' => [
+        'data' => [
+            'appear'    => 'bottom', // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
+            'delay'     => 300,      // Delay to start searching after typing
+            'length'    => 3,        // The length of the search string to start querying with ajax
+            'none'      => __('Bummer! No results found', 'components'), 
+            'number'    => 5       // The amount of posts to query with ajax
+        ]
+    ],
     'ajax'      => false,   // Enables the ajax search action,
     'all'       => __('View all search results', 'components'),
-    'appear'    => 'bottom', // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
     'collapse'  => false,   // If collapsed, only shows a search icon that opens a form upon click
-    'data'      => '',      // Custom data attributes
-    'delay'     => 300,     
     'form'      => get_search_form(false),      
-    'length'    => 3,       // The length to start querying with ajax
     'link'      => esc_url( get_search_link('') ), 
-    'none'      => __('Bummer! No results found', 'components'), 
-    'number'    => 5       // The amount of posts to query with ajax
-) );  
- 
-// Our data attributes
-$data = array( 'appear', 'delay', 'length', 'none', 'number' );
-foreach( $data as $key => $data ) {  
-    $atom['data'] .= ' data-' . $data . '="' . $atom[$data] . '"';
-}
+] );  
 
 if( $atom['collapse'] ) {
-    $atom['style'] .= ' atom-search-collapse';
+    $atom['attributes']['class'] .= ' atom-search-collapse';
 }
 
 if( $atom['ajax'] ) {
-    $atom['style'] .= ' atom-search-ajax'; 
-} ?>     
+    $atom['attributes']['class'] .= ' atom-search-ajax'; 
+} 
 
-<div class="atom-search <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>     
+
+<div <?php echo $attributes; ?>>
     
     <?php echo $atom['form']; ?>
     

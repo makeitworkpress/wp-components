@@ -4,13 +4,23 @@
  */
 
 // Molecule values
-$molecule = wp_parse_args( $molecule, array(
-    'atoms'         => array ( array( 'atom' => 'title', 'properties' => array('tag' => 'h1', 'style' => 'entry-title')) ), // Accepts a multidimensional array with the element name as key and the value for the component variables
+$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+    'atoms'         => [
+        [
+            'atom'          => 'title', 
+            'properties'    => [
+                'tag'           => 'h1', 
+                'attributes'    => ['class' => 'entry-title']
+            ]
+        ] 
+    ],
     'container'     => true,    // Wrap this component in a container
     'scroll'        => false    // A scroll down button.
-) ); ?>
+] ); 
 
-<header class="molecule-post-header <?php echo $molecule['style']; ?>" <?php echo $molecule['inlineStyle']; ?> <?php echo $molecule['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
+
+<header <?php echo $attributes; ?>>
     
     <?php do_action( 'components_post_header_before', $molecule ); ?>
     

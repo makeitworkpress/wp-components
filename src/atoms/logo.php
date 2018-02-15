@@ -5,23 +5,31 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
-    'alt'                => __('Logo', 'components'),
-    'default'            => ['src' => '', 'height' => '', 'width' => ''], // The logo src
-    'defaultTransparent' => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
-    'mobile'             => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
-    'mobileTransparent'  => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
-    'scheme'             => 'http://schema.org/Organization',
-    'tablet'             => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
-    'tabletTransparent'  => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
-    'title'              => esc_attr( get_bloginfo('name') ),
-    'url'                => esc_url( home_url('/') )
-) ); 
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+    'attributes'            => [
+        'href'      =>  esc_url( home_url('/') ),
+        'itemscope' => 'itemscope',
+        'itemtype'  => 'http://schema.org/Organization',
+    ],
+    'alt'                   => __('Logo', 'components'),
+    'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src
+    'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
+    'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
+    'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
+    'scheme'                => 'http://schema.org/Organization',
+    'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
+    'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
+    'title'                 => esc_attr( get_bloginfo('name') ),
+    'url'                   => esc_url( home_url('/') )
+] ); 
 
-if( ! $atom['default']['src'] )
-    return; ?>
+if( ! $atom['default']['src'] ) {
+    return;
+} 
+    
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
-<a class="atom-logo <?php echo $atom['style']; ?>" href="<?php echo $atom['url']; ?>" rel="home" itemscope="itemscope" itemtype="<?php echo $atom['scheme']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+<a <?php echo $attributes; ?>>
     <?php 
         foreach( ['mobile', 'mobileTransparent', 'tablet', 'tabletTransparent', 'default', 'defaultTransparent'] as $image ) {
 

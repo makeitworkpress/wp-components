@@ -1,23 +1,25 @@
 <?php
 /**
- * Displays terms related to a post
+ * Displays terms related to a post in a list
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'id'        => get_the_ID(),
-    'taxonomies'      => array(
-        'category'   => array( 'after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ' ),
-        'post_tag'  => array( 'after' => '', 'before' => '','icon' => 'tags', 'schema' => 'keywords', 'seperator' => ', ' ),
-    )
-) ); 
+    'taxonomies'      => [
+        'category'      => [ 'after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ' ],
+        'post_tag'      => [ 'after' => '', 'before' => '','icon' => 'tags', 'schema' => 'keywords', 'seperator' => ', ' ]
+    ]
+] ); 
 
 // Retrieve our lists
 foreach( $atom['taxonomies'] as $taxonomy => $properties ) { 
     $atom['taxonomies'][$taxonomy]['list'] = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
-} ?>
+} 
 
-<div class="atom-termlist <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<div <?php echo $attributes; ?>>
     <?php foreach( $atom['taxonomies'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
             <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" itemprop="<?php echo $properties['schema']; ?>">

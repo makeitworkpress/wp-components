@@ -11,7 +11,7 @@ $atom = wp_parse_args( $atom, array(
     'name'          => ''
 ) ); 
 
-$attributes     = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+$attributes         = $build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
     

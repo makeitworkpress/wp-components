@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'colorBackground'   => true,
     'icons'  => array(
         'email'         => 'envelope', 
@@ -16,18 +16,23 @@ $atom = wp_parse_args( $atom, array(
         'google-plus'   => 'google-plus', 
         'youtube'       => 'youtube-play', 
         'pinterest'     => 'pinterest', 
+        'dribbble'      => 'dribbble',
+        'behance'       => 'behance',
         'reddit'        => 'reddit-alien', 
         'stumbleupon'   => 'stumbleupon',
         'whatsapp'      => 'whatsapp'
     ),
-    'urls'      => array(),
-    'titles'    => array()
-) ); 
+    'urls'      => [],
+    'titles'    => []
+] ); 
 
-if( $atom['colorBackground'] ) 
-    $atom['style'] .= ' components-background'; ?>
+if( $atom['colorBackground'] ) {
+    $atom['attributes']['style'] .= ' components-background';
+} 
 
-<div class="atom-social <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<div <?php echo $attributes; ?>>
     
     <?php foreach( $atom['urls'] as $network => $url ) { ?>
 

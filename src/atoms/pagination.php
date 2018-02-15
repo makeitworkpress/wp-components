@@ -5,7 +5,7 @@
 global $wp_query;
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'format'        => '/page/%#%',
     'next'          => '&rsaquo;',
     'pagination'    => '',
@@ -13,7 +13,7 @@ $atom = wp_parse_args( $atom, array(
     'size'          => 2,
     'type'          => 'numbers',       // Accepts arrows, numbers or post (for in post navigation)
     'query'         => $wp_query
-) ); 
+] ); 
 
 // Pagination with numbers
 if( $atom['type'] == 'numbers' && ! $atom['pagination'] ) {
@@ -30,7 +30,8 @@ if( $atom['type'] == 'numbers' && ! $atom['pagination'] ) {
     
 }
 
-$atom['style'] .= ' atom-pagination-' . $atom['type'];
+// Set our type as a class
+$atom['attributes']['class'] .= ' atom-pagination-' . $atom['type'];
 
 // Pagination with next and previous posts links. Only works in archives where a query is already set.
 if( $atom['type'] == 'arrows' && ! $atom['pagination'] ) {
@@ -57,10 +58,10 @@ if( $atom['type'] == 'post' && ! $atom['pagination'] ) {
 // If our atom is empty, we just return
 if( ! $atom['pagination'] ) {
     return;
-} ?>
+} 
 
-<nav class="atom-pagination <?php echo $atom['style']; ?>" <?php echo $atom['inlineStyle']; ?> <?php echo $atom['data']; ?>>
-    
-    <?php echo $atom['pagination']; ?>
-    
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+
+<nav <?php echo $attributes; ?>>
+    <?php echo $atom['pagination']; ?>  
 </nav>
