@@ -6,7 +6,7 @@
 // Molecule values
 $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     'atoms'         => [
-        [
+        'title' => [
             'atom'          => 'title', 
             'properties'    => [
                 'tag'           => 'h1', 

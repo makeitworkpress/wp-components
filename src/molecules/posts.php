@@ -27,21 +27,21 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         ],
         'blogScheme'    => true,                            // Indicates if we put author and other schema.org data within a blog bost
         'contentAtoms'  => [                                // Accepts a set of atoms for within the content
-            [ 
+            'content' => [ 
                 'atom'          => 'content', 
                 'properties'    => ['type' => 'excerpt'] 
             ]
         ],        
         'footerAtoms'   => [                                // Accepts a set of atoms for use in the post footer
-            [
+            'button' => [
                 'atom'          => 'button', 
-                'properties'    => ['link' => 'post', 'label' => __('View post', 'components'), 'size' => 'small', 'float' => 'right'] 
+                'properties'    => ['float' => 'right', 'label' => __('View post', 'components'), 'link' => 'post', 'size' => 'small'] 
             ]
         ],          
         'headerAtoms'   => [                                // Accepts a set of atoms for use in the post header
-            [
+            'title' => [
                 'atom'          => 'title', 
-                'properties'    => ['tag' => 'h2', 'link' => 'post', 'class' => 'entry-title', 'schema' => 'name headline'] 
+                'properties'    => ['attributes' => ['itemprop' => 'name headline', 'class' => 'entry-title'], 'tag' => 'h2', 'link' => 'post' ] 
             ] 
         ],  
         'image'         => [ 'link' => 'post', 'size' => 'medium', 'enlarge' => true ],       
@@ -49,8 +49,8 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'organization'  => get_bloginfo('name')
     ],                              
     'pagination'        => ['type' => 'numbers'],           // Pagination settings.
-    'query'             => [],                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
-    'queryArgs'         => [],                              // Query arguments for retrieving posts
+    'query'             => '',                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
+    'queryArgs'         => '',                              // Query arguments for retrieving posts
     'view'              => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'           => ''                               // Wrapper class for posts
 ] );

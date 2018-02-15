@@ -6,7 +6,7 @@
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'attributes'    => [
-        'href'   => '#',
+        'href'   => 'post',
         'target' => '_self'
     ],
     'iconAfter'     => '',          // Icon before the button

@@ -234,12 +234,18 @@ class Build {
 
         // Loop through our multidimensional array
         foreach( [$default, $args] as $elements ) {
+
             foreach( $elements as $key => $element ) {
 
                 // If we have numbered keys
                 if( is_integer($key) ) {
                     $array[] = $element;
-                } elseif( isset( $array[$key] ) && (is_array( $array[$key] )) ) {
+
+                // Atoms are always overwritten by the arguments
+                } elseif( in_array($key, ['atoms', 'contentAtoms', 'footerAtoms', 'headerAtoms', 'socketAtoms', 'topAtoms']) ) { 
+                    $array[$key] = $element;
+                } 
+                elseif( isset( $array[$key] ) && (is_array( $array[$key] )) && ! empty($array[$key]) ) {
                     $array[$key] = self::multiParseArgs( $element, $array[$key] );
                 } else {
                     $array[$key] = $element;
