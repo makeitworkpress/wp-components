@@ -19,7 +19,7 @@ if( $atom['link'] == 'post' ) {
 }
 
 if( $atom['enlarge'] ) {
-    $atom['style'] .= ' atom-image-enlarge';
+    $atom['attributes']['class'] .= ' atom-image-enlarge';
 }
 
 // If we have a lazyload, we add something to the class

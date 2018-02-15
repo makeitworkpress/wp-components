@@ -42,7 +42,7 @@ if ( post_password_required() ) {
 // When the component is overwritten, we use a different file
 if( $atom['template'] ) {
     $file = $atom['template'];
-} elseif( strpos(STYLESHEETPATH, dirname(__FILE__) . '/compatible/comments.php') !== false ) {
+} elseif( strpos(dirname(__FILE__) . '/compatible/comments.php', STYLESHEETPATH) !== false ) {
     $file = str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
 } else {
     $file = str_replace( TEMPLATEPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';

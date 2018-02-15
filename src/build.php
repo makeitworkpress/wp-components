@@ -76,30 +76,31 @@ class Build {
      *
      * @return  array   $properties The custom properties merged with the defaults
      */ 
-    private static function setDefaultProperties( $template, $properties, $type = 'atom' ) {
+    public static function setDefaultProperties( $template, $properties, $type = 'atom' ) {
 
         // Define our most basic property - the class
-        $properties['attributes']['class']  = isset($properties['attributes']['class']) ? $properties['attributes']['class'] : '';
-        $properties['attributes']['class'] .= $type . '-' . $property;
+        $properties['attributes']['class']  = isset($properties['attributes']['class']) ? $type . ' ' . $properties['attributes']['class'] : $type;
+        $properties['attributes']['class'] .= ' ' . $type . '-' . $template;
 
         /**
          * Properties that generate a specific class for a style or are generic
          */
-        foreach( ['align', 'animation', 'appear', 'background', 'border', 'color', 'display', 'float', 'grid', 'height', 'hover', 'parallax', 'rounded', 'width'] as $class ) {
+        foreach( ['align', 'animation', 'appear', 'background', 'border', 'color', 'display', 'float', 'grid', 'height', 'hover', 'parallax', 'position', 'rounded', 'width'] as $class ) {
             
             if( isset($properties[$class]) && $properties[$class] ) {
 
                 // Backgrounds
-                if( $class == 'background' && preg_match('/(hsl)(http)(rgb)(linear-gradient)(#)/', $properties[$class]) ) {
+                if( $class == 'background' && preg_match('/hsl|http|https|rgb|linear-gradient|#/', $properties[$class]) ) {
 
-                    if( preg_match('/(http)/', $properties[$class]) ) {
+                    if( preg_match('/http|https/', $properties[$class]) ) {
+
+                        $properties['attributes']['class']                         .= ' components-image-background'; 
                         
                         if( isset($properties['lazyload']) && $properties['lazyload'] ) {
                             $properties['attributes']['data']['src']                = $properties[$class];
-                            $properties['attributes']['class']                     .= ' components-image-background components-lazyload'; 
+                            $properties['attributes']['class']                     .= ' components-lazyload'; 
                         } else {                        
-                            $properties['attributes']['style']['background']        = $properties[$class];
-                            $properties['attributes']['class']                     .= ' components-image-background components-lazyload'; 
+                            $properties['attributes']['style']['background-image']  = 'url(' . $properties[$class] . ')';
                         }
 
                     } else {
@@ -109,7 +110,7 @@ class Build {
                     continue;
                 }
 
-                if( $class == 'border' && preg_match('/(hsl)(linear-gradient)(rgb)(#)/', $properties[$class]) ) {
+                if( $class == 'border' && preg_match('/hsl|linear-gradient|rgb|#/', $properties[$class]) ) {
                     if( strpos($properties['border'], 'linear-gradient') === 0 ) {
                         $properties['attributes']['style']['border']                = '2px solid transparent;';
                         $properties['attributes']['style']['border-image']          = $properties[$class];                        
@@ -121,7 +122,7 @@ class Build {
                 }
                 
                 // Color
-                if( $class == 'color' && preg_match('/(hsl)(rgb)(#)/', $properties[$class]) ) {
+                if( $class == 'color' && preg_match('/hsl|rgb|#/', $properties[$class]) ) {
                     $properties['attributes']['style']['color']                     = $properties[$class];
                     continue;
                 }  
@@ -132,7 +133,7 @@ class Build {
                 }
 
                 // Height and Width
-                if( ($class == 'height' || $class == 'width') && preg_match('/(ch)(em)(ex)(in)(mm)(pc)(pt)(px)(rem)(vh)(vw)(%)/', $properties[$class]) ) {
+                if( ($class == 'height' || $class == 'width') && preg_match('/ch|em|ex|in|mm|pc|pt|px|rem|vh|vw|%/', $properties[$class]) ) {
                     $properties['attributes']['style']['min-' . $class]             = $properties[$class];
                     continue;
                 }

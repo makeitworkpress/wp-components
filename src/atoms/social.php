@@ -27,7 +27,7 @@ $atom = wp_parse_args( $atom, [
 ] ); 
 
 if( $atom['colorBackground'] ) {
-    $atom['attributes']['style'] .= ' components-background';
+    $atom['attributes']['class'] .= ' components-background';
 } 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
