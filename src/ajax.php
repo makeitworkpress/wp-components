@@ -21,15 +21,15 @@ class Ajax {
         foreach( $methods as $method ) {
             
             // Skip our default methods
-            if( in_array($method, array('__construct', 'addMessage', 'addError', 'resolve', 'hasErrors')) )
+            if( in_array($method, ['__construct', 'addMessage', 'addError', 'resolve', 'hasErrors']) )
                 continue;
             
             // If a method is public, also add
             if( strpos($method, 'public') == 0 ) {
-                add_action('wp_ajax_nopriv_' . $method, array($this, $method) );
+                add_action('wp_ajax_nopriv_' . $method, [$this, $method] );
             }
 
-            add_action('wp_ajax_' . $method,  array($this, $method) );
+            add_action('wp_ajax_' . $method,  [$this, $method] );
                 
         }         
         
@@ -64,9 +64,9 @@ class Ajax {
             update_post_meta($id, 'components_rating_count', $newCount);
             update_post_meta($id, 'components_rating', $newRating);
 
-            $output = Build::atom( 'rate', array('count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min), false );
+            $output = Build::atom( 'rate', ['count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min], false );
             
-            wp_send_json_success( array('rating' => $newRating, 'count' => $newCount, 'output' => $output) );
+            wp_send_json_success( ['rating' => $newRating, 'count' => $newCount, 'output' => $output] );
         
         }
         
@@ -87,25 +87,28 @@ class Ajax {
         // Check nonce
         check_ajax_referer('cucumber', 'nonce');
         
-        if( empty($_POST['search']) || ! is_numeric($_POST['number']) )
+        if( empty($_POST['search']) || ! is_numeric($_POST['number']) ) {
             wp_send_json_error();
+        }
         
         $none       = sanitize_text_field( $_POST['none'] );
         
         // Developers can filter the arguments
-        $args       = apply_filters( 'components_ajax_search_posts_args', array(
-            'args'          => array('posts_per_page' => intval( $_POST['number'] ), 's' => sanitize_text_field( $_POST['search'] ), 'post_type' => 'any'),
-            'contentAtoms'  => array(),
-            'footerAtoms'   => array(),           
-            'headerAtoms'   => array(
-                'title' => array( 'atom' => 'title', 'properties' => array( 'tag' => 'h4', 'link' => 'post' ) ),
-                'type'  => array( 'atom' => 'type' ) 
-            ),
-            'image'         => array('link' => 'post', 'size' => 'thumbnail', 'rounded' => true),
+        $args       = apply_filters( 'components_ajax_search_posts_args', [
+            'args'          => ['posts_per_page' => intval( $_POST['number'] ), 's' => sanitize_text_field( $_POST['search'] ), 'post_type' => 'any'],
             'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
-            'pagination'    => false,
-            'postsAppear'   => sanitize_text_field( $_POST['appear'] )
-        ) );
+            'pagination'    => false,            
+            'postProperties' => [
+                'appear'        => sanitize_text_field( $_POST['appear'] ),
+                'contentAtoms'  => [],
+                'footerAtoms'   => []],           
+                'headerAtoms'   => [
+                    'title' => [ 'atom' => 'title', 'properties' => ['tag' => 'h4', 'link' => 'post'],
+                    'type'  => [ 'atom' => 'type' ] 
+                    ],
+                'image'     => ['link' => 'post', 'size' => 'thumbnail', 'rounded' => true],
+            ]
+        ] );
         
         $list = Build::molecule( 'posts', $args , false );        
         

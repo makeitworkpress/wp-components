@@ -88,7 +88,7 @@ if( $molecule['view'] ) {
 }
 
 // Individal posts grid
-if( $molecule['postProperties']['grid'] ) {
+if( isset($molecule['postProperties']['grid']) && $molecule['postProperties']['grid'] ) {
     $molecule['wrapper']               .= ' components-grid-wrapper'; 
 }
 
