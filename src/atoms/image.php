@@ -6,7 +6,7 @@
 // Atom values
 $atom = wp_parse_args( $atom, [
     'enlarge'   => false,
-    'image'     => '',      // Expects a custom image tag for the image, including the html or an id to an image.
+    'image'     => '',      // Expects a custom image tag for the image, including the html or an id to an image. Also accepts custom string to look for the image id in a meta field
     'lazyload'  => false,   // Lazyload an image
     'link'      => '',      // A custom link from the image. Also accepts post to load the permalink for the post
     'post'      => null,
@@ -28,9 +28,12 @@ $class              = $atom['lazyload'] ? ' components-lazyload' : '';
 // Now, load our image based upon what we have
 if( is_numeric($atom['image']) ) {
     $atom['image']  = wp_get_attachment_image( $atom['image'], $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
-} elseif( is_string($atom['image']) && strlen($atom['image']) > 3 ) {
+} elseif( is_string($atom['image']) && strlen($atom['image']) > 3 && strpos( $atom['image'], '<img') !== false ) {
     $atom['image']  = $atom['image'];
-} elseif( empty($atom['image'] ) ) {
+} elseif( is_string($atom['image']) ) {
+    $id             = get_post_meta( get_the_ID(), $atom['image'], true);
+    $atom['image']  = wp_get_attachment_image( $id , $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
+} elseif( empty($atom['image']) ) {
     $atom['image']  = get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 }
 
