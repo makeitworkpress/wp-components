@@ -30,7 +30,7 @@ if( is_numeric($atom['image']) ) {
     $atom['image']  = wp_get_attachment_image( $atom['image'], $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
 } elseif( is_string($atom['image']) && strlen($atom['image']) > 3 && strpos( $atom['image'], '<img') !== false ) {
     $atom['image']  = $atom['image'];
-} elseif( is_string($atom['image']) ) {
+} elseif( is_string($atom['image']) && strlen($atom['image']) > 2 ) {
     $id             = get_post_meta( get_the_ID(), $atom['image'], true);
     $atom['image']  = wp_get_attachment_image( $id , $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
 } elseif( empty($atom['image']) ) {
