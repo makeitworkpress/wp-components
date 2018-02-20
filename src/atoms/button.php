@@ -34,6 +34,11 @@ if( $atom['size'] ) {
     $atom['attributes']['class'] .= ' atom-button-' . $atom['size'];
 }
 
+// If we are still using the link attribute
+if( isset($atom['link']) ) {
+    $atom['attributes']['href'] = $atom['link'];
+}
+
 // Custom link to a post
 if( $atom['attributes']['href'] == 'post' ) {
     $atom['attributes']['href'] = esc_url( get_permalink() ); 
