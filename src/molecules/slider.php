@@ -19,7 +19,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'smoothHeight'      => false         // Smoothes the height
     ], 
     'scroll'        => false,       // Adds a scrolldown button     
-    'slides'        => [],          // Supports a array with video, image and atoms as keys and the attribute key with class, position, background (url or color value).   
+    'slides'        => [],          // Supports a array with video, image and atoms as keys and the attributes key with class, position, background (url or color value).   
     'thumbnailSize' => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.             
  
 ] ); 
