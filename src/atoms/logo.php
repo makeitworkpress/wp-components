@@ -37,8 +37,16 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             if( ! $atom[$image]['src'] || ! $atom[$image]['width'] || ! $atom[$image]['height'] ) {
                 continue;
             }
+
+            // Itemprop for the logo image
+            $itemprop = '';
+
+            if($image == 'default' ) {
+                $itemprop = $atom['attributes']['itemtype'] == 'http://schema.org/Organization' ? 'itemprop="logo"' : 'itemprop="image"';
+            } 
+
     ?>
-        <img class="atom-logo-<?php echo $image; ?>" src="<?php echo $atom[$image]['src']; ?>" height="<?php echo $atom[$image]['height']; ?>" width="<?php echo $atom[$image]['width']; ?>" alt="<?php echo $atom['alt']; ?>" />
+        <img class="atom-logo-<?php echo $image; ?>" src="<?php echo $atom[$image]['src']; ?>" height="<?php echo $atom[$image]['height']; ?>" width="<?php echo $atom[$image]['width']; ?>" alt="<?php echo $atom['alt']; ?>" <?php echo $itemprop; ?> />
     <?php
         } 
     ?>
