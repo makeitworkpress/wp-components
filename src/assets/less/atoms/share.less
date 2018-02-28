@@ -24,6 +24,24 @@
     }
 }
 
+.atom-share-title {
+    display: inline-block;
+    font-size: 0.8em;
+    margin-top: 12px;
+    max-width: 128px;
+    opacity: 0.8;
+    text-align: center;
+    text-transform: uppercase;
+    width: 64px;
+    .atom-share-fixed & {
+        font-size: 0.7em;
+        width: 48px;
+        @media screen and (max-width: 767px) {
+            display: none;
+        }
+    }
+}
+
 .atom-share-fixed {
     display: none;
     left: 0;
@@ -44,7 +62,6 @@
         a {
             display: inline;
             flex-grow: 1;
-            width: inherit;
             &:hover {
                 height: 64px;
                 line-height: 64px;

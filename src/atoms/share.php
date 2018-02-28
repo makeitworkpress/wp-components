@@ -24,6 +24,7 @@ $atom   = wp_parse_args( $atom, [
     'colorBackground'   => true,
     'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
+    'share'             => __('Share:', 'wp-components'), // Adds a label with share
     'networks'          => [
         'facebook'      => [ 'url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook' ], 
         'twitter'       => [ 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ], 
@@ -54,6 +55,12 @@ if( $atom['colorBackground'] ) {
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
+
+    <?php if( $atom['share'] ) { ?>
+        <span class="atom-network atom-share-title">
+            <?php echo $atom['share']; ?>
+        </span>
+    <?php } ?>
     
     <?php foreach( $atom['enabled'] as $network ) { ?>
     
