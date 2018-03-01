@@ -73,7 +73,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 if( $location == 'archive' ) {
                     $url    = get_post_type_archive_link( get_queried_object()->name );
                     
-                    if( is_archive('product') && class_exists('WooCommerce') ) {
+                    if( is_archive('product') && class_exists('WooCommerce') && get_queried_object()->name == 'product' ) {
                         $url    = get_the_title( wc_get_page_id( 'shop' ) );
                         $title  = get_the_title( wc_get_page_id( 'shop' ) );
                     }
