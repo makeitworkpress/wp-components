@@ -97,6 +97,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                     $url = get_permalink();  
     
                     global $post;
+
+                    if( is_numeric($post) ) {
+                        $post = get_post($post);
+                    }
                      
                     // Archive link
                     if( $atom['archive'] && $location == 'single' ) {

@@ -4,6 +4,10 @@
  */
 global $post;
 
+if( is_numeric($post) ) {
+    $post = get_post($post);
+}
+
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'attributes'        => [

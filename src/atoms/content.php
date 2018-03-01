@@ -17,7 +17,12 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
 if( ! $atom['content'] ) {
     
     if( $atom['type'] == 'excerpt' ) {
+        
         global $post;
+
+        if( is_numeric($post) ) {
+            $post = get_post($post);
+        }        
 
         // Set our more to zero and retrieve the text before the more tag
         if( strpos($post->post_content, '<!--more-->') >= 1 ) {
