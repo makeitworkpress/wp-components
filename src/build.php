@@ -204,6 +204,9 @@ class Build {
             } elseif( $key == 'style' && is_array($attribute) ) {
                 $output .= $key . '="';
                 foreach( $attribute as $selector => $value ) {
+                    if( ! $value ) {
+                        continue;
+                    }                    
                     $output .= $selector . ':' . $value . ';';
                 } 
                 $output .= '"';               
