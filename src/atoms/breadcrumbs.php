@@ -230,7 +230,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                     /**
                      * We can prefix the post type for products or custom values
                      */
-                    if( is_archive('product') && class_exists('WooCommerce') ) {
+                    if( is_archive('product') && class_exists('WooCommerce') && get_queried_object()->name == 'product' ) {
                         $key = count($breadcrumbs);
                         
                         $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
@@ -241,7 +241,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
                         $breadcrumbs[$key]['title'] = $atom['archive']['title'];
                         $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
-                    } 
+                    } elseif( $atom['archive'] ) {
+                        $breadcrumbs[$key]['title'] = get_queried_object()->labels->name;
+                        $breadcrumbs[$key]['url']   = get_post_type_archive_link( get_queried_object()->name ); 
+                    }
                     
                     // Ancestors
                     $ancestors = get_ancestors( get_queried_object()->term_id, get_queried_object()->taxonomy );
