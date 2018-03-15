@@ -25,7 +25,7 @@ If you don't want to include the scripts (which breaks some of the components), 
 $components = new MakeitWorkPress\WP_Components\Boot( ['css' => false, 'js' => false] );
 ```
 Each component can have custom properties and has a set of predefined properties, such as alignment, attributes, background, border, color, float, height, parallax, rounded, width and so forth. 
-These are explained in the wiki.
+These are explained in [the wiki](https://github.com/makeitworkpress/wp-components/wiki/Common-Properties).
 
 ### Rendering an atom
 If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to return instead of echo. Probably, we might write a shorter function for this in future versions.
@@ -55,4 +55,4 @@ MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'tran
 ```
 
 ## WP Components WIKI
-You can find more information on using components in our wiki.
+You can find more information on using components and all the properties that may be used for each component in [our wiki](https://github.com/makeitworkpress/wp-components/wiki).
