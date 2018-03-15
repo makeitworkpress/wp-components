@@ -7,7 +7,7 @@ The components are seperated in two classes, namely atoms which are single compo
 
 ## Usage
 
-Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or custom plugin. Additionaly, you could also use an autoloader. 
+Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
 
 ### Booting Components
 Before building components, you should boot the general script which enqueues the styles and scripts by the components.
@@ -22,24 +22,35 @@ If you don't want to include the scripts (which breaks some of the components), 
 ```php
 $components = new MakeitWorkPress\WP_Components\Boot( ['css' => false, 'js' => false] );
 ```
-Each component can have custom properties and has a set of predefined properties, such as alignment, background, border, color, float, height, parallax, rounded, width and so forth. 
+Each component can have custom properties and has a set of predefined properties, such as alignment, attributes, background, border, color, float, height, parallax, rounded, width and so forth. 
 These are explained in the wiki.
 
 ### Rendering an atom
-If you want to render an atom, you have to utilize the Build class. Probably, we might write a shorter function for this in future versions.
+If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to return instead of echo. Probably, we might write a shorter function for this in future versions.
 
 ```php
-MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties );
+MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, boolean $return = false );
+```
+
+
+For example, rendering the header molecule is done in the following manner:
+
+```php
+MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
 ```
 
 ### Rendering a molecule
-If you want to render a molecule, you have to utilize the Build class. Probably, we might write a shorter function for this in future versions.
+If you want to render a molecule, you have to utilize the Build class and use the name of the molecule, the properties and eventually if you want to return instead of echo.
 
 ```php
-MakeitWorkPress\WP_Components\Build::molecule( string $name, array $properties );
+MakeitWorkPress\WP_Components\Build::molecule( string $name, array $properties, boolean $return = false );
 ```
 
-For example
+For example, rendering the header molecule is done in the following manner:
+
+```php
+MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
+```
 
 ## WP Components WIKI
 You can find more information on using components in our wiki.
