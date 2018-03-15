@@ -9,7 +9,7 @@ The components are seperated in two classes, namely atoms which are single compo
 
 ## Usage
 
-Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
+Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or a custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
 
 ### Booting Components
 Before building components, you should boot the general script which enqueues the styles and scripts by the components.
@@ -38,7 +38,7 @@ MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, bool
 For example, rendering a lazyloading image molecule is done in the following manner:
 
 ```php
-MakeitWorkPress\WP_Components\Build::molecule( 'image', ['lazyload' => true] );
+MakeitWorkPress\WP_Components\Build::atom( 'image', ['lazyload' => true] );
 ```
 
 ### Rendering a molecule
