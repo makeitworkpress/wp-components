@@ -1,7 +1,7 @@
 # wp-components
 Many frameworks use a modular approach for designing applications. While developing WordPress websites, we found out we're writing similar code a lot of times, even with existing frameworks and themes. That's why we developed WP Components, a set of common components with minimal styling but many functionalities.
 
-WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. Thus, it is aimed at WordPress Developers.
+WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. It is aimed at WordPress Developers.
 
 The components are seperated in two classes, namely atoms which are single components and molecules which are consisting of multiple atoms.
 * An atom is for example a set of sharing buttons, a title, a button, a search field, breadcrumbs and so forth.
