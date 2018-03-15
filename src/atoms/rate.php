@@ -12,15 +12,15 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/AggregateRating'
     ],
-    'author'    => false,
-    'count'     => get_post_meta($id, 'components_rating_count', true),
-    'id'        => $id,  
-    'max'       => 5,
-    'min'       => 0,
-    'rate'      => true, 
-    'reviewed'  => false,
-    'type'      => 'Person',
-    'value'     => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
+    'author'        => '',
+    'authorType'    => 'http://schema.org/Person',
+    'count'         => get_post_meta($id, 'components_rating_count', true),
+    'id'            => $id,  
+    'max'           => 5,
+    'min'           => 0,
+    'rate'          => true, 
+    'reviewed'      => false,
+    'value'         => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
 ] );
 
 // Rating fractions
@@ -51,7 +51,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     <?php } ?>
     
     <?php if( $atom['author'] ) { ?>
-        <meta itemprop="author" itemscope="itemscope" itemtype="http://schema.org/<?php echo $atom['type']; ?>" content="<?php echo $atom['author']; ?>" />
+        <meta itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['authorType']; ?>" content="<?php echo $atom['author']; ?>" />
     <?php } ?>
     
     <?php if( $atom['rate'] ) { ?>

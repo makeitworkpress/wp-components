@@ -16,11 +16,9 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
     'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
-    'scheme'                => 'http://schema.org/Organization',
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
     'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
-    'url'                   => esc_url( home_url('/') )
 ] ); 
 
 if( ! $atom['default']['src'] ) {

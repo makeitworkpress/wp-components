@@ -11,11 +11,10 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemtype'  => 'http://schema.org/Breadcrumb'
     ],
     'archive'   => false,       // Shows an post archive link in the breadcrumbs if a post has one. Also accepts title/url array for custom values
-    'crumbs'    => [],
     'home'      => __('Home', 'components'), // Text to homepage
     'seperator' => '&rsaquo;',  // The seperator between breadcrumbs
     'taxonomy'  => false,       // Show taxonomy link within the breadcrumbs if a post has one. If set to true, takes the first related taxonomy of a post. If set to string value, takes that taxonomy.
-    'locations' => [       // Locations for the breadcrumbs
+    'locations' => [            // Locations for the breadcrumbs
         '404'       => __('404', 'components'),
         'archive'   => isset(get_queried_object()->labels->name) ? get_queried_object()->labels->name : '',
         'author'    => '',

@@ -9,7 +9,6 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemprop' => 'description'
     ],
     'description'   => '',
-    'schema'        => 'description',
     'tag'           => 'p',
  ] );
 

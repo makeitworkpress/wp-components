@@ -9,7 +9,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemscope' => 'itemscope', 
         'itemtype'  => 'http://www.schema.org/WPSideBar'
     ],
-    'sidebars'      => array() // Accepts a multidimensional array with the sidebar names as values
+    'sidebars'      => [] // Accepts an array with the sidebar names as values
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>

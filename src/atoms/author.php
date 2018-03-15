@@ -16,7 +16,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemtype'  => 'http://schema.org/Person'
     ], 
     'avatar'            => get_avatar( $post->post_author, 100 ),
-    'description'       => get_the_author_meta('description'),
+    'description'       => get_the_author_meta( 'description' ),
     'imageFloat'        => 'none',
     'imageRounded'      => true,
     'jobTitle'          => '',

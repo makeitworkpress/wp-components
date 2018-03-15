@@ -5,10 +5,10 @@
 
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
-    'content'   => '',
-    'data'      => [
-        'id' => uniqid()
-    ]
+    'attributes' => [
+        'data' => ['id' => uniqid()]
+    ],
+    'content'   => ''
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>

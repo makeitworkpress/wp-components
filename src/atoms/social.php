@@ -6,7 +6,7 @@
 // Atom values
 $atom = wp_parse_args( $atom, [
     'colorBackground'   => true,
-    'icons'  => array(
+    'icons'  => [
         'email'         => 'envelope', 
         'telephone'     => 'phone', 
         'facebook'      => 'facebook', 
@@ -21,7 +21,7 @@ $atom = wp_parse_args( $atom, [
         'reddit'        => 'reddit-alien', 
         'stumbleupon'   => 'stumbleupon',
         'whatsapp'      => 'whatsapp'
-    ),
+    ],
     'urls'      => [],
     'titles'    => []
 ] ); 
