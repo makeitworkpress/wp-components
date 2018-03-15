@@ -1,5 +1,7 @@
 # wp-components
-Contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. 
+Many frameworks use a modular approach for designing applications. While developing WordPress websites, we found out we're writing similar code a lot of times, even with existing frameworks and themes. That's why we developed WP Components, a set of common components with minimal styling but many functionalities.
+
+WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. 
 
 The components are seperated in two classes, namely atoms which are single components and molecules which are consisting of multiple atoms.
 * An atom is for example a set of sharing buttons, a title, a button, a search field, breadcrumbs and so forth.
@@ -33,10 +35,10 @@ MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, bool
 ```
 
 
-For example, rendering the header molecule is done in the following manner:
+For example, rendering a lazyloading image molecule is done in the following manner:
 
 ```php
-MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
+MakeitWorkPress\WP_Components\Build::molecule( 'image', ['lazyload' => true] );
 ```
 
 ### Rendering a molecule
