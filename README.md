@@ -14,7 +14,6 @@ WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.c
 
 Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or a custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
 
-&nbsp;
 ### Booting Components
 Before building components, you should boot the general script which enqueues the styles and scripts by the components.
 
@@ -29,7 +28,6 @@ If you don't want to include the scripts (which breaks some of the components), 
 $components = new MakeitWorkPress\WP_Components\Boot( ['css' => false, 'js' => false] );
 ```
 
-&nbsp;
 ### Rendering an atom
 If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to return instead of echo. Probably, we might write a shorter function for this in future versions.
 
@@ -44,7 +42,6 @@ For example, rendering a lazyloading image atom, where the attachment ID of the 
 MakeitWorkPress\WP_Components\Build::atom( 'image', ['image' => 71, 'lazyload' => true] );
 ```
 
-&nbsp;
 ### Rendering a molecule
 If you want to render a molecule, you have to utilize the Build class and use the name of the molecule, the properties and eventually if you want to return instead of echo.
 
