@@ -5,11 +5,11 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, [
-    'after'     => '',                              // Content after each tag
-    'args'      => ['taxonomy' => 'post_tag'], // Arguments for retrieving the tags 
-    'before'    => '',                              // Content before each tag
+    'after'     => '',                              // Content after each term
+    'args'      => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags 
+    'before'    => '',                              // Content before each term
     'seperator' => '/',                             // Content that seperates terms
-    'terms'     => [],                         // Accepts a custom array of terms
+    'terms'     => [],                              // Accepts a custom array of terms
     'termStyle' => 'normal'                         // Accepts a custom style, such as button
 ] );
 

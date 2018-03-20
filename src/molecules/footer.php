@@ -9,9 +9,9 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/WPFooter'
     ],
-    'atoms'     => false,   // Adds an array of elements to the footer socket
+    'atoms'     => [],   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
-    'sidebars'  => array()  // Accepts an array with the sidebar name as key and the grid for the value
+    'sidebars'  => []       // Accepts an array with the sidebar name as key and the grid for the value
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>

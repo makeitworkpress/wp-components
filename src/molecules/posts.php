@@ -50,7 +50,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     ],                              
     'pagination'        => ['type' => 'numbers'],           // Pagination settings.
     'query'             => '',                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
-    'queryArgs'         => '',                              // Query arguments for retrieving posts
+    'queryArgs'         => [],                              // Query arguments for retrieving posts
     'view'              => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'           => ''                               // Wrapper class for posts
 ] );
