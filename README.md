@@ -64,3 +64,7 @@ These are explained in [the wiki](https://github.com/makeitworkpress/wp-componen
 &nbsp;
 ## WP Components WIKI
 You can find more information on using components and all the properties that may be used for each component in [our wiki](https://github.com/makeitworkpress/wp-components/wiki).
+
+&nbsp;
+## Compatibility
+WP Components works with PHP 7+ and is tested with WordPress 4.9 and higher.
