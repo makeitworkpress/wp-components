@@ -4,11 +4,12 @@ Many frameworks use a modular approach for designing applications. While develop
 WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. It is aimed at WordPress Developers.
 
 The components are seperated in two classes, namely atoms which are single components and molecules which are consisting of multiple atoms.
-* An atom is for example a set of sharing buttons, a title, a button, a search field, breadcrumbs and so forth.
-* A molecule is for exampe a site header, a grid of posts, a header within an article, and so forth.
+* An atom is for example a set of **sharing buttons**, a **title**, a **button**, a **search field**, **breadcrumbs** and so forth.
+* A molecule is for exampe a **site header**, a **grid of posts**, a **slider**, a **header** within an article, and so forth.
 
 WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.com/wordpress-solutions/scripts/wp-components/).
 
+&nbsp;
 ## Usage
 
 Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or a custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
@@ -26,8 +27,6 @@ If you don't want to include the scripts (which breaks some of the components), 
 ```php
 $components = new MakeitWorkPress\WP_Components\Boot( ['css' => false, 'js' => false] );
 ```
-Each component can have custom properties and has a set of predefined properties, such as alignment, attributes, background, border, color, float, height, parallax, rounded, width and so forth. 
-These are explained in [the wiki](https://github.com/makeitworkpress/wp-components/wiki/Common-Properties).
 
 ### Rendering an atom
 If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to return instead of echo. Probably, we might write a shorter function for this in future versions.
@@ -37,10 +36,10 @@ MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, bool
 ```
 
 
-For example, rendering a lazyloading image molecule is done in the following manner:
+For example, rendering a lazyloading image atom, where the attachment ID of the image is 71, is done in the following manner:
 
 ```php
-MakeitWorkPress\WP_Components\Build::atom( 'image', ['lazyload' => true] );
+MakeitWorkPress\WP_Components\Build::atom( 'image', ['image' => 71, 'lazyload' => true] );
 ```
 
 ### Rendering a molecule
@@ -56,5 +55,13 @@ For example, rendering the header molecule is done in the following manner:
 MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
 ```
 
+Each component (atom or molecule) can have custom properties and has a set of predefined properties, such as alignment, attributes, background, border, color, float, height, parallax, rounded, width and so forth. 
+These are explained in [the wiki](https://github.com/makeitworkpress/wp-components/wiki/Common-Properties).
+
+&nbsp;
 ## WP Components WIKI
 You can find more information on using components and all the properties that may be used for each component in [our wiki](https://github.com/makeitworkpress/wp-components/wiki).
+
+&nbsp;
+## Compatibility
+WP Components works with PHP 7+ and is tested with WordPress 4.9 and higher.
