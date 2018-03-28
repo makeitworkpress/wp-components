@@ -55,6 +55,7 @@ For example, rendering the header molecule is done in the following manner:
 MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
 ```
 
+### Common Properties
 Each component (atom or molecule) can have custom properties and has a set of predefined properties, such as alignment, attributes, background, border, color, float, height, parallax, rounded, width and so forth. 
 These are explained in [the wiki](https://github.com/makeitworkpress/wp-components/wiki/Common-Properties).
 
