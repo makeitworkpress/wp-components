@@ -5,7 +5,7 @@ WP Components contains common components that may be used in WordPress developme
 
 The components are seperated in two classes, namely atoms which are single components and molecules which are consisting of multiple atoms.
 * An atom is for example a set of **sharing buttons**, a **title**, a **button**, a **search field**, **breadcrumbs** and so forth.
-* A molecule is for exampe a **site header**, a **grid of posts**, a **slider**, a **header** within an article, and so forth.
+* A molecule is for example a **site header**, a **grid of posts**, a **slider**, a **header** within an article, and so forth.
 
 WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.com/wordpress-solutions/scripts/wp-components/).
 
