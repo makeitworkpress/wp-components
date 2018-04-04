@@ -33,6 +33,9 @@ class Boot {
         
         // Register our ajax actions
         $ajax = new Ajax();
+
+        // Load our functions
+        require_once( COMPONENTS_PATH . 'functions.php' );
         
         // Hook actions
         $this->hook();
