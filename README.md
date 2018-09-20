@@ -35,11 +35,16 @@ If you want to render an atom, you have to utilize the Build class, the name of 
 MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, boolean $return = false );
 ```
 
-
 For example, rendering a lazyloading image atom, where the attachment ID of the image is 71, is done in the following manner:
 
 ```php
 MakeitWorkPress\WP_Components\Build::atom( 'image', ['image' => 71, 'lazyload' => true] );
+```
+
+There is also a shorter function available:
+
+```php
+wpc_atom( 'image', ['image' => 71, 'lazyload' => true] );
 ```
 
 ### Rendering a molecule
@@ -53,6 +58,12 @@ For example, rendering the header molecule is done in the following manner:
 
 ```php
 MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
+```
+
+There is also a shorter function available:
+
+```php
+wpc_molecule( 'header', ['fixed' => true, 'transparent' => true] );
 ```
 
 ### Common Properties
