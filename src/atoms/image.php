@@ -15,7 +15,7 @@ $atom = wp_parse_args( $atom, [
 
 // Custom link to a post
 if( $atom['link'] == 'post' ) {
-    $atom['link'] = is_numeric( $atom['post'] ) || is_object( $atom['post']) ? esc_url( get_permalink( $atom['post'] ) ) : esc_url( get_permalink() );
+    $atom['link'] = is_numeric( $atom['post'] ) || is_object( $atom['post'] ) ? esc_url( get_permalink( $atom['post'] ) ) : esc_url( get_permalink() );
 }
 
 if( $atom['enlarge'] ) {
@@ -33,7 +33,7 @@ if( is_numeric($atom['image']) ) {
 } elseif( is_string($atom['image']) && strlen($atom['image']) > 2 ) {
     $id             = get_post_meta( get_the_ID(), $atom['image'], true);
     $atom['image']  = wp_get_attachment_image( $id , $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
-} elseif( empty($atom['image']) ) {
+} elseif( empty($atom['image']) && isset($atom['post']) ) {
     $atom['image']  = get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 }
 
