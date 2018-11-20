@@ -1,7 +1,7 @@
 # wp-components
 Many frameworks use a modular approach for designing applications. While developing WordPress websites, we found out we're writing similar code a lot of times, even with existing frameworks and themes. That's why we developed WP Components, a set of common components with minimal styling but many functionalities.
 
-WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components have not to be redeveloped time over time. It is aimed at WordPress Developers.
+WP Components contains common components that may be used in WordPress development. This helps to speed up development greatly, because the components doens't have to be redeveloped. It is aimed at WordPress Developers.
 
 The components are seperated in two classes, namely atoms which are single components and molecules which are consisting of multiple atoms.
 * An atom is for example a set of **sharing buttons**, a **title**, a **button**, a **search field**, **breadcrumbs** and so forth.
@@ -35,11 +35,16 @@ If you want to render an atom, you have to utilize the Build class, the name of 
 MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, boolean $return = false );
 ```
 
-
 For example, rendering a lazyloading image atom, where the attachment ID of the image is 71, is done in the following manner:
 
 ```php
 MakeitWorkPress\WP_Components\Build::atom( 'image', ['image' => 71, 'lazyload' => true] );
+```
+
+There is also a shorter function available:
+
+```php
+wpc_atom( 'image', ['image' => 71, 'lazyload' => true] );
 ```
 
 ### Rendering a molecule
@@ -53,6 +58,12 @@ For example, rendering the header molecule is done in the following manner:
 
 ```php
 MakeitWorkPress\WP_Components\Build::molecule( 'header', ['fixed' => true, 'transparent' => true] );
+```
+
+There is also a shorter function available:
+
+```php
+wpc_molecule( 'header', ['fixed' => true, 'transparent' => true] );
 ```
 
 ### Common Properties
