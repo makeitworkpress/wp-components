@@ -6,10 +6,12 @@
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
     'attributes'    => [
-        'itemprop' => 'video'
+        'itemprop'  => 'video'
     ],    
-    'placer'    => 'atom-video-placer', // Our container class for the video, uses the 56.25% padding rule to make the video responsive
-    'video'     => ''                   // Expects an embed code for a video object or a video html tag or a src
+    'placer'        => 'atom-video-placer', // Our container class for the video, uses the 56.25% padding rule to make the video responsive
+    'video'         => '',                  // Expects an embed code for a video object or a video html tag or a src
+    'videoHeight'   => '' ,                 // A custom height for the video
+    'videoWidth'    => ''                   // A custom width for the video
 ) );
 
 // Return if we do not have a video
@@ -19,7 +21,9 @@ if( ! $atom['video'] ) {
 
 // Format our video if it's just an url
 if( strpos($atom['video'], 'http') === 0 ) {
-    $atom['video']  = do_shortcode('[video src="' . $atom['video'] . '"]');
+    $height = $atom['videoHeight'] ? ' height="' . intval($atom['videoHeight']) . '"' : ''; 
+    $width  = $atom['videoWidth'] ? ' width="' . intval($atom['videoWidth']) . '"' : ''; 
+    $atom['video']  = do_shortcode('[video src="' . $atom['video'] . '"' . $height . $width . ']');
     $atom['placer'] = 'atom-video-wp';
 } 
 
