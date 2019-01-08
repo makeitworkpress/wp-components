@@ -25,7 +25,7 @@ if( $atom['enlarge'] ) {
 // If we have a lazyload, we add something to the class
 $class              = $atom['lazyload'] ? ' components-lazyload' : '';
 
-// Now, load our image based upon what we have
+// Now, load our image based upon what we have in the image parameter
 if( is_numeric($atom['image']) ) {
     $atom['image']  = wp_get_attachment_image( $atom['image'], $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
 } elseif( is_string($atom['image']) && strlen($atom['image']) > 3 && strpos( $atom['image'], '<img') !== false ) {
@@ -35,6 +35,9 @@ if( is_numeric($atom['image']) ) {
     $atom['image']  = wp_get_attachment_image( $id , $atom['size'], false, array('itemprop' => 'image', 'class' => $class) );
 } elseif( empty($atom['image']) && isset($atom['post']) ) {
     $atom['image']  = get_the_post_thumbnail( $atom['post'], $atom['size'], array('itemprop' => 'image', 'class' => $class) );
+} else {
+    global $post;
+    $atom['image']  = get_the_post_thumbnail( $post, $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 }
 
 // We have a lazyloading image, so we need to replace our attributes
