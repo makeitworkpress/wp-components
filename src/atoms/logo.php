@@ -12,7 +12,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemtype'  => 'http://schema.org/Organization',
     ],
     'alt'                   => __('Logo', 'components'),
-    'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src
+    'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src. Also accepts an image id
     'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
     'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
@@ -21,7 +21,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'title'                 => esc_attr( get_bloginfo('name') ),
 ] ); 
 
-if( ! $atom['default']['src'] ) {
+if( ! is_int($atom['default']) && ! $atom['default']['src'] ) {
     return;
 } 
     
@@ -31,21 +31,20 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     <?php 
         foreach( ['mobile', 'mobileTransparent', 'tablet', 'tabletTransparent', 'default', 'defaultTransparent'] as $image ) {
 
-            // We should have either of these
-            if( ! $atom[$image]['src'] || ! $atom[$image]['width'] || ! $atom[$image]['height'] ) {
-                continue;
-            }
-
             // Itemprop for the logo image
             $itemprop = '';
 
-            if($image == 'default' ) {
-                $itemprop = $atom['attributes']['itemtype'] == 'http://schema.org/Organization' ? 'itemprop="logo"' : 'itemprop="image"';
-            } 
+            if( $image == 'default' ) {
+                $itemprop = $atom['attributes']['itemtype'] == 'http://schema.org/Organization' ? 'logo' : 'image';
+            }
+            
+            // Retrieve the image as an attachment
+            if( is_int($atom[$image]) ) {
+                echo wp_get_attachment_image( $atom[$image], 'medium', false, array('itemprop' => $itemprop, 'class' => 'atom-logo-' . $image, 'alt' => $atom['alt']) );
+            } else if( $atom[$image]['src'] && $atom[$image]['width'] && $atom[$image]['height'] ) {
+                echo '<img class="atom-logo-' . $image . '" src="' . $atom[$image]['src'] . '" height="' . $atom[$image]['height'] . '" width="'. $atom[$image]['width'] . '" alt="' . $atom['alt']. '" itemprop="' . $itemprop . '" />';    
+            }           
 
-    ?>
-        <img class="atom-logo-<?php echo $image; ?>" src="<?php echo $atom[$image]['src']; ?>" height="<?php echo $atom[$image]['height']; ?>" width="<?php echo $atom[$image]['width']; ?>" alt="<?php echo $atom['alt']; ?>" <?php echo $itemprop; ?> />
-    <?php
         } 
     ?>
     <meta itemprop="name" content="<?php echo $atom['title']; ?>" />  

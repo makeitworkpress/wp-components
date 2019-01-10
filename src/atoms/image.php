@@ -23,7 +23,7 @@ if( $atom['enlarge'] ) {
 }
 
 // If we have a lazyload, we add something to the class
-$class              = $atom['lazyload'] ? ' components-lazyload' : '';
+$class              = $atom['lazyload'] ? ' lazy' : '';
 
 // Now, load our image based upon what we have in the image parameter
 if( is_numeric($atom['image']) ) {
@@ -40,10 +40,15 @@ if( is_numeric($atom['image']) ) {
     $atom['image']  = get_the_post_thumbnail( $post, $atom['size'], array('itemprop' => 'image', 'class' => $class) );
 }
 
-// We have a lazyloading image, so we need to replace our attributes
-if( $atom['lazyload'] ) {
+// We have a lazyloading image, so we need to replace our attributes. We also check if lazyloading already has been applied
+if( $atom['lazyload'] && strpos( $atom['image'], 'data-src') === false ) {
     $atom['image']  = str_replace( 'src=', 'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=', $atom['image'] );   
-    $atom['image']  = str_replace( 'srcset', 'data-srcset', $atom['image'] );   
+    $atom['image']  = str_replace( 'srcset', 'data-srcset', $atom['image'] );
+
+    // Lazyloading sizes
+    if( strpos($atom['image'], 'sizes') ) {
+        $atom['image']  = str_replace( 'sizes', 'data-sizes', $atom['image'] );
+    }
 }
 
 // We should have an image
