@@ -17,6 +17,7 @@ $atom = wp_parse_args( $atom, [
         'youtube'       => 'youtube-play', 
         'pinterest'     => 'pinterest', 
         'dribbble'      => 'dribbble',
+        'github'        => 'github',
         'behance'       => 'behance',
         'reddit'        => 'reddit-alien', 
         'stumbleupon'   => 'stumbleupon',
