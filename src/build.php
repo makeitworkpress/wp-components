@@ -204,10 +204,10 @@ class Build {
 
             if( $key == 'data' && is_array($attribute) ) {
                 foreach( $attribute as $data => $value ) {
-                    $output .= 'data-' . $data . '="' . $value . '"';
+                    $output .= ' data-' . $data . '="' . $value . '"';
                 }
             } elseif( $key == 'style' && is_array($attribute) ) {
-                $output .= $key . '="';
+                $output .= ' ' . $key . '="';
                 foreach( $attribute as $selector => $value ) {
                     if( ! $value ) {
                         continue;
@@ -216,7 +216,7 @@ class Build {
                 } 
                 $output .= '"';               
             } else {
-                $output .= $key .'="' . $attribute . '"';
+                $output .= ' ' . $key .'="' . $attribute . '"';
             }
         }
 
