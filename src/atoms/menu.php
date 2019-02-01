@@ -15,26 +15,31 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'hamburger'  => 'mobile',   // Accepts mobile (767px), tablet (1024px) always (always hamburger) or false (never hamburger)
     'indicator'  => true,
     'menu'       => '',
-    'view'       => '',         // Accepts dark to display a dark mobile menu, fixed, left or right to display the hamburger with a special menu      
+    'view'       => 'default',         // Accepts dark to display a dark mobile menu, fixed, left or right to display the hamburger with a special menu      
 ] );
 
 // By default, we don't echo the menu
 $atom['args']['echo'] = false;
 
-if( $atom['collapse'] )
+if( $atom['collapse'] ) {
     $atom['attributes']['class'] .= ' atom-menu-collapse';
+}
 
-if( ! $atom['dropdown'] )
+if( ! $atom['dropdown'] ) {
     $atom['attributes']['class'] .= ' atom-menu-plain';
+}
 
-if( $atom['hamburger'] )
+if( $atom['hamburger'] && ! in_array($atom['view'], ['fixed', 'left', 'right']) ) {
     $atom['attributes']['class'] .= ' atom-menu-' . $atom['hamburger'] . '-hamburger';
+}
 
-if( $atom['indicator'] )
+if( $atom['indicator'] ) {
     $atom['attributes']['class'] .= ' atom-menu-indicator';
+}
 
-if( $atom['view'] )
+if( $atom['view'] ) {
     $atom['attributes']['class'] .= ' atom-menu-' . $atom['view']; 
+}
 
 // A menu can be set manually if preferred
 if( ! $atom['menu'] ) {
