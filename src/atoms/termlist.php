@@ -12,9 +12,12 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
 // Show our taxonomies if the standard array is empty
 if( empty($atom['taxonomies']) ) {
 
-    global $post;
+    if( ! $atom['id'] ) {
+        global $post;
+        $atom['id'] = isset($post) ? $post->ID : 0;
+    }
 
-    $taxonomies = get_post_taxonomies( $post );
+    $taxonomies = get_post_taxonomies( $atom['id'] );
 
     if( $taxonomies ) {
         foreach( $taxonomies as $taxonomy ) {
@@ -48,7 +51,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <div <?php echo $attributes; ?>>
     <?php foreach( $atom['taxonomies'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
-            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if($properties['schema']) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>">
+            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( isset($properties['schema']) && $properties['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
                 <?php if( $properties['icon'] ) { ?>
                     <i class="fa fa-<?php echo $properties['icon']; ?>"></i>
                 <?php } ?>
