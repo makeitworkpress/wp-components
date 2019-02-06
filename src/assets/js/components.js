@@ -623,23 +623,45 @@ module.exports.initialize = function() {
  * Defines the scripts slider
  */
 module.exports.initialize = function() {
+
+    var wpcSliders = {};
      
     // Set-up the slider
     jQuery('.molecule-slider').each(function (index) {
 
         // Retrieve our option values
         var id = jQuery(this).data('id'),
-            options = window['slider' + id];
+            maxHeight = 0,
+            options = window['slider' + id],
+            slider = jQuery(this).find('.slider'),
+            slides = slider.find('.atom-slide'),
+            lazy = slides.find('.lazy');
         
-        jQuery(this).flexslider(options);
+        if (typeof tns !== "undefined") {
+            wpcSliders[id] = tns(options);
+        }
 
-    });
+        // If lazyload is enabled, the height should be set dynamically - after other JS is executed
+        if( lazy.length > 0 && slides.length > 0 && slider.length > 0 ) {
+            
+            setTimeout( function() {
 
-    // Flexslider has problems with loading first slide if height of image can not be defined beforehand  
-    jQuery('img').on('load', function () {
-        var imgHeight = jQuery('.flex-active-slide img').height();
-        jQuery(".flex-viewport").css({"height" : imgHeight});
-    });           
+                if(options.autoHeight) {
+                    maxHeight = slides[0].clientHeight;
+                } else {
+                     maxHeight = Math.max.apply(null, slides.map(function () {
+                        return $(this).height();
+                    }).get()); 
+                }
+
+                slider.closest('.tns-inner').height(maxHeight);
+
+            }, 300);   
+
+        }
+        
+
+    });       
         
 };
 },{}],12:[function(require,module,exports){
@@ -695,7 +717,7 @@ module.exports.parallax = function() {
 module.exports.lazyLoad = function() {
     
     if( typeof LazyLoad !== "undefined" && typeof wpOptimizeLazyLoad === 'undefined' ) {
-        window.lazyload = new LazyLoad({
+        window.wpComponentsLazyLoad = new LazyLoad({
             elements_selector: ".lazy",
             callback_set: function (element) { 
                 if( typeof(element.attributes['data-bg']) !== 'undefined' ) {

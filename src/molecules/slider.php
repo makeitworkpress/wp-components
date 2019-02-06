@@ -7,16 +7,17 @@
 $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     'attributes'    => [
         'data'      => [
-            'id'    => uniqid() // Used to link the slider to it's variables
+            'id'    => substr( str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 5)), 0, 8 ) // Used to link the slider to it's variables
         ]   
     ],
     'options'       => [
-        'animation'         => 'fade',      // Type of animation
-        'animationSpeed'    => 500,         // Speed of animation
-        'nextText'          => '<i class="fa fa-angle-right"></i>',  // Next indicator 
-        'prevText'          => '<i class="fa fa-angle-left"></i>',  // Prev indicator
-        'slideshowSpeed'    => 5000 ,       // Speed of slideshow
-        'smoothHeight'      => false         // Smoothes the height
+        'arrowKeys'         => true,
+        'autoHeight'        => true,
+        'controlsText'      => ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],	
+        'navPosition'       => 'bottom',
+        'mode'              => 'carousel',      // Type of animation
+        'mouseDrag'         => true,
+        'speed'             => 500,             // Speed of animation
     ], 
     'scroll'        => false,       // Adds a scrolldown button     
     'slides'        => [],          // Supports a array with video, image and atoms as keys and the attributes key with class, position, background (url or color value).   
@@ -24,14 +25,20 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
  
 ] ); 
 
-// Set our variables
+
+// Set our container id so each script is initialized properly
+$molecule['options']['container'] = '#' . $molecule['attributes']['data']['id'] . 'Container';
+
+// Set our additional slider options
 if( $molecule['options'] ) {
 
     // Set our control navigation option
     if( $molecule['thumbnailSize'] ) {
-        $molecule['options']['controlNav'] = 'thumbnails';
+        $molecule['options']['navAsThumbnails'] = true;
+        $molecule['options']['navContainer']    = '#' . $molecule['attributes']['data']['id'] . 'NavContainer';
     }
     
+    // Add our scripts variables
     add_action( 'wp_footer', function() use($molecule) {
         echo '<script type="text/javascript">var slider' . $molecule['attributes']['data']['id'] . ' = ' . json_encode($molecule['options']) . ';</script>';    
     } );
@@ -39,8 +46,8 @@ if( $molecule['options'] ) {
 }
 
 // Enqueue our slider script
-if( ! wp_script_is('components-slider') && apply_filters('components_slider_script', true) ) {
-    wp_enqueue_script('components-slider'); 
+if( ! wp_script_is('tinyslider') && apply_filters('components_slider_script', true) ) {
+    wp_enqueue_script('tinyslider'); 
 } 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
@@ -49,7 +56,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     
     <?php do_action( 'components_slider_before', $molecule ); ?>
     
-    <ul class="slides">
+    <ul class="slider" id="<?php echo $molecule['attributes']['data']['id'] . 'Container'; ?>">
         
         <?php foreach( $molecule['slides'] as $slide ) { 
 
@@ -63,13 +70,6 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                 'itemscope' => 'itemscope',
                 'itemtype'  => 'http://www.schema.org/CreativeWork'
             ]);
-
-            $slide['attributes']['class'] .= ' molecule-slide';
-
-            // Thumbs
-            if( $molecule['thumbnailSize'] && isset($slide['image']['image']) && is_numeric($slide['image']['image']) ) {
-                $slide['attributes']['data']['thumb'] = wp_get_attachment_image_url( $slide['image']['image'], $molecule['thumbnailSize'] );
-            }
 
             // Determine the attributes and default properties
             $slideProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('slide', $slide);
@@ -126,7 +126,20 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             MakeitWorkPress\WP_Components\Build::atom( 'scroll', $molecule['scroll'] );
         }
     
-    ?> 
+    ?>
+
+    <?php
+        // Thumbnail navigation
+        if( $molecule['thumbnailSize'] ) {
+    ?>
+        <ul class="slider-thumbnails" id="<?php echo $molecule['attributes']['data']['id'] . 'NavContainer'; ?>">
+            <?php foreach( $molecule['slides'] as $slide ) { ?>
+                <?php if( isset($slide['image']['image']) && is_numeric($slide['image']['image']) ) { ?>
+                    <li class="slider-thumbnail"><?php echo wp_get_attachment_image( $slide['image']['image'], $molecule['thumbnailSize'], false); ?></li>
+                <?php } ?>
+            <?php } ?>
+        </ul>   
+    <?php } ?>     
     
     <?php do_action( 'components_slider_after', $molecule ); ?>
 

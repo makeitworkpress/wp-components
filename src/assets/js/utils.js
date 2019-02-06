@@ -50,7 +50,7 @@ module.exports.parallax = function() {
 module.exports.lazyLoad = function() {
     
     if( typeof LazyLoad !== "undefined" && typeof wpOptimizeLazyLoad === 'undefined' ) {
-        window.lazyload = new LazyLoad({
+        window.wpComponentsLazyLoad = new LazyLoad({
             elements_selector: ".lazy",
             callback_set: function (element) { 
                 if( typeof(element.attributes['data-bg']) !== 'undefined' ) {

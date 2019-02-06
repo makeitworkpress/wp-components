@@ -4,30 +4,70 @@
  * Styling for the slider molecule
  */
 .molecule-slider {
-    max-height: 100vh;
-    overflow: hidden;
-    position: relative;
     img, video, iframe, embed {
-        display: block;
-        max-height: 100vh;      
-    }
-    img {
-        width: auto;
+        display: block;  
     }
     ul, ol {
         margin: 0;
         padding: 0;
         list-style: none;
     }
-    .slides {
-        overflow: hidden;
-        width: 100%;
+    .tns-outer {
+        max-width: 100%; 
+        position: relative;   
     }
-}
-
-.molecule-slide {
-    display: none; 
-    -webkit-backface-visibility: hidden;     
+    .tns-nav {
+        text-align: center;
+        button {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #000;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            display: inline-block;
+            height: 16px;
+            line-height: 0;
+            margin: 4px;
+            padding: 0;
+            width: 16px;
+            &:focus {
+                outline: none;
+            }
+            &.tns-nav-active, &:hover {
+                background: #fff;
+                border: 1px solid #ddd;
+            }
+        }
+    }
+    .tns-controls { 
+        button {
+            background: none;
+            color: #000;
+            font-size: 2em;
+            margin-top: -48px;
+            padding: 8px;
+            position: absolute;
+            top: 50%;
+            z-index: 10;
+        }
+        button[data-controls="prev"] {
+            left: -32px;
+        }
+        button[data-controls="next"] {
+            right: -32px; 
+        }       
+    }
+    .slider-thumbnails li {
+        display: inline-block;
+        margin: 4px 4px 4px 0;
+        vertical-align: top;
+        &:hover {
+            cursor: pointer;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }
 
 .molecule-slide-wrapper {
@@ -53,79 +93,4 @@
 
 .molecule-slide-caption {
     margin: 32px;
-}
-
-.flex-control-nav {
-    bottom: 8px;
-    height: 8px;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    z-index: 10;
-    li {
-        display: inline-block;
-        margin: 0 3px;
-        a {
-            background: #333;
-            border-radius: 50%;
-            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-            display: block;
-            height: 8px;
-            text-indent: -9999px;
-            transition: all 350ms ease-out;
-            width: 8px;
-            &.flex-active, &:hover {
-                background: #fff;
-            }            
-        }        
-    } 
-    &.flex-control-thumbs {
-        height: auto;
-        margin-top: 6px;
-        position: static;
-        img {
-            opacity: 0.7;
-            transition: all 300ms ease-out;
-            &:hover, &.flex-active {
-                opacity: 1;
-            }
-        }
-    }
-}
-
-.flex-direction-nav  {
-    .flex-prev, .flex-next {
-        color: #fff;
-        font-size: 3em;
-        position: absolute;
-        transform: translate(0, -50%);
-        transition: all 350ms ease-in-out;
-        text-decoration: none;
-        text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-        top: 50%;
-        z-index: 100;
-    }
-    .flex-prev {
-        left: -32px;
-        opacity: 0.3;
-    }
-    .flex-next {
-        opacity: 0.3;
-        right: -32px;
-    }
-    @media screen and (max-width: 767px) {
-        display: none;
-    }
-}
-
-.molecule-slider:hover .flex-direction-nav { 
-    .flex-prev {
-        left: 8px;
-        opacity: 1;
-    }
-    .flex-next {
-        opacity: 1;
-        right: 8px;
-    }    
 }
