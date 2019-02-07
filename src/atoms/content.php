@@ -41,6 +41,8 @@ if( ! $atom['content'] ) {
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>  
+
+    <?php do_action('components_content_before'); ?>
     
     <?php 
         echo $atom['content'];
@@ -49,6 +51,8 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         if( $atom['type'] == 'content' ) {
             echo $atom['pages'];
         }
-    ?>             
+    ?>
+
+    <?php do_action('components_content_after'); ?>
              
 </div><!-- .entry-content -->

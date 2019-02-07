@@ -55,10 +55,10 @@ class Ajax {
         // Proceed if the rating is numeric, and between 0 and 5
         if( $userRating <= $max && $userRating > $min ) {
            
-            $count      = get_post_meta($id, 'components_rating_count', true);
-            $rating     = get_post_meta($id, 'components_rating', true);
+            $count      = intval( get_post_meta($id, 'components_rating_count', true) );
+            $rating     = floatval( get_post_meta($id, 'components_rating', true) );
             
-            $newCount   = $count ? intval($count) + 1 : 1;
+            $newCount   = $count ? $count + 1 : 1;
             $newRating  = ($rating * $count + $userRating)/$newCount;
             
             update_post_meta($id, 'components_rating_count', $newCount);
