@@ -7,7 +7,7 @@ The components are seperated in two classes, namely atoms which are single compo
 * An atom is for example a set of **sharing buttons**, a **title**, a **button**, a **search field**, **breadcrumbs** and so forth.
 * A molecule is for example a **site header**, a **grid of posts**, a **slider**, a **header** within an article, and so forth.
 
-WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.com/wordpress-solutions/scripts/wp-components/).
+WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.com/scripts/wp-components/).
 
 &nbsp;
 ## Usage
@@ -29,10 +29,10 @@ $components = new MakeitWorkPress\WP_Components\Boot( ['css' => false, 'js' => f
 ```
 
 ### Rendering an atom
-If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to return instead of echo. Probably, we might write a shorter function for this in future versions.
+If you want to render an atom, you have to utilize the Build class, the name of the atom, the properties and eventually if you want to render this atom or return it as a string.
 
 ```php
-MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, boolean $return = false );
+MakeitWorkPress\WP_Components\Build::atom( string $name, array $properties, boolean $render = true );
 ```
 
 For example, rendering a lazyloading image atom, where the attachment ID of the image is 71, is done in the following manner:
@@ -48,10 +48,10 @@ wpc_atom( 'image', ['image' => 71, 'lazyload' => true] );
 ```
 
 ### Rendering a molecule
-If you want to render a molecule, you have to utilize the Build class and use the name of the molecule, the properties and eventually if you want to return instead of echo.
+If you want to render a molecule, you have to utilize the Build class and use the name of the molecule, the properties and eventually if you want to render the molecule or return it as a string.
 
 ```php
-MakeitWorkPress\WP_Components\Build::molecule( string $name, array $properties, boolean $return = false );
+MakeitWorkPress\WP_Components\Build::molecule( string $name, array $properties, boolean $render = true );
 ```
 
 For example, rendering the header molecule is done in the following manner:
