@@ -14,6 +14,10 @@ if( $atom['top'] ) {
     $atom['attributes']['class'] .= ' atom-scroll-top';
 }
 
+if( $atom['top'] && ! $atom['icon'] ) {
+    $atom['icon'] = 'angle-up';
+}
+
 // If we have a custom icon, we add an style
 if( $atom['icon'] ) {
     $atom['attributes']['class'] .= ' atom-scroll-hasicon'; 

@@ -11,6 +11,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     ],
     'atoms'     => [],   // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
+    'gridGap'   => 'default',  
     'sidebars'  => []       // Accepts an array with the sidebar name as key and the grid for the value
 ] ); 
 
@@ -21,10 +22,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     <?php do_action( 'components_footer_before', $molecule ); ?>
     
     <?php if( $molecule['sidebars'] ) { ?>
-        <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper <?php } ?>">
+        <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; ?> <?php } ?>">
 
             <?php if( $molecule['container'] ) { ?>
-                <div class="components-container components-grid-wrapper"> 
+                <div class="components-container components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; ?>">
             <?php } ?>        
 
             <?php 

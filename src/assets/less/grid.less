@@ -3,7 +3,6 @@
 /**
  * Basic grid system based upon flexbox
  */
-
 .components-container {
     box-sizing: border-box;
     margin: 0 auto;
@@ -16,66 +15,94 @@
     }
 }
 
-/* Grid Columns */
-@marge: 2%;
-@half: (100% - @marge)/2;
-@three-fourth: @fourth * 3 + @marge * 2;
-@third: (100% - 2*@marge)/3;
-@two-third: @third * 2 + @marge;
-@fourth: (100% - 3*@marge)/4;
-@fifth: (100% - 4*@marge)/5;
+/**
+ * Grid Columns 
+ */
 
 /* Wrapper */
 .components-grid-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-}
+} 
 
-/* Individual Grids */
+/* Grids with alternating column widths */
 .components-full-grid {
     width: 100%;
 }
 
-.components-three-fourth-grid {
-    width: @three-fourth;
-}
+@columns:
+    wrapper 2%, // The default for the wrapper, also a back-up for websites that do not use the new set-up.
+    none 0%,
+    tiny 0.5%,
+    small 1%,
+    medium 3%,
+    large 4%,
+    huge 5%
+;
 
-.components-half-grid {
-    width: @half;      
-}
+// for loop to iterate over array
+.each(@array, @i: 1) when (@i <= length(@array)) {
 
-.components-third-grid {
-    width: @third;
-}
+    // Extract names and colors
+    @pair: extract(@array, @i);
+    @name: extract(@pair, 1);
+    @marge: extract(@pair, 2);
 
-.components-two-third-grid {
-    width: @two-third; 
-}
-
-.components-fourth-grid {
-    width: @fourth;      
-}
-
-.components-fifth-grid {
-    width: @fifth;
-    @media screen and (min-width: 1025px) and (max-width: 1365px) {
-        width: @fourth;      
-    }        
-}
-
-/* Queries */
-.components-third-grid, .components-two-third-grid, .components-fourth-grid, .components-three-fourth-grid, .components-fifth-grid {
-    @media screen and (max-width: 1024px) {
-        width: @half;
+    // Columns
+    @half: (100% - @marge)/2;
+    @three-fourth: @fourth * 3 + @marge * 2;
+    @third: (100% - 2*@marge)/3;
+    @two-third: @third * 2 + @marge;
+    @fourth: (100% - 3*@marge)/4;
+    @fifth: (100% - 4*@marge)/5;    
+    
+    // selector based on href name
+    .components-grid-@{name} {
+        .components-three-fourth-grid {
+            width: @three-fourth;
+        }
+        .components-half-grid {
+            width: @half;      
+        }
+        .components-third-grid {
+            width: @third;
+        }
+        .components-two-third-grid {
+            width: @two-third; 
+        }
+        .components-fourth-grid {
+            width: @fourth;      
+        }
+        .components-fifth-grid {
+            width: @fifth;
+            @media screen and (min-width: 1025px) and (max-width: 1365px) {
+                width: @fourth;      
+            }        
+        }
+        .components-full-grid, .components-half-grid, .components-third-grid, .components-two-third-grid, .components-fourth-grid, .components-three-fourth-grid, .components-fifth-grid {
+            margin-bottom: @marge;  
+        }
+        .components-third-grid, .components-two-third-grid, .components-fourth-grid, .components-three-fourth-grid, .components-fifth-grid {
+            @media screen and (max-width: 1024px) {
+                width: @half;
+            }
+        }
     }
+    
+    .each(@array, @i + 1);
 }
 
-.components-full-grid, .components-half-grid, .components-third-grid, .components-two-third-grid, .components-fourth-grid, .components-three-fourth-grid, .components-fifth-grid {
-    margin-bottom: @marge;  
-    @media screen and (max-width: 767px) {
-        width: 100%;
-    }    
+.each(@columns);
+
+
+/* General Queries */
+.components-grid-wrapper {
+    .components-full-grid, .components-half-grid, .components-third-grid, .components-two-third-grid, .components-fourth-grid, .components-three-fourth-grid, .components-fifth-grid { 
+        @media screen and (max-width: 767px) {
+            width: 100%;
+        }    
+    }
 }
 
 /* Fillers */
@@ -87,6 +114,6 @@ span {
     &.components-fourth-grid, 
     &.components-three-fourth-grid 
     &.components-fifth-grid {
-        margin: 0;   
+        margin: 0 !important;
     }
 }

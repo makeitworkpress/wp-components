@@ -12,10 +12,10 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'itemscope'         => 'itemscope',             
         'itemtype'          => 'http://schema.org/Blog'
     ],
-    'filter'            => false,                       // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.                                                  
+    'filter'            => false,                       // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.  
+    'gridGap'           => 'default',                                                
     'infinite'          => false,    
     'none'              => __('Bummer! No posts found.', 'components'),
-
     /**
      * Accepts properties for each post
      */
@@ -89,7 +89,7 @@ if( $molecule['view'] ) {
 
 // Individal posts grid
 if( isset($molecule['postProperties']['grid']) && $molecule['postProperties']['grid'] ) {
-    $molecule['wrapper']               .= ' components-grid-wrapper'; 
+    $molecule['wrapper']               .= ' components-grid-wrapper components-grid-' . $molecule['gridGap']; 
 }
 
 // Infinite scroll
@@ -134,7 +134,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                     $molecule['query']->the_post();
                     $id                                                     = get_the_ID();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class('molecule-post', $id) );
+                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $id) );
                     
                     // Allows for grid patterns with an array
                     if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {

@@ -212,11 +212,11 @@ module.exports.initialize = function() {
             
             var scrollPosition = jQuery(this).scrollTop();
             
-            if( jQuery(this).hasClass('atom-scroll-top') ) {
-                if( scrollPosition < jQuery(window).height() ) {
-                    jQuery(self).fadeOut();    
+            if( jQuery(self).hasClass('atom-scroll-top') ) {
+                if( (scrollPosition + jQuery(window).height() - 80) > jQuery(window).height() ) {
+                    jQuery(self).fadeIn();    
                 } else {
-                    jQuery(self).fadeIn();     
+                    jQuery(self).fadeOut();     
                 }                
                 
             } else {          
