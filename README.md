@@ -10,9 +10,12 @@ The components are seperated in two classes, namely atoms which are single compo
 WP Components is maintained by [Make it WorkPress](https://www.makeitworkpress.com/scripts/wp-components/).
 
 &nbsp;
-## Usage
+## Installation
 
-Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or a custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. 
+Require the Ajax.php, Boot.php and Build.php files in your theme functions.php or a custom plugin. Additionaly, you could also use an autoloader or include it as a repository using Composer. You can read more about autoloading in [the readme of wp-autoload](https://github.com/makeitworkpress/wp-autoload).
+
+&nbsp;
+## Usage
 
 ### Booting Components
 Before building components, you should boot the general script which enqueues the styles and scripts by the components.
