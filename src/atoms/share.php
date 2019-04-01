@@ -31,8 +31,7 @@ $atom   = wp_parse_args( $atom, [
         'linkedin'      => [
             'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&source=' . $source, 
             'icon'  => 'linkedin'
-        ], 
-        'google-plus'   => [ 'url' => 'https://plus.google.com/share?url=' . $url, 'icon' => 'google-plus' ], 
+        ],
         'pinterest'     => [
             'url'   => 'http://pinterest.com/pin/create/button/?url=' . $url . '&description=' . $title . '&media=' . $image, 
             'icon'  => 'pinterest'
