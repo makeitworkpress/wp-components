@@ -22,7 +22,7 @@ $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 // Atom properties
 $atom   = wp_parse_args( $atom, [
     'colorBackground'   => true,
-    'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'google-plus', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
+    'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
     'share'             => __('Share:', 'wp-components'), // Adds a label with share
     'networks'          => [
