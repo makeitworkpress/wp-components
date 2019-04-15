@@ -16,29 +16,33 @@ module.exports.initialize = function() {
             slides = slider.find('.atom-slide'),
             lazy = slides.find('.lazy');
         
+        // Save our slider instance
         if (typeof tns !== "undefined") {
             wpcSliders[id] = tns(options);
         }
 
-        // If lazyload is enabled, the height should be set dynamically - after other JS is executed
-        if( lazy.length > 0 && slides.length > 0 && slider.length > 0 ) {
+        /**
+         * Fixes a bug with a wrong slider height with lazy loaded images.
+         */
+        if( lazy.length > 0 && slides.length > 0 ) {
             
             setTimeout( function() {
 
-                if(options.autoHeight) {
-                    maxHeight = slides[0].clientHeight;
-                } else {
-                     maxHeight = Math.max.apply(null, slides.map(function () {
-                        return $(this).height();
-                    }).get()); 
-                }
+                maxHeight = Array.prototype.map.call(slides, function(n) {
+                    if( n.clientHeight != n.clientWidth ) {
+                        return n.clientHeight;
+                    }
+                }).filter( function(n) {
+                    return n != null;
+                }).reduce( function(a, b) {
+                    return Math.max(a, b);
+                });
 
-                slider.closest('.tns-inner').height(maxHeight);
+                slider.closest('.tns-inner').css( {'maxHeight' : maxHeight + 'px' } );
 
-            }, 300);   
+            }, 300);
 
-        }
-        
+        }        
 
     });       
         
