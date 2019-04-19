@@ -106,6 +106,10 @@ if( $molecule['infinite'] ) {
 // Key for counting grid patterns
 $key = 0; 
 
+// Initial class for each post. Should be defined here to prevent classes stacking upon each other.
+$postClass = isset($molecule['postProperties']['attributes']['class']) ? $molecule['postProperties']['attributes']['class'] : '';
+
+// Set our default attributes
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
@@ -128,13 +132,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                 <?php
 
                     // Set-up our post data
-                    if( ! isset($molecule['postProperties']['attributes']['class']) ) {
-                        $molecule['postProperties']['attributes']['class']  = '';
-                    }
+                    $molecule['postProperties']['attributes']['class']      = $postClass;
 
                     $molecule['query']->the_post();
-                    $id                                                     = get_the_ID();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $id) );
+                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', get_the_ID()) );
                     
                     // Allows for grid patterns with an array
                     if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {

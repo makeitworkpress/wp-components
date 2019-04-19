@@ -75,7 +75,7 @@ class Build {
     /**
      * Define the default attributes per template. This allows us to dynamically add attributes 
      * 
-     * @param   string  $template   The template to load
+     * @param   string  $template   The molecule or atom template to load
      * @param   array   $properties The custom properties defined by the developer
      * @param   string  $type       Whether we load an atom or an molecule
      *
@@ -115,6 +115,7 @@ class Build {
                     continue;
                 }
 
+                // Borders
                 if( $class == 'border' && preg_match('/hsl|linear-gradient|rgb|#/', $properties[$class]) ) {
                     if( strpos($properties['border'], 'linear-gradient') === 0 ) {
                         $properties['attributes']['style']['border']                = '2px solid transparent;';
@@ -207,14 +208,19 @@ class Build {
                     $output .= ' data-' . $data . '="' . $value . '"';
                 }
             } elseif( $key == 'style' && is_array($attribute) ) {
-                $output .= ' ' . $key . '="';
+                $style  = '';
                 foreach( $attribute as $selector => $value ) {
                     if( ! $value ) {
                         continue;
                     }                    
-                    $output .= $selector . ':' . $value . ';';
+                    $style .= $selector . ':' . $value . ';';
                 } 
-                $output .= '"';               
+
+                // Only if we style properties we add our inline styling
+                if( $style ) {
+                    $output .= ' style="' . $style . '"';
+                }
+
             } else {
                 $output .= ' ' . $key .'="' . $attribute . '"';
             }
