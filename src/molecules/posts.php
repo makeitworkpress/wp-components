@@ -131,11 +131,13 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                 <?php
 
+                    $id = get_the_ID();
+
                     // Set-up our post data
                     $molecule['postProperties']['attributes']['class']      = $postClass;
 
                     $molecule['query']->the_post();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', get_the_ID()) );
+                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $id) );
                     
                     // Allows for grid patterns with an array
                     if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {
@@ -242,6 +244,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             <?php } ?>
         
             <?php
+                
                 /**
                  * Fills the remainder of the articles with empty spans, so our styling comes out nicely. 
                  * For now, only possible with non-patterns
@@ -271,6 +274,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         echo '<span class="components-' . $molecule['postProperties']['grid']  . '-grid"></span>';
                     }
                 }
+
             ?>
         
         <?php } else { ?>

@@ -20,6 +20,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'author'    => '',
         'category'  => single_cat_title( '', false),
         'day'       => get_the_date(),
+        'home'      => isset(get_queried_object()->post_title) ? get_queried_object()->post_title : '',
         'month'     => get_the_date('F Y'),
         'page'      => get_the_title(),
         'search'    => sprintf( __('Search Results: %s', 'components'), urldecode(get_query_var('s')) ), 
@@ -30,8 +31,11 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     ]
 ] ); 
 
-// Return at the homepage
-if( is_home() || is_front_page() ) {
+// Retrieve the page ID to make sure breadcrumbs are shown at a posts page which is not the homepage
+$page = isset(get_queried_object()->ID) ? get_queried_object()->ID : 0;
+
+// Return at the real homepage
+if( is_front_page() || ( is_home() && $page != get_option('page_for_posts') ) ) {
     return; 
 }
 
@@ -63,6 +67,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 $breadcrumbs = array();
                 $key         = 0;
                 $url         = '';
+
+                if( $location == 'home' ) {
+                    $url    = get_permalink($page);    
+                }                
                 
                 // Archives
                 if( $location == '404' ) {

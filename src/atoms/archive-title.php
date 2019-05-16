@@ -12,6 +12,7 @@ $atom = wp_parse_args( $atom, [
         'category'  => single_cat_title( '', false ),
         'day'       => sprintf( __( 'Daily Archives: %s', 'components' ), '<span>' . get_the_date() . '</span>' ),
         'default'   => isset(get_queried_object()->labels->name) ? get_queried_object()->labels->name : __( 'Blog Archives', 'components' ),
+        'home'      => isset(get_queried_object()->post_title) ? get_queried_object()->post_title : __( 'Blog Archives', 'components' ),
         'month'     => sprintf( __( 'Monthly Archives: %s', 'components' ), '<span>' . get_the_date('F Y') . '</span>' ),
         'search'    => sprintf( 
             _n( '%1$s result for: %2$s', '%1$s results for: %2$s', $wp_query->found_posts, 'components' ),
