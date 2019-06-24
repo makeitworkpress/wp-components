@@ -21,7 +21,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'title'                 => esc_attr( get_bloginfo('name') ),
 ] ); 
 
-if( ! is_int($atom['default']) && ! $atom['default']['src'] ) {
+if( ! is_numeric($atom['default']) && ! isset($atom['default']['src']) ) {
     return;
 } 
     
@@ -39,7 +39,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             }
             
             // Retrieve the image as an attachment
-            if( is_int($atom[$image]) ) {
+            if( is_numeric($atom[$image]) ) {
                 echo wp_get_attachment_image( $atom[$image], 'medium', false, array('itemprop' => $itemprop, 'class' => 'atom-logo-' . $image, 'alt' => $atom['alt']) );
             } else if( isset($atom[$image]['src']) && $atom[$image]['src'] && isset($atom[$image]['width']) && $atom[$image]['width'] && isset($atom[$image]['height']) && $atom[$image]['height'] ) {
                 echo '<img class="atom-logo-' . $image . '" src="' . $atom[$image]['src'] . '" height="' . $atom[$image]['height'] . '" width="'. $atom[$image]['width'] . '" alt="' . $atom['alt']. '" itemprop="' . $itemprop . '" />';    
