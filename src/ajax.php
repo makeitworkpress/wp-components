@@ -95,18 +95,23 @@ class Ajax {
         
         // Developers can filter the arguments
         $args       = apply_filters( 'components_ajax_search_posts_args', [
-            'args'          => ['posts_per_page' => intval( $_POST['number'] ), 's' => sanitize_text_field( $_POST['search'] ), 'post_type' => 'any'],
+            'queryArgs' => [
+                'ep_integrate'      => true,
+                'posts_per_page'    => intval( $_POST['number'] ), 
+                'post_type'         => 'any',
+                's'                 => sanitize_text_field( $_POST['search'] )
+            ],
             'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
             'pagination'    => false,            
             'postProperties' => [
                 'appear'        => sanitize_text_field( $_POST['appear'] ),
                 'contentAtoms'  => [],
-                'footerAtoms'   => []],           
+                'footerAtoms'   => [],           
                 'headerAtoms'   => [
-                    'title' => [ 'atom' => 'title', 'properties' => ['tag' => 'h4', 'link' => 'post'],
-                    'type'  => [ 'atom' => 'type' ] 
-                    ],
-                'image'     => ['link' => 'post', 'size' => 'thumbnail', 'rounded' => true],
+                    'title' => ['atom' => 'title', 'properties' => ['tag' => 'h4', 'link' => 'post']],
+                    'type'  => ['atom' => 'type',  'properties' => []]
+                ],
+                'image'     => ['link' => 'post', 'size' => 'thumbnail', 'rounded' => true]
             ]
         ] );
         
