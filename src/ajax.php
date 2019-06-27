@@ -99,6 +99,7 @@ class Ajax {
                 'ep_integrate'      => true,
                 'posts_per_page'    => intval( $_POST['number'] ), 
                 'post_type'         => 'any',
+                'post_status'       => 'publish',
                 's'                 => sanitize_text_field( $_POST['search'] )
             ],
             'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
