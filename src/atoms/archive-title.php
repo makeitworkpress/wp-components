@@ -19,9 +19,9 @@ $atom = wp_parse_args( $atom, [
             '<span>' . number_format_i18n( $wp_query->found_posts ) . '</span>',
             '<span>' . get_search_query() . '</span>'
         ),  
-        'tag'       => sprintf( __( 'Posts tagged: %s', 'mt' ) , '<span>' . single_tag_title( '', false ) . '</span>' ),
+        'tag'       => sprintf( __( 'Posts tagged: %s', 'components' ) , '<span>' . single_tag_title( '', false ) . '</span>' ),
         'tax'       => single_term_title( '', false ),
-        'year'      => sprintf( __( 'Yearly Archives: <span>%s</span>', 'mt' ), get_the_date('Y') ),    
+        'year'      => sprintf( __( 'Yearly Archives: <span>%s</span>', 'components' ), get_the_date('Y') ),    
     ]
 ] ); 
 
