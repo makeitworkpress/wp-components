@@ -5,7 +5,7 @@
 global $wp_query;
 
 // Atom values
-$atom = wp_parse_args( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'custom'    => '',
     'types'     => [
         'author'    => __( 'Posts Author Archive: %s', 'components' ),
