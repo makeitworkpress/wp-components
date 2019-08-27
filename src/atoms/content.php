@@ -29,7 +29,7 @@ if( ! $atom['content'] ) {
             global $more; $more = 0; 
             $atom['content'] = wpautop( get_the_content() ); 
         } else {
-            $atom['content'] = wpautop( get_the_excerpt() ); 
+            $atom['content'] = wpautop( get_the_excerpt($post) );
         }
     
     } elseif( $atom['type'] == 'content' ) {
