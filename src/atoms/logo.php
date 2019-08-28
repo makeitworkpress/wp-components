@@ -40,7 +40,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             // Itemprop for the logo image
             $itemprop = '';
 
-            if( $image == 'default' ) {
+            if( $image == 'default' && $atom['schema'] ) {
                 $itemprop = $atom['attributes']['itemtype'] == 'http://schema.org/Organization' ? 'logo' : 'image';
             }
             
@@ -62,5 +62,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
         } 
     ?>
-    <meta itemprop="name" content="<?php echo $atom['title']; ?>" />  
+    <?php if( $atom['schema'] ) { ?>
+        <meta itemprop="name" content="<?php echo $atom['title']; ?>" /> 
+    <?php } ?> 
 </a>
