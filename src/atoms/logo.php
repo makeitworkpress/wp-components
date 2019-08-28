@@ -16,6 +16,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
     'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
+    'schema'                => true,                    // If microdata is rendered or not
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
     'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
@@ -24,6 +25,11 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
 if( ! is_numeric($atom['default']) && ! isset($atom['default']['src']) ) {
     return;
 } 
+
+if( ! $atom['schema'] ) { 
+    unset($atom['attributes']['itemscope']);    
+    unset($atom['attributes']['itemtype']);    
+}
     
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
@@ -40,9 +46,18 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             
             // Retrieve the image as an attachment
             if( is_numeric($atom[$image]) ) {
-                echo wp_get_attachment_image( $atom[$image], 'medium', false, array('itemprop' => $itemprop, 'class' => 'atom-logo-' . $image, 'alt' => $atom['alt']) );
+                
+                $args = ['itemprop' => $itemprop, 'class' => 'atom-logo-' . $image, 'alt' => $atom['alt']];
+                if( ! $atom['schema'] ) { 
+                    unset($args['itemprop']);
+                }
+                echo wp_get_attachment_image( $atom[$image], 'medium', false, $args );
+
             } else if( isset($atom[$image]['src']) && $atom[$image]['src'] && isset($atom[$image]['width']) && $atom[$image]['width'] && isset($atom[$image]['height']) && $atom[$image]['height'] ) {
-                echo '<img class="atom-logo-' . $image . '" src="' . $atom[$image]['src'] . '" height="' . $atom[$image]['height'] . '" width="'. $atom[$image]['width'] . '" alt="' . $atom['alt']. '" itemprop="' . $itemprop . '" />';    
+                
+                $itemprop = $atom['schema'] ? 'itemprop="' . $itemprop . '"' : '';
+                echo '<img class="atom-logo-' . $image . '" src="' . $atom[$image]['src'] . '" height="' . $atom[$image]['height'] . '" width="'. $atom[$image]['width'] . '" alt="' . $atom['alt']. '"' . $itemprop . '/>';    
+            
             }           
 
         } 

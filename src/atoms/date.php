@@ -10,8 +10,13 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemprop' => 'datePublished'   
     ],
     'date'      => get_the_date(),
+    'schema'    => true,                    // If microdata is rendered or not
     'icon'      => '',
 ] ); 
+
+if( ! $atom['schema'] ) {
+    unset($atom['attributes']['itemprop']);
+}
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 

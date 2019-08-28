@@ -44,13 +44,14 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
                 'properties'    => ['attributes' => ['itemprop' => 'name headline', 'class' => 'entry-title'], 'tag' => 'h2', 'link' => 'post' ] 
             ] 
         ],  
-        'image'         => [ 'link' => 'post', 'size' => 'medium', 'enlarge' => true ],       
+        'image'         => ['link' => 'post', 'size' => 'medium', 'enlarge' => true],       
         'logo'          => 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
         'organization'  => get_bloginfo('name')
     ],                              
     'pagination'        => ['type' => 'numbers'],           // Pagination settings.
     'query'             => '',                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
     'queryArgs'         => [],                              // Query arguments for retrieving posts
+    'schema'            => true,                // If microdata is rendered or not. Also removes schematic attributes
     'view'              => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'           => ''                               // Wrapper class for posts
 ] );
@@ -109,6 +110,29 @@ $key = 0;
 // Initial class for each post. Should be defined here to prevent classes stacking upon each other.
 $postClass = isset($molecule['postProperties']['attributes']['class']) ? $molecule['postProperties']['attributes']['class'] : '';
 
+// Remove schema's if not enabled
+if( ! $molecule['schema'] ) {   
+    unset($molecule['attributes']['itemscope']);    
+    unset($molecule['attributes']['itemtype']);      
+    unset($molecule['postProperties']['attributes']['itemprop']);    
+    unset($molecule['postProperties']['attributes']['itemscope']);    
+    unset($molecule['postProperties']['attributes']['itemtype']);    
+
+    // Various elements
+    if( isset($molecule['postProperties']['contentAtoms']['content']) ) {
+        $molecule['postProperties']['contentAtoms']['content']['properties']['schema']  = false;  
+    }
+
+    if( isset($molecule['postProperties']['headerAtoms']['title']) ) {
+        $molecule['postProperties']['headerAtoms']['title']['properties']['schema']     = false;  
+    }
+    
+    if( isset($molecule['postProperties']['image']) && $molecule['postProperties']['image'] ) {
+        $molecule['postProperties']['image']['schema']                                  = false;
+    }
+
+}
+
 // Set our default attributes
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
 
@@ -155,9 +179,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                     <?php
                         /**
-                         * This indicates our Structured data that is required according to Google Structured data testing
+                         * Structured data that is required according to Google Structured data testing
                          */
-                        if( $molecule['postProperties']['blogScheme'] ) {
+                        if( $molecule['schema'] ) {
                     ?>
                         
                         <span class="components-structured-data" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">

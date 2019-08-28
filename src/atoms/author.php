@@ -22,10 +22,18 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'jobTitle'          => '',
     'name'              => get_the_author(),
     'prepend'           => '',  // Prepend the author name with a custom description
+    'schema'            => true, // If schema microdata are used or not
     'url'               => esc_url( get_author_posts_url( $post->post_author ) )
  ] );
 
 $atom['imageRounded']               = $atom['imageRounded'] ? 'components-rounded' : ''; 
+
+if( ! $atom['schema'] ) {
+    unset($atom['attributes']['itemprop']);    
+    unset($atom['attributes']['itemscope']);    
+    unset($atom['attributes']['itemtype']);    
+}
+
 $attributes                         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
@@ -46,15 +54,15 @@ $attributes                         = MakeitWorkPress\WP_Components\Build::attri
         <div class="atom-author-description components-<?php echo $atom['imageFloat']; ?>-float">
             
             <?php if( $atom['name'] ) { ?> 
-                <h4 itemprop="name"><?php echo $atom['prepend'] . $atom['name']; ?></h4>
+                <h4 <?php if($atom['schema']) { ?>itemprop="name"<?php } ?>><?php echo $atom['prepend'] . $atom['name']; ?></h4>
             <?php } ?>
 
             <?php if( $atom['jobTitle'] ) { ?>
-                <p itemprop="jobTitle"><?php echo $atom['jobTitle']; ?></p>
+                <p <?php if($atom['schema']) { ?>itemprop="jobTitle"<?php } ?>><?php echo $atom['jobTitle']; ?></p>
             <?php } ?>            
             
             <?php if( $atom['description'] ) { ?>
-                <p itemprop="text"><?php echo $atom['description']; ?></p>
+                <p <?php if($atom['schema']) { ?>itemprop="text"<?php } ?>><?php echo $atom['description']; ?></p>
             <?php } ?>
             
         </div>

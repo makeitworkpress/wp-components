@@ -6,6 +6,7 @@
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'id'                => get_the_ID(),
+    'schema'            => true, // Whether to incorporate schema.org microdata or not
     'taxonomies'        => [] // Accepts the following format: 'category' => ['after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ']
 ] );
 
@@ -23,12 +24,11 @@ if( empty($atom['taxonomies']) ) {
         foreach( $taxonomies as $taxonomy ) {
 
             // Scheme
+            $scheme                     = '';
             if( $taxonomy == 'category ' ) {
                 $scheme                     = 'genre';
             } elseif( $taxonomy == 'post_tag' ) {
                 $scheme                     = 'keywords';   
-            } else {
-                $scheme                     = '';
             }
 
             // Icons
@@ -51,7 +51,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <div <?php echo $attributes; ?>>
     <?php foreach( $atom['taxonomies'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
-            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( isset($properties['schema']) && $properties['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
+            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( $properties['schema'] && $atom['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
                 <?php if( $properties['icon'] ) { ?>
                     <i class="fa fa-<?php echo $properties['icon']; ?>"></i>
                 <?php } ?>

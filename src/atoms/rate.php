@@ -20,6 +20,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'min'           => 0,
     'rate'          => true, 
     'reviewed'      => false,
+    'schema'        => true,   // If microdata is rendered or not. Also removes schematic attributes
     'value'         => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
 ] );
 
@@ -34,24 +35,34 @@ $emptyStars = $atom['max'] - $fullStars - $halfStars;
 // If we allow users to rate, we need to add a class so our JS can pick it up
 $atom['attributes']['class']  .= $atom['rate'] ? ' atom-rate-do' : ''; 
 
+if( ! $atom['schema'] ) {
+    unset($atom['attributes']['itemprop']);    
+    unset($atom['attributes']['itemscope']);    
+    unset($atom['attributes']['itemtype']);    
+}
+
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
     
-    <meta itemprop="ratingValue" content="<?php echo $atom['value']; ?>" />
-    <meta itemprop="bestRating" content="<?php echo $atom['max']; ?>" />
-    <meta itemprop="worstRating" content="<?php echo $atom['min']; ?>" />
+    <?php if( $atom['schema'] ) { ?>
 
-    <?php if( $atom['attributes']['itemtype'] == 'http://schema.org/AggregateRating' ) { ?>
-        <meta itemprop="reviewCount" content="<?php echo $atom['count']; ?>" />
-    <?php } ?>
-    
-    <?php if( $atom['reviewed'] ) { ?>
-        <meta itemprop="itemReviewed" content="<?php echo $atom['reviewed']; ?>" />
-    <?php } ?>
-    
-    <?php if( $atom['author'] ) { ?>
-        <meta itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['authorType']; ?>" content="<?php echo $atom['author']; ?>" />
+        <meta itemprop="ratingValue" content="<?php echo $atom['value']; ?>" />
+        <meta itemprop="bestRating" content="<?php echo $atom['max']; ?>" />
+        <meta itemprop="worstRating" content="<?php echo $atom['min']; ?>" />
+
+        <?php if( $atom['attributes']['itemtype'] == 'http://schema.org/AggregateRating' ) { ?>
+            <meta itemprop="reviewCount" content="<?php echo $atom['count']; ?>" />
+        <?php } ?>
+        
+        <?php if( $atom['reviewed'] ) { ?>
+            <meta itemprop="itemReviewed" content="<?php echo $atom['reviewed']; ?>" />
+        <?php } ?>
+        
+        <?php if( $atom['author'] ) { ?>
+            <meta itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['authorType']; ?>" content="<?php echo $atom['author']; ?>" />
+        <?php } ?>
+
     <?php } ?>
     
     <?php if( $atom['rate'] ) { ?>

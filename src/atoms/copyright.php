@@ -4,12 +4,12 @@
  */
 
 // Atom values
-$atom = wp_parse_args( $atom, array(
+$atom = wp_parse_args( $atom, [
     'copyright'     => '©',
     'date'          => date('Y'),
     'itemtype'      => 'http://schema.org/Organization',
     'name'          => ''
-) ); 
+] ); 
 
 $attributes         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
