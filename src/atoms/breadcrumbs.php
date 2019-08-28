@@ -253,8 +253,14 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                         $breadcrumbs[$key]['url']   = $atom['archive']['url']; 
                                                       
                     } elseif( $atom['archive'] ) {
-                        $breadcrumbs[$key]['title'] = get_queried_object()->labels->name;
-                        $breadcrumbs[$key]['url']   = get_post_type_archive_link( get_queried_object()->name ); 
+                        global $wp_taxonomies;
+                        if( isset($wp_taxonomies[get_queried_object()->taxonomy]->object_type[0]) ) {
+                            $object                     = get_post_type_object( $wp_taxonomies[get_queried_object()->taxonomy]->object_type[0] );
+                            if( $object ) {
+                                $breadcrumbs[$key]['title'] = $object->labels->name;
+                                $breadcrumbs[$key]['url']   = get_post_type_archive_link( $object->name );
+                            }
+                        }
                     }
                     
                     // Ancestors
