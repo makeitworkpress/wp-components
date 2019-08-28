@@ -112,6 +112,7 @@ $postClass = isset($molecule['postProperties']['attributes']['class']) ? $molecu
 
 // Remove schema's if not enabled
 if( ! $molecule['schema'] ) {   
+    
     unset($molecule['attributes']['itemscope']);    
     unset($molecule['attributes']['itemtype']);      
     unset($molecule['postProperties']['attributes']['itemprop']);    
