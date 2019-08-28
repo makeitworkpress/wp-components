@@ -4,6 +4,9 @@
 var utils = require('./../utils');
 
 module.exports.initialize = function() {
+
+    // Check if we are rating
+    var isRating = false;
     
     // Rating at blog posts
     jQuery('body').on('mouseenter', '.atom-rate-rate i', function() {
@@ -31,7 +34,13 @@ module.exports.initialize = function() {
     
     // Clicking
     jQuery('body').on('click', '.atom-rate a', function (event) {
+        
         event.preventDefault();
+
+        // Prevent action if we're still rating
+        if( isRating ) {
+            return;
+        }
         
         var id = jQuery(this).data('id'),
             max = jQuery(this).data('max'),
@@ -39,8 +48,13 @@ module.exports.initialize = function() {
             module = (this).closest('.atom-rate'),
             rating = jQuery(this).find('.atom-rate-rate i.fa-star').length;
 
+        // Append a spinner
         jQuery(module).append('<i class="fa fa-spin fa-circle-o-notch"></i>');
+
+        // We're rating
+        isRating = true;
         
+        // Perform the ajax action
         utils.ajax({
             data: {
                 action: 'publicRate',
@@ -62,10 +76,16 @@ module.exports.initialize = function() {
             },
             complete: function() {
                 setTimeout( function() {
+                    // Remove the circle
                     jQuery(module).find('.fa-circle-o-notch').remove();
-                }, 400)
+
+                    // We finished rating
+                    isRating = false;
+                    
+                }, 500);
             }
         });
+
     });      
         
 };

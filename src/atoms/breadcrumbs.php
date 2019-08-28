@@ -120,6 +120,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                         } elseif( $post->post_type == 'product' && class_exists('WooCommerce') ) {
                             $breadcrumbs[$key]['title'] = get_the_title( wc_get_page_id( 'shop' ) );
                             $breadcrumbs[$key]['url']   = get_permalink( wc_get_page_id( 'shop' ) );                              
+                        } elseif( $post->post_type == 'post' && get_option('page_for_posts') && get_option('show_on_front') == 'page' ) {
+                            $breadcrumbs[$key]['title'] = get_the_title( get_option('page_for_posts') );
+                            $breadcrumbs[$key]['url']   = get_permalink( get_option('page_for_posts') );                             
                         } else {
                             $breadcrumbs[$key]['title'] = get_post_type_object( $post->post_type )->labels->name;
                             $breadcrumbs[$key]['url']   = get_post_type_archive_link( $post->post_type ); 
@@ -247,7 +250,8 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                         $key = count($breadcrumbs);
 
                         $breadcrumbs[$key]['title'] = $atom['archive']['title'];
-                        $breadcrumbs[$key]['url']   = $atom['archive']['url'];                               
+                        $breadcrumbs[$key]['url']   = $atom['archive']['url']; 
+                                                      
                     } elseif( $atom['archive'] ) {
                         $breadcrumbs[$key]['title'] = get_queried_object()->labels->name;
                         $breadcrumbs[$key]['url']   = get_post_type_archive_link( get_queried_object()->name ); 
