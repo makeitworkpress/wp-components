@@ -25,7 +25,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
             'itemscope' => 'itemscope',
             'itemtype'  => 'http://schema.org/BlogPosting'            
         ],
-        'blogScheme'    => true,                            // Indicates if we put author and other schema.org data within a blog bost
+        'blogSchema'    => true,                            // Indicates if we put author and other schema.org data within a blog bost
         'contentAtoms'  => [                                // Accepts a set of atoms for within the content
             'content' => [ 
                 'atom'          => 'content', 
@@ -182,7 +182,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         /**
                          * Structured data that is required according to Google Structured data testing
                          */
-                        if( $molecule['schema'] ) {
+                        if( $molecule['schema'] && $molecule['postProperties']['blogSchema'] ) {
                     ?>
                         
                         <span class="components-structured-data" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
