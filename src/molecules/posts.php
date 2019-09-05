@@ -46,7 +46,8 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         ],  
         'image'         => ['link' => 'post', 'size' => 'medium', 'enlarge' => true],       
         'logo'          => 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
-        'organization'  => get_bloginfo('name')
+        'organization'  => get_bloginfo('name'),
+        'publisher'     => 'Organization'                   // Accepts organization or person
     ],                              
     'pagination'        => ['type' => 'numbers'],           // Pagination settings.
     'query'             => '',                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
@@ -190,8 +191,15 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         </span>
 
                         <span class="components-structured-data" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization">
-                            <meta itemprop="logo" content="<?php echo $molecule['postProperties']['logo']; ?>">
-                            <meta itemprop="name" content="<?php echo $molecule['postProperties']['organization']; ?>">
+                            <span itemprop="logo"itemscope="itemscope" itemtype="http://schema.org/ImageObject">
+                                <?php if( strpos($molecule['postProperties']['logo'], '.svg') ) { ?>
+                                    <meta itemprop="contentUrl" content="<?php echo $molecule['postProperties']['logo']; ?>" />
+                                    <meta itemprop="url" content="<?php bloginfo('url'); ?>" />
+                                <?php } else { ?>
+                                    <meta itemprop="url" content="<?php echo $molecule['postProperties']['logo']; ?>" />
+                                <?php } ?>
+                            </span>
+                            <meta itemprop="name" content="<?php echo $molecule['postProperties']['organization']; ?>" />
                         </span>                    
 
                         <meta itemprop="mainEntityOfPage" content="<?php the_permalink(); ?>" />
