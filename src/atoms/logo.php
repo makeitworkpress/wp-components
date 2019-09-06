@@ -20,6 +20,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
     'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
+    'url'                   => esc_url( get_bloginfo('url') )
 ] ); 
 
 if( ! is_numeric($atom['default']) && ! isset($atom['default']['src']) ) {
@@ -64,5 +65,6 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     ?>
     <?php if( $atom['schema'] ) { ?>
         <meta itemprop="name" content="<?php echo $atom['title']; ?>" /> 
+        <meta itemprop="url" content="<?php echo $atom['url']; ?>" /> 
     <?php } ?> 
 </a>
