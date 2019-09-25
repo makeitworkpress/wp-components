@@ -20,23 +20,30 @@ if( empty($atom['taxonomies']) ) {
 
     $taxonomies = get_post_taxonomies( $atom['id'] );
 
-    if( $taxonomies ) {
+    if( is_array($taxonomies) ) {
+
         foreach( $taxonomies as $taxonomy ) {
 
+            // Skip polylang taxonomies
+            if( in_array($taxonomy, ['language', 'post_translations']) ) {
+                continue;
+            }            
+
             // Scheme
-            $scheme                     = '';
+            $schema                     = '';
             if( $taxonomy == 'category ' ) {
-                $scheme                     = 'genre';
+                $schema                     = 'genre';
             } elseif( $taxonomy == 'post_tag' ) {
-                $scheme                     = 'keywords';   
+                $schema                     = 'keywords';   
             }
 
             // Icons
             $icon = $taxonomy == 'post_tag' ? 'tag' : 'dot-circle-o';
 
-            $atom['taxonomies'][$taxonomy]  = ['after' => '', 'before' => '','icon' => $icon, 'schema' => $scheme, 'seperator' => ', '];
+            $atom['taxonomies'][$taxonomy]  = ['after' => '', 'before' => '','icon' => $icon, 'schema' => $schema, 'seperator' => ', '];
 
         }
+
     }
 
 }

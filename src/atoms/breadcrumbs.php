@@ -159,10 +159,28 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                             
                         } else {
 
+                            $taxonomy   = false;
+
                             if( $atom['taxonomy'] === true ) {
 
                                 $taxonomies = get_post_taxonomies( $post );
-                                $taxonomy   = is_array($taxonomies) ? $taxonomies[0] :  false;
+
+                                if( is_array($taxonomies) ) {
+
+                                    foreach( $taxonomies as $taxonomy ) {
+
+                                        // Skip polylang taxonomies
+                                        if( in_array($taxonomy, ['language', 'post_translations']) ) {
+                                            continue;
+                                        }
+
+                                        // Break if we have a valid $taxonomy set
+                                        break;
+
+                                    }
+
+                                }
+
                             } else {
                                 $taxonomy = $atom['taxonomy'];
                             }
@@ -171,6 +189,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                                 $terms = get_the_terms( $post, $taxonomy );
                                 $term = is_array($terms) ? $terms[0] : false;
                             }
+
                         }
 
                         // If we have a term, add it, including our children
