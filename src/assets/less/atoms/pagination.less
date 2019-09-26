@@ -4,21 +4,17 @@
  * Styling for the pagination element
  */
 .atom-pagination-post {
-    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     a {
-        display: block; 
-        float: left;
-        margin: 0 16px 0 0;
+        width: 47.5%;
+        @media screen and (max-width: 767px) {
+            margin-bottom: 16px;
+            width: 100%;  
+        }        
         span {
             display: block;
-        }
-    }
-    a[rel="next"] {
-        float: right;
-        margin: 0 0 0 16px;
-        text-align: right;      
-    }
-    @media screen and (max-width: 480px) {
-        display: block;    
+        }      
     }
 }
