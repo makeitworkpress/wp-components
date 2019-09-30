@@ -203,8 +203,8 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         </span>                    
 
                         <meta itemprop="mainEntityOfPage" content="<?php the_permalink(); ?>" />
-                        <meta itemprop="datePublished" content="<?php the_date('c') ?>" />
-                        <meta itemprop="dateModified" content="<?php the_modified_date('c') ?>" />
+                        <meta itemprop="datePublished" content="<?php echo get_the_date('c') ?>" />
+                        <meta itemprop="dateModified" content="<?php echo get_the_modified_date('c') ?>" />
 
                     <?php
                         }
