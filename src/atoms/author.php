@@ -62,7 +62,7 @@ $attributes                         = MakeitWorkPress\WP_Components\Build::attri
             <?php } ?>            
             
             <?php if( $atom['description'] ) { ?>
-                <p <?php if($atom['schema']) { ?>itemprop="text"<?php } ?>><?php echo $atom['description']; ?></p>
+                <p><?php echo $atom['description']; ?></p>
             <?php } ?>
             
         </div>
