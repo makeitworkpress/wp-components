@@ -7,9 +7,13 @@
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
     'attributes'    => [
         'itemprop'  => 'video'
-    ],    
+    ],
+    'date'          => '',                  // The schematic data for a video      
+    'description'   => '',                  // The schematic description for the video    
+    'name'          => '',                  // The schematic name for the video    
     'placer'        => 'atom-video-placer', // Our container class for the video, uses the 56.25% padding rule to make the video responsive
     'schema'        => true,                // If microdata is rendered or not. Also removes schematic attributes
+    'thumbnail'     => '',                  // The schematic thumbnail url for the video 
     'video'         => '',                  // Expects an embed code for a video object or a video html tag or a src
     'videoHeight'   => '' ,                 // A custom height for the video
     'videoWidth'    => ''                   // A custom width for the video
@@ -37,5 +41,19 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <div <?php echo $attributes; ?>>
     <div class="<?php echo $atom['placer']; ?>" <?php if($atom['schema']) { ?>itemscope="itemscope" itemtype="http://schema.org/VideoObject"<?php } ?>>
         <?php echo $atom['video']; ?>
+        <?php if( $atom['schema'] ) { ?>
+            <?php if( $atom['date'] ) { ?>
+                <meta  itemprop="uploadDate" content="<?php esc_attr_e($text, $domain)($atom['date']); ?>" />    
+            <?php } ?>  
+            <?php if( $atom['description'] ) { ?>
+                <meta itemprop="description" content="<?php esc_attr_e($text, $domain)($atom['description']); ?>" />
+            <?php } ?>
+            <?php if( $atom['name'] ) { ?>
+                <meta itemprop="name" content="<?php esc_attr_e($atom['name']); ?>" />
+            <?php } ?>            
+            <?php if( $atom['thumbnail'] ) { ?>
+                <meta itemprop="thumbnailUrl" content="<?php echo esc_url($atom['thumbnail']); ?>" />    
+            <?php } ?>                               
+        <?php } ?>
     </div>
 </div>
