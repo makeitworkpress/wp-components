@@ -7,7 +7,7 @@ The components are seperated in two classes, namely atoms which are single compo
 * An atom is for example a set of **sharing buttons**, a **title**, a **button**, a **search field**, **breadcrumbs** and so forth.
 * A molecule is for example a **site header**, a **grid of posts**, a **slider**, a **header** within an article, and so forth.
 
-WP Components is maintained by [Make it WorkPress](https://www.makeitwork.press/scripts/wp-components/).
+WP Components is maintained by [Make it WorkPress](https://makeitwork.press/scripts/wp-components/).
 
 &nbsp;
 ## Installation
