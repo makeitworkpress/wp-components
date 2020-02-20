@@ -58,7 +58,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <div <?php echo $attributes; ?>>
     <?php foreach( $atom['taxonomies'] as $taxonomy => $properties ) { ?>
         <?php if( $properties['list'] ) { ?> 
-            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( $properties['schema'] && $atom['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
+            <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( isset($properties['schema']) && $properties['schema'] && $atom['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
                 <?php if( $properties['icon'] ) { ?>
                     <i class="fa fa-<?php echo $properties['icon']; ?>"></i>
                 <?php } ?>
