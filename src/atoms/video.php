@@ -43,13 +43,13 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php echo $atom['video']; ?>
         <?php if( $atom['schema'] ) { ?>
             <?php if( $atom['date'] ) { ?>
-                <meta  itemprop="uploadDate" content="<?php esc_attr_e($text, $domain)($atom['date']); ?>" />    
+                <meta  itemprop="uploadDate" content="<?php echo esc_attr($atom['date']); ?>" />    
             <?php } ?>  
             <?php if( $atom['description'] ) { ?>
-                <meta itemprop="description" content="<?php esc_attr_e($text, $domain)($atom['description']); ?>" />
+                <meta itemprop="description" content="<?php echo esc_attr($atom['description']); ?>" />
             <?php } ?>
             <?php if( $atom['name'] ) { ?>
-                <meta itemprop="name" content="<?php esc_attr_e($atom['name']); ?>" />
+                <meta itemprop="name" content="<?php echo esc_attr($atom['name']); ?>" />
             <?php } ?>            
             <?php if( $atom['thumbnail'] ) { ?>
                 <meta itemprop="thumbnailUrl" content="<?php echo esc_url($atom['thumbnail']); ?>" />    
