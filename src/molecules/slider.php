@@ -19,6 +19,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'mouseDrag'         => true,
         'speed'             => 500,             // Speed of animation
     ], 
+    'schema'        => true,
     'scroll'        => false,       // Adds a scrolldown button     
     'slides'        => [],          // Supports a array with video, image and atoms as keys and the attributes key with common html attributes and common supported properties   
     'thumbnailSize' => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.             
@@ -65,11 +66,15 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                 $slide['attributes'] = [];   
             }
 
+            // Default attributes
             $slide['attributes'] = wp_parse_args( $slide['attributes'], [
                 'class'     => '',
-                'itemscope' => 'itemscope',
-                'itemtype'  => 'http://www.schema.org/CreativeWork'
+                'itemscope' => $molecule['schema'] ? 'itemscope' : false,
+                'itemtype'  => $molecule['schema'] ? 'http://www.schema.org/CreativeWork' : false
             ]);
+
+            // Always add the slide-wrapper class
+            $slide['attributes']['class'] .= ' molecule-slide-wrapper';
 
             // Determine the attributes and default properties
             $slideProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('slide', $slide);
@@ -77,7 +82,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
             <li class="slide">
 
-                <div class="molecule-slide-wrapper" <?php echo $slideAttributes; ?>>
+                <div <?php echo $slideAttributes; ?>>
                 
                     <?php 
         
