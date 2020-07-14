@@ -75,16 +75,17 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             $slideProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('slide', $slide);
             $slideAttributes = MakeitWorkPress\WP_Components\Build::attributes($slideProperties['attributes']); ?>
 
-            <li <?php echo $slideAttributes; ?>>
-                
-                <?php 
-    
-                    // Atoms
-                    if( isset($slide['atoms']) ) { 
-                
-                ?> 
+            <li class="slide">
 
-                    <div class="molecule-slide-wrapper">
+                <div class="molecule-slide-wrapper" <?php echo $slideAttributes; ?>>
+                
+                    <?php 
+        
+                        // Atoms
+                        if( isset($slide['atoms']) ) { 
+                    
+                    ?> 
+
                         <div class="molecule-slide-caption">
 
                             <?php
@@ -96,22 +97,24 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                             ?>
 
                         </div>
-                    </div>
+                        
 
-                <?php 
+                    <?php 
 
-                    }
+                        }
 
-                    // Or... slide video or image
-                    if( isset($slide['image']) ) { 
-                        MakeitWorkPress\WP_Components\Build::atom( 'image', $slide['image'] );
-                    } 
-                    
-                    if( isset($slide['video']) ) { 
-                        MakeitWorkPress\WP_Components\Build::atom( 'video', $slide['video'] );
-                    }
+                        // Or... slide video or image
+                        if( isset($slide['image']) ) { 
+                            MakeitWorkPress\WP_Components\Build::atom( 'image', $slide['image'] );
+                        } 
+                        
+                        if( isset($slide['video']) ) { 
+                            MakeitWorkPress\WP_Components\Build::atom( 'video', $slide['video'] );
+                        }
 
-                ?>
+                    ?>
+
+                </div><!-- .molecule-slide-wrapper -->
 
             </li>
 
