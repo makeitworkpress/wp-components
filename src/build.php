@@ -48,11 +48,6 @@ class Build {
         if( file_exists($path) ) {
             
             ${$type}    = apply_filters( 'components_' . $type . '_properties', self::setDefaultProperties($template, $properties, $type), $template );
-
-            // If we have the lazyload script defined, we execute it - but we watch for the WP Optimize Script being active
-            if( isset(${$type}['lazyload']) && ${$type}['lazyload'] && ! wp_script_is('lazyload') ) {
-                wp_enqueue_script('lazyload');
-            }
             
             // If we do not render, we return
             if( $render == false ) {
@@ -99,14 +94,8 @@ class Build {
 
                     if( preg_match('/http|https/', $properties[$class]) ) {
 
-                        $properties['attributes']['class']                         .= ' components-image-background'; 
-                        
-                        if( isset($properties['lazyload']) && $properties['lazyload'] ) {
-                            $properties['attributes']['data']['bg']                = 'url(' . $properties[$class] . ')';
-                            $properties['attributes']['class']                     .= ' lazy'; 
-                        } else {                        
-                            $properties['attributes']['style']['background-image']  = 'url(' . $properties[$class] . ')';
-                        }
+                        $properties['attributes']['class']                         .= ' components-image-background';                   
+                        $properties['attributes']['style']['background-image']      = 'url(' . $properties[$class] . ')';
 
                     } else {
                         $properties['attributes']['style']['background']            = $properties[$class];

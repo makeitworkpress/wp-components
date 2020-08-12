@@ -63,8 +63,7 @@ class Boot {
             if( $this->configurations['js'] ) {
                 wp_register_script( 'tinyslider', COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', array(), NULL, true);
                 wp_register_script( 'scrollreveal', COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
-                wp_register_script( 'lazyload', COMPONENTS_ASSETS . 'js/vendor/lazyload.min.js', array(), NULL, true);
-                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery', 'tinyslider', 'lazyload', 'scrollreveal'), NULL, true );
+                wp_enqueue_script( 'components', COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery', 'tinyslider', 'scrollreveal'), NULL, true );
 
                 // Localize our script
                 wp_localize_script( 'components', 'components', array(

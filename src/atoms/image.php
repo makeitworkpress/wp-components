@@ -7,7 +7,6 @@
 $atom = wp_parse_args( $atom, [
     'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html or an id to an image. Also accepts custom string to look for the image id in a meta field
-    'lazyload'  => false,   // Lazyload an image
     'link'      => '',      // A custom link from the image. Also accepts post to load the permalink for the post
     'post'      => null,
     'schema'    => true,                    // If microdata is rendered or not    
@@ -23,9 +22,8 @@ if( $atom['enlarge'] ) {
     $atom['attributes']['class'] .= ' atom-image-enlarge';
 }
 
-// If we have a lazyload, we add something to the class
-$class              = $atom['lazyload'] ? ' lazy' : '';
-$args               = ['itemprop' => 'image', 'class' => $class];
+
+$args               = ['itemprop' => 'image'];
 
 if( ! $atom['schema'] ) {
     unset($args['itemprop']);
@@ -44,17 +42,6 @@ if( is_numeric($atom['image']) ) {
 } else {
     global $post;
     $atom['image']  = get_the_post_thumbnail( $post, $atom['size'], $args );
-}
-
-// We have a lazyloading image, so we need to replace our attributes. We also check if lazyloading already has been applied
-if( $atom['lazyload'] && strpos( $atom['image'], 'data-src') === false ) {
-    $atom['image']  = str_replace( 'src=', 'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=', $atom['image'] );   
-    $atom['image']  = str_replace( 'srcset', 'data-srcset', $atom['image'] );
-
-    // Lazyloading sizes
-    if( strpos($atom['image'], 'sizes') ) {
-        $atom['image']  = str_replace( 'sizes', 'data-sizes', $atom['image'] );
-    }
 }
 
 // We should have an image

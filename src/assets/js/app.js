@@ -35,10 +35,7 @@ var App = {
         utils.scrollReveal();
         
         // Execute parallax backgrounds
-        utils.parallax();
-        
-        // Set-up lazy loading
-        utils.lazyLoad();        
+        utils.parallax();     
         
     }
 }

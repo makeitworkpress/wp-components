@@ -45,20 +45,3 @@ module.exports.parallax = function() {
     });
     
 };
-
-/* Initializes lazyload */
-module.exports.lazyLoad = function() {
-    
-    if( typeof LazyLoad !== "undefined" && typeof wpOptimizeLazyLoad === 'undefined' ) {
-        window.wpComponentsLazyLoad = new LazyLoad({
-            elements_selector: ".lazy",
-            callback_set: function (element) { 
-                if( typeof(element.attributes['data-bg']) !== 'undefined' ) {
-                    element.style.backgroundImage = element.attributes['data-bg'].nodeValue;
-                }
-            }
-        });
-
-    }
-    
-};
