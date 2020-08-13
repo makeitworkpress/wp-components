@@ -58,7 +58,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
 ] );
 
 // Query vars for pagination
-if( get_query_var('paged') ) {
+if( get_query_var('paged') && ! isset($molecule['queryArgs']['paged']) ) {
     $molecule['queryArgs']['paged']     = get_query_var('paged');
 }
 
