@@ -44,7 +44,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
                 'properties'    => ['attributes' => ['itemprop' => 'name headline', 'class' => 'entry-title'], 'tag' => 'h2', 'link' => 'post' ] 
             ] 
         ],  
-        'image'         => ['link' => 'post', 'size' => 'medium', 'enlarge' => true],       
+        'image'         => ['attributes' => ['class' => 'entry-image'], 'link' => 'post', 'size' => 'medium', 'enlarge' => true],       
         'logo'          => 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
         'organization'  => get_bloginfo('name'),
         'publisher'     => 'Organization'                   // Accepts organization or person
@@ -151,19 +151,17 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     
     <div class="molecule-posts-wrapper <?php echo $molecule['wrapper']; ?>">
         
-        <?php if( $molecule['query']->have_posts() ) { ?>
+        <?php if( $molecule['query']->posts ) { ?>
         
-            <?php while( $molecule['query']->have_posts() ) { ?>
+            <?php foreach( $molecule['query']->posts as $post ) { ?>
 
                 <?php
-
-                    $id = get_the_ID();
 
                     // Set-up our post data
                     $molecule['postProperties']['attributes']['class']      = $postClass;
 
                     $molecule['query']->the_post();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $id) );
+                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $post->ID) );
                     
                     // Allows for grid patterns with an array
                     if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {
@@ -210,7 +208,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         }
 
                         // Actions at beginning of a post
-                        do_action( 'components_posts_post_before', $id, $molecule );
+                        do_action( 'components_posts_post_before', $post->ID, $molecule );
 
                         if( $molecule['postProperties']['image'] ) {
                             MakeitWorkPress\WP_Components\Build::atom( 'image', $molecule['postProperties']['image'] );  
@@ -269,7 +267,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                     <?php
                         // Actions at end of a post
-                        do_action( 'components_posts_post_after', $id,  $molecule );
+                        do_action( 'components_posts_post_after', $post->ID,  $molecule );
                     ?>
 
                 </article>
