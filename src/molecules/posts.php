@@ -67,8 +67,8 @@ if( ! $molecule['query'] ) {
     $molecule['query']                  = new WP_Query( $molecule['queryArgs'] );
 }
 
-// Set the query for our pagination
-if( $molecule['pagination'] ) {
+// Set the query for our pagination if it's not set already
+if( $molecule['pagination'] && ! isset($molecule['pagination']['query']) ) {
     $molecule['pagination']['query']    = $molecule['query'];
 }
 

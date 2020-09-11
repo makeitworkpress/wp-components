@@ -20,7 +20,7 @@ $url    = isset( $atom['url'] )     ? $atom['url']      : rawurlencode( get_perm
 $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 
 // Atom properties
-$atom   = wp_parse_args( $atom, [
+$atom   = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'colorBackground'   => true,
     'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
