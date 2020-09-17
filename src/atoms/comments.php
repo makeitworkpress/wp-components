@@ -11,14 +11,14 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
         'id' => 'comments'
     ],
     'closed'        => ! comments_open(), 
-    'closedText'    => __('Comments are closed.', 'components'), // May contain a string for the closed text
+    'closedText'    => __('Comments are closed.', WP_COMPONENTS_LANGUAGE), // May contain a string for the closed text
     'form'          => true,
     'hasComments'   => get_comments_number(),
     'pagination'    => true,
     'seperate'      => false,                   // If comments should be seperated by type
     'template'      => '',                      // Loads a custom template
     'title'         => sprintf( 
-        _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'components' ),
+        _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), WP_COMPONENTS_LANGUAGE ),
         number_format_i18n( get_comments_number() ),
         get_the_title()
     )

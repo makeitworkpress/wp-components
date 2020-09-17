@@ -102,7 +102,7 @@ class Ajax {
                 'post_status'       => 'publish',
                 's'                 => sanitize_text_field( $_POST['search'] )
             ],
-            'none'          => $none ? $none : __('Bummer! No posts found.', 'components'),
+            'none'          => $none ? $none : __('Bummer! No posts found.', WP_COMPONENTS_LANGUAGE),
             'pagination'    => false,            
             'postProperties' => [
                 'appear'        => sanitize_text_field( $_POST['appear'] ),

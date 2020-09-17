@@ -10,12 +10,12 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
             'appear'    => 'bottom', // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
             'delay'     => 300,      // Delay to start searching after typing
             'length'    => 3,        // The length of the search string to start querying with ajax
-            'none'      => __('Bummer! No results found', 'components'), 
+            'none'      => __('Bummer! No results found', WP_COMPONENTS_LANGUAGE), 
             'number'    => 5       // The amount of posts to query with ajax
         ]
     ],
     'ajax'      => false,   // Enables the ajax search action,
-    'all'       => __('View all search results', 'components'),
+    'all'       => __('View all search results', WP_COMPONENTS_LANGUAGE),
     'collapse'  => false,   // If collapsed, only shows a search icon that opens a form upon click
     'form'      => get_search_form(false),      
     'link'      => esc_url( get_search_link('') ), 

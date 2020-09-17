@@ -11,7 +11,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/Organization',
     ],
-    'alt'                   => __('Logo', 'components'),
+    'alt'                   => __('Logo', WP_COMPONENTS_LANGUAGE),
     'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src. Also accepts an image id
     'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
