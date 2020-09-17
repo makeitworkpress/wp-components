@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'attributes'    => [
         'itemprop'  => 'video'
     ],
@@ -17,7 +17,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
     'video'         => '',                  // Expects an embed code for a video object or a video html tag or a src
     'videoHeight'   => '' ,                 // A custom height for the video
     'videoWidth'    => ''                   // A custom width for the video
-) );
+] );
 
 // Return if we do not have a video
 if( ! $atom['video'] ) {

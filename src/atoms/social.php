@@ -22,6 +22,7 @@ $atom = wp_parse_args( $atom, [
         'stumbleupon'   => 'stumbleupon',
         'whatsapp'      => 'whatsapp'
     ],
+    'hoverItem' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().
     'urls'      => [],
     'titles'    => []
 ] ); 
@@ -48,9 +49,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             
         ?>
     
-        <a class="atom-network components-<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
+        <a class="atom-network components-<?php echo esc_attr( $network ); ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="author external">
             <?php if( isset($atom['icons'][$network]) ) { ?>
-                <i class="fa fa-<?php echo $atom['icons'][$network]; ?>"></i>
+                <i class="fa fa-<?php echo $atom['icons'][$network]; ?> hvr-icon"></i>
             <?php } ?>
             
             <?php if( isset($atom['titles'][$network]) ) { ?>

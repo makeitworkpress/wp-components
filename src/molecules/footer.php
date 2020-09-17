@@ -9,10 +9,11 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/WPFooter'
     ],
-    'atoms'     => [],   // Adds an array of elements to the footer socket
+    'atoms'     => [],      // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
     'gridGap'   => 'default',  
-    'sidebars'  => []       // Accepts an array with the sidebar name as key and the grid for the value
+    'sidebars'  => [],      // Accepts an array with the sidebar name as key and the grid for the value
+    'video'     => ''           // Expects the url for a video for display a video background
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
@@ -20,6 +21,12 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 <footer <?php echo $attributes; ?>>
     
     <?php do_action( 'components_footer_before', $molecule ); ?>
+
+    <?php if($molecule['video']) { ?>
+        <div class="components-video-background-container">
+            <video class="components-video-background" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" src="<?php echo esc_url($molecule['video']); ?>"></video>
+        </div>
+    <?php } ?>    
     
     <?php if( $molecule['sidebars'] ) { ?>
         <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; ?> <?php } ?>">

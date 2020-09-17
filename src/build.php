@@ -43,7 +43,7 @@ class Build {
         }
             
         // Our template path
-        $path = apply_filters( 'components_' . $type . '_path', COMPONENTS_PATH . $type . 's/' . $template . '.php', $template );
+        $path = apply_filters( 'components_' . $type . '_path', WP_COMPONENTS_PATH . $type . 's/' . $template . '.php', $template );
         
         if( file_exists($path) ) {
             
@@ -85,7 +85,7 @@ class Build {
         /**
          * Properties that generate a specific class for a style or are generic
          */
-        foreach( ['align', 'animation', 'appear', 'background', 'border', 'color', 'display', 'float', 'grid', 'height', 'hover', 'parallax', 'position', 'rounded', 'width'] as $class ) {
+        foreach( ['align', 'animation', 'appear', 'background', 'border', 'color', 'display', 'float', 'grid', 'height', 'hover', 'parallax', 'position', 'rounded', 'video', 'width'] as $class ) {
             
             if( isset($properties[$class]) && $properties[$class] ) {
 
@@ -132,6 +132,23 @@ class Build {
                     $properties['attributes']['style']['min-' . $class]             = $properties[$class];
                     continue;
                 }
+
+                // Advanced hover settings using hover.css (should be enabled in the configurations during instance boot as well)
+                if( $class == 'hover' ) {
+                    $properties['attributes']['class'] .= ' hvr-' . $properties[$class]; 
+                    continue;
+                }               
+
+                // Advanced animations using animate.css (should be enabled in the configurations during instance boot as well)
+                if( $class == 'animation' && ! in_array($properties[$class], ['fadein', 'fadeindown', 'slideinleft', 'slideinright']) ) {
+                    $properties['attributes']['class'] .= ' animate__animated animate__' . $properties[$class]; 
+                    continue;
+                }
+
+                if( $class == 'video' ) {
+                    $properties['attributes']['class'] .= ' components-video-background'; 
+                    continue;
+                }                
 
                 // Set our definite class
                 $properties['attributes']['class'] .= is_bool($properties[$class]) ? ' components-' . $class : ' components-' . $properties[$class] . '-' . $class;

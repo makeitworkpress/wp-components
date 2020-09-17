@@ -15,7 +15,8 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         ] 
     ],
     'container'     => true,    // Wrap this component in a container
-    'scroll'        => false    // A scroll down button.
+    'scroll'        => false,   // A scroll down button.
+    'video'         => ''       // Expects the url for a video for display a video background
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
@@ -23,6 +24,12 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 <header <?php echo $attributes; ?>>
     
     <?php do_action( 'components_post_header_before', $molecule ); ?>
+
+    <?php if($molecule['video']) { ?>
+        <div class="components-video-background-container">
+            <video class="components-video-background" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" src="<?php echo esc_url($molecule['video']); ?>"></video>
+        </div>
+    <?php } ?>    
     
     <?php if( $molecule['container'] ) { ?>
          <div class="components-container"> 

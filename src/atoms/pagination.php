@@ -6,7 +6,7 @@ global $wp_query;
 
 // Atom values
 $atom = wp_parse_args( $atom, [
-    'format'        => '/page/%#%',
+    'format'        => '/page/%#%', 
     'next'          => '&rsaquo;',
     'pagination'    => '',
     'prev'          => '&lsaquo;',

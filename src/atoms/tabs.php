@@ -5,6 +5,7 @@
 
 // Atom values
 $atom = wp_parse_args( $atom, [
+    'hoverItem' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().    
     'position'  => 'top',
     'tabs'      => []      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
 ] );
@@ -29,10 +30,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 
         ?>
             <li>
-                <a class="atom-tab <?php echo $active; ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
+                <a class="atom-tab <?php echo $active; ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
                     
                     <?php if( isset($tab['icon']) ) { ?> 
-                        <i class="fa fa-<?php echo $tab['icon']; ?>"></i>
+                        <i class="fa fa-<?php echo $tab['icon']; ?> hvr-icon"></i>
                     <?php } ?>
                     
                     <?php 

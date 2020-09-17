@@ -206,3 +206,34 @@
     display: flex;
     justify-content: flex-end;
 }
+
+/**
+ * Video Backgrounds
+ */
+.components-video-background {
+    position: relative;
+    > * {
+        position: relative;
+        z-index: 1;
+    }
+    .components-video-background-container {
+        z-index: 0;  
+    }
+} 
+
+.components-video-background-container {
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;  
+}
+
+.components-video-background-src {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+}

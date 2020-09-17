@@ -24,7 +24,7 @@ $atom   = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'colorBackground'   => true,
     'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
-    'share'             => __('Share:', 'wp-components'), // Adds a label with share
+    'hoverItem'         => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'networks'          => [
         'facebook'      => [ 'url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook' ], 
         'twitter'       => [ 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ], 
@@ -40,7 +40,8 @@ $atom   = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
         'stumbleupon'   => [ 'url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon' ],
         'pocket'        => [ 'url' => 'https://getpocket.com/edit.php?url=' . $url, 'icon' => 'get-pocket' ],
         'whatsapp'      => [ 'url' => 'whatsapp://send?text=' . $title . ' ' . $url, 'icon' => 'whatsapp' ]
-    ]
+    ],      
+    'share'             => __('Share:', WP_COMPONENTS_LANGUAGE) // Adds a label with share
 ] ); 
 
 if( $atom['fixed'] ) {
@@ -63,9 +64,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     
     <?php foreach( $atom['enabled'] as $network ) { ?>
     
-        <a class="atom-network components-<?php echo $network; ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
+        <a class="atom-network components-<?php echo $network; ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
             <?php if( isset($atom['networks'][$network]['icon']) ) { ?>
-                <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?>"></i>
+                <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?> hvr-icon"></i>
             <?php } ?>
             <?php if( isset($atom['networks'][$network]['title']) ) { ?>
                 <span><?php echo $atom['networks'][$network]['title']; ?></span>

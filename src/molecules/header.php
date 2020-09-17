@@ -16,7 +16,8 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     'headroom'      => false,       // If we apply a headroom effect to the header
     'socketAtoms'   => [],          // An extra bottom part in the header
     'transparent'   => false,       // If the header is transparent
-    'topAtoms'      => []           // An extra top part in the header
+    'topAtoms'      => [],          // An extra top part in the header
+    'video'         => ''           // Expects the url for a video for display a video background
 ] ); 
 
 if( $molecule['fixed'] ) {
@@ -36,6 +37,25 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 <header <?php echo $attributes; ?>>
     
     <?php do_action( 'components_header_before', $molecule ); ?>
+
+    <?php if($molecule['video']) { ?>
+        <div class="components-video-background-container">
+            <video class="components-video-background" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" src="<?php echo esc_url($molecule['video']); ?>"></video>
+        </div>
+    <?php } ?>    
+
+    <?php 
+        if($molecule['video']) {
+            MakeitWorkPress\WP_Components\Build::atom( 
+                'video', 
+                [
+                    'attributes'    => ['class' => 'components-background-video', 'itemprop' => ''], 
+                    'schema'        => false,
+                    'src'           => esc_url($molecule['video'])
+                ] 
+            );    
+        } 
+    ?>    
     
     <?php if( $molecule['topAtoms'] ) { ?>
         <div class="molecule-header-top-atoms">

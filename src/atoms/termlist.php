@@ -4,10 +4,10 @@
  */
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
-    'id'                => get_the_ID(),
-    'schema'            => true, // Whether to incorporate schema.org microdata or not
-    'taxonomies'        => [] // Accepts the following format: 'category' => ['after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ']
+$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [    
+    'id'            => get_the_ID(),
+    'schema'        => true, // Whether to incorporate schema.org microdata or not
+    'taxonomies'    => [] // Accepts the following format: 'category' => ['after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ']
 ] );
 
 // Show our taxonomies if the standard array is empty
@@ -60,7 +60,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php if( $properties['list'] ) { ?> 
             <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( isset($properties['schema']) && $properties['schema'] && $atom['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
                 <?php if( $properties['icon'] ) { ?>
-                    <i class="fa fa-<?php echo $properties['icon']; ?>"></i>
+                    <i class="fa fa-<?php echo $properties['icon']; ?> hvr-icon"></i>
                 <?php } ?>
                 <?php                                               
                     echo $properties['list']; 

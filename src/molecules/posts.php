@@ -170,6 +170,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                     $key++;
 
+                    // Allows our posts to have default attributes as regular atoms and molecules can have.
                     $postProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('post', $molecule['postProperties']);
                     $postAttributes = MakeitWorkPress\WP_Components\Build::attributes($postProperties['attributes']);
 

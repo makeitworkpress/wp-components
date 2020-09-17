@@ -27,6 +27,6 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
 <a <?php echo $attributes; ?>>
     <?php if( $atom['icon'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x"></i>
+        <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x hvr-icon"></i>
     <?php } ?>
 </a> 

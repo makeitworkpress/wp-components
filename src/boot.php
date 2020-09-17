@@ -30,11 +30,14 @@ class Boot {
         
         // Setup our configurations. By default, we load css and js from the components library.
         $this->configurations = wp_parse_args( $configurations, [
-            'css'       => true,            // Load standard css
-            'js'        => true,            // Load standard js
-            'hover'     => false,           // Whether to load hover.css or not
-            'animate'   => false,           // Whether to load animate.css or not
-            'language'  => 'wp-components'  // The default language domain
+            'css'           => true,            // Load standard css
+            'js'            => true,            // Load standard js
+            'fontawesome'   => true,            // Loads the fontawesome css
+            'tinyslider'    => true,            // Loads the slider js and css
+            'scrollreveal'  => true,            // Loads the scrollreveal JS
+            'hover'         => false,           // Whether to load hover.css or not
+            'animate'       => false,           // Whether to load animate.css or not
+            'language'      => 'wp-components'  // The default language domain
         ] );
         
         // Define Constants
@@ -63,29 +66,50 @@ class Boot {
         add_action( 'wp_enqueue_scripts', function() {
 
             // If we are debugging, load the full scripts
-            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';              
+            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';  
             
-            // Enqueue our components CSS
+            // Enqueue tinyslider CSS and JS
+            if( $this->configurations['tinyslider'] ) {
+                wp_enqueue_style( 'tinyslider-css', WP_COMPONENTS_ASSETS . 'css/vendor/tinyslider.min.css');
+                wp_register_script( 'tinyslider-js', WP_COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', [], NULL, true);
+            }
+            
+            // Enqueue scrollreveal JS
+            if( $this->configurations['scrollreveal'] ) {
+                wp_register_script( 'scrollreveal-js', WP_COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', [], NULL, true);
+            }           
+            
+            // Enqueue our default components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components', WP_COMPONENTS_ASSETS . 'css/components.min.css');
+                wp_enqueue_style( 'components-css', WP_COMPONENTS_ASSETS . 'css/components.min.css');
+            }
+
+            if( $this->configurations['fontawesome'] ) {
                 wp_enqueue_style( 'font-awesome', WP_COMPONENTS_ASSETS . 'css/vendor/font-awesome.min.css');
+            }
+            
+            // Enqueue our animate CSS
+            if( $this->configurations['animate'] ) {
+                wp_enqueue_style( 'animate-css', WP_COMPONENTS_ASSETS . 'css/vendor/animate.min.css');
             } 
             
-            // Enqueue our hover and animate CSS
+            // Enqueue our hover CSS
+            if( $this->configurations['hover'] ) {
+                wp_enqueue_style( 'hover-css', WP_COMPONENTS_ASSETS . 'css/vendor/hover.min.css');
+            }              
             
-            // Enqueue our components JS
+            // Enqueue our default components JS
             if( $this->configurations['js'] ) {
-                wp_register_script( 'tinyslider', WP_COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', array(), NULL, true);
-                wp_register_script( 'scrollreveal', WP_COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', array(), NULL, true);
-                wp_enqueue_script( 'components', WP_COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', array('jquery', 'tinyslider', 'scrollreveal'), NULL, true );
+                
+                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', [], NULL, true );
 
                 // Localize our script
-                wp_localize_script( 'components', 'components', array(
+                wp_localize_script( 'components-js', 'components', [
                     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
                     'restUrl' => esc_url_raw( rest_url() ),
                     'debug'   => defined('WP_DEBUG') && WP_DEBUG ? true : false,
                     'nonce'   => wp_create_nonce( 'cucumber' ),
-                ) );
+                ]);
 
             }
             
