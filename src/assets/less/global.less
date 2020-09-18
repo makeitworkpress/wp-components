@@ -208,6 +208,62 @@
 }
 
 /**
+ * Box Shadows
+ */
+.components-custom-boxshadow {
+    box-shadow: attr(data-x, 0) attr(data-y, 0) attr(data-blur, 15px) attr(data-spread, 0) attr(data-type, initial);
+}
+
+.boxshadow(@step; @index: 1) when(@index =< 20) {
+    @blurvalue: (@step * @index);
+    .boxshadow(@step; (@index+1));
+    .components-blur@{blurvalue}-boxshadow {
+        box-shadow: 0 0 (@blurvalue*1px) rgba(0, 0, 0, 0.25);
+    }
+}
+
+.boxshadow(5);
+
+/**
+ * Overlays
+ */
+.components-overlay {
+    position: relative;
+    > * {
+        position: relative;
+        z-index: 2;
+    }
+    &:after {
+        background-color: #000;
+        content: '';
+        height: 100%;
+        left: 0;
+        opacity: 0.5;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        width: 100%;
+    }
+}
+
+.components-custom-overlay:after {
+    background-color: attr(data-color, #000);
+    opacity: attr(data-opacity, 0.5);
+}
+
+.overlay(@step; @index: 1) when ((@index * @step) =< 100) {
+    @value: @step * @index;
+    .overlay(@value; (@index+1));
+     
+    .components-b@{value}-overlay:after {
+        opacity: (@step * @index)/100
+    }
+   
+}
+
+.overlay(5);
+
+/**
  * Video Backgrounds
  */
 .components-video-background {
