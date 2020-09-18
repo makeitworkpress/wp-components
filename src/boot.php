@@ -30,14 +30,15 @@ class Boot {
         
         // Setup our configurations. By default, we load css and js from the components library.
         $this->configurations = wp_parse_args( $configurations, [
-            'css'           => true,            // Load standard css
-            'js'            => true,            // Load standard js
-            'fontawesome'   => true,            // Loads the fontawesome css
-            'tinyslider'    => true,            // Loads the slider js and css
-            'scrollreveal'  => true,            // Loads the scrollreveal JS
-            'hover'         => false,           // Whether to load hover.css or not
             'animate'       => false,           // Whether to load animate.css or not
-            'language'      => 'wp-components'  // The default language domain
+            'css'           => true,            // Load standard css
+            'fontawesome'   => true,            // Loads the fontawesome css
+            'hover'         => false,           // Whether to load hover.css or not
+            'js'            => true,            // Load standard js
+            'language'      => 'wp-components', // The default language domain
+            'maps'          => '',              // The API key for Google Maps. 
+            'scrollreveal'  => true,            // Loads the scrollreveal JS
+            'tinyslider'    => true             // Loads the slider js and css
         ] );
         
         // Define Constants
@@ -96,12 +97,17 @@ class Boot {
             // Enqueue our hover CSS
             if( $this->configurations['hover'] ) {
                 wp_enqueue_style( 'hover-css', WP_COMPONENTS_ASSETS . 'css/vendor/hover.min.css');
-            }              
+            }  
+            
+            // Registers the maps script
+            if( $this->configurations['maps'] ) {
+                wp_register_script( 'google-maps-js', 'https://maps.googleapis.com/maps/api/js?key=' . $this->configurations['maps'], [], '3', true);
+            }               
             
             // Enqueue our default components JS
             if( $this->configurations['js'] ) {
                 
-                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', [], NULL, true );
+                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', ['jquery'], NULL, true );
 
                 // Localize our script
                 wp_localize_script( 'components-js', 'components', [

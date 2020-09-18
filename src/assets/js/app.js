@@ -6,6 +6,7 @@ var utils = require('./utils');
 
 var App = {
     atoms: {
+        map: require('./atoms/map'),
         menu: require('./atoms/menu'),
         modal: require('./atoms/modal'),
         rate: require('./atoms/rate'),
