@@ -19,8 +19,8 @@ $title  = isset( $atom['title'] )   ? $atom['title']    : rawurlencode( get_the_
 $url    = isset( $atom['url'] )     ? $atom['url']      : rawurlencode( get_permalink($postID) );
 $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 
-// Atom properties
-$atom   = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+// Atom properties - for this atom, wp_parse_args should be used
+$atom   = wp_parse_args( $atom, [
     'colorBackground'   => true,
     'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
