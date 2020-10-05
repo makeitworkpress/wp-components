@@ -72,12 +72,12 @@ class Boot {
             // Enqueue tinyslider CSS and JS
             if( $this->configurations['tinyslider'] ) {
                 wp_enqueue_style( 'tinyslider-css', WP_COMPONENTS_ASSETS . 'css/vendor/tinyslider.min.css');
-                wp_register_script( 'tinyslider-js', WP_COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', [], NULL, true);
+                wp_enqueue_script( 'tinyslider-js', WP_COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', [], NULL, true);
             }
             
             // Enqueue scrollreveal JS
             if( $this->configurations['scrollreveal'] ) {
-                wp_register_script( 'scrollreveal-js', WP_COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', [], NULL, true);
+                wp_enqueue_script( 'scrollreveal-js', WP_COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', [], NULL, true);
             }           
             
             // Enqueue our default components CSS
