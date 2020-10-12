@@ -157,11 +157,14 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                 <?php
 
+                    // Define our post id, as $post can both be an object or a integer (matching the post id)
+                    $postID = isset($post->ID) && is_numeric($post->ID) ? $post->ID : $post;
+
                     // Set-up our post data
                     $molecule['postProperties']['attributes']['class']      = $postClass;
 
                     $molecule['query']->the_post();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $post->ID) );
+                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $postID) );
                     
                     // Allows for grid patterns with an array
                     if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {
@@ -209,7 +212,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         }
 
                         // Actions at beginning of a post
-                        do_action( 'components_posts_post_before', $post->ID, $molecule );
+                        do_action( 'components_posts_post_before', $postID, $molecule );
 
                         if( $molecule['postProperties']['image'] ) {
                             MakeitWorkPress\WP_Components\Build::atom( 'image', $molecule['postProperties']['image'] );  
@@ -268,7 +271,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                     <?php
                         // Actions at end of a post
-                        do_action( 'components_posts_post_after', $post->ID,  $molecule );
+                        do_action( 'components_posts_post_after', $postID,  $molecule );
                     ?>
 
                 </article>
