@@ -16,7 +16,8 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
     'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
-    'schema'                => true,                    // If microdata is rendered or not
+    'schema'                => true,        // If microdata is rendered or not
+    'size'                  => 'medium',    // The default size of the fetched logo
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
     'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
@@ -52,7 +53,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 if( ! $atom['schema'] ) { 
                     unset($args['itemprop']);
                 }
-                echo wp_get_attachment_image( $atom[$image], 'medium', false, $args );
+                echo wp_get_attachment_image( $atom[$image], $atom['size'], false, $args );
 
             } else if( isset($atom[$image]['src']) && $atom[$image]['src'] && isset($atom[$image]['width']) && $atom[$image]['width'] && isset($atom[$image]['height']) && $atom[$image]['height'] ) {
                 
