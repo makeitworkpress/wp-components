@@ -32,15 +32,8 @@
     width: 100%;
 }
 
-@columns:
-    wrapper 2%, // The default for the wrapper, also a back-up for websites that do not use the new set-up.
-    none 0%,
-    tiny 0.5%,
-    small 1%,
-    medium 3%,
-    large 4%,
-    huge 5%
-;
+// The default for the wrapper, also a back-up for websites that do not use the new set-up.
+@columns: wrapper 2%, none 0%, tiny 0.5%, small 1%, medium 3%, large 4%, huge 5%;
 
 // for loop to iterate over array
 .each(@array, @i: 1) when (@i <= length(@array)) {
@@ -51,12 +44,12 @@
     @marge: extract(@pair, 2);
 
     // Columns
-    @half: (100% - @marge)/2;
+    @half: (100% - @marge)*0.5;
     @three-fourth: @fourth * 3 + @marge * 2;
-    @third: (100% - 2*@marge)/3;
+    @third: (100% - 2*@marge)*0.33333333333333333;
     @two-third: @third * 2 + @marge;
-    @fourth: (100% - 3*@marge)/4;
-    @fifth: (100% - 4*@marge)/5;    
+    @fourth: (100% - 3*@marge)*0.25;
+    @fifth: (100% - 4*@marge)*0.2;    
     
     // selector based on href name
     .components-grid-@{name} {
@@ -95,7 +88,6 @@
 }
 
 .each(@columns);
-
 
 /* General Queries */
 .components-grid-wrapper {

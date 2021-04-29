@@ -1,5 +1,3 @@
-const { minify } = require("uglify-js");
-
 /**
  * Creates a Google Map
  */
@@ -21,11 +19,7 @@ module.exports.initialize = function() {
                 zoom: parseInt(mapVars.zoom)
             },   
             map = new google.maps.Map(mapCanvas, mapOptions),
-            markers = [],
-            markerOptions = {
-                draggable: false,
-                map: map
-            }; 
+            markers = [];
             
         // Exposes the map to the global scope so other scripts may act on it
         mapVars.map = map;
@@ -38,7 +32,11 @@ module.exports.initialize = function() {
 
             var geocoder     = null;
                 markerLatLng = null;
-                markers[index] = new google.maps.Marker(markerOptions);
+                markers[index] = new google.maps.Marker({
+                    draggable: false,
+                    icon: typeof(item.icon) !== 'undefined' ? item.icon : '',
+                    map: map
+                });
 
             // Geocodes the address
             if( typeof(item.address) !== 'undefined' && item.address ) {
@@ -47,7 +45,7 @@ module.exports.initialize = function() {
 
                 geocoder.geocode( { 'address': item.address}, function(results, status) {
                     if (status == 'OK') {
-                        markerLatLng = results[0].geometry.location
+                        markerLatLng = results[0].geometry.location;
                     } else {
                         console.log('Geocoding was not successful for the following reason: ' + status);
                     }
@@ -66,8 +64,19 @@ module.exports.initialize = function() {
         });
 
         // Fit the bounds
-        mapBounds.extend(mapOptions.center);
-        map.fitBounds(mapBounds);
+        if( markers.length > 0 && mapVars.fit ) {
+
+            mapBounds.extend(mapOptions.center);
+            map.fitBounds(mapBounds);  
+            
+            // Fix our zoom
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+                if(this.getZoom() > 15) {
+                    this.setZoom(15);
+                }
+            });
+ 
+        }
 
     });
 
