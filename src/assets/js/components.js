@@ -63,8 +63,8 @@ module.exports.initialize = function() {
             mapVars = window[mapCanvas.dataset.id],
             mapOptions = {
                 center: new google.maps.LatLng(parseFloat(mapVars.center.lat), parseFloat(mapVars.center.lng)),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scrollwheel: false,
+                styles: typeof(mapVars.styles) !== 'undefined' ? mapVars.styles : '',
                 zoom: parseInt(mapVars.zoom)
             },   
             map = new google.maps.Map(mapCanvas, mapOptions),

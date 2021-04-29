@@ -9,6 +9,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'fit'       => true,
     'id'        => 'wpcDefaultMap',    // Default ID to which map configurations are saved
     'markers'   => [],          // Use ['lat' => $lat, 'lng' => $lng, 'icon' => 'icon.png'] or ['address' => $address, 'icon' => 'icon.png']
+    'styles'    => '[]', // Custom map styles
     'zoom'      => 12
 ] );
 
@@ -18,7 +19,17 @@ if( ! wp_script_is('google-maps-js') && apply_filters('components_maps_script', 
 } 
 
 // Localize
-wp_localize_script('google-maps-js', $atom['id'], ['center' => $atom['center'], 'fit' => $atom['fit'], 'markers' => $atom['markers'], 'zoom' => $atom['zoom']]);
+add_action('wp_footer', function() use($atom) {
+    echo '<script type="text/javascript">
+        var ' . $atom['id'] . '= { 
+            center: ' . json_encode($atom['center']) . ',
+            fit: ' . json_encode($atom['fit']) . ',
+            markers: ' . json_encode($atom['markers']) . ', 
+            styles: ' . $atom['styles']. ',
+            zoom: ' . $atom['zoom'] . 
+        '}
+    </script>';   
+});
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
