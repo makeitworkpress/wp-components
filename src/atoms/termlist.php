@@ -49,9 +49,19 @@ if( empty($atom['taxonomies']) ) {
 }
 
 // Retrieve our lists
+$hasTerms = false;
 foreach( $atom['taxonomies'] as $taxonomy => $properties ) { 
-    $atom['taxonomies'][$taxonomy]['list'] = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
+    $termlist                                   = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
+    if( $termlist ) {
+        $atom['taxonomies'][$taxonomy]['list']  = $termlist;
+        $hasTerms                               = true;
+    }
 } 
+
+// Don't output html if no terms are found
+if( ! $hasTerms ) {
+    return;
+}
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
