@@ -107,7 +107,7 @@ class Boot {
             // Enqueue our default components JS
             if( $this->configurations['js'] ) {
                 
-                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/components' . $suffix . '.js', ['jquery'], NULL, true );
+                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/wpc' . $suffix . '.js', ['jquery'], NULL, true );
 
                 // Localize our script
                 wp_localize_script( 'components-js', 'components', [
