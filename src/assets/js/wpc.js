@@ -675,13 +675,13 @@ module.exports.initialize = function() {
                 
                 event.preventDefault();
 
-                var self = jQuery(this).closest('.molecule-posts'),
+                var element = jQuery(this).closest('.molecule-posts[data-id="' + id + '"]'),
                     target = jQuery(this).attr('href');
 
                 /**
                  * Update our pagination and add the right classes
                  */
-                jQuery(self).addClass('components-loading');
+                jQuery(element).addClass('components-loading');
 
                 // Load our data
                 jQuery.get(target, function(data) {
@@ -689,17 +689,18 @@ module.exports.initialize = function() {
                         posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post'),
                         scrollHeight = jQuery('.molecule-header').hasClass('molecule-header-fixed') ? jQuery('.molecule-header').height() : 0;
 
-                    jQuery(self).removeClass('components-loading');
-                    jQuery(self).find('.molecule-posts-wrapper').html(posts);
-                    jQuery(self).find('.atom-pagination').replaceWith(pagination);
+                    jQuery(element).removeClass('components-loading');
+                    jQuery(element).find('.molecule-posts-wrapper').html(posts);
+                    jQuery(element).find('.atom-pagination').replaceWith(pagination);
                     
                     jQuery('html, body').animate({
-                        scrollTop: jQuery(self).offset().top - (scrollHeight + 100)
-                    }, 555);                    
+                        scrollTop: jQuery(element).offset().top - (scrollHeight + 100)
+                    }, 555);                 
                     
                     // Sync scrollReveal with newly added items
-                    if( typeof sr !== "undefined" ) 
+                    if( typeof sr !== "undefined" ) {
                         sr.sync();
+                    }
 
                 });             
 
@@ -707,9 +708,7 @@ module.exports.initialize = function() {
             
         }
         
-        // Filtering
-
-        
+        // Filtering (@todo)       
         
     });      
         
