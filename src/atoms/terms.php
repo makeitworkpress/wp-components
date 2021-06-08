@@ -8,7 +8,7 @@ $atom = wp_parse_args( $atom, [
     'after'     => '',                              // Content after each term
     'args'      => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags 
     'before'    => '',                              // Content before each term
-    'hoverItem' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
+    'hoverItem' => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'seperator' => '/',                             // Content that seperates terms
     'terms'     => [],                              // Accepts a custom array of terms
     'termStyle' => 'normal'                         // Accepts a custom style, such as button
@@ -24,8 +24,12 @@ if( ! $atom['terms'] ) {
 }
 
 if( $atom['termStyle'] ) {
-    $atom['termStyle'] = 'atom-term-style-' . $atom['termStyle'];
+    $atom['termStyle'] = ' atom-term-style-' . $atom['termStyle'];
 }
+
+// Get the queried object so we can see active terms
+$query      = get_queried_object();
+$active     = isset($query->term_id) && $query->term_id ? $query->term_id : 0;
 
 // Save the taxonomy for possible filtering
 $atom['attributes']['data']['taxonomy'] = $atom['args']['taxonomy'];
@@ -38,6 +42,21 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <ul <?php echo $attributes; ?>>
     
     <?php foreach( $atom['terms'] as $term ) { ?>
+
+        <?php 
+            // Some term variables
+            $term_link  = esc_url( get_term_link($term) ); 
+            $term_class = $atom['termStyle'];
+
+            if( $active == $term->term_id ) {
+                $term_class .= ' atom-term-active';    
+            }
+
+            if( $atom['hoverItem'] ) {
+                $term_class .= ' hvr-' . $atom['hoverItem'];
+            }
+        ?>
+
         <li>
             
             <?php 
@@ -46,7 +65,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 }
             ?>
             
-            <a class="atom-term <?php echo $atom['termStyle'] ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo esc_url( get_term_link($term) ) ?>" data-id="<?php echo $term->term_id; ?>">
+            <a class="atom-term<?php echo $term_class; ?>" href="<?php echo $term_link; ?>" data-id="<?php echo $term->term_id; ?>">
                 <?php echo $term->name; ?>
             </a>
             
