@@ -52,7 +52,7 @@ if( empty($atom['taxonomies']) ) {
 $hasTerms = false;
 foreach( $atom['taxonomies'] as $taxonomy => $properties ) { 
     $termlist                                   = get_the_term_list( $atom['id'], $taxonomy, $properties['before'], $properties['seperator'], $properties['after'] );
-    if( $termlist ) {
+    if( $termlist && ! is_wp_error($termlist) ) {
         $atom['taxonomies'][$taxonomy]['list']  = $termlist;
         $hasTerms                               = true;
     }
