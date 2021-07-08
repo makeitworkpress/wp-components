@@ -31,10 +31,15 @@ if( $atom['ajax'] ) {
     $atom['attributes']['class'] .= ' atom-search-ajax'; 
 } 
 
+/**
+ * Modify search for certain post types
+ */
+$types = isset($_GET['post_type']) && $_GET['post_type'] ? sanitize_text_field($_GET['post_type']) : false;
 if( $atom['types'] ) {
+    $types = $types ? $types : implode(',', $atom['types']);
+}
 
-    // Our types is also defined by the $_GET parameter
-    $types = isset($_GET['post_type']) && $_GET['post_type'] ? sanitize_text_field($_GET['post_type']) : implode(',', $atom['types']);
+if( $types ) {
     $atom['attributes']['data']['types'] = $types;
     
     // A bit ugly, but adds a hidden input field for post types
@@ -45,6 +50,7 @@ if( $atom['types'] ) {
     );
 }
 
+// Generate attributes
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>     
 
 <div <?php echo $attributes; ?>>
