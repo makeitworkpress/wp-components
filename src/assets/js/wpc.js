@@ -360,6 +360,7 @@ module.exports.initialize = function() {
             results = jQuery(this).find('.atom-search-results'),
             self = this,
             timer = false,
+            types = jQuery(this).data('types'),
             value = '';
         
         if( jQuery(this).hasClass('atom-search-ajax') ) {
@@ -388,7 +389,8 @@ module.exports.initialize = function() {
                                 appear: appear, 
                                 none: none,
                                 number: number,
-                                search: value
+                                search: value,
+                                types: types
                             },
                             beforeSend: function() {
                                 jQuery(form).append(loadIcon);    

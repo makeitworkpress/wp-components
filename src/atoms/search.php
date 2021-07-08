@@ -7,11 +7,12 @@
 $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'attributes' => [
         'data' => [
-            'appear'    => 'bottom', // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
-            'delay'     => 300,      // Delay to start searching after typing
-            'length'    => 3,        // The length of the search string to start querying with ajax
+            'appear'    => 'bottom',    // Determines from which direction posts apear, using scroll-reveal. Accepts bottom, top, left or right
+            'delay'     => 300,         // Delay to start searching after typing
+            'length'    => 3,           // The length of the search string to start querying with ajax
             'none'      => __('Bummer! No results found', WP_COMPONENTS_LANGUAGE), 
-            'number'    => 5       // The amount of posts to query with ajax
+            'number'    => 5,           // The amount of posts to query with ajax
+            'types'     => ''           // Option post types to search for, seperated by ,
         ]
     ],
     'ajax'      => false,   // Enables the ajax search action,
@@ -19,6 +20,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'collapse'  => false,   // If collapsed, only shows a search icon that opens a form upon click
     'form'      => get_search_form(false),      
     'link'      => esc_url( get_search_link('') ), 
+    'types'     => [], // Post types to include in search
 ] );  
 
 if( $atom['collapse'] ) {
@@ -29,6 +31,20 @@ if( $atom['ajax'] ) {
     $atom['attributes']['class'] .= ' atom-search-ajax'; 
 } 
 
+if( $atom['types'] ) {
+
+    // Our types is also defined by the $_GET parameter
+    $types = isset($_GET['post_type']) && $_GET['post_type'] ? sanitize_text_field($_GET['post_type']) : implode(',', $atom['types']);
+    $atom['attributes']['data']['types'] = $types;
+    
+    // A bit ugly, but adds a hidden input field for post types
+    $atom['form'] = str_replace(
+        '</form>',
+        '<input type="hidden" name="post_type" value="' . $types . '"></form>',
+        $atom['form']
+    );
+}
+
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>     
 
 <div <?php echo $attributes; ?>>
@@ -37,9 +53,11 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     
     <?php if( $atom['ajax'] ) { ?>
         <div class="atom-search-results">
-            <a class="atom-search-all" href="<?php echo $atom['link']; ?>">
-                <?php echo $atom['all']; ?>
-            </a>
+            <?php if( $atom['all'] ) { ?>
+                <a class="atom-search-all" href="<?php echo $atom['link']; ?>" title="<?php echo $atom['all']; ?>">
+                    <?php echo $atom['all']; ?>
+                </a>
+            <?php } ?>
         </div>
     <?php } ?>
     

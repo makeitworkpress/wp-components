@@ -91,14 +91,16 @@ class Ajax {
             wp_send_json_error();
         }
         
-        $none       = sanitize_text_field( $_POST['none'] );
+        // Some initial vars
+        $none  = sanitize_text_field( $_POST['none'] );
+        $types = isset($_POST['types']) && $_POST['types'] ? explode(',', sanitize_text_field($_POST['types'])) : false;
         
         // Developers can filter the arguments
         $args       = apply_filters( 'components_ajax_search_posts_args', [
             'queryArgs' => [
                 'ep_integrate'      => true,
                 'posts_per_page'    => intval( $_POST['number'] ), 
-                'post_type'         => 'any',
+                'post_type'         => $types ? $types : 'any',
                 'post_status'       => 'publish',
                 's'                 => sanitize_text_field( $_POST['search'] )
             ],
