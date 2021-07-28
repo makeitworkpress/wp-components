@@ -3,15 +3,18 @@
  * Represents a list of clickable terms from a certain taxonomy.
  */
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' => 'hover_item']);
+
 // Atom values
 $atom = wp_parse_args( $atom, [
-    'after'     => '',                              // Content after each term
-    'args'      => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags 
-    'before'    => '',                              // Content before each term
-    'hoverItem' => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
-    'seperator' => '/',                             // Content that seperates terms
-    'terms'     => [],                              // Accepts a custom array of terms
-    'termStyle' => 'normal'                         // Accepts a custom style, such as button
+    'after'         => '',                              // Content after each term
+    'args'          => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags 
+    'before'        => '',                              // Content before each term
+    'hover_item'    => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
+    'seperator'     => '/',                             // Content that seperates terms
+    'terms'         => [],                              // Accepts a custom array of terms
+    'termStyle'     => 'normal'                         // Accepts a custom style, such as button
 ] );
 
 if( ! $atom['terms'] ) {
@@ -52,8 +55,8 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 $term_class .= ' atom-term-active';    
             }
 
-            if( $atom['hoverItem'] ) {
-                $term_class .= ' hvr-' . $atom['hoverItem'];
+            if( $atom['hover_item'] ) {
+                $term_class .= ' hvr-' . $atom['hover_item'];
             }
         ?>
 

@@ -3,9 +3,12 @@
  * Represents a list of clickable tags from a certain taxonomy
  */
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' => 'hover_item']);
+
 // Atom values
 $atom = wp_parse_args( $atom, [
-    'hoverItem' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().    
+    'hover_item' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().    
     'position'  => 'top',
     'tabs'      => []      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
 ] );
@@ -30,7 +33,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 
         ?>
             <li>
-                <a class="atom-tab <?php echo $active; ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
+                <a class="atom-tab <?php echo $active; ?><?php if($atom['hover_item']) { ?> hvr-<?php echo $atom['hover_item']; } ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
                     
                     <?php if( isset($tab['icon']) ) { ?> 
                         <i class="fa fa-<?php echo $tab['icon']; ?> hvr-icon"></i>

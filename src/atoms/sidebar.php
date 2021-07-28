@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'itemscope' => 'itemscope', 
         'itemtype'  => 'http://www.schema.org/WPSideBar'

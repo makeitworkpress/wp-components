@@ -8,8 +8,11 @@ if( is_numeric($post) ) {
     $post = get_post($post);
 }
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['imageFloat' => 'image_float', 'imageRounded' => 'image_rounded', 'jobTitle' => 'job_title']);
+
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'        => [
         'itemprop'  => 'author',
         'itemscope' => 'itemscope',
@@ -17,16 +20,16 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     ], 
     'avatar'            => get_avatar( $post->post_author, 100 ),
     'description'       => get_the_author_meta( 'description' ),
-    'imageFloat'        => 'none',
-    'imageRounded'      => true,
-    'jobTitle'          => '',
+    'image_float'       => 'none',
+    'image_rounded'     => true,
+    'job_title'          => '',
     'name'              => get_the_author(),
     'prepend'           => '',  // Prepend the author name with a custom description
     'schema'            => true, // If schema microdata are used or not
     'url'               => esc_url( get_author_posts_url( $post->post_author ) )
  ] );
 
-$atom['imageRounded']               = $atom['imageRounded'] ? 'components-rounded' : ''; 
+$atom['image_rounded']               = $atom['image_rounded'] ? 'components-rounded' : ''; 
 
 if( ! $atom['schema'] ) {
     unset($atom['attributes']['itemprop']);    
@@ -40,7 +43,7 @@ $attributes                         = MakeitWorkPress\WP_Components\Build::attri
     
     <?php if( $atom['avatar'] ) { ?> 
     
-        <figure class="atom-author-avatar components-<?php echo $atom['imageFloat']; ?>-float <?php echo $atom['imageRounded']; ?>">
+        <figure class="atom-author-avatar components-<?php echo $atom['image_float']; ?>-float <?php echo $atom['image_rounded']; ?>">
             <a class="url fn vcard" href="<?php echo $atom['url']; ?>" rel="author">
                 <?php echo $atom['avatar']; ?>
             </a>
@@ -49,16 +52,16 @@ $attributes                         = MakeitWorkPress\WP_Components\Build::attri
     
     <?php } ?>
     
-    <?php if( $atom['description'] || $atom['name'] || $atom['jobTitle'] ) { ?>
+    <?php if( $atom['description'] || $atom['name'] || $atom['job_title'] ) { ?>
     
-        <div class="atom-author-description components-<?php echo $atom['imageFloat']; ?>-float">
+        <div class="atom-author-description components-<?php echo $atom['image_float']; ?>-float">
             
             <?php if( $atom['name'] ) { ?> 
                 <h4 <?php if($atom['schema']) { ?>itemprop="name"<?php } ?>><?php echo $atom['prepend'] . $atom['name']; ?></h4>
             <?php } ?>
 
-            <?php if( $atom['jobTitle'] ) { ?>
-                <p <?php if($atom['schema']) { ?>itemprop="jobTitle"<?php } ?>><?php echo $atom['jobTitle']; ?></p>
+            <?php if( $atom['job_title'] ) { ?>
+                <p <?php if($atom['schema']) { ?>itemprop="jobTitle"<?php } ?>><?php echo $atom['job_title']; ?></p>
             <?php } ?>            
             
             <?php if( $atom['description'] ) { ?>

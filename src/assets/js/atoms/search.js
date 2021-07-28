@@ -47,7 +47,7 @@ module.exports.initialize = function() {
 
                         utils.ajax({
                             data: {
-                                action: 'publicSearch', 
+                                action: 'public_search', 
                                 appear: appear, 
                                 none: none,
                                 number: number,
@@ -61,7 +61,7 @@ module.exports.initialize = function() {
                             },
                             success: function(response) {
 
-                                if( components.debug )
+                                if( wpc.debug )
                                     console.log(response); 
 
                                 if( response.data ) {

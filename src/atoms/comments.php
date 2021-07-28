@@ -3,17 +3,18 @@
  * Displays an adapted comments template
  */
 
-// Retrieve our form so that it can be altered through our arguments
+// Backword compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['closedText' => 'closed_text', 'hasComments' => 'has_comments']);
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, array(
     'attributes'    => [
         'id' => 'comments'
     ],
     'closed'        => ! comments_open(), 
-    'closedText'    => __('Comments are closed.', WP_COMPONENTS_LANGUAGE), // May contain a string for the closed text
+    'closed_text'   => __('Comments are closed.', WP_COMPONENTS_LANGUAGE), // May contain a string for the closed text
     'form'          => true,
-    'hasComments'   => get_comments_number(),
+    'has_comments'  => get_comments_number(),
     'pagination'    => true,
     'seperate'      => false,                   // If comments should be seperated by type
     'template'      => '',                      // Loads a custom template
@@ -22,23 +23,25 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, array(
         number_format_i18n( get_comments_number() ),
         get_the_title()
     )
-) ); 
+) );
 
 // Return if a password is required
 if ( post_password_required() ) {
 	return;
 }
 
+// Use forward slash for file directories (windows uses backwards)
+$file_path  = str_replace('\\', '/', dirname(__FILE__) );
+$theme_path = is_child_theme() ? str_replace('\\', '/', STYLESHEETPATH ) : str_replace('\\', '/', TEMPLATEPATH );
+
 // When the component is overwritten, we use a different file
 if( $atom['template'] ) {
     $file = $atom['template'];
-} elseif( strpos(dirname(__FILE__) . '/compatible/comments.php', STYLESHEETPATH) !== false ) {
-    $file = str_replace( STYLESHEETPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
 } else {
-    $file = str_replace( TEMPLATEPATH, '', dirname(__FILE__) ) . '/compatible/comments.php';
+    $file = str_replace( $theme_path, '', $file_path ) . '/compatible/comments.php';
 }
 
-// Store our atom in a global variable so that we can access it later
+// Store our atom in a global variable so that we can access it later in the template file
 $GLOBALS['atom']    = $atom;
 
 /**

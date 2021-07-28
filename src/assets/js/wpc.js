@@ -247,7 +247,7 @@ module.exports.initialize = function() {
         // Perform the ajax action
         utils.ajax({
             data: {
-                action: 'publicRate',
+                action: 'public_rate',
                 id: id,
                 max: max,
                 min: min,
@@ -256,7 +256,7 @@ module.exports.initialize = function() {
             success: function(response) {
                 
                 // Logging for debugging purposes
-                if( components.debug )
+                if( wpc.debug )
                     console.log(response);
                 
                 // Replaces the element with the updated rating
@@ -385,7 +385,7 @@ module.exports.initialize = function() {
 
                         utils.ajax({
                             data: {
-                                action: 'publicSearch', 
+                                action: 'public_search', 
                                 appear: appear, 
                                 none: none,
                                 number: number,
@@ -399,7 +399,7 @@ module.exports.initialize = function() {
                             },
                             success: function(response) {
 
-                                if( components.debug )
+                                if( wpc.debug )
                                     console.log(response); 
 
                                 if( response.data ) {
@@ -775,9 +775,9 @@ module.exports.ajax = function(options) {
     
     var options = options;
     
-    options.data.nonce = components.nonce;
+    options.data.nonce = wpc.nonce;
     options.type = 'POST';
-    options.url = components.ajaxUrl;
+    options.url = wpc.ajaxUrl;
     
     return jQuery.ajax(options);
     

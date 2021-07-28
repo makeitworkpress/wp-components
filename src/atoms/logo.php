@@ -4,8 +4,15 @@
  * We also support some variants. The caveat is that we add some small requests for each logo
  */
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, [
+    'defaultTransparent'    => 'default_transparent', 
+    'mobileTransparent'     => 'mobile_transparent', 
+    'tabletTransparent'     => 'tablet_transparent'
+]);
+
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'            => [
         'href'      =>  esc_url( home_url('/') ),
         'itemscope' => 'itemscope',
@@ -13,13 +20,13 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     ],
     'alt'                   => __('Logo', WP_COMPONENTS_LANGUAGE),
     'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src. Also accepts an image id
-    'defaultTransparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
+    'default_transparent'   => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
     'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
-    'mobileTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
+    'mobile_transparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
     'schema'                => true,        // If microdata is rendered or not
     'size'                  => 'medium',    // The default size of the fetched logo
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
-    'tabletTransparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
+    'tablet_transparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
     'url'                   => esc_url( get_bloginfo('url') )
 ] ); 
@@ -37,7 +44,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
 <a <?php echo $attributes; ?>>
     <?php 
-        foreach( ['mobile', 'mobileTransparent', 'tablet', 'tabletTransparent', 'default', 'defaultTransparent'] as $image ) {
+        foreach( ['mobile', 'mobile_transparent', 'tablet', 'tablet_transparent', 'default', 'default_transparent'] as $image ) {
 
             // Itemprop for the logo image
             $itemprop = '';

@@ -3,14 +3,17 @@
  * Displays a slider component based upon jQuery Flexslider
  */
 
+// Backward compatibility
+$molecule = MakeitWorkPress\WP_Components\Build::convert_camels($molecule, ['thumbnailSize' => 'thumbnail_size']);
+
 // Molecule values
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
-    'attributes'    => [
-        'data'      => [
-            'id'    => substr( str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 5)), 0, 8 ) // Used to link the slider to it's variables
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
+    'attributes'        => [
+        'data'              => [
+            'id'                => substr( str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 5)), 0, 8 ) // Used to link the slider to it's variables
         ]   
     ],
-    'options'       => [
+    'options'           => [
         'arrowKeys'         => true,
         'autoHeight'        => true,
         'controlsText'      => ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],	
@@ -19,13 +22,12 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'mouseDrag'         => true,
         'speed'             => 500,             // Speed of animation
     ], 
-    'schema'        => true,
-    'scroll'        => false,       // Adds a scrolldown button     
-    'slides'        => [],          // Supports a array with video, image and atoms as keys and the attributes key with common html attributes and common supported properties   
-    'thumbnailSize' => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.             
+    'schema'            => true,
+    'scroll'            => false,       // Adds a scrolldown button     
+    'slides'            => [],          // Supports a array with video, image and atoms as keys and the attributes key with common html attributes and common supported properties   
+    'thumbnail_size'    => ''           // The default size for thumbnails. If set, this will also enable thumbnails. The images should be attachment ids and slides should have an image.             
  
 ] ); 
-
 
 // Set our container id so each script is initialized properly
 $molecule['options']['container'] = '#' . $molecule['attributes']['data']['id'] . 'Container';
@@ -34,7 +36,7 @@ $molecule['options']['container'] = '#' . $molecule['attributes']['data']['id'] 
 if( $molecule['options'] ) {
 
     // Set our control navigation option
-    if( $molecule['thumbnailSize'] ) {
+    if( $molecule['thumbnail_size'] ) {
         $molecule['options']['navAsThumbnails'] = true;
         $molecule['options']['navContainer']    = '#' . $molecule['attributes']['data']['id'] . 'NavContainer';
     }
@@ -77,7 +79,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             $slide['attributes']['class'] .= ' molecule-slide-wrapper';
 
             // Determine the attributes and default properties
-            $slideProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('slide', $slide);
+            $slideProperties = MakeitWorkPress\WP_Components\Build::set_default_properties('slide', $slide);
             $slideAttributes = MakeitWorkPress\WP_Components\Build::attributes($slideProperties['attributes']); ?>
 
             <li class="slide">
@@ -138,12 +140,12 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
     <?php
         // Thumbnail navigation
-        if( $molecule['thumbnailSize'] ) {
+        if( $molecule['thumbnail_size'] ) {
     ?>
         <ul class="slider-thumbnails" id="<?php echo $molecule['attributes']['data']['id'] . 'NavContainer'; ?>">
             <?php foreach( $molecule['slides'] as $slide ) { ?>
                 <?php if( isset($slide['image']['image']) && is_numeric($slide['image']['image']) ) { ?>
-                    <li class="slider-thumbnail"><?php echo wp_get_attachment_image( $slide['image']['image'], $molecule['thumbnailSize'], false); ?></li>
+                    <li class="slider-thumbnail"><?php echo wp_get_attachment_image( $slide['image']['image'], $molecule['thumbnail_size'], false); ?></li>
                 <?php } ?>
             <?php } ?>
         </ul>   

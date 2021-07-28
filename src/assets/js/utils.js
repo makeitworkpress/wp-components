@@ -7,9 +7,9 @@ module.exports.ajax = function(options) {
     
     var options = options;
     
-    options.data.nonce = components.nonce;
+    options.data.nonce = wpc.nonce;
     options.type = 'POST';
-    options.url = components.ajaxUrl;
+    options.url = wpc.ajaxUrl;
     
     return jQuery.ajax(options);
     

@@ -5,7 +5,7 @@
 global $wp_query;
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/Breadcrumb'

@@ -57,7 +57,7 @@ module.exports.initialize = function() {
         // Perform the ajax action
         utils.ajax({
             data: {
-                action: 'publicRate',
+                action: 'public_rate',
                 id: id,
                 max: max,
                 min: min,
@@ -66,7 +66,7 @@ module.exports.initialize = function() {
             success: function(response) {
                 
                 // Logging for debugging purposes
-                if( components.debug )
+                if( wpc.debug )
                     console.log(response);
                 
                 // Replaces the element with the updated rating

@@ -32,13 +32,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             <div class="molecule-post-footer-atoms">
 
                 <?php 
-
                     foreach( $molecule['atoms'] as $atom) { 
-
                         MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
-
-                    } 
-
+                    }
                 ?>
 
             </div>

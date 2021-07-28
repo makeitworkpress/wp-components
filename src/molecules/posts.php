@@ -4,8 +4,24 @@
  * This element is kinda ugly, but just has to have a lot of options
  */
 
+// Backward compatibility
+$molecule                       = MakeitWorkPress\WP_Components\Build::convert_camels($molecule, [
+    'gridGap'           => 'grid_gap', 
+    'postProperties'    => 'post_properties', 
+    'queryArgs'         => 'query_args'
+]);
+
+if( isset($molecule['post_properties']) ) {
+    $molecule['post_properties']    = MakeitWorkPress\WP_Components\Build::convert_camels($molecule['post_properties'], [
+        'blogSchema'        => 'blog_schema', 
+        'contentAtoms'      => 'content_atoms', 
+        'footerAtoms'       => 'footer_atoms', 
+        'headerAtoms'       => 'header_atoms'
+    ]);
+}
+
 // Atom values
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'ajax'              => true,                        // To paginate using ajax
     'attributes'        => [
         'data'              => ['id' => 'molecule-posts'],  // Used to match requests for ajax. Must be unique if multiple elements are on one page,
@@ -13,32 +29,32 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
         'itemtype'          => 'http://schema.org/Blog'
     ],
     'filter'            => false,                       // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.  
-    'gridGap'           => 'default',                                                
+    'grid_gap'          => 'default',                                                
     'infinite'          => false,    
     'none'              => __('Bummer! No posts found.', WP_COMPONENTS_LANGUAGE),
     /**
      * Accepts properties for each post
      */
-    'postProperties'    => [
+    'post_properties'    => [
         'attributes'    => [
             'itemprop'  => 'blogPost',
             'itemscope' => 'itemscope',
             'itemtype'  => 'http://schema.org/BlogPosting'            
         ],
-        'blogSchema'    => true,                            // Indicates if we put author and other schema.org data within a blog bost
-        'contentAtoms'  => [                                // Accepts a set of atoms for within the content
+        'blog_schema'   => true,                            // Indicates if we put author and other schema.org data within a blog bost
+        'content_atoms' => [                                // Accepts a set of atoms for within the content
             'content' => [ 
                 'atom'          => 'content', 
                 'properties'    => ['type' => 'excerpt'] 
             ]
         ],        
-        'footerAtoms'   => [                                // Accepts a set of atoms for use in the post footer
+        'footer_atoms'  => [                                // Accepts a set of atoms for use in the post footer
             'button' => [
                 'atom'          => 'button', 
                 'properties'    => ['float' => 'right', 'label' => __('View post', WP_COMPONENTS_LANGUAGE), 'link' => 'post', 'size' => 'small'] 
             ]
         ],          
-        'headerAtoms'   => [                                // Accepts a set of atoms for use in the post header
+        'header_atoms'  => [                               // Accepts a set of atoms for use in the post header
             'title' => [
                 'atom'          => 'title', 
                 'properties'    => ['attributes' => ['itemprop' => 'name headline', 'class' => 'entry-title'], 'tag' => 'h2', 'link' => 'post' ] 
@@ -51,20 +67,24 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     ],                              
     'pagination'        => ['type' => 'numbers'],           // Pagination settings.
     'query'             => '',                              // Accepts a custom query for posts. Pretty useful in existing WordPress templates. 
-    'queryArgs'         => [],                              // Query arguments for retrieving posts
-    'schema'            => true,                // If microdata is rendered or not. Also removes schematic attributes
+    'query_args'        => [],                              // Query arguments for retrieving posts
+    'schema'            => true,                            // If microdata is rendered or not. Also removes schematic attributes
     'view'              => 'list',                          // Type of display. Accepts list, grid or a custom class.
     'wrapper'           => ''                               // Wrapper class for posts
 ] );
 
+/**
+ * Formatting our query arguments
+ */
+
 // Query vars for pagination
-if( get_query_var('paged') && ! isset($molecule['queryArgs']['paged']) ) {
-    $molecule['queryArgs']['paged']     = get_query_var('paged');
+if( get_query_var('paged') && ! isset($molecule['query_args']['paged']) ) {
+    $molecule['query_args']['paged']    = get_query_var('paged');
 }
 
 // Get our posts
 if( ! $molecule['query'] ) {
-    $molecule['query']                  = new WP_Query( $molecule['queryArgs'] );
+    $molecule['query']                  = new WP_Query( $molecule['query_args'] );
 }
 
 // Set the query for our pagination if it's not set already
@@ -90,8 +110,8 @@ if( $molecule['view'] ) {
 }
 
 // Individal posts grid
-if( isset($molecule['postProperties']['grid']) && $molecule['postProperties']['grid'] ) {
-    $molecule['wrapper']               .= ' components-grid-wrapper components-grid-' . $molecule['gridGap']; 
+if( isset($molecule['post_properties']['grid']) && $molecule['post_properties']['grid'] ) {
+    $molecule['wrapper']               .= ' components-grid-wrapper components-grid-' . $molecule['grid_gap']; 
 }
 
 // Infinite scroll
@@ -109,28 +129,28 @@ if( $molecule['infinite'] ) {
 $key = 0; 
 
 // Initial class for each post. Should be defined here to prevent classes stacking upon each other.
-$postClass = isset($molecule['postProperties']['attributes']['class']) ? $molecule['postProperties']['attributes']['class'] : '';
+$post_class = isset($molecule['post_properties']['attributes']['class']) ? $molecule['post_properties']['attributes']['class'] : '';
 
 // Remove schema's if not enabled
 if( ! $molecule['schema'] ) {   
     
     unset($molecule['attributes']['itemscope']);    
     unset($molecule['attributes']['itemtype']);      
-    unset($molecule['postProperties']['attributes']['itemprop']);    
-    unset($molecule['postProperties']['attributes']['itemscope']);    
-    unset($molecule['postProperties']['attributes']['itemtype']);    
+    unset($molecule['post_properties']['attributes']['itemprop']);    
+    unset($molecule['post_properties']['attributes']['itemscope']);    
+    unset($molecule['post_properties']['attributes']['itemtype']);    
 
     // Various elements
-    if( isset($molecule['postProperties']['contentAtoms']['content']) ) {
-        $molecule['postProperties']['contentAtoms']['content']['properties']['schema']  = false;  
+    if( isset($molecule['post_properties']['content_atoms']['content']) ) {
+        $molecule['post_properties']['content_atoms']['content']['properties']['schema']  = false;  
     }
 
-    if( isset($molecule['postProperties']['headerAtoms']['title']) ) {
-        $molecule['postProperties']['headerAtoms']['title']['properties']['schema']     = false;  
+    if( isset($molecule['post_properties']['header_atoms']['title']) ) {
+        $molecule['post_properties']['header_atoms']['title']['properties']['schema']     = false;  
     }
     
-    if( isset($molecule['postProperties']['image']) && $molecule['postProperties']['image'] ) {
-        $molecule['postProperties']['image']['schema']                                  = false;
+    if( isset($molecule['post_properties']['image']) && $molecule['post_properties']['image'] ) {
+        $molecule['post_properties']['image']['schema']                                  = false;
     }
 
 }
@@ -161,31 +181,31 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                     $postID = isset($post->ID) && is_numeric($post->ID) ? $post->ID : $post;
 
                     // Set-up our post data
-                    $molecule['postProperties']['attributes']['class']      = $postClass;
+                    $molecule['post_properties']['attributes']['class']      = $post_class;
 
                     $molecule['query']->the_post();
-                    $molecule['postProperties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $postID) );
+                    $molecule['post_properties']['attributes']['class']     .= implode(' ', get_post_class(' molecule-post', $postID) );
                     
                     // Allows for grid patterns with an array
-                    if( isset($molecule['postProperties']['grid']) && is_array($molecule['postProperties']['grid']) ) {
-                        $molecule['postProperties']['attributes']['class'] .= ' components-' . $molecule['postProperties']['grid'][$key] . '-grid';
+                    if( isset($molecule['post_properties']['grid']) && is_array($molecule['post_properties']['grid']) ) {
+                        $molecule['post_properties']['attributes']['class'] .= ' components-' . $molecule['post_properties']['grid'][$key] . '-grid';
                     }
 
                     $key++;
 
                     // Allows our posts to have default attributes as regular atoms and molecules can have.
-                    $postProperties = MakeitWorkPress\WP_Components\Build::setDefaultProperties('post', $molecule['postProperties']);
-                    $postAttributes = MakeitWorkPress\WP_Components\Build::attributes($postProperties['attributes']);
+                    $post_properties = MakeitWorkPress\WP_Components\Build::set_default_properties('post', $molecule['post_properties']);
+                    $post_attributes = MakeitWorkPress\WP_Components\Build::attributes($post_properties['attributes']);
 
                 ?>
 
-                <article <?php echo $postAttributes; ?>>
+                <article <?php echo $post_attributes; ?>>
 
                     <?php
                         /**
                          * Structured data that is required according to Google Structured data testing
                          */
-                        if( $molecule['schema'] && $molecule['postProperties']['blogSchema'] ) {
+                        if( $molecule['schema'] && $molecule['post_properties']['blog_schema'] ) {
                     ?>
                         
                         <span class="components-structured-data" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
@@ -194,14 +214,14 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                         <span class="components-structured-data" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization">
                             <span itemprop="logo"itemscope="itemscope" itemtype="http://schema.org/ImageObject">
-                                <?php if( strpos($molecule['postProperties']['logo'], '.svg') ) { ?>
-                                    <meta itemprop="contentUrl" content="<?php echo $molecule['postProperties']['logo']; ?>" />
+                                <?php if( strpos($molecule['post_properties']['logo'], '.svg') ) { ?>
+                                    <meta itemprop="contentUrl" content="<?php echo $molecule['post_properties']['logo']; ?>" />
                                     <meta itemprop="url" content="<?php bloginfo('url'); ?>" />
                                 <?php } else { ?>
-                                    <meta itemprop="url" content="<?php echo $molecule['postProperties']['logo']; ?>" />
+                                    <meta itemprop="url" content="<?php echo $molecule['post_properties']['logo']; ?>" />
                                 <?php } ?>
                             </span>
-                            <meta itemprop="name" content="<?php echo $molecule['postProperties']['organization']; ?>" />
+                            <meta itemprop="name" content="<?php echo $molecule['post_properties']['organization']; ?>" />
                         </span>                    
 
                         <meta itemprop="mainEntityOfPage" content="<?php the_permalink(); ?>" />
@@ -214,18 +234,18 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         // Actions at beginning of a post
                         do_action( 'components_posts_post_before', $postID, $molecule );
 
-                        if( $molecule['postProperties']['image'] ) {
-                            MakeitWorkPress\WP_Components\Build::atom( 'image', $molecule['postProperties']['image'] );  
+                        if( $molecule['post_properties']['image'] ) {
+                            MakeitWorkPress\WP_Components\Build::atom( 'image', $molecule['post_properties']['image'] );  
                         } 
                     ?>
 
                     <?php
                         // Header of this post                                
-                        if( $molecule['postProperties']['headerAtoms'] ) { 
+                        if( $molecule['post_properties']['header_atoms'] ) { 
                     ?>
                         <header class="entry-header">    
                             <?php
-                                foreach( $molecule['postProperties']['headerAtoms'] as $atom ) { 
+                                foreach( $molecule['post_properties']['header_atoms'] as $atom ) { 
 
                                     MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
@@ -237,12 +257,12 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
                         }                                  
 
-                        // Header of this post                                
-                        if( $molecule['postProperties']['contentAtoms'] ) { 
+                        // Content of this post                                
+                        if( $molecule['post_properties']['content_atoms'] ) { 
                     ?>
                         <div class="entry-content">    
                             <?php
-                                foreach( $molecule['postProperties']['contentAtoms'] as $atom ) { 
+                                foreach( $molecule['post_properties']['content_atoms'] as $atom ) { 
 
                                     MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
@@ -255,11 +275,11 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                         } 
 
                         // Footer of this post                                
-                        if( $molecule['postProperties']['footerAtoms'] ) { 
+                        if( $molecule['post_properties']['footer_atoms'] ) { 
                     ?>
                         <footer class="entry-footer">    
                             <?php
-                                foreach( $molecule['postProperties']['footerAtoms'] as $atom ) { 
+                                foreach( $molecule['post_properties']['footer_atoms'] as $atom ) { 
 
                                     MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
@@ -284,9 +304,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                  * Fills the remainder of the articles with empty spans, so our styling comes out nicely. 
                  * For now, only possible with non-patterns
                  */
-                if( isset($molecule['postProperties']['grid']) && ! is_array($molecule['postProperties']['grid']) ) {
+                if( isset($molecule['post_properties']['grid']) && ! is_array($molecule['post_properties']['grid']) ) {
                     
-                    switch( $molecule['postProperties'] ) {
+                    switch( $molecule['post_properties'] ) {
                         case 'half';
                             $columns = 2;
                             break;                        
@@ -306,7 +326,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                     $remainder = $columns - ($molecule['query']->post_count % $columns);
                     
                     for( $i = 1; $i <= $remainder; $i++ ) {
-                        echo '<span class="components-' . $molecule['postProperties']['grid']  . '-grid"></span>';
+                        echo '<span class="components-' . $molecule['post_properties']['grid']  . '-grid"></span>';
                     }
                 }
 

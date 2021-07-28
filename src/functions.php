@@ -1,5 +1,10 @@
 <?php
 /**
+ * Contains utility functions
+ */
+defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
+
+/**
  * Short function for rendering an atom
  * 
  * @param string    $type       The molecule to render
@@ -65,5 +70,5 @@ function wpc_attributes( $attributes = [] ) {
  * @return Array            The parsed parameters
  */
 function wpc_multi_parse( $defaults = [], $parameters = [] ) {
-    return MakeitWorkPress\WP_Components\Build::multiParseArgs( $defaults, $parameters );
+    return MakeitWorkPress\WP_Components\Build::multi_parse_args( $defaults, $parameters );
 }

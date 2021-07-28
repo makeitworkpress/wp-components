@@ -1,6 +1,7 @@
 <?php
 /**
  * Load our components using a static wrapper
+ * Adds some functionalities for modifying component properties and parsing arguments
  */
 namespace MakeitWorkPress\WP_Components;
 use WP_Error as WP_Error;
@@ -28,7 +29,7 @@ class Build {
 
         // Properties should be an array
         if( ! is_array($properties) ) {
-            $error = new WP_Error( 'wrong', sprintf(__('The properties for the molecule or atom called %s are not properly formatted as an array.', 'components'), $template) );
+            $error = new WP_Error( 'wrong', sprintf(__('The properties for the molecule or atom called %s are not properly formatted as an array.', 'wpc'), $template) );
             echo $error->get_error_message();    
             return;
         }
@@ -37,7 +38,7 @@ class Build {
         if( isset($properties['atoms']) && is_array($properties['atoms']) ) {
             foreach( $properties['atoms'] as $atom ) {
                 if( ! isset($atom['atom']) ) {
-                    $error = new WP_Error( 'wrong', sprintf(__('The custom atoms within %s are not properly formatted and miss the atom key.', 'components'), $template) );
+                    $error = new WP_Error( 'wrong', sprintf(__('The custom atoms within %s are not properly formatted and miss the atom key.', 'wpc'), $template) );
                     echo $error->get_error_message();  
                     return;
                 }    
@@ -49,7 +50,7 @@ class Build {
         
         if( file_exists($path) ) {
             
-            ${$type}    = apply_filters( 'components_' . $type . '_properties', self::setDefaultProperties($template, $properties, $type), $template );
+            ${$type}    = apply_filters( 'components_' . $type . '_properties', self::set_default_properties($template, $properties, $type), $template );
             
             // If we do not render, we return
             if( $render == false ) {
@@ -63,7 +64,7 @@ class Build {
             }
             
         } else {
-            $error = new WP_Error( 'wrong', sprintf( __('The given template for the molecule or atom called %s does not exist.', 'components'), $template ) );
+            $error = new WP_Error( 'wrong', sprintf( __('The given template for the molecule or atom called %s does not exist.', 'wpc'), $template ) );
             echo $error->get_error_message();             
         }     
         
@@ -78,7 +79,7 @@ class Build {
      *
      * @return  array   $properties The custom properties merged with the defaults
      */ 
-    public static function setDefaultProperties( $template, $properties, $type = 'atom' ) {
+    public static function set_default_properties( $template, $properties, $type = 'atom' ) {
 
         // Define our most basic property - the class
         $properties['attributes']['class']  = isset($properties['attributes']['class']) ? $type . ' ' . $properties['attributes']['class'] : $type;
@@ -297,14 +298,26 @@ class Build {
     }
 
     /**
-     * Allows us to parse arguments in a multidimensional array
+     * This function exists for backwards compatibility for multiParseArgs, may they be used externally
      * 
-     * @param array $args The arguments to parse
-     * @param array $default The default arguments
+     * @param array $args       The arguments to parse
+     * @param array $default    The default arguments
      * 
-     * @return array $array The merged array
+     * @return array $array T   he merged array
      */
     public static function multiParseArgs( $args, $default ) {
+        return self::multi_parse_args( $args, $default );
+    }
+
+    /**
+     * Allows us to parse arguments in a multidimensional array
+     * 
+     * @param array $args       The arguments to parse
+     * @param array $default    The default arguments
+     * 
+     * @return array $array     The merged array
+     */
+    public static function multi_parse_args( $args, $default ) {
 
         if( ! is_array($default) ) {
             return wp_parse_args( $args, $default );
@@ -325,7 +338,7 @@ class Build {
                 } elseif( in_array($key, ['atoms', 'contentAtoms', 'footerAtoms', 'headerAtoms', 'image', 'socketAtoms', 'topAtoms']) ) { 
                     $array[$key] = $element;
                 } elseif( isset( $array[$key] ) && (is_array( $array[$key] )) && ! empty($array[$key]) && is_array($element) ) {
-                    $array[$key] = self::multiParseArgs( $element, $array[$key] );
+                    $array[$key] = self::multi_parse_args( $element, $array[$key] );
                 } else {
                     $array[$key] = $element;
                 }
@@ -335,6 +348,28 @@ class Build {
 
         return $array;
 
-    }    
+    } 
+    
+    /**
+     * Retrieves older variable set-up, using camelcase to the new variations
+     * This function exists for backwards compatibility
+     * 
+     * @param Array $properties     The properties for a component, either a molecule or component
+     * @param Array $converts       The properties that need to be converted, in the format of old => new
+     * 
+     * @return Array $properties    The modified component properties
+     */
+    public static function convert_camels( $properties, $converts ) {
+
+        foreach($converts as $old => $new ) {
+            if( isset($properties[$old]) && $properties[$old] ) {
+                $properties[$new] = $properties[$old];
+                unset($properties[$old]);
+            }
+        }
+
+        return $properties;  
+
+    }
     
 }

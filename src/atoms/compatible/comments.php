@@ -15,10 +15,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <div <?php echo $attributes; ?>>
     
     <?php if( $atom['closed'] ) { ?> 
-        <p class="atom-comments-closed"><?php echo $atom['closedText']; ?></p>
+        <p class="atom-comments-closed"><?php echo $atom['closed_text']; ?></p>
     <?php } ?>
 
-    <?php if( $atom['hasComments'] ) { ?> 
+    <?php if( $atom['has_comments'] ) { ?> 
     
         <?php if( $atom['title'] ) { ?> 
 

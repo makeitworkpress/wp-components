@@ -38,7 +38,7 @@ class Ajax {
     /**
      * Adds a rating to a given post
      */
-    public function publicRate() {
+    public function public_rate() {
         
         // Check nonce
         check_ajax_referer('cucumber', 'nonce');
@@ -75,14 +75,14 @@ class Ajax {
     /**
      * Loads posts that are filtered
      */
-    public function publicFilter() {
+    public function public_filter() {
         
     }
     
     /**
      * Loads posts that are searched
      */
-    public function publicSearch() {
+    public function public_search() {
         
         // Check nonce
         check_ajax_referer('cucumber', 'nonce');

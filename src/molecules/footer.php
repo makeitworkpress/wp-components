@@ -3,17 +3,20 @@
  * Displays a generic WordPress footer
  */
 
+// Backward compatibility
+$molecule = MakeitWorkPress\WP_Components\Build::convert_camels($molecule, ['gridGap' => 'grid_gap']);
+
 // Atom values
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'attributes' => [
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/WPFooter'
     ],
     'atoms'     => [],      // Adds an array of elements to the footer socket
     'container' => true,    // Wrap this component in a container
-    'gridGap'   => 'default',  
+    'grid_gap'  => 'default',  
     'sidebars'  => [],      // Accepts an array with the sidebar name as key and the grid for the value
-    'video'     => ''           // Expects the url for a video for display a video background
+    'video'     => ''       // Expects the url for a video for display a video background
 ] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
@@ -29,10 +32,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     <?php } ?>    
     
     <?php if( $molecule['sidebars'] ) { ?>
-        <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; ?> <?php } ?>">
+        <div class="molecule-footer-sidebars <?php if( ! $molecule['container'] ) { ?> components-grid-wrapper components-grid-<?php echo $molecule['grid_gap']; ?> <?php } ?>">
 
             <?php if( $molecule['container'] ) { ?>
-                <div class="components-container components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; ?>">
+                <div class="components-container components-grid-wrapper components-grid-<?php echo $molecule['grid_gap']; ?>">
             <?php } ?>        
 
             <?php 

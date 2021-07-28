@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [    
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [    
     'id'            => get_the_ID(),
     'schema'        => true, // Whether to incorporate schema.org microdata or not
     'taxonomies'    => [] // Accepts the following format: 'category' => ['after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ']

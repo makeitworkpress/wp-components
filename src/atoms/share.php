@@ -19,12 +19,15 @@ $title  = isset( $atom['title'] )   ? $atom['title']    : rawurlencode( get_the_
 $url    = isset( $atom['url'] )     ? $atom['url']      : rawurlencode( get_permalink($postID) );
 $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['colorBackground' => 'color_background', 'hoverItem' => 'hover_item']);
+
 // Atom properties - for this atom, wp_parse_args should be used
-$atom   = wp_parse_args( $atom, [
-    'colorBackground'   => true,
+$atom   = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
+    'color_background'   => true,
     'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
     'fixed'             => false,
-    'hoverItem'         => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
+    'hover_item'        => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'networks'          => [
         'facebook'      => [ 'url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook' ], 
         'twitter'       => [ 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ], 
@@ -42,13 +45,13 @@ $atom   = wp_parse_args( $atom, [
         'whatsapp'      => [ 'url' => 'whatsapp://send?text=' . $title . ' ' . $url, 'icon' => 'whatsapp' ]
     ],      
     'share'             => __('Share:', WP_COMPONENTS_LANGUAGE) // Adds a label with share
-] ); 
+] );
 
 if( $atom['fixed'] ) {
     $atom['attributes']['class'] .= ' atom-share-fixed';
 }
 
-if( $atom['colorBackground'] ) { 
+if( $atom['color_background'] ) { 
     $atom['attributes']['class'] .= ' components-background'; 
 }
 
@@ -64,7 +67,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     
     <?php foreach( $atom['enabled'] as $network ) { ?>
     
-        <a class="atom-network components-<?php echo $network; ?><?php if($atom['hoverItem']) { ?> hvr-<?php echo $atom['hoverItem']; } ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
+        <a class="atom-network components-<?php echo $network; ?><?php if($atom['hover_item']) { ?> hvr-<?php echo $atom['hover_item']; } ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
             <?php if( isset($atom['networks'][$network]['icon']) ) { ?>
                 <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?> hvr-icon"></i>
             <?php } ?>

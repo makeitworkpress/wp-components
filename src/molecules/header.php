@@ -3,8 +3,11 @@
  * Displays a generic WordPress header
  */
 
+// Backward compatibility
+$molecule = MakeitWorkPress\WP_Components\Build::convert_camels($molecule, ['socketAtoms' => 'socket_atoms', 'topAtoms' => 'top_atoms']); 
+
 // Molecule values
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'atoms'         => [],          // Accepts a multidimensional array with the each of the atoms
     'attributes'    => [
         'class'     => 'molecule-header-top',
@@ -14,9 +17,9 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
     'container'     => true,        // Wrap this component in a container
     'fixed'         => true,        // If we have a fixed header
     'headroom'      => false,       // If we apply a headroom effect to the header
-    'socketAtoms'   => [],          // An extra bottom part in the header
+    'socket_atoms'  => [],          // An extra bottom part in the header
     'transparent'   => false,       // If the header is transparent
-    'topAtoms'      => [],          // An extra top part in the header
+    'top_atoms'     => [],          // An extra top part in the header
     'video'         => ''           // Expects the url for a video for display a video background
 ] ); 
 
@@ -57,7 +60,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
         } 
     ?>    
     
-    <?php if( $molecule['topAtoms'] ) { ?>
+    <?php if( $molecule['top_atoms'] ) { ?>
         <div class="molecule-header-top-atoms">
             
             <?php if( $molecule['container'] ) { ?>
@@ -66,7 +69,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             
                 <?php 
 
-                    foreach( $molecule['topAtoms'] as $atom ) { 
+                    foreach( $molecule['top_atoms'] as $atom ) { 
 
                         MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 
@@ -107,7 +110,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     
     <?php } ?> 
     
-    <?php if( $molecule['socketAtoms'] ) { ?>
+    <?php if( $molecule['socket_atoms'] ) { ?>
         <div class="molecule-header-socket-atoms">
             
             <?php if( $molecule['container'] ) { ?>
@@ -116,7 +119,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
             
                 <?php 
 
-                    foreach( $molecule['socketAtoms'] as $atom ) { 
+                    foreach( $molecule['socket_atoms'] as $atom ) { 
 
                         MakeitWorkPress\WP_Components\Build::atom( $atom['atom'], $atom['properties'] );
 

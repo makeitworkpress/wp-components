@@ -3,8 +3,11 @@
  * Represents a video object
  */
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels(['videoHeight' => 'video_height', 'videoWidth' => 'video_width']); 
+
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'itemprop'  => 'video'
     ],
@@ -15,8 +18,8 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
     'schema'        => true,                // If microdata is rendered or not. Also removes schematic attributes
     'thumbnail'     => '',                  // The schematic thumbnail url for the video 
     'video'         => '',                  // Expects an embed code for a video object or a video html tag or a src
-    'videoHeight'   => '' ,                 // A custom height for the video
-    'videoWidth'    => ''                   // A custom width for the video
+    'video_height'  => '' ,                 // A custom height for the video
+    'video_width'   => ''                   // A custom width for the video
 ] );
 
 // Return if we do not have a video
@@ -26,8 +29,8 @@ if( ! $atom['video'] ) {
 
 // Format our video if it's just an url
 if( strpos($atom['video'], 'http') === 0 ) {
-    $height = $atom['videoHeight'] ? ' height="' . intval($atom['videoHeight']) . '"' : ''; 
-    $width  = $atom['videoWidth'] ? ' width="' . intval($atom['videoWidth']) . '"' : ''; 
+    $height = $atom['video_height'] ? ' height="' . intval($atom['video_height']) . '"' : ''; 
+    $width  = $atom['video_width'] ? ' width="' . intval($atom['video_width']) . '"' : ''; 
     $atom['video']  = do_shortcode('[video src="' . $atom['video'] . '"' . $height . $width . ']');
     $atom['placer'] = 'atom-video-wp';
 } 

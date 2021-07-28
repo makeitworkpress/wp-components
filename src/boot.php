@@ -82,7 +82,7 @@ class Boot {
             
             // Enqueue our default components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components-css', WP_COMPONENTS_ASSETS . 'css/components.min.css');
+                wp_enqueue_style( 'components-css', WP_COMPONENTS_ASSETS . 'css/wfc.min.css');
             }
 
             if( $this->configurations['fontawesome'] ) {
@@ -107,10 +107,10 @@ class Boot {
             // Enqueue our default components JS
             if( $this->configurations['js'] ) {
                 
-                wp_enqueue_script( 'components-js', WP_COMPONENTS_ASSETS . 'js/wpc' . $suffix . '.js', ['jquery'], NULL, true );
+                wp_enqueue_script( 'wpc-js', WP_COMPONENTS_ASSETS . 'js/wpc' . $suffix . '.js', ['jquery'], NULL, true );
 
                 // Localize our script
-                wp_localize_script( 'components-js', 'components', [
+                wp_localize_script( 'wpc-js', 'wpc', [
                     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
                     'restUrl' => esc_url_raw( rest_url() ),
                     'debug'   => defined('WP_DEBUG') && WP_DEBUG ? true : false,

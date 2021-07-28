@@ -3,15 +3,18 @@
  * Represents a button
  */
 
+// Backward compatibility
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['iconAfter' => 'icon_after', 'iconBefore' => 'icon_before', 'iconVisible' => 'icon_visible']);
+
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'href'   => 'post',
         'target' => '_self'
     ],
-    'iconAfter'     => '',          // Icon before the button
-    'iconBefore'    => '',          // Icon after the button
-    'iconVisible'   => 'standard',  // When the icon becomes visible. Accepts standard or hover
+    'icon_after'    => '',          // Icon before the button
+    'icon_before'   => '',          // Icon after the button
+    'icon_visible'  => 'standard',  // When the icon becomes visible. Accepts standard or hover
     'label'         => '',          // The button label
     'size'          => ''           // Defines the size of the button. If set to none, displays a button without background, border and padding.
 ] ); 
@@ -22,7 +25,7 @@ if( ! $atom['label'] ) {
 }
 
 // Icon visibility
-$atom['attributes']['class'] .= ' atom-button-' . $atom['iconVisible'];
+$atom['attributes']['class'] .= ' atom-button-' . $atom['icon_visible'];
 
 // Default background
 if( ! isset($atom['background']) ) {
@@ -48,16 +51,16 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
 <a <?php echo $attributes; ?>>
     
-    <?php if( $atom['iconBefore'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['iconBefore']; ?> hvr-icon"></i>
+    <?php if( $atom['icon_before'] ) { ?> 
+        <i class="fa fa-<?php echo $atom['icon_before']; ?> hvr-icon"></i>
     <?php } ?>
     
     <span class="atom-button-label">
         <?php echo $atom['label']; ?>
     </span>
     
-    <?php if( $atom['iconAfter'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['iconAfter']; ?> hvr-icon"></i>
+    <?php if( $atom['icon_after'] ) { ?> 
+        <i class="fa fa-<?php echo $atom['icon_after']; ?> hvr-icon"></i>
     <?php } ?>
     
 </a>

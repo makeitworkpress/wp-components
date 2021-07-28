@@ -4,7 +4,7 @@
  */
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'center'    => ['lat' => '52.090736', 'lng' => '5.121420'],      
     'fit'       => true,
     'id'        => 'wpcDefaultMap',    // Default ID to which map configurations are saved

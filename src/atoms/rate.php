@@ -5,15 +5,18 @@
 
 $id = get_the_ID();
 
+// Backward compatibility
+$atom       = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['authorType' => 'author_type']);
+
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'itemprop'  => 'aggregateRating',
         'itemscope' => 'itemscope',
         'itemtype'  => 'http://schema.org/AggregateRating'
     ],
     'author'        => '',
-    'authorType'    => 'http://schema.org/Person',
+    'author_type'   => 'http://schema.org/Person',
     'count'         => get_post_meta($id, 'components_rating_count', true),
     'id'            => $id,  
     'max'           => 5,
@@ -60,7 +63,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php } ?>
         
         <?php if( $atom['author'] ) { ?>
-            <meta itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['authorType']; ?>" content="<?php echo $atom['author']; ?>" />
+            <meta itemprop="author" itemscope="itemscope" itemtype="<?php echo $atom['author_type']; ?>" content="<?php echo $atom['author']; ?>" />
         <?php } ?>
 
     <?php } ?>

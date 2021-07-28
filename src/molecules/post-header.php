@@ -4,7 +4,7 @@
  */
 
 // Molecule values
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'atoms'         => [
         'title' => [
             'atom'          => 'title', 

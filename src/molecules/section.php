@@ -2,12 +2,17 @@
 /**
  * Displays a generic section
  */
-$molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
+
+// Backward compatibility
+$molecule = MakeitWorkPress\WP_Components\Build::convert_camels($molecule, ['gridGap' => 'grid_gap']);
+
+// Arguments
+$molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'atoms'         => [],          // Can render atoms if necessary
     'columns'       => [],          // Columns to display with their corresponding width and containing atoms. Use ['column' => 'half', 'atoms' => [['atom' => 'atom']]]
     'container'     => true,        // Wrap this component in a container
     'grid'          => false,       // Whether to display a grid
-    'gridGap'       => 'default',   // The gridgap, if a grid is enabled
+    'grid_gap'       => 'default',   // The gridgap, if a grid is enabled
     'molecules'     => [],          // Can render molecules if necessary
     'tag'           => 'section',
     'video'         => ''           // Expects the url for a video for display a video background
@@ -15,7 +20,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multiParseArgs( $molecule, [
 
 // Adds wrapper classes if we don't have a container
 if( ! $molecule['container'] && $molecule['grid'] ) {
-    $molecule['attributes']['class'] .= ' components-grid-wrapper components-grid-' . $molecule['gridGap'];
+    $molecule['attributes']['class'] .= ' components-grid-wrapper components-grid-' . $molecule['grid_gap'];
 }
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attributes']); ?>
@@ -31,7 +36,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     <?php } ?>
 
     <?php if( $molecule['container'] ) { ?>
-        <div class="components-container<?php if($molecule['grid']) { ?> components-grid-wrapper components-grid-<?php echo $molecule['gridGap']; } ?>">
+        <div class="components-container<?php if($molecule['grid']) { ?> components-grid-wrapper components-grid-<?php echo $molecule['grid_gap']; } ?>">
     <?php } ?>
 
         <?php foreach( $molecule['columns'] as $column ) { ?>

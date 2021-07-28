@@ -5,7 +5,7 @@
 global $wp_query;
 
 // Atom values
-$atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
+$atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'custom'    => '',
     'types'     => [
         'author'    => __( 'Posts Author Archive: %s', WP_COMPONENTS_LANGUAGE ),
@@ -26,7 +26,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multiParseArgs( $atom, [
 ] ); 
 
 
-$archiveTitle   = '';
+$archive_title  = '';
 $attributes     = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <h1 <?php echo $attributes; ?>>
@@ -46,21 +46,21 @@ $attributes     = MakeitWorkPress\WP_Components\Build::attributes($atom['attribu
                     $title      = sprintf( __( 'Posts written by: %s', WP_COMPONENTS_LANGUAGE ),  '<span>' . $current->display_name . '</span>');
                 }
 
-                $archiveTitle = $title;
+                $archive_title = $title;
 
             } 
 
         } 
 
-        if( ! $archiveTitle ) {
-            $archiveTitle = $atom['types']['default'];
+        if( ! $archive_title ) {
+            $archive_title = $atom['types']['default'];
         }
     
         if( $atom['custom'] ) {
-            $archiveTitle = $atom['custom'];
+            $archive_title = $atom['custom'];
         }
 
-        echo $archiveTitle;
+        echo $archive_title;
     
     ?>
 </h1>
