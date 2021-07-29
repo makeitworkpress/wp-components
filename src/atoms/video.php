@@ -4,7 +4,7 @@
  */
 
 // Backward compatibility
-$atom = MakeitWorkPress\WP_Components\Build::convert_camels(['videoHeight' => 'video_height', 'videoWidth' => 'video_width']); 
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['videoHeight' => 'video_height', 'videoWidth' => 'video_width']); 
 
 // Atom values
 $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
