@@ -23,14 +23,14 @@ $via    = isset( $atom['via'] )     ? $atom['via']      : '';
 $atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['colorBackground' => 'color_background', 'hoverItem' => 'hover_item']);
 
 // Atom properties - for this atom, wp_parse_args should be used
-$atom   = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
-    'color_background'   => true,
-    'enabled'           => [ 'facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp' ],
+$atom = wp_parse_args( $atom, [
+    'color_background'  => true,
+    'enabled'           => ['facebook', 'twitter', 'linkedin', 'pinterest', 'reddit', 'stumbleupon', 'pocket', 'whatsapp'],
     'fixed'             => false,
     'hover_item'        => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'networks'          => [
-        'facebook'      => [ 'url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook' ], 
-        'twitter'       => [ 'url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter' ], 
+        'facebook'      => ['url' => 'http://www.facebook.com/sharer.php?u=' . $url, 'icon' => 'facebook'], 
+        'twitter'       => ['url' => 'http://twitter.com/share?url=' . $url . '&text=' . $title . '&via=' . $via, 'icon' => 'twitter'], 
         'linkedin'      => [
             'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&source=' . $source, 
             'icon'  => 'linkedin'
@@ -39,10 +39,10 @@ $atom   = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
             'url'   => 'http://pinterest.com/pin/create/button/?url=' . $url . '&description=' . $title . '&media=' . $image, 
             'icon'  => 'pinterest'
         ], 
-        'reddit'        => [ 'url' => 'http://www.reddit.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'reddit-alien' ], 
-        'stumbleupon'   => [ 'url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon' ],
-        'pocket'        => [ 'url' => 'https://getpocket.com/edit.php?url=' . $url, 'icon' => 'get-pocket' ],
-        'whatsapp'      => [ 'url' => 'whatsapp://send?text=' . $title . ' ' . $url, 'icon' => 'whatsapp' ]
+        'reddit'        => ['url' => 'http://www.reddit.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'reddit-alien'], 
+        'stumbleupon'   => ['url' => 'http://stumbleupon.com/submit?url=' . $url . '&title=' . $title, 'icon' => 'stumbleupon'],
+        'pocket'        => ['url' => 'https://getpocket.com/edit.php?url=' . $url, 'icon' => 'get-pocket'],
+        'whatsapp'      => ['url' => 'whatsapp://send?text=' . $title . ' ' . $url, 'icon' => 'whatsapp']
     ],      
     'share'             => __('Share:', WP_COMPONENTS_LANGUAGE) // Adds a label with share
 ] );

@@ -32,13 +32,16 @@ if ( post_password_required() ) {
 
 // Use forward slash for file directories (windows uses backwards)
 $file_path  = str_replace('\\', '/', dirname(__FILE__) );
-$theme_path = is_child_theme() ? str_replace('\\', '/', STYLESHEETPATH ) : str_replace('\\', '/', TEMPLATEPATH );
+$theme_path = str_replace('\\', '/', TEMPLATEPATH );
+$child_path = str_replace('\\', '/', STYLESHEETPATH );
 
 // When the component is overwritten, we use a different file
 if( $atom['template'] ) {
     $file = $atom['template'];
-} else {
+} elseif( strpos($file_path, $theme_path) === 0 ) {
     $file = str_replace( $theme_path, '', $file_path ) . '/compatible/comments.php';
+} elseif( strpos($file_path, $child_path) === 0 ) {
+    $file = str_replace( $child_path, '', $file_path ) . '/compatible/comments.php';
 }
 
 // Store our atom in a global variable so that we can access it later in the template file

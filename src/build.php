@@ -335,7 +335,7 @@ class Build {
                     $array[] = $element;
 
                 // Atoms are always overwritten by the arguments
-                } elseif( in_array($key, ['atoms', 'contentAtoms', 'footerAtoms', 'headerAtoms', 'image', 'socketAtoms', 'topAtoms']) ) { 
+                } elseif( in_array($key, ['atoms', 'content_atoms', 'footer_atoms', 'header_atoms', 'image', 'socket_atoms', 'top_atoms']) ) { 
                     $array[$key] = $element;
                 } elseif( isset( $array[$key] ) && (is_array( $array[$key] )) && ! empty($array[$key]) && is_array($element) ) {
                     $array[$key] = self::multi_parse_args( $element, $array[$key] );
