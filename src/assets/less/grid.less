@@ -1,18 +1,18 @@
 // main: wfc.less
 
 /**
- * Basic grid system based upon flexbox
+ * Container with clearfix
  */
 .components-container {
     box-sizing: border-box;
     margin: 0 auto;
-    max-width: 1280px;
+    max-width: 1200px;
     width: 100%;
     &:after {
         clear: both;
         content: '';
         display: table;
-        width: 0;
+        width: 100%;
     }
 }
 
