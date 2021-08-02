@@ -97,7 +97,7 @@ class Ajax {
         
         // Developers can filter the arguments
         $args       = apply_filters( 'components_ajax_search_posts_args', [
-            'queryArgs' => [
+            'query_args' => [
                 'ep_integrate'      => true,
                 'posts_per_page'    => intval( $_POST['number'] ), 
                 'post_type'         => $types ? $types : 'any',
@@ -106,11 +106,11 @@ class Ajax {
             ],
             'none'          => $none ? $none : __('Bummer! No posts found.', WP_COMPONENTS_LANGUAGE),
             'pagination'    => false,            
-            'postProperties' => [
+            'post_properties' => [
                 'appear'        => sanitize_text_field( $_POST['appear'] ),
-                'contentAtoms'  => [],
-                'footerAtoms'   => [],           
-                'headerAtoms'   => [
+                'content_atoms' => [],
+                'footer_atoms'  => [],           
+                'header_atoms'  => [
                     'title' => ['atom' => 'title', 'properties' => ['tag' => 'h4', 'link' => 'post']],
                     'type'  => ['atom' => 'type',  'properties' => []]
                 ],
