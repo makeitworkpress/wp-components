@@ -4,7 +4,7 @@
  */
 
 // Backward compatibility
-$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' => 'hover_item']);
+$atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' => 'hover_item', 'termStyle' => 'term_style']);
 
 // Atom values
 $atom = wp_parse_args( $atom, [
@@ -14,7 +14,7 @@ $atom = wp_parse_args( $atom, [
     'hover_item'    => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'seperator'     => '/',                             // Content that seperates terms
     'terms'         => [],                              // Accepts a custom array of terms
-    'termStyle'     => 'normal'                         // Accepts a custom style, such as button
+    'term_style'     => 'normal'                         // Accepts a custom style, such as button
 ] );
 
 if( ! $atom['terms'] ) {
@@ -26,8 +26,8 @@ if( ! $atom['terms'] ) {
     return;
 }
 
-if( $atom['termStyle'] ) {
-    $atom['termStyle'] = ' atom-term-style-' . $atom['termStyle'];
+if( $atom['term_style'] ) {
+    $atom['term_style'] = ' atom-term-style-' . $atom['term_style'];
 }
 
 // Get the queried object so we can see active terms
@@ -49,7 +49,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php 
             // Some term variables
             $term_link  = esc_url( get_term_link($term) ); 
-            $term_class = $atom['termStyle'];
+            $term_class = $atom['term_style'];
 
             if( $active == $term->term_id ) {
                 $term_class .= ' atom-term-active';    
