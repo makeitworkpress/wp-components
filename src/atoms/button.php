@@ -24,8 +24,10 @@ if( ! $atom['label'] ) {
     return;
 }
 
-// Icon visibility
-$atom['attributes']['class'] .= ' atom-button-' . $atom['icon_visible'];
+// Icon visibility, but only if an icon is defined
+if( $atom['icon_visible'] && ($atom['icon_after'] || $atom['icon_before']) ) {
+    $atom['attributes']['class'] .= ' atom-button-' . $atom['icon_visible'];
+}
 
 // Default background
 if( ! isset($atom['background']) ) {
