@@ -18,9 +18,9 @@ class Build {
      * @param array     $properties The custom properties for the template    
      * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
      * 
-     * @return string|void          The rendered string for the given atom or molecule
+     * @return string|void          The rendered string for the given atom or molecule, but only if render is true
      */
-    private static function render( $type = 'atom', $template, $properties = [], $render = true ) {
+    private static function render( string $type = 'atom', string $template, array $properties = [], bool $render = true ) {
         
         // Empty properties can be neglected
         if( empty($properties) ) {
@@ -79,7 +79,7 @@ class Build {
      *
      * @return  array   $properties The custom properties merged with the defaults
      */ 
-    public static function set_default_properties( $template, $properties, $type = 'atom' ) {
+    public static function set_default_properties( string $template, array $properties, string $type = 'atom' ): array {
 
         // Define our most basic property - the class
         $properties['attributes']['class']  = isset($properties['attributes']['class']) ? $type . ' ' . $properties['attributes']['class'] : $type;
@@ -224,32 +224,36 @@ class Build {
     /**
      * Displays any atom
      *
-     * @param string    $atom       The atom to load
-     * @param array     $variables  The custom variables for a molecule
+     * @param string    $atom           The atom to load
+     * @param array     $properties     The custom properties for a molecule
+     * 
+     * @return string:|void             The rendered atom
      */
-    public static function atom( $atom, $variables = array(), $render = true ) {
+    public static function atom( string $atom, array $properties = [], bool $render = true ) {
         
         if( $render == false ) {
-            return self::render( 'atom', $atom, $variables, $render );    
+            return self::render( 'atom', $atom, $properties, $render );    
         }
         
-        self::render( 'atom', $atom, $variables );
+        self::render( 'atom', $atom, $properties );
         
     }
     
     /**
      * Displays any molecule
      *
-     * @param string    $molecule   The atom to load
-     * @param array     $variables  The custom variables for a molecule
+     * @param string    $molecule       The atom to load
+     * @param array     $properties     The custom properties for a molecule
+     * 
+     * @return string:|void             The rendered molecule
      */
-    public static function molecule( $molecule, $variables = array(), $render = true ) {
+    public static function molecule( string $molecule, array $properties = [], bool $render = true ) {
         
         if( $render == false ) {
-            return self::render( 'molecule', $molecule, $variables, $render );    
+            return self::render( 'molecule', $molecule, $properties, $render );    
         }
         
-        self::render( 'molecule', $molecule, $variables );
+        self::render( 'molecule', $molecule, $properties );
         
     }
 
@@ -257,9 +261,10 @@ class Build {
      * Turns our attributes into a usuable string for use in our atoms
      * 
      * @param   array   $attributes The array with custom properties
+     * 
      * @return  string  $output     The attributes as a string
      */
-    public static function attributes( $attributes = [] ) {
+    public static function attributes( array $attributes = [] ): string {
 
         $output     = '';
 
@@ -303,9 +308,9 @@ class Build {
      * @param array $args       The arguments to parse
      * @param array $default    The default arguments
      * 
-     * @return array $array T   he merged array
+     * @return array $array     The merged array
      */
-    public static function multiParseArgs( $args, $default ) {
+    public static function multiParseArgs( array $args, array $default ): array {
         return self::multi_parse_args( $args, $default );
     }
 
@@ -317,7 +322,7 @@ class Build {
      * 
      * @return array $array     The merged array
      */
-    public static function multi_parse_args( $args, $default ) {
+    public static function multi_parse_args( array $args, array $default ): array {
 
         if( ! is_array($default) ) {
             return wp_parse_args( $args, $default );

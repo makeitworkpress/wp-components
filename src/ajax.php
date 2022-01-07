@@ -14,7 +14,7 @@ class Ajax {
      *
      * @param array $configurations The basic configurations for the components
      */
-    public function __construct( $configurations = array() ) {
+    public function __construct( array $configurations = [] ) {
         
         $methods = get_class_methods( $this );
         
@@ -38,7 +38,7 @@ class Ajax {
     /**
      * Adds a rating to a given post
      */
-    public function public_rate() {
+    public function public_rate(): void {
         
         // Check nonce
         check_ajax_referer('cucumber', 'nonce');
@@ -74,15 +74,16 @@ class Ajax {
     
     /**
      * Loads posts that are filtered
+     * @Todo implement
      */
-    public function public_filter() {
+    public function public_filter(): void {
         
     }
     
     /**
      * Loads posts that are searched
      */
-    public function public_search() {
+    public function public_search(): void {
         
         // Check nonce
         check_ajax_referer('cucumber', 'nonce');

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or die( 'Go eat veggies!' );
  * 
  * @return void/string          The rendered atom
  */
-function wpc_atom( $type = '', Array $properties = [], $render = true ) {
+function wpc_atom( string $type = '', array $properties = [], bool $render = true ) {
 
     if( ! class_exists('MakeitWorkPress\WP_Components\Build') || ! $type ) {
         return;
@@ -36,7 +36,7 @@ function wpc_atom( $type = '', Array $properties = [], $render = true ) {
  * 
  * @return void/string          The rendered molecule
  */
-function wpc_molecule( $type = '', Array $properties = [], $render = true  ) {
+function wpc_molecule( string $type = '', array $properties = [], bool $render = true  ) {
 
     if( ! class_exists('MakeitWorkPress\WP_Components\Build') || ! $type ) {
         return;
@@ -53,22 +53,22 @@ function wpc_molecule( $type = '', Array $properties = [], $render = true  ) {
 /**
  * Generates the attributes for a component
  * 
- * @param Array $attributes The array with attributes
+ * @param array $attributes The array with attributes
  * 
- * @return Array            The generated attributes
+ * @return array            The generated attributes
  */
-function wpc_attributes( $attributes = [] ) {
+function wpc_attributes( array $attributes = [] ): array {
     return MakeitWorkPress\WP_Components\Build::attributes( $attributes );
 }
 
 /**
  * Parses arguments in a multidimensional way
  * 
- * @param Array $defaults   The array with default attributes
- * @param Array $parameters The array with added parameters
+ * @param array $defaults   The array with default attributes
+ * @param array $parameters The array with added parameters
  * 
- * @return Array            The parsed parameters
+ * @return array            The parsed parameters
  */
-function wpc_multi_parse( $defaults = [], $parameters = [] ) {
+function wpc_multi_parse( array $defaults = [], array $parameters = [] ): array {
     return MakeitWorkPress\WP_Components\Build::multi_parse_args( $defaults, $parameters );
 }

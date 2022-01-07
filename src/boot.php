@@ -62,7 +62,7 @@ class Boot {
     /**
      * Contains our standaard hooks
      */
-    private function hook() {
+    private function hook(): void {
         
         add_action( 'wp_enqueue_scripts', function() {
 
