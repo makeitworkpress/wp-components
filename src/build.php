@@ -14,13 +14,19 @@ class Build {
      * Renders generic template for an atom or molecule.
      *
      * @param string    $type       The type, either a molecule or atom
-     * @param string    $template   The template to load, either a template in the molecule or atom's folder
+     * @param string    $template   The component to load, either a template in the molecule or atom's folder
      * @param array     $properties The custom properties for the template    
      * @param array     $render     If the element is rendered. If set to false, the contents of the elements are returned  
      * 
      * @return string|void          The rendered string for the given atom or molecule, but only if render is true
      */
-    private static function render( string $type = 'atom', string $template, array $properties = [], bool $render = true ) {
+    private static function render( string $type, string $template, array $properties = [], bool $render = true ) {
+
+        if( ! in_array($type, ['atom', 'molecule']) ) {
+            $error = new WP_Error( 'wrong', __('The type for rendering should be a molecule or atom.', 'wpc') );
+            echo $error->get_error_message();    
+            return;
+        }
         
         // Empty properties can be neglected
         if( empty($properties) ) {
