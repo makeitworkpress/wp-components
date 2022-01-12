@@ -1,0 +1,25 @@
+// main: ../styles.less
+
+/**
+ * Styling for the social atom
+ */
+.atom-social {
+    a {
+        display: inline-block;
+        line-height: 32px;
+        min-height: 32px;
+        min-width: 32px;
+        padding: 0 8px;
+        text-align: center;
+        transition: all 350ms ease-out;
+        vertical-align: middle;
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+    &:after {
+        clear: both;
+        content: '';
+        display: table;
+    }
+}

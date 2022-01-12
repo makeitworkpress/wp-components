@@ -1,0 +1,23 @@
+// main: ../styles.less
+
+/**
+ * Styling for the pagination element
+ */
+.atom-pagination-post {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    a {
+        width: 47.5%;
+        @media screen and (max-width: 767px) {
+            margin-bottom: 16px;
+            width: 100%;  
+        }        
+        span {
+            display: block;
+        }      
+    }
+    a[rel="next"] {
+        text-align: right;
+    }
+}

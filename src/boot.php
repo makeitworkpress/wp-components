@@ -43,7 +43,7 @@ class Boot {
         
         // Define Constants
         $folder = wp_normalize_path( substr( dirname(__FILE__), strpos(__FILE__, 'wp-content') + strlen('wp-content') ) );      
-        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/' );
+        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/public' );
         defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', plugin_dir_path( __FILE__ ) );
         defined( 'WP_COMPONENTS_LANGUAGE' ) or define( 'WP_COMPONENTS_LANGUAGE', $this->configurations['language'] );
         
@@ -65,38 +65,35 @@ class Boot {
     private function hook(): void {
         
         add_action( 'wp_enqueue_scripts', function() {
-
-            // If we are debugging, load the full scripts
-            $suffix = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';  
             
             // Enqueue tinyslider CSS and JS
             if( $this->configurations['tinyslider'] ) {
-                wp_enqueue_style( 'tinyslider-css', WP_COMPONENTS_ASSETS . 'css/vendor/tinyslider.min.css');
-                wp_enqueue_script( 'tinyslider-js', WP_COMPONENTS_ASSETS . 'js/vendor/tinyslider.min.js', [], NULL, true);
+                wp_enqueue_style( 'tinyslider-css', WP_COMPONENTS_ASSETS . 'vendor/tinyslider.min.css');
+                wp_enqueue_script( 'tinyslider-js', WP_COMPONENTS_ASSETS . 'vendor/tinyslider.min.js', [], NULL, true);
             }
             
             // Enqueue scrollreveal JS
             if( $this->configurations['scrollreveal'] ) {
-                wp_enqueue_script( 'scrollreveal-js', WP_COMPONENTS_ASSETS . 'js/vendor/scrollreveal.min.js', [], NULL, true);
+                wp_enqueue_script( 'scrollreveal-js', WP_COMPONENTS_ASSETS . 'vendor/scrollreveal.min.js', [], NULL, true);
             }           
             
             // Enqueue our default components CSS
             if( $this->configurations['css'] ) {
-                wp_enqueue_style( 'components-css', WP_COMPONENTS_ASSETS . 'css/wfc.min.css');
+                wp_enqueue_style( 'wpc-css', WP_COMPONENTS_ASSETS . 'wpc-styles.min.css');
             }
 
             if( $this->configurations['fontawesome'] ) {
-                wp_enqueue_style( 'font-awesome', WP_COMPONENTS_ASSETS . 'css/vendor/font-awesome.min.css');
+                wp_enqueue_style( 'font-awesome', WP_COMPONENTS_ASSETS . 'vendor/font-awesome.min.css');
             }
             
             // Enqueue our animate CSS
             if( $this->configurations['animate'] ) {
-                wp_enqueue_style( 'animate-css', WP_COMPONENTS_ASSETS . 'css/vendor/animate.min.css');
+                wp_enqueue_style( 'animate-css', WP_COMPONENTS_ASSETS . 'vendor/animate.min.css');
             } 
             
             // Enqueue our hover CSS
             if( $this->configurations['hover'] ) {
-                wp_enqueue_style( 'hover-css', WP_COMPONENTS_ASSETS . 'css/vendor/hover.min.css');
+                wp_enqueue_style( 'hover-css', WP_COMPONENTS_ASSETS . 'vendor/hover.min.css');
             }  
             
             // Registers the maps script
@@ -107,7 +104,7 @@ class Boot {
             // Enqueue our default components JS
             if( $this->configurations['js'] ) {
                 
-                wp_enqueue_script( 'wpc-js', WP_COMPONENTS_ASSETS . 'js/wpc' . $suffix . '.js', ['jquery'], NULL, true );
+                wp_enqueue_script( 'wpc-js', WP_COMPONENTS_ASSETS . 'js/wpc-scripts.js', ['jquery'], NULL, true );
 
                 // Localize our script
                 wp_localize_script( 'wpc-js', 'wpc', [
