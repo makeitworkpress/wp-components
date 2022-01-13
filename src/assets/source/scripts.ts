@@ -1,19 +1,22 @@
 /**
  * All front-end modules are bundled into one application
  */
+import Scroll from "./atoms/scroll";
+import Search from "./atoms/search";
+import Tabs from "./atoms/tabs";
 import Header from "./molecules/header";
+import Posts from "./molecules/posts";
 import Slider from "./molecules/slider";
-import Module from "./types/module";
-
-declare var ScrollReveal: any;
+import { InitParallax, InitScrollReveal } from "./other/modules";
+import Component from "./types/component";
 
 class WPC_App {
 
-  private modules: Module[];
+  private modules: Component[];
 
   constructor() {
     this.modules = [
-      Header, Slider
+      Header, Slider, Posts, Tabs, Search, Scroll
     ];
     this.initialize();
   }
@@ -28,7 +31,7 @@ class WPC_App {
       }
 
       this.initScrollReveal();
-      this.initParallax();   
+      this.initParallax();  
     });
   }
 
@@ -36,33 +39,15 @@ class WPC_App {
    * Initializes our scroll-reveal functionality
    */
   private initScrollReveal() {
-    if( typeof globalThis.ScrollReveal !== "undefined" ) {
- 
-      globalThis.sr = ScrollReveal();
-
-      globalThis.sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
-      globalThis.sr.reveal( '.components-left-appear', { origin: 'left'}, 50 );
-      globalThis.sr.reveal( '.components-right-appear', { origin: 'right'}, 50 );
-      globalThis.sr.reveal( '.components-top-appear', { origin: 'top'}, 50 );
-    }
+    InitScrollReveal();
   }
 
   /**
    * Initializes the parallax functionality
    */
   private initParallax() {
-    window.addEventListener('scroll', () => {
-      let scrollPosition: number = window.scrollY;
-      const parallaxSections = document.getElementsByClassName('components-parallax') as HTMLCollectionOf<HTMLElement>;
-      
-      if( parallaxSections.length > 0 ) {
-          for( let key in parallaxSections ) {
-              parallaxSections[key].style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition/5) + "px" + ')';
-          }
-      }
-
-    });
-  }  
+    InitParallax();
+  }
 
 };
 

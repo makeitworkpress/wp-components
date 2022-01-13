@@ -93,6 +93,164 @@ var Header = {
 
 /***/ }),
 
+/***/ "./src/assets/source/molecules/posts.ts":
+/*!**********************************************!*\
+  !*** ./src/assets/source/molecules/posts.ts ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+var Posts = {
+    parser: new DOMParser,
+    wrappers: document.getElementsByClassName('molecule-posts'),
+    init: function () {
+        if (this.wrappers.length < 1) {
+            return;
+        }
+        for (var key in this.wrappers.length) {
+            var element = this.wrappers.length[key];
+            this.setupInfiniteScroll(element);
+            this.setupPagination(element);
+        }
+    },
+    /**
+     * Setups infinite scroll for the posts element
+     * @param element The post wrapper element
+     */
+    setupInfiniteScroll: function (element) {
+        var _this = this;
+        if (!element.classList.contains('molecule-posts-infinite')) {
+            return;
+        }
+        var pagination = element.querySelector('.atom-pagination');
+        if (pagination) {
+            pagination.style.display = "none";
+        }
+        var paginationNumberElements = element.querySelectorAll('.atom-pagination .page-numbers');
+        var containerId = element.dataset.id;
+        var containerPosition = element.getBoundingClientRect().top;
+        var pageNumber = 1;
+        var loading = false; // Determines if we are loading or when all pages are load.
+        window.addEventListener('scroll', function () {
+            var url = '';
+            if (loading) {
+                return;
+            }
+            var windowPosition = window.innerHeight + window.scrollY;
+            var postsPosition = element.clientHeight + containerPosition;
+            if (windowPosition < postsPosition || paginationNumberElements.length < 1) {
+                return;
+            }
+            pageNumber++;
+            for (var key in paginationNumberElements) {
+                if (!paginationNumberElements[key].textContent) {
+                    continue;
+                }
+                var paginationNumber = paginationNumberElements[key].textContent;
+                if (parseInt(paginationNumber) === pageNumber) {
+                    url = paginationNumberElements[key].href;
+                    loading = true;
+                }
+            }
+            if (!url.includes(window.location.origin)) {
+                return;
+            }
+            // No more pages to load
+            if (!url) {
+                loading = true;
+                return;
+            }
+            fetch(url, {})
+                .then(function (response) {
+                return response.text();
+            })
+                .then(function (response) {
+                var posts = _this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
+                var postsWrapper = element.querySelector('.molecule-posts-wrapper');
+                for (var key in posts) {
+                    postsWrapper.appendChild(posts[key]);
+                }
+                loading = false;
+                if (typeof window.sr !== 'undefined') {
+                    window.sr.sync();
+                }
+            });
+        });
+    },
+    /**
+     * Setup regular, dynamic pagination for the post wrapper element
+     * @param element The post wrapper element
+     */
+    setupPagination: function (element) {
+        var _this = this;
+        if (!element.classList.contains('molecule-posts-ajax')) {
+            return;
+        }
+        var paginationAnchors = element.querySelectorAll('.atom-pagination a');
+        if (paginationAnchors.length < 1) {
+            return;
+        }
+        var _loop_1 = function (key) {
+            paginationAnchors[key].addEventListener('click', function (event) {
+                event.preventDefault();
+                _this.paginationClickHandler(element, paginationAnchors[key]);
+            });
+        };
+        for (var key in paginationAnchors) {
+            _loop_1(key);
+        }
+    },
+    /**
+     * Adds the click handler to any generated content
+     * @param element The parent element to which the button belongs
+     * @param anchor The button that is clicked
+     */
+    paginationClickHandler: function (element, anchor) {
+        var _this = this;
+        var target = anchor.href;
+        if (!target.includes(window.location.origin)) {
+            return;
+        }
+        element.classList.add('components-loading');
+        // Fetch the target page
+        fetch(target)
+            .then(function (response) {
+            return response.text();
+        })
+            .then(function (response) {
+            var responseDom = _this.parser.parseFromString(response, 'text/html');
+            var oldPagination = element.querySelector('.molecule-posts-wrapper');
+            var oldPosts = element.querySelector('.molecule-posts-wrapper');
+            var newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
+            var newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
+            element.classList.remove('components-loading');
+            if (oldPagination) {
+                oldPagination.outerHTML = newPagination;
+            }
+            if (oldPosts) {
+                oldPosts.outerHTML = newPosts;
+            }
+            // Jquery animate
+            setTimeout(function () {
+                window.scrollBy({
+                    top: element.getBoundingClientRect().top,
+                    behavior: 'smooth'
+                });
+            }, 500);
+            // Sync our scroll-reveal from the global object
+            if (typeof window.sr !== "undefined") {
+                sr.sync();
+            }
+            // Because our dom is reconstructed, we need to setup pagination again for the given element
+            _this.setupPagination(element);
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Posts);
+
+
+/***/ }),
+
 /***/ "./src/assets/source/molecules/slider.ts":
 /*!***********************************************!*\
   !*** ./src/assets/source/molecules/slider.ts ***!
@@ -101,11 +259,14 @@ var Header = {
 
 __webpack_require__.r(__webpack_exports__);
 var Slider = {
-    elements: document.getElementsByClassName('molecule-slider'),
+    wrappers: document.getElementsByClassName('molecule-slider'),
     instances: {},
     init: function () {
-        for (var key in this.elements) {
-            this.createInstance(this.elements[key]);
+        if (this.wrappers.length < 1) {
+            return;
+        }
+        for (var key in this.wrappers) {
+            this.createInstance(this.wrappers[key]);
         }
     },
     /**
@@ -316,16 +477,18 @@ var __webpack_exports__ = {};
   \**************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _molecules_header__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./molecules/header */ "./src/assets/source/molecules/header.ts");
-/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/source/molecules/slider.ts");
+/* harmony import */ var _molecules_posts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./molecules/posts */ "./src/assets/source/molecules/posts.ts");
+/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/source/molecules/slider.ts");
 /**
  * All front-end modules are bundled into one application
  */
 
 
+
 var WPC_App = /** @class */ (function () {
     function WPC_App() {
         this.modules = [
-            _molecules_header__WEBPACK_IMPORTED_MODULE_0__["default"], _molecules_slider__WEBPACK_IMPORTED_MODULE_1__["default"]
+            _molecules_header__WEBPACK_IMPORTED_MODULE_0__["default"], _molecules_slider__WEBPACK_IMPORTED_MODULE_2__["default"], _molecules_posts__WEBPACK_IMPORTED_MODULE_1__["default"]
         ];
         this.initialize();
     }
@@ -346,12 +509,12 @@ var WPC_App = /** @class */ (function () {
      * Initializes our scroll-reveal functionality
      */
     WPC_App.prototype.initScrollReveal = function () {
-        if (typeof globalThis.ScrollReveal !== "undefined") {
-            globalThis.sr = ScrollReveal();
-            globalThis.sr.reveal('.components-bottom-appear', { origin: 'bottom' }, 50);
-            globalThis.sr.reveal('.components-left-appear', { origin: 'left' }, 50);
-            globalThis.sr.reveal('.components-right-appear', { origin: 'right' }, 50);
-            globalThis.sr.reveal('.components-top-appear', { origin: 'top' }, 50);
+        if (typeof window.ScrollReveal !== "undefined") {
+            window.sr = ScrollReveal();
+            window.sr.reveal('.components-bottom-appear', { origin: 'bottom' }, 50);
+            window.sr.reveal('.components-left-appear', { origin: 'left' }, 50);
+            window.sr.reveal('.components-right-appear', { origin: 'right' }, 50);
+            window.sr.reveal('.components-top-appear', { origin: 'top' }, 50);
         }
     };
     /**

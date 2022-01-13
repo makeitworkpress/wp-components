@@ -79,4 +79,4 @@ You can find more information on using components and all the properties that ma
 
 &nbsp;
 ## Compatibility
-WP Components works with PHP 7+ and is tested with WordPress 4.9 and higher.
+WP Components works with PHP 7.3+ and is tested with WordPress 5.8.3 and higher.

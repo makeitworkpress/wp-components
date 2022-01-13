@@ -73,14 +73,6 @@ class Ajax {
     }
     
     /**
-     * Loads posts that are filtered
-     * @Todo implement
-     */
-    public function public_filter(): void {
-        
-    }
-    
-    /**
      * Loads posts that are searched
      */
     public function public_search(): void {

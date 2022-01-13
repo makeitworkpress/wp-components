@@ -1,16 +1,20 @@
 /**
  * Defines the scripts slider
  */
-import Module from "../types/module";
-declare var tns;
+import Component from "../types/component";
 
-const Slider: Module = {
-    elements: document.getElementsByClassName('molecule-slider'),
+const Slider: Component = {
+    elements: document.getElementsByClassName('molecule-slider') as HTMLCollectionOf<HTMLElement>,
     instances: {},
     init(): void {
-        for( let key in this.elements ) {
-            this.createInstance(this.elements[key]);
+
+        if( ! this.elements || this.elements.length < 1 ) {
+            return;
         }
+        for( const elements of this.elements ) {
+            this.createInstance(elements);
+        }
+
     },
 
     /**
@@ -19,12 +23,17 @@ const Slider: Module = {
      */
     createInstance(slider: HTMLElement): void {
 
-        if (typeof globalThis.tns === "undefined") {
+        if (typeof window.tns === "undefined") {
             return;
         }
 
-        const id: string = slider.dataset.id;
-        const options = globalThis['slider' + id];
+        const id: string | undefined = slider.dataset.id;
+
+        if( ! id ) {
+            return;
+        }
+
+        const options = window['slider' + id];
 
         if (typeof options === "undefined") {
             return;

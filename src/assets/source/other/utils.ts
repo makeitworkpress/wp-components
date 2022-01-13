@@ -7,12 +7,12 @@ import AjaxData from "../types/ajax-data";
  * Sends a post request to the default WordPress Ajax API endpoint
  * 
  * @param data The data that needs to passed to the ajax endpoint
- * @returns Promise The json response for the fetched resource
+ * @returns Promise The json response from the fetched resource
  */
 export async function AjaxApi<T>(data: AjaxData): Promise<T> {
 
     if( typeof data.nonce === 'undefined' ) {
-        data.nonce = globalThis.wpc.nonce;
+        data.nonce = window.wpc.nonce;
     }
 
     // Non-rest api calls using admin-ajax use FormData.
@@ -22,7 +22,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
         body.append(key, data[key]);    
     }
 
-    const response = await fetch(globalThis.wpc.ajaxUrl, {
+    const response = await fetch(window.wpc.ajaxUrl, {
         method: 'POST',
         credentials: 'same-origin',
         body
@@ -36,7 +36,11 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function SlideToggle(element: HTMLElement): void {
+export function SlideToggle(element: HTMLElement | null): void {
+
+    if( ! element ) {
+        return;
+    }    
 
     const defaultHeight: number = element.clientHeight;
 
@@ -56,7 +60,11 @@ export function SlideToggle(element: HTMLElement): void {
  * 
  * @param element An HTML Element that needs to slide
  */
- export function FadeToggle(element: HTMLElement): void {
+export function FadeToggle(element: HTMLElement | null): void {
+
+    if( ! element ) {
+        return;
+    }    
 
     const defaultHeight: number = element.clientHeight;
 
@@ -65,7 +73,7 @@ export function SlideToggle(element: HTMLElement): void {
         element.style.opacity = "0";
         setTimeout( () => {
             element.style.display = "none";
-        });
+        }, 250);
     } else {
         element.style.opacity = "1";
         element.style.display = "block";
@@ -73,4 +81,76 @@ export function SlideToggle(element: HTMLElement): void {
             element.classList.remove('wpc-fade-toggle-hidden');
         }, 250);  
     }
+}
+
+/**
+ * Toggles the display of an HTML Element by fading out
+ * 
+ * @param element An HTML Element that needs to slide
+ */
+export function FadeOut(element: HTMLElement | null): void {
+    
+    if( ! element ) {
+        return;
+    }
+
+    if( ! element.classList.contains('wpc-fade-toggle-hidden') ) {
+        element.classList.add('wpc-fade-toggle-hidden');
+        element.style.opacity = "0";
+        setTimeout( () => {
+            element.style.display = "none";
+        }, 250);
+    }
+
+}
+
+/**
+ * Toggles the display of an HTML Element by fading in
+ * The element should previously be faded out.
+ * 
+ * @param element An HTML Element that needs to slide
+ */
+export function FadeIn(element: HTMLElement | null): void {
+    
+    if( ! element ) {
+        return;
+    }
+
+    if( element.classList.contains('wpc-fade-toggle-hidden') ) {
+        element.style.opacity = "1";
+        element.style.display = "block";
+        setTimeout( () => {
+            element.classList.remove('wpc-fade-toggle-hidden');
+        }, 250);  
+    }
+
+}
+
+/**
+ * Toggles the class(es) for a given HTML element
+ * @param element The element for which the class should be toggled
+ * @param className The name of the given class, or array of names
+ */
+export function ToggleClass(element: HTMLElement | null, className: string | string[]): void {
+
+    if( ! element ) {
+        return;
+    }
+
+    if( Array.isArray(className) ) {
+        className.forEach(name => {
+            if( element.classList.contains(name) ) {
+                element.classList.remove(name);
+            } else {
+                element.classList.add(name);
+            }            
+        });
+    } else {
+        if( element.classList.contains(className) ) {
+            element.classList.remove(className);
+        } else {
+            element.classList.add(className);
+        }
+    }
+    
 }

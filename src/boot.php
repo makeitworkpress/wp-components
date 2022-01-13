@@ -43,7 +43,7 @@ class Boot {
         
         // Define Constants
         $folder = wp_normalize_path( substr( dirname(__FILE__), strpos(__FILE__, 'wp-content') + strlen('wp-content') ) );      
-        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/public' );
+        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/public/' );
         defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', plugin_dir_path( __FILE__ ) );
         defined( 'WP_COMPONENTS_LANGUAGE' ) or define( 'WP_COMPONENTS_LANGUAGE', $this->configurations['language'] );
         
@@ -64,7 +64,7 @@ class Boot {
      */
     private function hook(): void {
         
-        add_action( 'wp_enqueue_scripts', function() {
+        add_action( 'wp_enqueue_scripts', function(): void {
             
             // Enqueue tinyslider CSS and JS
             if( $this->configurations['tinyslider'] ) {

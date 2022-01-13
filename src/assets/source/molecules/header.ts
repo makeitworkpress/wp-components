@@ -1,23 +1,29 @@
 /**
  * Defines the custom header scripts
  */
-import Module from "../types/module";
+import Component from "../types/component";
 import { SlideToggle, FadeToggle } from "../other/utils";
 
-const Header: Module = {
+const Header: Component = {
 
-    headers: document.getElementsByClassName('molecule-header') as HTMLCollectionOf<HTMLElement>,
+    elements: document.getElementsByClassName('molecule-header') as HTMLCollectionOf<HTMLElement>,
     carts: document.querySelectorAll('.molecule-header .atom-cart-icon') as NodeListOf<HTMLElement>,
     position: window.scrollY,
 
     init() {
-        for(const key in this.headers) {
-            let header = this.headers[key];
+        
+        if( ! this.elements || this.elements.length < 1 ) {
+            return;
+        }
+        for(const header of this.elements) {
             this.cssHandler(header);   
             this.scrollHandler(header); 
         }
-        for(const key in this.carts) {
-            let cart = this.carts[key];
+
+        if( ! this.carts || this.carts.length < 1 ) {
+            return;
+        }        
+        for(const cart of this.carts) {
             this.cartHandler(cart);
         }        
     },

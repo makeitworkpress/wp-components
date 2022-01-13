@@ -1,124 +1,195 @@
 /**
  * Defines the custom posts scripts
  */
-var utils = require('../other/utils');
+import Component from '../types/component';
 
-module.exports.initialize = function() {
-    
-    jQuery('.molecule-posts').each( function(index) {
+const Posts: Component = {
+    parser: new DOMParser,
+    elements: document.getElementsByClassName('molecule-posts') as HTMLCollectionOf<HTMLElement>,
+    init() {
+
+        if( ! this.elements || this.elements.length < 1) {
+            return;
+        }
+        for( const element of this.elements ) {
+            this.setupInfiniteScroll(element);
+            this.setupPagination(element);
+        }
         
-        var id = jQuery(this).data('id'),
-            isSet = false,
-            paginate = jQuery(this).find('.atom-pagination .page-numbers'),
-            position = jQuery(this).offset().top,
-            pageNumber = 1,
-            self = this;
+    },
+
+    /**
+     * Setups infinite scroll for the posts element
+     * @param element The post wrapper element
+     */
+    setupInfiniteScroll(element: HTMLElement): void {
+
+        if( ! element.classList.contains('molecule-posts-infinite') ) {
+            return;
+        }
+
+        const pagination = element.querySelector('.atom-pagination') as HTMLElement;
+        if( pagination ) {
+            pagination.style.display = "none";
+        }
+
+        const paginationNumberElements = element.querySelectorAll('.atom-pagination .page-numbers') as NodeListOf<HTMLAnchorElement>;
+        const containerId = element.dataset.id;
+        const containerPosition = element.getBoundingClientRect().top;
+
+        let pageNumber = 1;
+        let loading = false; // Determines if we are loading or when all pages are load.
         
-        /**
-         * Infinite scrolling
-         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
-         */
-        if( jQuery(this).hasClass('molecule-posts-infinite') ) {
-            
-            // Pagination is hidden by JS instead of css. Clients that don't support JS, do see pagination
-            jQuery(this).find('.atom-pagination').hide();
-            
-            jQuery(window).scroll( function() {
-                
-                var url = false,
-                    postsHeight = jQuery(self).height();
+        window.addEventListener('scroll', () => {
 
-                if( (jQuery(window).scrollTop() + jQuery(window).height()) > (position + postsHeight) ) {
-                    
-                    if( ! isSet ) {
-                        
-                        pageNumber++;
+            let url = '';
 
-                        // Check our pagination and retrieve our urls
-                        jQuery(paginate).each( function(index) {
+            if( loading ) {
+                return;
+            }
 
-                            if( jQuery(this).text() == pageNumber ) {
-                                url = jQuery(this).attr('href');
-                                isSet = true;
-                            }
+            let windowPosition = window.innerHeight + window.scrollY;
+            let postsPosition = element.clientHeight + containerPosition;
 
-                        });
-                        
-                    }
+            if( windowPosition < postsPosition || paginationNumberElements.length < 1 ) {
+                return;
+            }
 
-                    // We've exceeded our urls
-                    if( ! url ) {
-                        isSet = true;
-                        return;
-                    }
+            pageNumber++;
 
-                    jQuery.get(url, function(data) {
-                        var posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post');
+            for(let key in paginationNumberElements ) {
 
-                        jQuery(self).find('.molecule-posts-wrapper').append(posts);
-                        
-                        // Update our pagenumber and posts height
-                        isSet = false;
-                        
-                        // Sync scrollReveal with newly added items
-                        if( typeof sr !== "undefined" ) 
-                            sr.sync();
-
-                    });
-
-
+                if( ! paginationNumberElements[key].textContent ) {
+                    continue;
                 }
 
-            });
-            
-        }
-        
-        /**
-         * Normal Pagination
-         * In the future, we might want to link this to a custom ajax action so that we only load the posts and not the whole page.
-         */
-        if( jQuery(this).hasClass('molecule-posts-ajax') ) {
-            
-            // These are not supported yet
-            jQuery('body').on('click', '.molecule-posts .atom-pagination a', function(event) {
-                
-                event.preventDefault();
+                const paginationNumber = paginationNumberElements[key].textContent as string;
+                if( parseInt(paginationNumber) === pageNumber ) {
+                    url = paginationNumberElements[key].href;
+                    loading = true;
+                }
 
-                var element = jQuery(this).closest('.molecule-posts[data-id="' + id + '"]'),
-                    target = jQuery(this).attr('href');
+            }
 
-                /**
-                 * Update our pagination and add the right classes
-                 */
-                jQuery(element).addClass('components-loading');
+            if( ! url.includes(window.location.origin) ) {
+                return;
+            }
 
-                // Load our data
-                jQuery.get(target, function(data) {
-                    var pagination = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .atom-pagination'),
-                        posts = jQuery(data).find('.molecule-posts[data-id="' + id + '"] .molecule-post'),
-                        scrollHeight = jQuery('.molecule-header').hasClass('molecule-header-fixed') ? jQuery('.molecule-header').height() : 0;
+            // No more pages to load
+            if( ! url ) {
+                loading = true;
+                return;
+            }
 
-                    jQuery(element).removeClass('components-loading');
-                    jQuery(element).find('.molecule-posts-wrapper').html(posts);
-                    jQuery(element).find('.atom-pagination').replaceWith(pagination);
-                    
-                    jQuery('html, body').animate({
-                        scrollTop: jQuery(element).offset().top - (scrollHeight + 100)
-                    }, 555);                 
-                    
-                    // Sync scrollReveal with newly added items
-                    if( typeof sr !== "undefined" ) {
-                        sr.sync();
+            fetch(url, {})
+                .then( (response) => {
+                    return response.text();
+                })
+                .then( (response) => {
+
+                    const posts = this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
+                    const postsWrapper = element.querySelector('.molecule-posts-wrapper') as HTMLElement;
+
+                    for( let key in posts ) {
+                        postsWrapper.appendChild(posts[key]);
                     }
 
-                });             
+                    loading = false;
 
-            });
+                    if( typeof window.sr !== 'undefined' ) {
+                        window.sr.sync();
+                    }
+
+                });
             
+        });
+
+    },
+
+    /**
+     * Setup regular, dynamic pagination for the post wrapper element
+     * @param element The post wrapper element
+     */    
+    setupPagination(element: HTMLElement): void {
+
+        if( ! element.classList.contains('molecule-posts-ajax') ) {
+            return;
         }
+
+        const paginationAnchors = element.querySelectorAll('.atom-pagination a') as NodeListOf<HTMLAnchorElement>;
         
-        // Filtering (@todo)       
+        if( paginationAnchors.length < 1 ) {
+            return;
+        }
+
+        for( let key in paginationAnchors ) {
+            paginationAnchors[key].addEventListener('click', (event) => {
+                event.preventDefault();
+
+                this.paginationClickHandler(element, paginationAnchors[key]);
+            });
+        }
+
+    },
+
+    /**
+     * Adds the click handler to any generated content
+     * @param element The parent element to which the button belongs
+     * @param anchor The button that is clicked
+     */
+    paginationClickHandler(element: HTMLElement, anchor: HTMLAnchorElement): void {
         
-    });      
-        
-};
+        const target = anchor.href;
+
+        if( ! target.includes(window.location.origin) ) {
+            return;
+        }        
+
+        element.classList.add('components-loading');
+
+        // Fetch the target page
+        fetch(target)
+            .then( (response) => {
+                return response.text();
+            })
+            .then( (response) => {
+                const responseDom = this.parser.parseFromString(response, 'text/html');
+                const oldPagination = element.querySelector('.molecule-posts-wrapper');
+                const oldPosts = element.querySelector('.molecule-posts-wrapper');
+                const newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
+                const newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
+
+                element.classList.remove('components-loading');
+                
+                if(oldPagination) {
+                    oldPagination.outerHTML = newPagination; 
+                }
+
+                if(oldPosts) {
+                    oldPosts.outerHTML = newPosts;   
+                }
+
+                // Jquery animate
+                setTimeout( () => {
+                    window.scrollBy({
+                        top: element.getBoundingClientRect().top,
+                        behavior: 'smooth'
+                    })            
+                    
+                }, 500);
+
+                // Sync our scroll-reveal from the global object
+                if( typeof window.sr !== "undefined" ) {
+                    sr.sync();
+                }
+
+                // Because our dom is reconstructed, we need to setup pagination again for the given element
+                this.setupPagination(element);
+                
+            });
+
+    }
+
+}
+
+export default Posts;
