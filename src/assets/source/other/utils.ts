@@ -2,6 +2,7 @@
  * Contains utility functions
  */
 import AjaxData from "../types/ajax-data";
+import { SiblingTypes } from "../types/sibling-types";
 
 /**
  * Sends a post request to the default WordPress Ajax API endpoint
@@ -27,8 +28,14 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
         credentials: 'same-origin',
         body
     });
+
+    const jsonResponse = response.json();
+
+    if( window.wpc.debug ) {
+        console.log(jsonResponse);
+    }
     
-    return response.json();
+    return jsonResponse;
 }
 
 /**
@@ -36,7 +43,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function SlideToggle(element: HTMLElement | null): void {
+export function SlideToggle(element: HTMLElement | Element | null): void {
 
     if( ! element ) {
         return;
@@ -60,7 +67,7 @@ export function SlideToggle(element: HTMLElement | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeToggle(element: HTMLElement | null): void {
+export function FadeToggle(element: HTMLElement | Element | null): void {
 
     if( ! element ) {
         return;
@@ -88,7 +95,7 @@ export function FadeToggle(element: HTMLElement | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeOut(element: HTMLElement | null): void {
+export function FadeOut(element: HTMLElement | Element | null): void {
     
     if( ! element ) {
         return;
@@ -110,7 +117,7 @@ export function FadeOut(element: HTMLElement | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeIn(element: HTMLElement | null): void {
+export function FadeIn(element: HTMLElement | Element | null): void {
     
     if( ! element ) {
         return;
@@ -131,7 +138,7 @@ export function FadeIn(element: HTMLElement | null): void {
  * @param element The element for which the class should be toggled
  * @param className The name of the given class, or array of names
  */
-export function ToggleClass(element: HTMLElement | null, className: string | string[]): void {
+export function ToggleClass(element: HTMLElement | Element | null, className: string | string[]): void {
 
     if( ! element ) {
         return;
@@ -139,18 +146,37 @@ export function ToggleClass(element: HTMLElement | null, className: string | str
 
     if( Array.isArray(className) ) {
         className.forEach(name => {
-            if( element.classList.contains(name) ) {
-                element.classList.remove(name);
-            } else {
-                element.classList.add(name);
-            }            
+            element.classList.toggle(name);            
         });
     } else {
-        if( element.classList.contains(className) ) {
-            element.classList.remove(className);
-        } else {
-            element.classList.add(className);
-        }
+        element.classList.toggle(className);
     }
     
+}
+
+/**
+ * Get all siblings for a given element
+ * 
+ * @param element The element to look for siblings
+ * @param mode The type of siblings to look for (previous or next)
+ */
+export function GetElementSiblings(element: HTMLElement | Element | null, mode: SiblingTypes = SiblingTypes.Next): Element[] {
+
+    if( ! element) {
+        return [];
+    }
+
+    const siblings = [];
+
+    if(mode === SiblingTypes.Previous) {
+        while (element = element.previousElementSibling) {
+            siblings.push(element);
+        }
+    } else if(mode === SiblingTypes.Next) {
+        while (element = element.nextElementSibling) {
+            siblings.push(element);
+        }        
+    }
+
+    return siblings;
 }

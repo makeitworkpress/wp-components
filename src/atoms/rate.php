@@ -69,14 +69,14 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     <?php } ?>
     
     <?php if( $atom['rate'] ) { ?>
-        <a href="#" data-id="<?php echo $atom['id']; ?>" data-max="<?php echo $atom['max']; ?>" data-min="<?php echo $atom['min']; ?>">
+        <a class="atom-rate-anchor" href="#" data-id="<?php echo $atom['id']; ?>" data-max="<?php echo $atom['max']; ?>" data-min="<?php echo $atom['min']; ?>">
             
             <span class="atom-rate-rate">
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
+                <i class="fa fa-star-o atom-rate-star"></i>
+                <i class="fa fa-star-o atom-rate-star"></i>
+                <i class="fa fa-star-o atom-rate-star"></i>
+                <i class="fa fa-star-o atom-rate-star"></i>
+                <i class="fa fa-star-o atom-rate-star"></i>
             </span>
             
     <?php } ?>

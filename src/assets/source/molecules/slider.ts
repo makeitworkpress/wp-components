@@ -27,7 +27,7 @@ const Slider: Component = {
             return;
         }
 
-        const id: string | undefined = slider.dataset.id;
+        const id = slider.dataset.id as string;
 
         if( ! id ) {
             return;

@@ -39,9 +39,9 @@ const Search: Component = {
         const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset; 
         const searchForm = document.querySelector('.search-form') as HTMLElement;
         const searchField = document.querySelector('.search-field') as HTMLInputElement;
-        const loadingIcon = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
         const moreAnchor = document.querySelector('.atom-search-all') as HTMLAnchorElement;
         const results = document.querySelector('.atom-search-results') as HTMLElement;
+        const loadingIcon = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
 
         let timer: NodeJS.Timeout;
         let value: string;
