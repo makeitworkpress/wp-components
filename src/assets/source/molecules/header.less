@@ -59,7 +59,13 @@
 }
 
 .molecule-header-atoms {
-    line-height: 64px;
+    line-height: 80px;
+    .molecule-header-shrink & {
+        transition: all 350ms ease-out;    
+    }
+    .molecule-header-scrolled.molecule-header-shrink & {
+        line-height: 64px;
+    }
 }
 
 .molecule-header-top-atoms,

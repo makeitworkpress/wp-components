@@ -17,6 +17,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'container'     => true,        // Wrap this component in a container
     'fixed'         => true,        // If we have a fixed header
     'headroom'      => false,       // If we apply a headroom effect to the header
+    'shrink'        => false,       // Shrink the header when scrolling
     'socket_atoms'  => [],          // An extra bottom part in the header
     'transparent'   => false,       // If the header is transparent
     'top_atoms'     => [],          // An extra top part in the header
@@ -29,6 +30,10 @@ if( $molecule['fixed'] ) {
 
 if( $molecule['headroom'] ) {
     $molecule['attributes']['class'] .= ' molecule-header-headroom';
+}
+
+if( $molecule['shrink'] ) {
+    $molecule['attributes']['class'] .= ' molecule-header-shrink';
 }
 
 if( $molecule['transparent'] ) {
