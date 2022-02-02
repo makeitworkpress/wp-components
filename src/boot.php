@@ -43,7 +43,7 @@ class Boot {
         
         // Define Constants
         $folder = wp_normalize_path( substr( dirname(__FILE__), strpos(__FILE__, 'wp-content') + strlen('wp-content') ) );      
-        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/public/' );
+        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/' );
         defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', plugin_dir_path( __FILE__ ) );
         defined( 'WP_COMPONENTS_LANGUAGE' ) or define( 'WP_COMPONENTS_LANGUAGE', $this->configurations['language'] );
         
@@ -51,7 +51,7 @@ class Boot {
         $this->ajax = new Ajax();
 
         // Load our functions
-        require_once( WP_COMPONENTS_PATH . 'functions.php' );
+        require_once( WP_COMPONENTS_PATH . 'includes/functions.php' );
         
         // Register Hooks
         $this->hook();
