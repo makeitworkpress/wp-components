@@ -54,7 +54,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 <a <?php echo $attributes; ?>>
     
     <?php if( $atom['icon_before'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['icon_before']; ?> hvr-icon"></i>
+        <i class="<?php echo $atom['icon_before']; ?> hvr-icon"></i>
     <?php } ?>
     
     <span class="atom-button-label">
@@ -62,7 +62,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     </span>
     
     <?php if( $atom['icon_after'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['icon_after']; ?> hvr-icon"></i>
+        <i class="<?php echo $atom['icon_after']; ?> hvr-icon"></i>
     <?php } ?>
     
 </a>

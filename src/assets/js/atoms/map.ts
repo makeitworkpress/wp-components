@@ -6,9 +6,13 @@ import Component from "../types/component";
 const CustomMap: Component = {
     elements: document.getElementsByClassName('atom-map') as HTMLCollectionOf<HTMLElement>,
     init(): void {
+
+        if( ! this.elements || this.elements.length < 1) {
+            return;
+        }
         
-        for(const map in this.elements) {
-            this.setupMap(map);
+        for(const mapElement of this.elements) {
+            this.setupMap(mapElement);
         }
     },
 
@@ -16,13 +20,13 @@ const CustomMap: Component = {
      * Setup a map
      * @param map The element for the map container
      */
-    setupMap(map: HTMLElement): void {
+    setupMap(mapElement: HTMLElement): void {
 
         if(typeof window.google === 'undefined') {
             return;
         }
 
-        const canvas = map.querySelector('.component-maps-canvas') as HTMLElement;
+        const canvas = mapElement.querySelector('.components-maps-canvas') as HTMLElement;
 
         if( ! canvas ) {
             return;

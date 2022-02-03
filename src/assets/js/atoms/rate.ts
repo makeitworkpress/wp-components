@@ -8,8 +8,13 @@ import { SiblingTypes } from "../types/sibling-types";
 const Rate: Component = {
     elements: document.getElementsByClassName('.atom-rate') as HTMLCollectionOf<HTMLElement>,
     init() {
+
+        if( ! this.elements || this.elements.length < 1) {
+            return;
+        }
+
         this.setupMouseHandlers();
-        for( const element in this.elements ) {
+        for( const element of this.elements ) {
             this.setupClickHandler(element); 
         }
     },

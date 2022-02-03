@@ -11,6 +11,7 @@ const Slider: Component = {
         if( ! this.elements || this.elements.length < 1 ) {
             return;
         }
+        
         for( const elements of this.elements ) {
             this.createInstance(elements);
         }

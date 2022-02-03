@@ -52,7 +52,7 @@ class Build {
         }
             
         // Our template path
-        $path = apply_filters( 'components_' . $type . '_path', WP_COMPONENTS_PATH . $type . 's/' . $template . '.php', $template );
+        $path = apply_filters( 'components_' . $type . '_path', WP_COMPONENTS_PATH . 'components/' . $type . 's/' . $template . '.php', $template );
         
         if( file_exists($path) ) {
             

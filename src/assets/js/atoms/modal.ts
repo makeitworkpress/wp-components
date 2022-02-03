@@ -7,7 +7,12 @@ import Component from "../types/component";
 const Modal: Component = {
     elements: document.getElementsByClassName('atom-modal') as HTMLCollectionOf<HTMLElement>,
     init(): void {
-        for(const modal in this.elements) {
+        
+        if( ! this.elements || this.elements.length < 1) {
+            return;
+        }
+
+        for(const modal of this.elements) {
             this.setupClickHandler(modal);
         }
     },

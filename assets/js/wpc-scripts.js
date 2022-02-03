@@ -2,28 +2,694 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/assets/source/molecules/header.ts":
-/*!***********************************************!*\
-  !*** ./src/assets/source/molecules/header.ts ***!
-  \***********************************************/
+/***/ "./src/assets/js/atoms/cart.ts":
+/*!*************************************!*\
+  !*** ./src/assets/js/atoms/cart.ts ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/source/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
 
-var Header = {
-    headers: document.getElementsByClassName('molecule-header'),
+/**
+ * Defines a social share element
+ */
+const Cart = {
+    elements: document.getElementsByClassName('atom-cart-icon'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const cartElement of this.elements) {
+            this.cartHandler(cartElement);
+        }
+    },
+    /**
+     * Handles any cart related actions
+     *
+     * @param cart HTMLElement The passed cart element
+     */
+    cartHandler(cart) {
+        cart.addEventListener('click', (event) => {
+            event.preventDefault();
+            const cartContent = cart.nextElementSibling;
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeToggle)(cartContent);
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Cart);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/map.ts":
+/*!************************************!*\
+  !*** ./src/assets/js/atoms/map.ts ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Creates a Google Map
+ */
+const CustomMap = {
+    elements: document.getElementsByClassName('atom-map'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const mapElement of this.elements) {
+            this.setupMap(mapElement);
+        }
+    },
+    /**
+     * Setup a map
+     * @param map The element for the map container
+     */
+    setupMap(mapElement) {
+        if (typeof window.google === 'undefined') {
+            return;
+        }
+        const canvas = mapElement.querySelector('.components-maps-canvas');
+        if (!canvas) {
+            return;
+        }
+        const attributes = window[canvas.dataset.id];
+        const center = new google.maps.LatLng(parseFloat(attributes.center.lat), parseFloat(attributes.center.lng));
+        const mapInstance = new google.maps.Map(canvas, {
+            center,
+            scrollwheel: false,
+            styles: typeof attributes.styles !== 'undefined' ? attributes.styles : '',
+            zoom: parseInt(attributes.zoom)
+        });
+        // The map instance is accessible through the global scope
+        window[canvas.dataset.id].map = mapInstance;
+        if (attributes.markers) {
+            this.setupMapMarkers(mapInstance, attributes.markers, attributes.fit, center);
+        }
+    },
+    /**
+     * Setup markers in a map
+     *
+     * @param map The map instance
+     * @param markers The unformatted marker input
+     * @param fit Whether the markers should fit inside the map canvas
+     * @param center The map center
+     */
+    setupMapMarkers(map, markers, fit, center) {
+        const bounds = new google.maps.LatLngBounds();
+        const markerInstances = [];
+        markers.forEach((marker, index) => {
+            let geocoder = null;
+            let markerLatLng = null;
+            markerInstances[index] = new google.maps.Marker({
+                draggable: false,
+                icon: typeof marker.icon !== 'undefined' ? marker.icon : '',
+                map
+            });
+            // Geocode our marker when it has an address
+            if (typeof marker.address !== 'undefined' && marker.address) {
+                geocoder = geocoder !== null ? geocoder : new google.maps.Geocoder();
+                geocoder.geocode({ 'address': marker.address }, (results, status) => {
+                    if (status === 'OK') {
+                        markerLatLng = results[0].geometry.location;
+                    }
+                    else if (status !== 'OK' && window.wpc.debug) {
+                        console.log('Geocoding of a map marker was not successfull: ' + status);
+                    }
+                });
+            }
+            else if (marker.lat && marker.lng) {
+                markerLatLng = new google.maps.LatLng(parseFloat(marker.lat), parseFloat(marker.lng));
+            }
+            if (markerLatLng !== null) {
+                markerInstances[index].setPosition(markerLatLng);
+                bounds.extend(markerLatLng);
+            }
+        });
+        if (markerInstances.length < 1 || !fit) {
+            return;
+        }
+        bounds.extend(center);
+        map.fitBounds(bounds);
+        // Define the minimum zoom to 15, even after bounds have changed
+        google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+            if (map.getZoom() > 15) {
+                this.setZoom(15);
+            }
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (CustomMap);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/menu.ts":
+/*!*************************************!*\
+  !*** ./src/assets/js/atoms/menu.ts ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+
+/**
+ * Defines the custom menu scripts
+ */
+const Menu = {
+    elements: document.getElementsByClassName('atom-menu'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const menu of this.elements) {
+            this.setupHamburgerMenu(menu);
+            this.setupCollapsedMenu(menu);
+        }
+    },
+    /**
+     * Sets the click handler for the hamburger menu
+     * @param menu The given menu element
+     */
+    setupHamburgerMenu(menu) {
+        const hamburgerMenu = menu.querySelector('.atom-menu-hamburger');
+        const menuWrapper = menu.querySelector('.menu');
+        hamburgerMenu.addEventListener('click', (event) => {
+            event.preventDefault();
+            menu.classList.toggle('atom-menu-expanded');
+            hamburgerMenu.classList.toggle('active');
+            menuWrapper.classList.toggle('active');
+        });
+    },
+    /**
+     * Sets up the handlers for collapsed menus
+     * @param menu The given menu element
+     */
+    setupCollapsedMenu(menu) {
+        var _a;
+        if (!menu.classList.contains('atom-menu-collapse')) {
+            return;
+        }
+        const menuItemsWithChildren = menu.querySelectorAll('.menu-item-has-children > a');
+        for (const menuItem of menuItemsWithChildren) {
+            const dropDownIcon = document.createElement('<i class="fa fa-angle-down"></i>');
+            const subMenu = (_a = menuItem.parentElement) === null || _a === void 0 ? void 0 : _a.querySelector('> .sub-menu');
+            menuItem.append(dropDownIcon);
+            dropDownIcon.addEventListener('click', function (event) {
+                event.preventDefault();
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(dropDownIcon, ['fa-angle-down', 'fa-angle-up']);
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.SlideToggle)(subMenu);
+            });
+        }
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Menu);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/modal.ts":
+/*!**************************************!*\
+  !*** ./src/assets/js/atoms/modal.ts ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+
+/**
+ * Defines the custom header scripts
+ */
+const Modal = {
+    elements: document.getElementsByClassName('atom-modal'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const modal of this.elements) {
+            this.setupClickHandler(modal);
+        }
+    },
+    /**
+     * Setup the click handler for closing modal
+     *
+     * @param modal The modal element
+     */
+    setupClickHandler(modal) {
+        const closeModal = modal.querySelector('.atom-modal-close');
+        closeModal.addEventListener('click', (event) => {
+            event.preventDefault();
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(modal);
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Modal);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/rate.ts":
+/*!*************************************!*\
+  !*** ./src/assets/js/atoms/rate.ts ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types/sibling-types */ "./src/assets/js/types/sibling-types.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+/**
+ * Defines the custom header scripts
+ */
+const Rate = {
+    elements: document.getElementsByClassName('.atom-rate'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        this.setupMouseHandlers();
+        for (const element of this.elements) {
+            this.setupClickHandler(element);
+        }
+    },
+    /**
+     * Setups the handlers for mouseenter and mouseleave events
+     */
+    setupMouseHandlers() {
+        /**
+         * Entering one fo the stars in the element responsible for the rating
+         */
+        document.body.addEventListener('mouseenter', (event) => {
+            const starElement = event.currentTarget;
+            if (!starElement.classList.contains('atom-rate-star')) {
+                return;
+            }
+            // Attems at the left side of the mouse
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(starElement, ['fa-star', 'fa-star-o']);
+            const previousStarElements = (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.GetElementSiblings)(starElement, _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__.SiblingTypes.Previous);
+            for (let previousStarElement of previousStarElements) {
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(previousStarElement, ['fa-star', 'fa-star-o']);
+            }
+            // Right side
+            const nextStarElements = (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.GetElementSiblings)(starElement, _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__.SiblingTypes.Next);
+            for (let nextStarElement of nextStarElements) {
+                nextStarElement.classList.add('fa-star-o');
+                nextStarElement.classList.remove('fa-star');
+            }
+        }, true);
+        /**
+         * Leaving the Anchor element responsible for the rating
+         */
+        document.body.addEventListener('mouseleave', (event) => {
+            const ratingElement = event.currentTarget;
+            const starElements = ratingElement.getElementsByTagName('i');
+            if (ratingElement.className !== 'atom-rate-rate') {
+                return;
+            }
+            for (const star of starElements) {
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(star, ['fa-star-o', 'fa-star']);
+            }
+        }, true);
+    },
+    /**
+     * Setup the click handler for sending rating requests to the back-end
+     * @param element The specific rating element
+     */
+    setupClickHandler(element) {
+        let isRating = false;
+        const ratingAnchor = element.querySelector('.atom-rate-anchor');
+        ratingAnchor.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
+            event.preventDefault();
+            if (isRating) {
+                return;
+            }
+            const { id = '', max = 5, min = 1 } = ratingAnchor.dataset;
+            const rating = ratingAnchor.querySelectorAll('.fa-star').length;
+            const loadingSpinner = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+            // Actual rating functions
+            isRating = true;
+            element.append(loadingSpinner);
+            const response = yield (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.AjaxApi)({
+                action: 'public_rate',
+                id: id,
+                max: +max,
+                min: +min,
+                rating: rating
+            });
+            if (response.success && response.data.output) {
+                element.outerHTML = response.data.output;
+                this.setupClickHandler(element); // Re-assign click-handler as DOM is updated
+            }
+            setTimeout(() => {
+                var _a;
+                (_a = element.querySelector('.fa-circle-o-notch')) === null || _a === void 0 ? void 0 : _a.remove();
+                isRating = false;
+            }, 500);
+        }));
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Rate);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/scroll.ts":
+/*!***************************************!*\
+  !*** ./src/assets/js/atoms/scroll.ts ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+
+const Scroll = {
+    elements: document.getElementsByClassName('atom-scroll'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const element of this.elements) {
+            this.setupScrollHandler(element);
+        }
+        this.setupwindowHandler();
+    },
+    /**
+     * Setup our scroll button
+     * @param element The scroll element
+     */
+    setupScrollHandler(element) {
+        const parent = element.parentElement;
+        let destination;
+        element.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (element.classList.contains('atom-scroll-top')) {
+                destination = 0;
+            }
+            else {
+                destination = (parent === null || parent === void 0 ? void 0 : parent.clientHeight) + parent.getBoundingClientRect().top + window.scrollY;
+            }
+            window.scrollTo({ top: destination, behavior: 'smooth' });
+        });
+    },
+    /**
+     * Setup the handler for the window functions
+     */
+    setupwindowHandler() {
+        window.addEventListener('scroll', () => {
+            let scrollPosition = window.scrollY;
+            for (const element of this.elements) {
+                if (element.classList.contains('atom-scroll-top')) {
+                    if (scrollPosition > window.innerHeight) {
+                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
+                    }
+                    else {
+                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
+                    }
+                }
+                else {
+                    let buttonPosition = element.getBoundingClientRect().top + scrollPosition;
+                    if (scrollPosition > buttonPosition) {
+                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
+                    }
+                    else {
+                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
+                    }
+                }
+            }
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Scroll);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/search.ts":
+/*!***************************************!*\
+  !*** ./src/assets/js/atoms/search.ts ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/modules */ "./src/assets/js/other/modules.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+/**
+ * Custom scripts for a search element
+ * If enabled, the script will loads results through ajax
+ */
+const Search = {
+    elements: document.getElementsByClassName('atom-search'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const element of this.elements) {
+            this.setupSearch(element);
+        }
+    },
+    /**
+     * Setups the tabs for each element existing on a page
+     * @param element The search element
+     */
+    setupSearch(element) {
+        if (element.classList.contains('atom-search-ajax')) {
+            this.setupAjaxSearch(element);
+        }
+        this.setupToggleSearch(element);
+    },
+    /**
+     * Setups the ajax search functionality for the given element
+     * @param element The search element
+     */
+    setupAjaxSearch(element) {
+        const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset;
+        const searchForm = document.querySelector('.search-form');
+        const searchField = document.querySelector('.search-field');
+        const moreAnchor = document.querySelector('.atom-search-all');
+        const results = document.querySelector('.atom-search-results');
+        const loadingIcon = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+        let timer;
+        let value;
+        if (!element.classList.contains('atom-search-ajax')) {
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeOut)(results);
+            return;
+        }
+        searchField.addEventListener('keyup', (event) => {
+            clearTimeout(timer);
+            const currentSearchField = event.currentTarget;
+            if (currentSearchField.value.length <= length || value === currentSearchField.value) {
+                return;
+            }
+            timer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                var _a, _b;
+                value = currentSearchField.value;
+                moreAnchor.href = moreAnchor.href + encodeURI(value);
+                results.classList.add('components-loading');
+                (_a = results.querySelector('.atom-search-all')) === null || _a === void 0 ? void 0 : _a.remove();
+                searchForm.append(loadingIcon);
+                const response = yield (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.AjaxApi)({
+                    action: 'public_search',
+                    appear: appear,
+                    none: none,
+                    number: number,
+                    search: value,
+                    types: types
+                });
+                if (response.success) {
+                    (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeIn)(results);
+                    results.innerHTML = response.data;
+                    results.append(moreAnchor);
+                    if (typeof window.sr !== 'undefined') {
+                        if (window.sr.initialized === false) {
+                            (0,_other_modules__WEBPACK_IMPORTED_MODULE_0__.InitScrollReveal)();
+                        }
+                        window.sr.sync();
+                    }
+                }
+                (_b = searchForm.querySelector('.fa-circle-o-notch')) === null || _b === void 0 ? void 0 : _b.remove();
+                results.classList.remove('components-loading');
+            }), +delay);
+        });
+    },
+    /**
+     * Allows the search-form to be toggled
+     * @param element The search element
+     */
+    setupToggleSearch(element) {
+        const searchExpandElement = element.querySelector('.atom-search-expand');
+        if (!searchExpandElement) {
+            return;
+        }
+        const searchForm = element.querySelector('.atom-search-expand');
+        const searchField = searchForm.querySelector('.search-field');
+        searchExpandElement.addEventListener('click', (event) => {
+            event.preventDefault();
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.ToggleClass)(element, 'atom-search-expanded');
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.ToggleClass)(searchExpandElement.querySelector('.fa'), ['fa-search', 'fa-times']);
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeToggle)(searchForm);
+            searchField.focus();
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Search);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/share.ts":
+/*!**************************************!*\
+  !*** ./src/assets/js/atoms/share.ts ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+
+/**
+ * Defines a social share element
+ */
+const Share = {
+    elements: document.getElementsByClassName('atom-share-fixed'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        this.setupShare();
+    },
+    /**
+     * Setup our sharing functionalities
+     */
+    setupShare() {
+        if (document.documentElement.scrollHeight < window.innerHeight) {
+            return;
+        }
+        let scrolled = false;
+        window.addEventListener('scroll', () => {
+            let scrollPosition = window.scrollY;
+            if (scrollPosition > 5 && !scrolled) {
+                for (const element of this.elements) {
+                    (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
+                }
+                scrolled = true;
+            }
+            else if (scrollPosition < 5 && scrolled) {
+                scrolled = false;
+                for (const element of this.elements) {
+                    (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
+                }
+            }
+        });
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Share);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/atoms/tabs.ts":
+/*!*************************************!*\
+  !*** ./src/assets/js/atoms/tabs.ts ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+const Tabs = {
+    elements: document.getElementsByClassName('atom-tabs'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const element of this.elements) {
+            this.setupTabs(element);
+        }
+    },
+    /**
+     * Setups the tabs for each element existing on a page
+     * @param element The tab element
+     */
+    setupTabs(element) {
+        const buttons = element.querySelectorAll('.atom-tabs-navigation a');
+        for (const button of buttons) {
+            button.addEventListener('click', (event) => {
+                this.clickHandler(event, buttons, element);
+            });
+        }
+    },
+    /**
+     * Handles clicking a tab
+     *
+     * @param event The event for the click
+     * @param buttons The list of all buttons
+     * @param element The parent element
+     */
+    clickHandler(event, buttons, element) {
+        const clickedButton = event.currentTarget;
+        // The tab links to a regular url
+        if (clickedButton.href !== '#') {
+            return;
+        }
+        event.preventDefault();
+        const sections = element.querySelectorAll('.atom-tabs-content section');
+        const targetSection = element.querySelector('.atom-tabs-content section[data-id="' + clickedButton.dataset.target + '"]');
+        // Reset other buttons and classes
+        for (const section of sections) {
+            section.classList.remove('active');
+        }
+        for (const button of buttons) {
+            button.classList.remove('active');
+        }
+        // Make our targets active
+        clickedButton.classList.add('active');
+        targetSection.classList.add('active');
+    }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Tabs);
+
+
+/***/ }),
+
+/***/ "./src/assets/js/molecules/header.ts":
+/*!*******************************************!*\
+  !*** ./src/assets/js/molecules/header.ts ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+
+const Header = {
+    elements: document.getElementsByClassName('molecule-header'),
     carts: document.querySelectorAll('.molecule-header .atom-cart-icon'),
     position: window.scrollY,
-    init: function () {
-        for (var key in this.headers) {
-            var header = this.headers[key];
+    init() {
+        if (!this.elements || this.elements.length < 1) {
+            return;
+        }
+        for (const header of this.elements) {
             this.cssHandler(header);
             this.scrollHandler(header);
-        }
-        for (var key in this.carts) {
-            var cart = this.carts[key];
-            this.cartHandler(cart);
         }
     },
     /**
@@ -31,13 +697,13 @@ var Header = {
      *
      * @param header HTML Element The passed header
      */
-    cssHandler: function (header) {
+    cssHandler(header) {
         /**
          * Adapts the top-padding for the main section that follows the header, so it won't overlap
          */
         if (header.classList.contains('molecule-header-fixed')) {
-            var height = header.clientHeight;
-            var mainElement = header.nextElementSibling;
+            const height = header.clientHeight;
+            const mainElement = header.nextElementSibling;
             if (mainElement.tagName === 'main') {
                 mainElement.style.paddingTop = height + 'px';
             }
@@ -47,11 +713,10 @@ var Header = {
      * Handles any scroll-related events to the selected header
      * @param header HTMLElement The given header
      */
-    scrollHandler: function (header) {
-        var _this = this;
-        var up = false;
-        window.addEventListener('scroll', function () {
-            var positionFromTop = window.scrollY;
+    scrollHandler(header) {
+        let up = false;
+        window.addEventListener('scroll', () => {
+            let positionFromTop = window.scrollY;
             if (header.classList.contains('molecule-header-fixed')) {
                 if (positionFromTop > 5) {
                     header.classList.add('molecule-header-scrolled');
@@ -63,28 +728,16 @@ var Header = {
                 }
             }
             if (header.classList.contains('molecule-header-headroom')) {
-                if (positionFromTop > _this.position && !up) {
+                if (positionFromTop > this.position && !up) {
                     up = !up;
                     (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.SlideToggle)(header);
                 }
-                else if (positionFromTop < _this.position && up) {
+                else if (positionFromTop < this.position && up) {
                     up = !up;
                     (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.SlideToggle)(header);
                 }
-                _this.position = positionFromTop;
+                this.position = positionFromTop;
             }
-        });
-    },
-    /**
-     * Handles any cart related actions
-     *
-     * @param cart HTMLElement The passed cart element
-     */
-    cartHandler: function (cart) {
-        cart.addEventListener('click', function (event) {
-            event.preventDefault();
-            var cartContent = cart.nextElementSibling;
-            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeToggle)(cartContent);
         });
     }
 };
@@ -93,22 +746,21 @@ var Header = {
 
 /***/ }),
 
-/***/ "./src/assets/source/molecules/posts.ts":
-/*!**********************************************!*\
-  !*** ./src/assets/source/molecules/posts.ts ***!
-  \**********************************************/
+/***/ "./src/assets/js/molecules/posts.ts":
+/*!******************************************!*\
+  !*** ./src/assets/js/molecules/posts.ts ***!
+  \******************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-var Posts = {
+const Posts = {
     parser: new DOMParser,
-    wrappers: document.getElementsByClassName('molecule-posts'),
-    init: function () {
-        if (this.wrappers.length < 1) {
+    elements: document.getElementsByClassName('molecule-posts'),
+    init() {
+        if (!this.elements || this.elements.length < 1) {
             return;
         }
-        for (var key in this.wrappers.length) {
-            var element = this.wrappers.length[key];
+        for (const element of this.elements) {
             this.setupInfiniteScroll(element);
             this.setupPagination(element);
         }
@@ -117,36 +769,35 @@ var Posts = {
      * Setups infinite scroll for the posts element
      * @param element The post wrapper element
      */
-    setupInfiniteScroll: function (element) {
-        var _this = this;
+    setupInfiniteScroll(element) {
         if (!element.classList.contains('molecule-posts-infinite')) {
             return;
         }
-        var pagination = element.querySelector('.atom-pagination');
+        const pagination = element.querySelector('.atom-pagination');
         if (pagination) {
             pagination.style.display = "none";
         }
-        var paginationNumberElements = element.querySelectorAll('.atom-pagination .page-numbers');
-        var containerId = element.dataset.id;
-        var containerPosition = element.getBoundingClientRect().top;
-        var pageNumber = 1;
-        var loading = false; // Determines if we are loading or when all pages are load.
-        window.addEventListener('scroll', function () {
-            var url = '';
+        const paginationNumberElements = element.querySelectorAll('.atom-pagination .page-numbers');
+        const containerId = element.dataset.id;
+        const containerPosition = element.getBoundingClientRect().top;
+        let pageNumber = 1;
+        let loading = false; // Determines if we are loading or when all pages are load.
+        window.addEventListener('scroll', () => {
+            let url = '';
             if (loading) {
                 return;
             }
-            var windowPosition = window.innerHeight + window.scrollY;
-            var postsPosition = element.clientHeight + containerPosition;
+            let windowPosition = window.innerHeight + window.scrollY;
+            let postsPosition = element.clientHeight + containerPosition;
             if (windowPosition < postsPosition || paginationNumberElements.length < 1) {
                 return;
             }
             pageNumber++;
-            for (var key in paginationNumberElements) {
+            for (let key in paginationNumberElements) {
                 if (!paginationNumberElements[key].textContent) {
                     continue;
                 }
-                var paginationNumber = paginationNumberElements[key].textContent;
+                const paginationNumber = paginationNumberElements[key].textContent;
                 if (parseInt(paginationNumber) === pageNumber) {
                     url = paginationNumberElements[key].href;
                     loading = true;
@@ -161,13 +812,13 @@ var Posts = {
                 return;
             }
             fetch(url, {})
-                .then(function (response) {
+                .then((response) => {
                 return response.text();
             })
-                .then(function (response) {
-                var posts = _this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
-                var postsWrapper = element.querySelector('.molecule-posts-wrapper');
-                for (var key in posts) {
+                .then((response) => {
+                const posts = this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
+                const postsWrapper = element.querySelector('.molecule-posts-wrapper');
+                for (let key in posts) {
                     postsWrapper.appendChild(posts[key]);
                 }
                 loading = false;
@@ -181,23 +832,19 @@ var Posts = {
      * Setup regular, dynamic pagination for the post wrapper element
      * @param element The post wrapper element
      */
-    setupPagination: function (element) {
-        var _this = this;
+    setupPagination(element) {
         if (!element.classList.contains('molecule-posts-ajax')) {
             return;
         }
-        var paginationAnchors = element.querySelectorAll('.atom-pagination a');
+        const paginationAnchors = element.querySelectorAll('.atom-pagination a');
         if (paginationAnchors.length < 1) {
             return;
         }
-        var _loop_1 = function (key) {
-            paginationAnchors[key].addEventListener('click', function (event) {
+        for (let key in paginationAnchors) {
+            paginationAnchors[key].addEventListener('click', (event) => {
                 event.preventDefault();
-                _this.paginationClickHandler(element, paginationAnchors[key]);
+                this.paginationClickHandler(element, paginationAnchors[key]);
             });
-        };
-        for (var key in paginationAnchors) {
-            _loop_1(key);
         }
     },
     /**
@@ -205,24 +852,23 @@ var Posts = {
      * @param element The parent element to which the button belongs
      * @param anchor The button that is clicked
      */
-    paginationClickHandler: function (element, anchor) {
-        var _this = this;
-        var target = anchor.href;
+    paginationClickHandler(element, anchor) {
+        const target = anchor.href;
         if (!target.includes(window.location.origin)) {
             return;
         }
         element.classList.add('components-loading');
         // Fetch the target page
         fetch(target)
-            .then(function (response) {
+            .then((response) => {
             return response.text();
         })
-            .then(function (response) {
-            var responseDom = _this.parser.parseFromString(response, 'text/html');
-            var oldPagination = element.querySelector('.molecule-posts-wrapper');
-            var oldPosts = element.querySelector('.molecule-posts-wrapper');
-            var newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
-            var newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
+            .then((response) => {
+            const responseDom = this.parser.parseFromString(response, 'text/html');
+            const oldPagination = element.querySelector('.molecule-posts-wrapper');
+            const oldPosts = element.querySelector('.molecule-posts-wrapper');
+            const newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
+            const newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
             element.classList.remove('components-loading');
             if (oldPagination) {
                 oldPagination.outerHTML = newPagination;
@@ -231,7 +877,7 @@ var Posts = {
                 oldPosts.outerHTML = newPosts;
             }
             // Jquery animate
-            setTimeout(function () {
+            setTimeout(() => {
                 window.scrollBy({
                     top: element.getBoundingClientRect().top,
                     behavior: 'smooth'
@@ -242,7 +888,7 @@ var Posts = {
                 sr.sync();
             }
             // Because our dom is reconstructed, we need to setup pagination again for the given element
-            _this.setupPagination(element);
+            this.setupPagination(element);
         });
     }
 };
@@ -251,34 +897,37 @@ var Posts = {
 
 /***/ }),
 
-/***/ "./src/assets/source/molecules/slider.ts":
-/*!***********************************************!*\
-  !*** ./src/assets/source/molecules/slider.ts ***!
-  \***********************************************/
+/***/ "./src/assets/js/molecules/slider.ts":
+/*!*******************************************!*\
+  !*** ./src/assets/js/molecules/slider.ts ***!
+  \*******************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-var Slider = {
-    wrappers: document.getElementsByClassName('molecule-slider'),
+const Slider = {
+    elements: document.getElementsByClassName('molecule-slider'),
     instances: {},
-    init: function () {
-        if (this.wrappers.length < 1) {
+    init() {
+        if (!this.elements || this.elements.length < 1) {
             return;
         }
-        for (var key in this.wrappers) {
-            this.createInstance(this.wrappers[key]);
+        for (const elements of this.elements) {
+            this.createInstance(elements);
         }
     },
     /**
      * Creates a slider instance from a HTMLElemenmt
      * @param slider The slider wrapper
      */
-    createInstance: function (slider) {
-        if (typeof globalThis.tns === "undefined") {
+    createInstance(slider) {
+        if (typeof window.tns === "undefined") {
             return;
         }
-        var id = slider.dataset.id;
-        var options = globalThis['slider' + id];
+        const id = slider.dataset.id;
+        if (!id) {
+            return;
+        }
+        const options = window['slider' + id];
         if (typeof options === "undefined") {
             return;
         }
@@ -290,18 +939,58 @@ var Slider = {
 
 /***/ }),
 
-/***/ "./src/assets/source/other/utils.ts":
-/*!******************************************!*\
-  !*** ./src/assets/source/other/utils.ts ***!
-  \******************************************/
+/***/ "./src/assets/js/other/modules.ts":
+/*!****************************************!*\
+  !*** ./src/assets/js/other/modules.ts ***!
+  \****************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "InitScrollReveal": function() { return /* binding */ InitScrollReveal; },
+/* harmony export */   "InitParallax": function() { return /* binding */ InitParallax; }
+/* harmony export */ });
+function InitScrollReveal() {
+    if (typeof window.ScrollReveal !== "undefined") {
+        window.sr = ScrollReveal();
+        window.sr.reveal('.components-bottom-appear', { origin: 'bottom' }, 50);
+        window.sr.reveal('.components-left-appear', { origin: 'left' }, 50);
+        window.sr.reveal('.components-right-appear', { origin: 'right' }, 50);
+        window.sr.reveal('.components-top-appear', { origin: 'top' }, 50);
+    }
+}
+function InitParallax() {
+    window.addEventListener('scroll', () => {
+        let scrollPosition = window.scrollY;
+        const parallaxSections = document.getElementsByClassName('components-parallax');
+        if (parallaxSections.length > 0) {
+            for (let key in parallaxSections) {
+                parallaxSections[key].style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition / 5) + "px" + ')';
+            }
+        }
+    });
+}
+
+
+/***/ }),
+
+/***/ "./src/assets/js/other/utils.ts":
+/*!**************************************!*\
+  !*** ./src/assets/js/other/utils.ts ***!
+  \**************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AjaxApi": function() { return /* binding */ AjaxApi; },
 /* harmony export */   "SlideToggle": function() { return /* binding */ SlideToggle; },
-/* harmony export */   "FadeToggle": function() { return /* binding */ FadeToggle; }
+/* harmony export */   "FadeToggle": function() { return /* binding */ FadeToggle; },
+/* harmony export */   "FadeOut": function() { return /* binding */ FadeOut; },
+/* harmony export */   "FadeIn": function() { return /* binding */ FadeIn; },
+/* harmony export */   "ToggleClass": function() { return /* binding */ ToggleClass; },
+/* harmony export */   "GetElementSiblings": function() { return /* binding */ GetElementSiblings; }
 /* harmony export */ });
+/* harmony import */ var _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/sibling-types */ "./src/assets/js/types/sibling-types.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -311,62 +1000,33 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
+
 /**
  * Sends a post request to the default WordPress Ajax API endpoint
  *
  * @param data The data that needs to passed to the ajax endpoint
- * @returns Promise The json response for the fetched resource
+ * @returns Promise The json response from the fetched resource
  */
 function AjaxApi(data) {
-    return __awaiter(this, void 0, Promise, function () {
-        var body, key, response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (typeof data.nonce === 'undefined') {
-                        data.nonce = globalThis.wpc.nonce;
-                    }
-                    body = new FormData();
-                    for (key in data) {
-                        body.append(key, data[key]);
-                    }
-                    return [4 /*yield*/, fetch(globalThis.wpc.ajaxUrl, {
-                            method: 'POST',
-                            credentials: 'same-origin',
-                            body: body
-                        })];
-                case 1:
-                    response = _a.sent();
-                    return [2 /*return*/, response.json()];
-            }
+    return __awaiter(this, void 0, void 0, function* () {
+        if (typeof data.nonce === 'undefined') {
+            data.nonce = window.wpc.nonce;
+        }
+        // Non-rest api calls using admin-ajax use FormData.
+        const body = new FormData();
+        for (const key in data) {
+            body.append(key, data[key]);
+        }
+        const response = yield fetch(window.wpc.ajaxUrl, {
+            method: 'POST',
+            credentials: 'same-origin',
+            body
         });
+        const jsonResponse = response.json();
+        if (window.wpc.debug) {
+            console.log(jsonResponse);
+        }
+        return jsonResponse;
     });
 }
 /**
@@ -375,15 +1035,18 @@ function AjaxApi(data) {
  * @param element An HTML Element that needs to slide
  */
 function SlideToggle(element) {
-    var defaultHeight = element.clientHeight;
-    if (!element.classList.contains('wpc-slide-toggle-hidden')) {
-        element.classList.add('wpc-slide-toggle-hidden');
+    if (!element) {
+        return;
+    }
+    const defaultHeight = element.clientHeight;
+    if (!element.classList.contains('components-transition')) {
+        element.classList.add('components-transition');
         element.style.height = '0px';
     }
     else {
         element.style.height = defaultHeight + 'px';
-        setTimeout(function () {
-            element.classList.remove('wpc-slide-toggle-hidden');
+        setTimeout(() => {
+            element.classList.remove('components-transition');
         }, 250);
     }
 }
@@ -393,22 +1056,111 @@ function SlideToggle(element) {
  * @param element An HTML Element that needs to slide
  */
 function FadeToggle(element) {
-    var defaultHeight = element.clientHeight;
-    if (!element.classList.contains('wpc-fade-toggle-hidden')) {
-        element.classList.add('wpc-fade-toggle-hidden');
-        element.style.opacity = "0";
-        setTimeout(function () {
-            element.style.display = "none";
+    if (!element) {
+        return;
+    }
+    // FadeIn
+    if (getComputedStyle(element).display === 'none') {
+        FadeIn(element);
+    }
+    else {
+        FadeOut(element);
+    }
+}
+/**
+ * Toggles the display of an HTML Element by fading out
+ *
+ * @param element An HTML Element that needs to slide
+ */
+function FadeOut(element) {
+    if (!element) {
+        return;
+    }
+    element.classList.add('components-transition');
+    element.style.opacity = "0";
+    setTimeout(() => {
+        element.style.display = "none";
+        element.classList.remove('components-transition');
+    }, 350);
+}
+/**
+ * Toggles the display of an HTML Element by fading in
+ * The element should previously be faded out.
+ *
+ * @param element An HTML Element that needs to slide
+ */
+function FadeIn(element) {
+    if (!element) {
+        return;
+    }
+    element.style.display = "block";
+    element.style.opacity = "0";
+    element.classList.add('components-transition');
+    setTimeout(() => {
+        element.style.opacity = "1";
+    }, 0);
+}
+/**
+ * Toggles the class(es) for a given HTML element
+ * @param element The element for which the class should be toggled
+ * @param className The name of the given class, or array of names
+ */
+function ToggleClass(element, className) {
+    if (!element) {
+        return;
+    }
+    if (Array.isArray(className)) {
+        className.forEach(name => {
+            element.classList.toggle(name);
         });
     }
     else {
-        element.style.opacity = "1";
-        element.style.display = "block";
-        setTimeout(function () {
-            element.classList.remove('wpc-fade-toggle-hidden');
-        }, 250);
+        element.classList.toggle(className);
     }
 }
+/**
+ * Get all siblings for a given element
+ *
+ * @param element The element to look for siblings
+ * @param mode The type of siblings to look for (previous or next)
+ */
+function GetElementSiblings(element, mode = _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__.SiblingTypes.Next) {
+    if (!element) {
+        return [];
+    }
+    const siblings = [];
+    if (mode === _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__.SiblingTypes.Previous) {
+        while (element = element.previousElementSibling) {
+            siblings.push(element);
+        }
+    }
+    else if (mode === _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__.SiblingTypes.Next) {
+        while (element = element.nextElementSibling) {
+            siblings.push(element);
+        }
+    }
+    return siblings;
+}
+
+
+/***/ }),
+
+/***/ "./src/assets/js/types/sibling-types.ts":
+/*!**********************************************!*\
+  !*** ./src/assets/js/types/sibling-types.ts ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SiblingTypes": function() { return /* binding */ SiblingTypes; }
+/* harmony export */ });
+var SiblingTypes;
+(function (SiblingTypes) {
+    SiblingTypes["Previous"] = "previous";
+    SiblingTypes["Next"] = "next";
+})(SiblingTypes || (SiblingTypes = {}));
+;
 
 
 /***/ })
@@ -472,67 +1224,74 @@ function FadeToggle(element) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/*!**************************************!*\
-  !*** ./src/assets/source/scripts.ts ***!
-  \**************************************/
+/*!**********************************!*\
+  !*** ./src/assets/js/scripts.ts ***!
+  \**********************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _molecules_header__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./molecules/header */ "./src/assets/source/molecules/header.ts");
-/* harmony import */ var _molecules_posts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./molecules/posts */ "./src/assets/source/molecules/posts.ts");
-/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/source/molecules/slider.ts");
+/* harmony import */ var _atoms_cart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./atoms/cart */ "./src/assets/js/atoms/cart.ts");
+/* harmony import */ var _atoms_map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./atoms/map */ "./src/assets/js/atoms/map.ts");
+/* harmony import */ var _atoms_menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./atoms/menu */ "./src/assets/js/atoms/menu.ts");
+/* harmony import */ var _atoms_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./atoms/modal */ "./src/assets/js/atoms/modal.ts");
+/* harmony import */ var _atoms_rate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./atoms/rate */ "./src/assets/js/atoms/rate.ts");
+/* harmony import */ var _atoms_scroll__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./atoms/scroll */ "./src/assets/js/atoms/scroll.ts");
+/* harmony import */ var _atoms_search__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./atoms/search */ "./src/assets/js/atoms/search.ts");
+/* harmony import */ var _atoms_share__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./atoms/share */ "./src/assets/js/atoms/share.ts");
+/* harmony import */ var _atoms_tabs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./atoms/tabs */ "./src/assets/js/atoms/tabs.ts");
+/* harmony import */ var _molecules_header__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./molecules/header */ "./src/assets/js/molecules/header.ts");
+/* harmony import */ var _molecules_posts__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./molecules/posts */ "./src/assets/js/molecules/posts.ts");
+/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/js/molecules/slider.ts");
+/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./other/modules */ "./src/assets/js/other/modules.ts");
 /**
  * All front-end modules are bundled into one application
  */
 
 
 
-var WPC_App = /** @class */ (function () {
-    function WPC_App() {
+
+
+
+
+
+
+
+
+
+
+/**
+ * Core class responsible for booting the application
+ */
+class WPC_App {
+    constructor() {
         this.modules = [
-            _molecules_header__WEBPACK_IMPORTED_MODULE_0__["default"], _molecules_slider__WEBPACK_IMPORTED_MODULE_2__["default"], _molecules_posts__WEBPACK_IMPORTED_MODULE_1__["default"]
+            _molecules_header__WEBPACK_IMPORTED_MODULE_9__["default"], _molecules_slider__WEBPACK_IMPORTED_MODULE_11__["default"], _molecules_posts__WEBPACK_IMPORTED_MODULE_10__["default"], _atoms_tabs__WEBPACK_IMPORTED_MODULE_8__["default"], _atoms_search__WEBPACK_IMPORTED_MODULE_6__["default"], _atoms_scroll__WEBPACK_IMPORTED_MODULE_5__["default"], _atoms_rate__WEBPACK_IMPORTED_MODULE_4__["default"], _atoms_modal__WEBPACK_IMPORTED_MODULE_3__["default"], _atoms_menu__WEBPACK_IMPORTED_MODULE_2__["default"], _atoms_map__WEBPACK_IMPORTED_MODULE_1__["default"], _atoms_share__WEBPACK_IMPORTED_MODULE_7__["default"], _atoms_cart__WEBPACK_IMPORTED_MODULE_0__["default"]
         ];
         this.initialize();
     }
     /**
      * Executes all code after the DOM has loaded
      */
-    WPC_App.prototype.initialize = function () {
-        var _this = this;
-        document.addEventListener('DOMContentLoaded', function () {
-            for (var key in _this.modules) {
-                _this.modules[key].init();
+    initialize() {
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const key in this.modules) {
+                this.modules[key].init();
             }
-            _this.initScrollReveal();
-            _this.initParallax();
+            this.initScrollReveal();
+            this.initParallax();
         });
-    };
+    }
     /**
      * Initializes our scroll-reveal functionality
      */
-    WPC_App.prototype.initScrollReveal = function () {
-        if (typeof window.ScrollReveal !== "undefined") {
-            window.sr = ScrollReveal();
-            window.sr.reveal('.components-bottom-appear', { origin: 'bottom' }, 50);
-            window.sr.reveal('.components-left-appear', { origin: 'left' }, 50);
-            window.sr.reveal('.components-right-appear', { origin: 'right' }, 50);
-            window.sr.reveal('.components-top-appear', { origin: 'top' }, 50);
-        }
-    };
+    initScrollReveal() {
+        (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitScrollReveal)();
+    }
     /**
      * Initializes the parallax functionality
      */
-    WPC_App.prototype.initParallax = function () {
-        window.addEventListener('scroll', function () {
-            var scrollPosition = window.scrollY;
-            var parallaxSections = document.getElementsByClassName('components-parallax');
-            if (parallaxSections.length > 0) {
-                for (var key in parallaxSections) {
-                    parallaxSections[key].style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition / 5) + "px" + ')';
-                }
-            }
-        });
-    };
-    return WPC_App;
-}());
+    initParallax() {
+        (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitParallax)();
+    }
+}
 ;
 new WPC_App();
 

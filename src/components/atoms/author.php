@@ -19,7 +19,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
         'itemtype'  => 'http://schema.org/Person'
     ], 
     'avatar'            => get_avatar( $post->post_author, 100 ),
-    'description'       => get_the_author_meta( 'description' ),
+    'description'       => get_the_author_meta( 'description', $post->post_author ),
     'image_float'       => 'none',
     'image_rounded'     => true,
     'job_title'          => '',
@@ -37,7 +37,7 @@ if( ! $atom['schema'] ) {
     unset($atom['attributes']['itemtype']);    
 }
 
-$attributes                         = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
+$attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <div <?php echo $attributes; ?>>
     

@@ -4,7 +4,7 @@ import Component from "../types/component";
 /**
  * Defines a social share element
  */
-const share: Component = {
+const Share: Component = {
     elements: document.getElementsByClassName('atom-share-fixed') as HTMLCollectionOf<HTMLElement>,
     init(): void {
         if( ! this.elements || this.elements.length < 1) {
@@ -27,24 +27,23 @@ const share: Component = {
 
         window.addEventListener('scroll', () => {
             let scrollPosition = window.scrollY;
-            
-            if( scrolled ) {
-                return;
-            }
 
-            if( scrollPosition > 5 ) {
+            if( scrollPosition > 5 && ! scrolled ) {
                 for( const element of this.elements ) {
                     FadeIn(element);
                 }
                 scrolled = true;
-            } else {
+            } else if(scrollPosition < 5 && scrolled) {
                 scrolled = false;
                 for( const element of this.elements ) {
                     FadeOut(element);
                 }                
             }
+                     
         });
 
     }
 
 }
+
+export default Share;

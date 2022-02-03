@@ -28,7 +28,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
     ?>
         <a class="atom-cart-icon" href="<?php echo wc_get_cart_url(); ?>">
-            <i class="fa fa-shopping-cart"></i>     
+            <i class="fas fa-shopping-cart"></i>     
             <?php if( $count > 0 ) { ?>
                 <span class="atom-cart-count"><?php echo $count; ?></span>
             <?php } ?>

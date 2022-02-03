@@ -15,17 +15,13 @@ const Header: Component = {
         if( ! this.elements || this.elements.length < 1 ) {
             return;
         }
+        
         for(const header of this.elements) {
             this.cssHandler(header);   
             this.scrollHandler(header); 
         }
 
-        if( ! this.carts || this.carts.length < 1 ) {
-            return;
-        }        
-        for(const cart of this.carts) {
-            this.cartHandler(cart);
-        }        
+     
     },
 
     /**
@@ -81,19 +77,6 @@ const Header: Component = {
 
                 this.position = positionFromTop;
             }
-        });
-    },
-
-    /**
-     * Handles any cart related actions
-     * 
-     * @param cart HTMLElement The passed cart element
-     */
-    cartHandler(cart: HTMLElement): void {
-        cart.addEventListener('click', (event) => {
-            event.preventDefault();
-            const cartContent = cart.nextElementSibling as HTMLElement;
-            FadeToggle(cartContent);
         });
     }
 

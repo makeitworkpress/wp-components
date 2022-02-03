@@ -69,7 +69,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     
         <a class="atom-network components-<?php echo $network; ?><?php if($atom['hover_item']) { ?> hvr-<?php echo $atom['hover_item']; } ?>" href="<?php echo $atom['networks'][$network]['url']; ?>" target="_blank" rel="nofollow">
             <?php if( isset($atom['networks'][$network]['icon']) ) { ?>
-                <i class="fa fa-<?php echo $atom['networks'][$network]['icon']; ?> hvr-icon"></i>
+                <i class="fab fa-<?php echo $atom['networks'][$network]['icon']; ?> hvr-icon"></i>
             <?php } ?>
             <?php if( isset($atom['networks'][$network]['title']) ) { ?>
                 <span><?php echo $atom['networks'][$network]['title']; ?></span>

@@ -11,6 +11,7 @@ const Posts: Component = {
         if( ! this.elements || this.elements.length < 1) {
             return;
         }
+        
         for( const element of this.elements ) {
             this.setupInfiniteScroll(element);
             this.setupPagination(element);

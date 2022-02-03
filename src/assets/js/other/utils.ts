@@ -43,7 +43,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function SlideToggle(element: HTMLElement | Element | null): void {
+export function SlideToggle(element: HTMLElement | null): void {
 
     if( ! element ) {
         return;
@@ -51,13 +51,13 @@ export function SlideToggle(element: HTMLElement | Element | null): void {
 
     const defaultHeight: number = element.clientHeight;
 
-    if( ! element.classList.contains('wpc-slide-toggle-hidden') ) {
-        element.classList.add('wpc-slide-toggle-hidden');
+    if( ! element.classList.contains('components-transition') ) {
+        element.classList.add('components-transition');
         element.style.height = '0px';
     } else {
         element.style.height = defaultHeight + 'px';
         setTimeout( () => {
-            element.classList.remove('wpc-slide-toggle-hidden');
+            element.classList.remove('components-transition');
         }, 250);  
     }
 }
@@ -67,27 +67,19 @@ export function SlideToggle(element: HTMLElement | Element | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeToggle(element: HTMLElement | Element | null): void {
+export function FadeToggle(element: HTMLElement | null): void {
 
     if( ! element ) {
         return;
-    }    
+    }   
 
-    const defaultHeight: number = element.clientHeight;
-
-    if( ! element.classList.contains('wpc-fade-toggle-hidden') ) {
-        element.classList.add('wpc-fade-toggle-hidden');
-        element.style.opacity = "0";
-        setTimeout( () => {
-            element.style.display = "none";
-        }, 250);
+    // FadeIn
+    if( getComputedStyle(element).display === 'none' ) {
+        FadeIn(element);
     } else {
-        element.style.opacity = "1";
-        element.style.display = "block";
-        setTimeout( () => {
-            element.classList.remove('wpc-fade-toggle-hidden');
-        }, 250);  
+        FadeOut(element);
     }
+
 }
 
 /**
@@ -95,19 +87,18 @@ export function FadeToggle(element: HTMLElement | Element | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeOut(element: HTMLElement | Element | null): void {
+export function FadeOut(element: HTMLElement | null): void {
     
     if( ! element ) {
         return;
     }
 
-    if( ! element.classList.contains('wpc-fade-toggle-hidden') ) {
-        element.classList.add('wpc-fade-toggle-hidden');
-        element.style.opacity = "0";
-        setTimeout( () => {
-            element.style.display = "none";
-        }, 250);
-    }
+    element.classList.add('components-transition');
+    element.style.opacity = "0";
+    setTimeout( () => {
+        element.style.display = "none";
+        element.classList.remove('components-transition');
+    }, 350);
 
 }
 
@@ -117,19 +108,18 @@ export function FadeOut(element: HTMLElement | Element | null): void {
  * 
  * @param element An HTML Element that needs to slide
  */
-export function FadeIn(element: HTMLElement | Element | null): void {
+export function FadeIn(element: HTMLElement | null): void {
     
     if( ! element ) {
         return;
     }
 
-    if( element.classList.contains('wpc-fade-toggle-hidden') ) {
+    element.style.display = "block";
+    element.style.opacity = "0";
+    element.classList.add('components-transition');
+    setTimeout( () => {
         element.style.opacity = "1";
-        element.style.display = "block";
-        setTimeout( () => {
-            element.classList.remove('wpc-fade-toggle-hidden');
-        }, 250);  
-    }
+    }, 0);  
 
 }
 

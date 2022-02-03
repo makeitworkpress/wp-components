@@ -7,7 +7,7 @@
 $atom = wp_parse_args( $atom, [
     'enlarge'   => false,
     'image'     => '',      // Expects a custom image tag for the image, including the html or an id to an image. Also accepts custom string to look for the image id in a meta field
-    'link'      => '',      // A custom link from the image. Also accepts post to load the permalink for the post
+    'link'      => '',      // A custom link from the image. Also accepts 'post' to load the permalink for the post
     'post'      => null,
     'schema'    => true,                    // If microdata is rendered or not    
     'size'      => 'large'

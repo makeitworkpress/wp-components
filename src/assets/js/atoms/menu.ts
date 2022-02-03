@@ -7,7 +7,12 @@ import Component from "../types/component";
 const Menu: Component = {
     elements: document.getElementsByClassName('atom-menu') as HTMLCollectionOf<HTMLElement>,
     init(): void {
-        for(const menu in this.elements) {
+        
+        if( ! this.elements || this.elements.length < 1) {
+            return;
+        }
+
+        for(const menu of this.elements) {
             this.setupHamburgerMenu(menu);
             this.setupCollapsedMenu(menu)
         }
