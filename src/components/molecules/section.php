@@ -12,7 +12,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'columns'       => [],          // Columns to display with their corresponding width and containing atoms. Use ['column' => 'half', 'atoms' => [['atom' => 'atom']]]
     'container'     => true,        // Wrap this component in a container
     'grid'          => false,       // Whether to display a grid
-    'grid_gap'       => 'default',   // The gridgap, if a grid is enabled
+    'grid_gap'      => 'default',  // The gridgap, if a grid is enabled
     'molecules'     => [],          // Can render molecules if necessary
     'tag'           => 'section',
     'video'         => ''           // Expects the url for a video for display a video background

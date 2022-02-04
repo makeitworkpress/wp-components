@@ -410,17 +410,6 @@ const Scroll = {
                         scrolled = false;
                     }
                 }
-                else {
-                    let buttonPosition = element.getBoundingClientRect().top + scrollPosition;
-                    if (scrollPosition > buttonPosition) {
-                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
-                        scrolled = true;
-                    }
-                    else if (scrolled && scrollPosition < buttonPosition) {
-                        (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
-                        scrolled = false;
-                    }
-                }
             }
         });
     }

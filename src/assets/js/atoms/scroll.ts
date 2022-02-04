@@ -56,15 +56,6 @@ const Scroll: Component = {
                         FadeOut(element);
                         scrolled = false;
                     }
-                } else {
-                    let buttonPosition = element.getBoundingClientRect().top + scrollPosition;
-                    if( scrollPosition > buttonPosition ) {
-                        FadeOut(element);
-                        scrolled = true;
-                    } else if(scrolled && scrollPosition < buttonPosition) {
-                        FadeIn(element);   
-                        scrolled = false; 
-                    }
                 }
             }
         });
