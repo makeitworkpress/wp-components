@@ -63,10 +63,8 @@ class Ajax {
             
             update_post_meta($id, 'components_rating_count', $newCount);
             update_post_meta($id, 'components_rating', $newRating);
-
-            $output = Build::atom( 'rate', ['count' => $newCount, 'value' => $newRating, 'id' => $id, 'max' => $max, 'min' => $min], false );
             
-            wp_send_json_success( ['rating' => $newRating, 'count' => $newCount, 'output' => $output] );
+            wp_send_json_success( ['rating' => $newRating, 'count' => $newCount] );
         
         }
         

@@ -19,14 +19,15 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
         'itemtype'  => 'http://schema.org/Organization',
     ],
     'alt'                   => __('Logo', WP_COMPONENTS_LANGUAGE),
-    'default'               => ['src' => '', 'height' => '', 'width' => ''], // The logo src. Also accepts an image id
-    'default_transparent'   => ['src' => '', 'height' => '', 'width' => ''], // The logo src for transparent headers
-    'mobile'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display
-    'mobile_transparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for mobile display for transparent headers
+    'default'               => get_theme_mod( 'custom_logo' ),                  // The default logo src. Also accepts an image id
+    'default_transparent'   => ['src' => '', 'height' => '', 'width' => ''],    // The logo src for transparent headers
+    'mobile'                => ['src' => '', 'height' => '', 'width' => ''],    // The logo src for mobile display
+    'mobile_transparent'    => ['src' => '', 'height' => '', 'width' => ''],    // The logo src for mobile display for transparent headers
+    'mode'                  => 'logo',     // Accepts 'logo' (displays the site logo) or 'title' (displays a the site title)
     'schema'                => true,        // If microdata is rendered or not
     'size'                  => 'medium',    // The default size of the fetched logo
     'tablet'                => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display
-    'tablet_transparent'     => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
+    'tablet_transparent'    => ['src' => '', 'height' => '', 'width' => ''], // The logo src for tablet display for transparent headers
     'title'                 => esc_attr( get_bloginfo('name') ),
     'url'                   => esc_url( get_bloginfo('url') )
 ] ); 
@@ -43,7 +44,9 @@ if( ! $atom['schema'] ) {
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <a <?php echo $attributes; ?>>
-    <?php 
+    <?php if($atom['mode'] === 'title') { ?>
+        <span class="atom-logo-title"><?php echo $atom['title']; ?></span>
+    <?php } else {
         foreach( ['mobile', 'mobile_transparent', 'tablet', 'tablet_transparent', 'default', 'default_transparent'] as $image ) {
 
             // Itemprop for the logo image
@@ -70,7 +73,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
             }           
 
         } 
-    ?>
+    } ?>
     <?php if( $atom['schema'] ) { ?>
         <meta itemprop="name" content="<?php echo $atom['title']; ?>" /> 
         <meta itemprop="url" content="<?php echo $atom['url']; ?>" /> 

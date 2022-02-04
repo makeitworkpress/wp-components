@@ -18,11 +18,11 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'author'        => '',
     'author_type'   => 'http://schema.org/Person',
     'count'         => get_post_meta($id, 'components_rating_count', true),
-    'id'            => $id,  
+    'id'            => $id,     // The id for the given post
     'max'           => 5,
     'min'           => 0,
-    'rate'          => true, 
-    'reviewed'      => false,
+    'rate'          => true,    // Allows visitors to rate
+    'reviewed'      => '',      // Allows to add the title for the item reviewed
     'schema'        => true,   // If microdata is rendered or not. Also removes schematic attributes
     'value'         => get_post_meta($id, 'components_rating', true) ? get_post_meta($id, 'components_rating', true) : 0
 ] );
@@ -36,12 +36,18 @@ $halfStars  = $fraction < 0.75 && $fraction > 0.25 ? 1 : 0;
 $emptyStars = $atom['max'] - $fullStars - $halfStars;
 
 // If we allow users to rate, we need to add a class so our JS can pick it up
-$atom['attributes']['class']  .= $atom['rate'] ? ' atom-rate-do' : ''; 
+$atom['attributes']['class']  .= $atom['rate'] ? ' atom-rate-can' : ''; 
 
 if( ! $atom['schema'] ) {
     unset($atom['attributes']['itemprop']);    
     unset($atom['attributes']['itemscope']);    
     unset($atom['attributes']['itemtype']);    
+}
+
+if( $atom['rate'] ) {
+    $atom['attributes']['data']['id'] = $id;
+    $atom['attributes']['data']['max'] = $atom['max'];
+    $atom['attributes']['data']['min'] = $atom['min'];
 }
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
@@ -67,40 +73,23 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php } ?>
 
     <?php } ?>
-    
-    <?php if( $atom['rate'] ) { ?>
-        <a class="atom-rate-anchor" href="#" data-id="<?php echo $atom['id']; ?>" data-max="<?php echo $atom['max']; ?>" data-min="<?php echo $atom['min']; ?>">
             
-            <span class="atom-rate-rate">
-                <i class="fa fa-star-o atom-rate-star"></i>
-                <i class="fa fa-star-o atom-rate-star"></i>
-                <i class="fa fa-star-o atom-rate-star"></i>
-                <i class="fa fa-star-o atom-rate-star"></i>
-                <i class="fa fa-star-o atom-rate-star"></i>
-            </span>
-            
-    <?php } ?>
-            
-        <span class="atom-rate-current">
-            <?php 
-            
-                for($i = 1; $i <= $fullStars; $i++) {
-                    echo '<i class="fa fa-star"></i>';
-                }
-            
-                if( $halfStars ) {
-                    echo '<i class="fa fa-star-half-o"></i>';
-                }
-            
-                for( $i = 1; $i <= $emptyStars; $i++ ) {
-                    echo '<i class="fa fa-star-o"></i>';
-                }
-            
-            ?>
-        </span>            
-    
-    <?php if( $atom['rate'] ) { ?>
-        </a>
-    <?php } ?>
-
+    <a class="atom-rate-anchor">
+        <?php 
+        
+            for($i = 1; $i <= $fullStars; $i++) {
+                echo '<i class="fas fa-star atom-rate-star"></i>';
+            }
+        
+            if( $halfStars ) {
+                echo '<i class="fas fa-star-half atom-rate-star"></i>';
+            }
+        
+            for( $i = 1; $i <= $emptyStars; $i++ ) {
+                echo '<i class="far fa-star atom-rate-star"></i>';
+            }
+        
+        ?>
+    </a>
+    <i class="fas fa-circle-notch fa-spin"></i>
 </div>

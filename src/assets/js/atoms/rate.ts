@@ -1,4 +1,4 @@
-import { AjaxApi, GetElementSiblings, ToggleClass } from "../other/utils";
+import { AjaxApi, FadeIn, FadeOut, GetElementSiblings, ToggleClass } from "../other/utils";
 import Component from "../types/component";
 import { SiblingTypes } from "../types/sibling-types";
 
@@ -6,69 +6,16 @@ import { SiblingTypes } from "../types/sibling-types";
  * Defines the custom header scripts
  */
 const Rate: Component = {
-    elements: document.getElementsByClassName('.atom-rate') as HTMLCollectionOf<HTMLElement>,
+    elements: document.getElementsByClassName('atom-rate') as HTMLCollectionOf<HTMLElement>,
     init() {
 
         if( ! this.elements || this.elements.length < 1) {
             return;
         }
 
-        this.setupMouseHandlers();
         for( const element of this.elements ) {
             this.setupClickHandler(element); 
         }
-    },
-
-    /**
-     * Setups the handlers for mouseenter and mouseleave events
-     */
-    setupMouseHandlers() {
-
-        /**
-         * Entering one fo the stars in the element responsible for the rating
-         */
-        document.body.addEventListener('mouseenter', (event) => {
-
-            const starElement = event.currentTarget as HTMLElement;
-
-            if( ! starElement.classList.contains('atom-rate-star') ) {
-                return;
-            }
-
-            // Attems at the left side of the mouse
-            ToggleClass(starElement, ['fa-star', 'fa-star-o']);
-
-            const previousStarElements = GetElementSiblings(starElement, SiblingTypes.Previous);
-            for( let previousStarElement of previousStarElements ) {
-                ToggleClass(previousStarElement, ['fa-star', 'fa-star-o'])
-            }
-
-            // Right side
-            const nextStarElements = GetElementSiblings(starElement, SiblingTypes.Next);
-            for( let nextStarElement of nextStarElements ) {
-                nextStarElement.classList.add('fa-star-o');
-                nextStarElement.classList.remove('fa-star');
-            }         
-
-        }, true);
-
-        /**
-         * Leaving the Anchor element responsible for the rating
-         */
-        document.body.addEventListener('mouseleave', (event) => {
-
-            const ratingElement = event.currentTarget as HTMLAnchorElement;
-            const starElements = ratingElement.getElementsByTagName('i');
-
-            if( ratingElement.className !== 'atom-rate-rate') {
-                return;
-            }
-
-            for(const star of starElements) {
-                ToggleClass(star, ['fa-star-o', 'fa-star']);
-            }          
-
-        }, true);
     },
 
     /**
@@ -77,7 +24,7 @@ const Rate: Component = {
      */
     setupClickHandler(element: HTMLElement): void {
         let isRating = false;
-        const ratingAnchor = element.querySelector('.atom-rate-anchor') as HTMLAnchorElement;
+        const ratingAnchor = element.querySelector('.atom-rate-can .atom-rate-anchor') as HTMLAnchorElement;
 
         ratingAnchor.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -86,15 +33,23 @@ const Rate: Component = {
                 return;
             }
 
-            const { id = '', max = 5, min = 1 } = ratingAnchor.dataset;
-            const rating: number = ratingAnchor.querySelectorAll('.fa-star').length;
-            const loadingSpinner = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+            const { id = '', max = 5, min = 1 } = element.dataset;
+            const starElements = ratingAnchor.querySelectorAll('.atom-rate-star');
+            let rating: number = 0;
+            
+            for( const starElement of starElements ) {
+                if( getComputedStyle(starElement).fontWeight === '900' ) {
+                    rating++;
+                }
+            }
+          
+            const loadingSpinner = element.querySelector('.atom-rate-can .fa-circle-notch') as HTMLAnchorElement;
+            FadeIn(loadingSpinner, 'inline-block');
 
             // Actual rating functions
             isRating = true;
-            element.append(loadingSpinner);
 
-            const response = await AjaxApi<{ success: boolean, data: { output: string, rating: number, count: number } }>({
+            const response = await AjaxApi<{ success: boolean, data: { rating: number, count: number } }>({
                 action: 'public_rate',
                 id: id,
                 max: +max,
@@ -102,17 +57,48 @@ const Rate: Component = {
                 rating: rating
             });
 
-            if( response.success && response.data.output ) {
-                element.outerHTML = response.data.output;
-                this.setupClickHandler(element); // Re-assign click-handler as DOM is updated
+            // Modify our stars according to the rating
+            if( response.success && response.data.rating ) {
+                this.updateStarElementClasses(starElements, response.data.rating);
             }
 
             setTimeout( () => {
-                element.querySelector('.fa-circle-o-notch')?.remove();
+                FadeOut(loadingSpinner);
                 isRating = false;
-            }, 500)
+            }, 1500)
 
         });
+
+    },
+
+    /**
+     * Updates the star element classes according to the new rating, without needing to replace the element
+     */
+    updateStarElementClasses(starElements: NodeListOf<Element>, rating: number) {
+        
+        let starKey = 0;
+        let newRating = Math.ceil(rating);
+
+        for( const starElement of starElements ) {
+            starKey++;      
+            if( starKey < newRating ) {
+                starElement.classList.add('fas');
+                starElement.classList.remove('far');
+            } else if( starKey === newRating ) {
+                const fraction = rating - Math.floor(rating) 
+                if( fraction > 0.25 && fraction < 0.75 ) {
+                    starElement.classList.add('fas', 'fa-star-half');
+                    starElement.classList.remove('far', 'fa-star');                            
+                } else if( fraction > 0.75 ) {
+                    starElement.classList.remove('far', 'fa-star-half');
+                    starElement.classList.add('fas');
+                }
+            } else {
+                starElement.classList.add('far', 'fa-star');
+                starElement.classList.remove('fas', 'fa-star-half');                      
+            }
+
+        }
 
     }
 };

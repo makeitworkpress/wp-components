@@ -9,13 +9,13 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
         'itemtype'  => 'http://schema.org/SiteNavigationElement',
         'itemscope' => 'itemscope'   
     ],
-    'args'       => [],
+    'args'       => [],         // The wp_nav_menu arguments
     'collapse'   => false,      // If you want to collapse to the mobile menu by default, and expandable with clicking
     'dropdown'   => true,       // If you want to remove dropdowns, set this to false
     'hamburger'  => 'mobile',   // Accepts mobile (767px), tablet (1080px) always (always hamburger) or false (never hamburger)
-    'indicator'  => true,
-    'menu'       => '',
-    'view'       => 'default',         // Accepts dark to display a dark mobile menu, fixed, left or right to display the hamburger with a special menu      
+    'indicator'  => true,       // Shows a submenu indicator if an menu item has a submenu
+    'menu'       => '',         // Pass a wordpress menu - overrides any args
+    'view'       => 'default',  // Accepts dark to display a dark mobile menu, fixed, left or right to display the hamburger with a special menu      
 ] );
 
 // By default, we don't echo the menu

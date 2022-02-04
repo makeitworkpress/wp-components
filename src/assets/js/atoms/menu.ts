@@ -48,14 +48,13 @@ const Menu: Component = {
 
         const menuItemsWithChildren = menu.querySelectorAll('.menu-item-has-children > a') as NodeListOf<HTMLAnchorElement>
 
-        for(const menuItem of menuItemsWithChildren) {
-            const dropDownIcon = document.createElement('<i class="fa fa-angle-down"></i>');
-            const subMenu = menuItem.parentElement?.querySelector('> .sub-menu') as HTMLElement;
-            menuItem.append(dropDownIcon);
+        for(const menuItemAnchor of menuItemsWithChildren) {
 
-            dropDownIcon.addEventListener('click', function(event) {
+            const subMenu = menuItemAnchor.parentElement?.querySelector('.sub-menu') as HTMLElement;
+
+            menuItemAnchor.addEventListener('click', (event) => {
                 event.preventDefault();
-                ToggleClass(dropDownIcon, ['fa-angle-down', 'fa-angle-up']);
+                ToggleClass(menuItemAnchor, 'active');
                 SlideToggle(subMenu);
             });
         }

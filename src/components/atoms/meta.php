@@ -1,6 +1,6 @@
 <?php
 /**
- * Retrieves post metadata from the key
+ * Retrieves raw post metadata from the key
  */
 
 // Atom values

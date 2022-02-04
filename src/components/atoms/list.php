@@ -1,6 +1,7 @@
 <?php
 /**
  * Displays the default featured image
+ * @todo Add support for images
  */
 
 // Backward compatibility
@@ -12,7 +13,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'grid_gap'      => 'default',   // Accepts a certain gridgap
     'hover_item'    => '',          // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().      
     'items'         => [],          // Accepts an array with list items, keyed with icon, title, description, link and column
-    'style'         => 'default',   // Accepts default or card to display a card like list
+    'style'         => 'default',   // Accepts 'default' or 'card' to display a card like list
     'title_tag'     => 'h4'         // The title tag for the list title
 ] );
 

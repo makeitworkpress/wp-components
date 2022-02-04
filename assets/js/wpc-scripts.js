@@ -192,13 +192,11 @@ const Menu = {
             return;
         }
         const menuItemsWithChildren = menu.querySelectorAll('.menu-item-has-children > a');
-        for (const menuItem of menuItemsWithChildren) {
-            const dropDownIcon = document.createElement('<i class="fa fa-angle-down"></i>');
-            const subMenu = (_a = menuItem.parentElement) === null || _a === void 0 ? void 0 : _a.querySelector('> .sub-menu');
-            menuItem.append(dropDownIcon);
-            dropDownIcon.addEventListener('click', function (event) {
+        for (const menuItemAnchor of menuItemsWithChildren) {
+            const subMenu = (_a = menuItemAnchor.parentElement) === null || _a === void 0 ? void 0 : _a.querySelector('.sub-menu');
+            menuItemAnchor.addEventListener('click', (event) => {
                 event.preventDefault();
-                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(dropDownIcon, ['fa-angle-down', 'fa-angle-up']);
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(menuItemAnchor, 'active');
                 (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.SlideToggle)(subMenu);
             });
         }
@@ -257,7 +255,6 @@ const Modal = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
-/* harmony import */ var _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types/sibling-types */ "./src/assets/js/types/sibling-types.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -268,59 +265,18 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
     });
 };
 
-
 /**
  * Defines the custom header scripts
  */
 const Rate = {
-    elements: document.getElementsByClassName('.atom-rate'),
+    elements: document.getElementsByClassName('atom-rate'),
     init() {
         if (!this.elements || this.elements.length < 1) {
             return;
         }
-        this.setupMouseHandlers();
         for (const element of this.elements) {
             this.setupClickHandler(element);
         }
-    },
-    /**
-     * Setups the handlers for mouseenter and mouseleave events
-     */
-    setupMouseHandlers() {
-        /**
-         * Entering one fo the stars in the element responsible for the rating
-         */
-        document.body.addEventListener('mouseenter', (event) => {
-            const starElement = event.currentTarget;
-            if (!starElement.classList.contains('atom-rate-star')) {
-                return;
-            }
-            // Attems at the left side of the mouse
-            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(starElement, ['fa-star', 'fa-star-o']);
-            const previousStarElements = (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.GetElementSiblings)(starElement, _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__.SiblingTypes.Previous);
-            for (let previousStarElement of previousStarElements) {
-                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(previousStarElement, ['fa-star', 'fa-star-o']);
-            }
-            // Right side
-            const nextStarElements = (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.GetElementSiblings)(starElement, _types_sibling_types__WEBPACK_IMPORTED_MODULE_1__.SiblingTypes.Next);
-            for (let nextStarElement of nextStarElements) {
-                nextStarElement.classList.add('fa-star-o');
-                nextStarElement.classList.remove('fa-star');
-            }
-        }, true);
-        /**
-         * Leaving the Anchor element responsible for the rating
-         */
-        document.body.addEventListener('mouseleave', (event) => {
-            const ratingElement = event.currentTarget;
-            const starElements = ratingElement.getElementsByTagName('i');
-            if (ratingElement.className !== 'atom-rate-rate') {
-                return;
-            }
-            for (const star of starElements) {
-                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.ToggleClass)(star, ['fa-star-o', 'fa-star']);
-            }
-        }, true);
     },
     /**
      * Setup the click handler for sending rating requests to the back-end
@@ -328,18 +284,24 @@ const Rate = {
      */
     setupClickHandler(element) {
         let isRating = false;
-        const ratingAnchor = element.querySelector('.atom-rate-anchor');
+        const ratingAnchor = element.querySelector('.atom-rate-can .atom-rate-anchor');
         ratingAnchor.addEventListener('click', (event) => __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();
             if (isRating) {
                 return;
             }
-            const { id = '', max = 5, min = 1 } = ratingAnchor.dataset;
-            const rating = ratingAnchor.querySelectorAll('.fa-star').length;
-            const loadingSpinner = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+            const { id = '', max = 5, min = 1 } = element.dataset;
+            const starElements = ratingAnchor.querySelectorAll('.atom-rate-star');
+            let rating = 0;
+            for (const starElement of starElements) {
+                if (getComputedStyle(starElement).fontWeight === '900') {
+                    rating++;
+                }
+            }
+            const loadingSpinner = element.querySelector('.atom-rate-can .fa-circle-notch');
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(loadingSpinner, 'inline-block');
             // Actual rating functions
             isRating = true;
-            element.append(loadingSpinner);
             const response = yield (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.AjaxApi)({
                 action: 'public_rate',
                 id: id,
@@ -347,16 +309,44 @@ const Rate = {
                 min: +min,
                 rating: rating
             });
-            if (response.success && response.data.output) {
-                element.outerHTML = response.data.output;
-                this.setupClickHandler(element); // Re-assign click-handler as DOM is updated
+            // Modify our stars according to the rating
+            if (response.success && response.data.rating) {
+                this.updateStarElementClasses(starElements, response.data.rating);
             }
             setTimeout(() => {
-                var _a;
-                (_a = element.querySelector('.fa-circle-o-notch')) === null || _a === void 0 ? void 0 : _a.remove();
+                (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(loadingSpinner);
                 isRating = false;
-            }, 500);
+            }, 1500);
         }));
+    },
+    /**
+     * Updates the star element classes according to the new rating, without needing to replace the element
+     */
+    updateStarElementClasses(starElements, rating) {
+        let starKey = 0;
+        let newRating = Math.ceil(rating);
+        for (const starElement of starElements) {
+            starKey++;
+            if (starKey < newRating) {
+                starElement.classList.add('fas');
+                starElement.classList.remove('far');
+            }
+            else if (starKey === newRating) {
+                const fraction = rating - Math.floor(rating);
+                if (fraction > 0.25 && fraction < 0.75) {
+                    starElement.classList.add('fas', 'fa-star-half');
+                    starElement.classList.remove('far', 'fa-star');
+                }
+                else if (fraction > 0.75) {
+                    starElement.classList.remove('far', 'fa-star-half');
+                    starElement.classList.add('fas');
+                }
+            }
+            else {
+                starElement.classList.add('far', 'fa-star');
+                starElement.classList.remove('fas', 'fa-star-half');
+            }
+        }
     }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Rate);
@@ -984,6 +974,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AjaxApi": function() { return /* binding */ AjaxApi; },
 /* harmony export */   "SlideToggle": function() { return /* binding */ SlideToggle; },
+/* harmony export */   "SlideOut": function() { return /* binding */ SlideOut; },
+/* harmony export */   "SlideIn": function() { return /* binding */ SlideIn; },
 /* harmony export */   "FadeToggle": function() { return /* binding */ FadeToggle; },
 /* harmony export */   "FadeOut": function() { return /* binding */ FadeOut; },
 /* harmony export */   "FadeIn": function() { return /* binding */ FadeIn; },
@@ -1033,35 +1025,74 @@ function AjaxApi(data) {
  * Toggles the display of an HTML Element by sliding its height
  *
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-function SlideToggle(element) {
+function SlideToggle(element, displayStyle = 'block') {
     if (!element) {
         return;
     }
-    const defaultHeight = element.clientHeight;
-    if (!element.classList.contains('components-transition')) {
-        element.classList.add('components-transition');
-        element.style.height = '0px';
+    if (getComputedStyle(element).display === 'none') {
+        SlideOut(element, displayStyle);
     }
     else {
-        element.style.height = defaultHeight + 'px';
-        setTimeout(() => {
-            element.classList.remove('components-transition');
-        }, 250);
+        SlideIn(element);
     }
+}
+/**
+ * Exposes the display of an HTML Element by sliding its height out
+ *
+ * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
+ */
+function SlideOut(element, displayStyle = 'block') {
+    if (!element) {
+        return;
+    }
+    element.classList.add('components-transition');
+    element.style.display = displayStyle;
+    element.style.removeProperty('height');
+    // Grab and reset the height and opacity
+    let elementHeight = element.clientHeight;
+    element.style.height = '0px';
+    element.style.opacity = '0';
+    setTimeout(() => {
+        element.style.opacity = '1';
+        element.style.height = elementHeight + 'px';
+    }, 0);
+}
+/**
+ * Hides the display of an HTML Element by sliding its height in
+ *
+ * @param element An HTML Element that needs to slide
+ */
+function SlideIn(element) {
+    if (!element) {
+        return;
+    }
+    element.classList.add('components-transition');
+    element.style.opacity = '1';
+    setTimeout(() => {
+        element.style.height = '0px';
+        element.style.opacity = '0';
+    }, 0);
+    setTimeout(() => {
+        element.style.display = 'none';
+        element.classList.remove('components-transition');
+    }, 350);
 }
 /**
  * Toggles the display of an HTML Element by adjusting it's opacity
  *
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-function FadeToggle(element) {
+function FadeToggle(element, displayStyle = 'block') {
     if (!element) {
         return;
     }
     // FadeIn
     if (getComputedStyle(element).display === 'none') {
-        FadeIn(element);
+        FadeIn(element, displayStyle);
     }
     else {
         FadeOut(element);
@@ -1084,16 +1115,17 @@ function FadeOut(element) {
     }, 350);
 }
 /**
- * Toggles the display of an HTML Element by fading in
+ * Toggles the display of an HTML Element by fading in.
  * The element should previously be faded out.
  *
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-function FadeIn(element) {
+function FadeIn(element, displayStyle = 'block') {
     if (!element) {
         return;
     }
-    element.style.display = "block";
+    element.style.display = displayStyle;
     element.style.opacity = "0";
     element.classList.add('components-transition');
     setTimeout(() => {

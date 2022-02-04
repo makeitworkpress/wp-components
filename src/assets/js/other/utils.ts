@@ -42,32 +42,82 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
  * Toggles the display of an HTML Element by sliding its height
  * 
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-export function SlideToggle(element: HTMLElement | null): void {
+export function SlideToggle(element: HTMLElement | null, displayStyle: string = 'block'): void {
+
+    if( ! element ) {
+        return;
+    }  
+    
+    if( getComputedStyle(element).display === 'none' ) {
+        SlideOut(element, displayStyle);
+    } else {
+        SlideIn(element);  
+    }
+
+}
+
+/**
+ * Exposes the display of an HTML Element by sliding its height out
+ * 
+ * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
+ */
+export function SlideOut(element: HTMLElement | null, displayStyle: string = 'block'): void {
 
     if( ! element ) {
         return;
     }    
 
-    const defaultHeight: number = element.clientHeight;
+    element.classList.add('components-transition');
+    element.style.display = displayStyle;
+    element.style.removeProperty('height');
 
-    if( ! element.classList.contains('components-transition') ) {
-        element.classList.add('components-transition');
+    // Grab and reset the height and opacity
+    let elementHeight = element.clientHeight;
+    element.style.height = '0px';
+    element.style.opacity = '0';
+
+    setTimeout( () => {
+        element.style.opacity = '1';
+        element.style.height = elementHeight + 'px';
+    }, 0); 
+
+}
+
+/**
+ * Hides the display of an HTML Element by sliding its height in
+ * 
+ * @param element An HTML Element that needs to slide
+ */
+ export function SlideIn(element: HTMLElement | null): void {
+
+    if( ! element ) {
+        return;
+    }    
+    
+    element.classList.add('components-transition');
+    element.style.opacity = '1';
+
+    setTimeout( () => {
         element.style.height = '0px';
-    } else {
-        element.style.height = defaultHeight + 'px';
-        setTimeout( () => {
-            element.classList.remove('components-transition');
-        }, 250);  
-    }
+        element.style.opacity = '0';
+    }, 0);
+
+    setTimeout( () => {
+        element.style.display = 'none';
+        element.classList.remove('components-transition');
+    }, 350);    
 }
 
 /**
  * Toggles the display of an HTML Element by adjusting it's opacity
  * 
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-export function FadeToggle(element: HTMLElement | null): void {
+export function FadeToggle(element: HTMLElement | null, displayStyle: string = 'block'): void {
 
     if( ! element ) {
         return;
@@ -75,7 +125,7 @@ export function FadeToggle(element: HTMLElement | null): void {
 
     // FadeIn
     if( getComputedStyle(element).display === 'none' ) {
-        FadeIn(element);
+        FadeIn(element, displayStyle);
     } else {
         FadeOut(element);
     }
@@ -103,18 +153,19 @@ export function FadeOut(element: HTMLElement | null): void {
 }
 
 /**
- * Toggles the display of an HTML Element by fading in
+ * Toggles the display of an HTML Element by fading in.
  * The element should previously be faded out.
  * 
  * @param element An HTML Element that needs to slide
+ * @param displayStyle The display value that needs to used for displaying the item
  */
-export function FadeIn(element: HTMLElement | null): void {
+export function FadeIn(element: HTMLElement | null, displayStyle: string = 'block'): void {
     
     if( ! element ) {
         return;
     }
 
-    element.style.display = "block";
+    element.style.display = displayStyle;
     element.style.opacity = "0";
     element.classList.add('components-transition');
     setTimeout( () => {
