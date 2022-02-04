@@ -41,23 +41,29 @@ const Scroll: Component = {
      * Setup the handler for the window functions
      */
     setupwindowHandler() {
+
+        let scrolled = false;
+
         window.addEventListener('scroll', () => {
             let scrollPosition = window.scrollY;
             
-
             for( const element of this.elements ) {
                 if( element.classList.contains('atom-scroll-top') ) {
                     if( scrollPosition > window.innerHeight) {
                         FadeIn(element);
-                    } else {
+                        scrolled = true;
+                    } else if(scrolled && scrollPosition < window.innerHeight ) {
                         FadeOut(element);
+                        scrolled = false;
                     }
                 } else {
                     let buttonPosition = element.getBoundingClientRect().top + scrollPosition;
                     if( scrollPosition > buttonPosition ) {
                         FadeOut(element);
-                    } else {
-                        FadeIn(element);    
+                        scrolled = true;
+                    } else if(scrolled && scrollPosition < buttonPosition) {
+                        FadeIn(element);   
+                        scrolled = false; 
                     }
                 }
             }

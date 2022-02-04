@@ -16,10 +16,35 @@ export function InitParallax() {
     const parallaxSections = document.getElementsByClassName('components-parallax') as HTMLCollectionOf<HTMLElement>;
     
     if( parallaxSections.length > 0 ) {
-        for( let key in parallaxSections ) {
-            parallaxSections[key].style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition/5) + "px" + ')';
+        for( let section of parallaxSections ) {
+          section.style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition/5) + "px" + ')';
         }
     }
 
   });
+}
+
+/**
+ * Adds custom overlays to any section that has one defined
+ * This function deprecates once attr is sufficiently supported by CSS
+ */
+export function InitOverlays() {
+  const overlayedElements = document.getElementsByClassName('components-custom-overlay') as HTMLCollectionOf<HTMLElement>;
+
+  if( overlayedElements.length < 1 ) {
+    return;
+  }
+
+  for( let element of overlayedElements ) {
+    console.log(element);
+    const { color = '#000', opacity = '0.5' } = element.dataset;
+    const overlay = document.createElement('div');
+    
+    overlay.classList.add('components-overlay-background');
+    overlay.style.backgroundColor = color;
+    overlay.style.opacity = opacity;
+
+    element.append(overlay);
+  }
+
 }

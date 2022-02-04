@@ -6,7 +6,7 @@
 // Atom values
 $atom = wp_parse_args( $atom, [
     'icon'      => '',
-    'top'       => false
+    'top'       => false // Makes it a scroll to top atom
 ] );  
 
 // Scrolls to top
@@ -15,7 +15,7 @@ if( $atom['top'] ) {
 }
 
 if( $atom['top'] && ! $atom['icon'] ) {
-    $atom['icon'] = 'angle-up';
+    $atom['icon'] = 'fas fa-angle-up';
 }
 
 // If we have a custom icon, we add an style
@@ -27,6 +27,6 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
 <a <?php echo $attributes; ?>>
     <?php if( $atom['icon'] ) { ?> 
-        <i class="fa fa-<?php echo $atom['icon']; ?> fa-3x hvr-icon"></i>
+        <i class="<?php echo $atom['icon']; ?> fa-3x hvr-icon"></i>
     <?php } ?>
 </a> 

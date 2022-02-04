@@ -213,7 +213,7 @@
 }
 
 /**
- * Box Shadows
+ * Box Shadows with various blur values
  */
 .components-custom-boxshadow {
     box-shadow: attr(data-x, 0) attr(data-y, 0) attr(data-blur, 15px) attr(data-spread, 0) attr(data-type, initial);
@@ -230,7 +230,7 @@
 .boxshadow(5);
 
 /**
- * Overlays
+ * Overlays with various opacities
  */
 .components-overlay {
     position: relative;
@@ -238,7 +238,7 @@
         position: relative;
         z-index: 2;
     }
-    &:after {
+    &:after, .components-overlay-background {
         background-color: #000;
         content: '';
         height: 100%;
@@ -249,11 +249,6 @@
         z-index: 1;
         width: 100%;
     }
-}
-
-.components-custom-overlay:after {
-    background-color: attr(data-color, #000);
-    opacity: attr(data-opacity, 0.5);
 }
 
 .overlay(@step; @index: 1) when ((@index * @step) =< 100) {
@@ -267,6 +262,14 @@
 }
 
 .overlay(5);
+
+// Custom overlays (expirimental - now solved with js)
+.components-custom-overlay:after {
+    background-color: attr(data-overlay-color, #000);
+    display: none;
+    opacity: attr(data-overlay-opacity, 0.5);
+}
+
 
 /**
  * Video Backgrounds

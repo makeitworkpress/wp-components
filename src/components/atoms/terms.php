@@ -14,7 +14,7 @@ $atom = wp_parse_args( $atom, [
     'hover_item'    => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
     'seperator'     => '/',                             // Content that seperates terms
     'terms'         => [],                              // Accepts a custom array of terms
-    'term_style'     => 'normal'                         // Accepts a custom style, such as button
+    'term_style'     => 'normal'                        // Accepts a custom style, such as 'button'
 ] );
 
 if( ! $atom['terms'] ) {

@@ -8,7 +8,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'attributes'    => [
         'itemprop' =>  'name',
     ],
-    'link'          => '',          
+    'link'          => '',  // Custom link or 'post' to link to the post directly        
     'tag'           => 'h1',
     'title'         => get_the_title(),
     'schema'        => true // If microdata is rendered or not. Also removes schematic attributes
@@ -19,9 +19,7 @@ if( ! $atom['schema'] ) {
 }
 
 // Custom link to a post
-if( $atom['link'] == 'post' ) {
-    $atom['link'] = esc_url( get_permalink() ); 
-} 
+$atom['link'] = $atom['link'] == 'post' ? esc_url( get_permalink() ) : esc_url( $atom['link'] ); 
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']);  ?>
 

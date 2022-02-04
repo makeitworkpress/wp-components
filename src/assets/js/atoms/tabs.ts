@@ -37,7 +37,7 @@ const Tabs: Component = {
         const clickedButton = event.currentTarget as HTMLAnchorElement;
         
         // The tab links to a regular url
-        if( clickedButton.href !== '#' ) {
+        if( clickedButton.href.slice(-1) !== '#' ) {
             return;
         }
 

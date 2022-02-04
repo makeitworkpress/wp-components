@@ -10,7 +10,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'taxonomies'    => [] // Accepts the following format: 'category' => ['after' => '', 'before' => '','icon' => 'folder', 'schema' => 'genre', 'seperator' => ', ']
 ] );
 
-// Show our taxonomies if the standard array is empty
+// Show our default taxonomies if the standard array is empty
 if( empty($atom['taxonomies']) ) {
 
     if( ! $atom['id'] ) {
@@ -38,7 +38,7 @@ if( empty($atom['taxonomies']) ) {
             }
 
             // Icons
-            $icon = $taxonomy == 'post_tag' ? 'tag' : 'dot-circle-o';
+            $icon = $taxonomy == 'post_tag' ? 'fas fa-tag' : 'fas fa-dot-circle';
 
             $atom['taxonomies'][$taxonomy]  = ['after' => '', 'before' => '','icon' => $icon, 'schema' => $schema, 'seperator' => ', '];
 
@@ -70,7 +70,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         <?php if( isset($properties['list']) && $properties['list'] ) { ?>
             <div class="atom-termlist-item entry-<?php echo $taxonomy; ?>" <?php if( isset($properties['schema']) && $properties['schema'] && $atom['schema'] ) { echo 'itemprop="' . $properties['schema'] . '"'; } ?>>
                 <?php if( $properties['icon'] ) { ?>
-                    <i class="fa fa-<?php echo $properties['icon']; ?> hvr-icon"></i>
+                    <i class="<?php echo $properties['icon']; ?> hvr-icon"></i>
                 <?php } ?>
                 <?php                                               
                     echo $properties['list']; 

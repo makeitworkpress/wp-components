@@ -8,9 +8,9 @@ $atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' 
 
 // Atom values
 $atom = wp_parse_args( $atom, [
-    'hover_item' => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().    
-    'position'  => 'top',
-    'tabs'      => []      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
+    'hover_item'    => '', // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().    
+    'position'      => 'top',
+    'tabs'          => []      // Accepts an array with tab ids as keys, with an array with content, icon, link or title
 ] );
 
 // Return if we do not have tabs
@@ -36,7 +36,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 <a class="atom-tab <?php echo $active; ?><?php if($atom['hover_item']) { ?> hvr-<?php echo $atom['hover_item']; } ?>" href="<?php echo isset($tab['link']) ? $tab['link'] : '#'; ?>" data-target="<?php echo $key; ?>">
                     
                     <?php if( isset($tab['icon']) ) { ?> 
-                        <i class="fa fa-<?php echo $tab['icon']; ?> hvr-icon"></i>
+                        <i class="<?php echo $tab['icon']; ?> hvr-icon"></i>
                     <?php } ?>
                     
                     <?php 
@@ -59,8 +59,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
                 $count++;
         ?>
             <section class="atom-tab <?php echo $active; ?>" data-id="<?php echo $key; ?>">
-                <?php 
-                    // Our definite tab content                                
+                <?php                               
                     if( isset($tab['content']) ) {   
                         echo $tab['content'];
                     }

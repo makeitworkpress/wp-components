@@ -396,24 +396,29 @@ const Scroll = {
      * Setup the handler for the window functions
      */
     setupwindowHandler() {
+        let scrolled = false;
         window.addEventListener('scroll', () => {
             let scrollPosition = window.scrollY;
             for (const element of this.elements) {
                 if (element.classList.contains('atom-scroll-top')) {
                     if (scrollPosition > window.innerHeight) {
                         (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
+                        scrolled = true;
                     }
-                    else {
+                    else if (scrolled && scrollPosition < window.innerHeight) {
                         (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
+                        scrolled = false;
                     }
                 }
                 else {
                     let buttonPosition = element.getBoundingClientRect().top + scrollPosition;
                     if (scrollPosition > buttonPosition) {
                         (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeOut)(element);
+                        scrolled = true;
                     }
-                    else {
+                    else if (scrolled && scrollPosition < buttonPosition) {
                         (0,_other_utils__WEBPACK_IMPORTED_MODULE_0__.FadeIn)(element);
+                        scrolled = false;
                     }
                 }
             }
@@ -475,11 +480,11 @@ const Search = {
      */
     setupAjaxSearch(element) {
         const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset;
-        const searchForm = document.querySelector('.search-form');
-        const searchField = document.querySelector('.search-field');
-        const moreAnchor = document.querySelector('.atom-search-all');
-        const results = document.querySelector('.atom-search-results');
-        const loadingIcon = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+        const searchForm = element.querySelector('.search-form');
+        const searchField = element.querySelector('.search-field');
+        const moreAnchor = element.querySelector('.atom-search-all');
+        const results = element.querySelector('.atom-search-results');
+        const loadingIcon = element.querySelector('.fa-circle-notch');
         let timer;
         let value;
         if (!element.classList.contains('atom-search-ajax')) {
@@ -493,12 +498,11 @@ const Search = {
                 return;
             }
             timer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-                var _a, _b;
+                var _a;
                 value = currentSearchField.value;
                 moreAnchor.href = moreAnchor.href + encodeURI(value);
                 results.classList.add('components-loading');
                 (_a = results.querySelector('.atom-search-all')) === null || _a === void 0 ? void 0 : _a.remove();
-                searchForm.append(loadingIcon);
                 const response = yield (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.AjaxApi)({
                     action: 'public_search',
                     appear: appear,
@@ -518,8 +522,10 @@ const Search = {
                         window.sr.sync();
                     }
                 }
-                (_b = searchForm.querySelector('.fa-circle-o-notch')) === null || _b === void 0 ? void 0 : _b.remove();
-                results.classList.remove('components-loading');
+                setTimeout(() => {
+                    (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeOut)(loadingIcon);
+                    results.classList.remove('components-loading');
+                }, 500);
             }), +delay);
         });
     },
@@ -532,12 +538,12 @@ const Search = {
         if (!searchExpandElement) {
             return;
         }
-        const searchForm = element.querySelector('.atom-search-expand');
+        const searchForm = element.querySelector('.atom-search-form');
         const searchField = searchForm.querySelector('.search-field');
         searchExpandElement.addEventListener('click', (event) => {
             event.preventDefault();
             (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.ToggleClass)(element, 'atom-search-expanded');
-            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.ToggleClass)(searchExpandElement.querySelector('.fa'), ['fa-search', 'fa-times']);
+            (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.ToggleClass)(searchExpandElement.querySelector('.fas'), ['fa-search', 'fa-times']);
             (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeToggle)(searchForm);
             searchField.focus();
         });
@@ -637,7 +643,7 @@ const Tabs = {
     clickHandler(event, buttons, element) {
         const clickedButton = event.currentTarget;
         // The tab links to a regular url
-        if (clickedButton.href !== '#') {
+        if (clickedButton.href.slice(-1) !== '#') {
             return;
         }
         event.preventDefault();
@@ -938,7 +944,8 @@ const Slider = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "InitScrollReveal": function() { return /* binding */ InitScrollReveal; },
-/* harmony export */   "InitParallax": function() { return /* binding */ InitParallax; }
+/* harmony export */   "InitParallax": function() { return /* binding */ InitParallax; },
+/* harmony export */   "InitOverlays": function() { return /* binding */ InitOverlays; }
 /* harmony export */ });
 function InitScrollReveal() {
     if (typeof window.ScrollReveal !== "undefined") {
@@ -954,11 +961,30 @@ function InitParallax() {
         let scrollPosition = window.scrollY;
         const parallaxSections = document.getElementsByClassName('components-parallax');
         if (parallaxSections.length > 0) {
-            for (let key in parallaxSections) {
-                parallaxSections[key].style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition / 5) + "px" + ')';
+            for (let section of parallaxSections) {
+                section.style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition / 5) + "px" + ')';
             }
         }
     });
+}
+/**
+ * Adds custom overlays to any section that has one defined
+ * This function deprecates once attr is sufficiently supported by CSS
+ */
+function InitOverlays() {
+    const overlayedElements = document.getElementsByClassName('components-custom-overlay');
+    if (overlayedElements.length < 1) {
+        return;
+    }
+    for (let element of overlayedElements) {
+        console.log(element);
+        const { color = '#000', opacity = '0.5' } = element.dataset;
+        const overlay = document.createElement('div');
+        overlay.classList.add('components-overlay-background');
+        overlay.style.backgroundColor = color;
+        overlay.style.opacity = opacity;
+        element.append(overlay);
+    }
 }
 
 
@@ -1307,21 +1333,10 @@ class WPC_App {
             for (const key in this.modules) {
                 this.modules[key].init();
             }
-            this.initScrollReveal();
-            this.initParallax();
+            (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitOverlays)();
+            (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitParallax)();
+            (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitScrollReveal)();
         });
-    }
-    /**
-     * Initializes our scroll-reveal functionality
-     */
-    initScrollReveal() {
-        (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitScrollReveal)();
-    }
-    /**
-     * Initializes the parallax functionality
-     */
-    initParallax() {
-        (0,_other_modules__WEBPACK_IMPORTED_MODULE_12__.InitParallax)();
     }
 }
 ;

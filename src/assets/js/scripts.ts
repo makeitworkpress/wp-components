@@ -13,7 +13,7 @@ import Tabs from "./atoms/tabs";
 import Header from "./molecules/header";
 import Posts from "./molecules/posts";
 import Slider from "./molecules/slider";
-import { InitParallax, InitScrollReveal } from "./other/modules";
+import { InitParallax, InitScrollReveal, InitOverlays } from "./other/modules";
 import Component from "./types/component";
 
 /**
@@ -39,23 +39,10 @@ class WPC_App {
         this.modules[key].init();
       }
 
-      this.initScrollReveal();
-      this.initParallax();  
+      InitOverlays();
+      InitParallax();
+      InitScrollReveal(); 
     });
-  }
-
-  /**
-   * Initializes our scroll-reveal functionality
-   */
-  private initScrollReveal() {
-    InitScrollReveal();
-  }
-
-  /**
-   * Initializes the parallax functionality
-   */
-  private initParallax() {
-    InitParallax();
   }
 
 };

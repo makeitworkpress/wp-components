@@ -37,11 +37,11 @@ const Search: Component = {
      */    
     setupAjaxSearch(element: HTMLElement): void {  
         const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset; 
-        const searchForm = document.querySelector('.search-form') as HTMLElement;
-        const searchField = document.querySelector('.search-field') as HTMLInputElement;
-        const moreAnchor = document.querySelector('.atom-search-all') as HTMLAnchorElement;
-        const results = document.querySelector('.atom-search-results') as HTMLElement;
-        const loadingIcon = document.createElement('<i class="fa fa-spin fa-circle-o-notch"></i>');
+        const searchForm = element.querySelector('.search-form') as HTMLElement;
+        const searchField = element.querySelector('.search-field') as HTMLInputElement;
+        const moreAnchor = element.querySelector('.atom-search-all') as HTMLAnchorElement;
+        const results = element.querySelector('.atom-search-results') as HTMLElement;
+        const loadingIcon = element.querySelector('.fa-circle-notch') as HTMLElement;
 
         let timer: NodeJS.Timeout;
         let value: string;
@@ -66,7 +66,6 @@ const Search: Component = {
 
                 results.classList.add('components-loading');
                 results.querySelector('.atom-search-all')?.remove();
-                searchForm.append(loadingIcon);
 
                 const response = await AjaxApi<{ success: boolean; data: string }>({
                     action: 'public_search', 
@@ -90,8 +89,10 @@ const Search: Component = {
                     }
                 }
 
-                searchForm.querySelector('.fa-circle-o-notch')?.remove();
-                results.classList.remove('components-loading');
+                setTimeout( () => {
+                    FadeOut(loadingIcon);
+                    results.classList.remove('components-loading');
+                }, 500);
 
             }, +delay);
 
@@ -111,14 +112,14 @@ const Search: Component = {
             return;
         }
 
-        const searchForm = element.querySelector('.atom-search-expand') as HTMLElement; 
+        const searchForm = element.querySelector('.atom-search-form') as HTMLElement; 
         const searchField = searchForm.querySelector('.search-field') as HTMLInputElement;
 
         searchExpandElement.addEventListener('click', (event) => {
             event.preventDefault();
 
             ToggleClass(element, 'atom-search-expanded');
-            ToggleClass(searchExpandElement.querySelector('.fa'), ['fa-search', 'fa-times']);
+            ToggleClass(searchExpandElement.querySelector('.fas'), ['fa-search', 'fa-times']);
 
             FadeToggle(searchForm);
             searchField.focus();

@@ -14,18 +14,12 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
 
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
-<aside <?php echo $attributes; ?>>
-    
+<aside <?php echo $attributes; ?>>   
     <?php 
-
         foreach( $atom['sidebars'] as $sidebar ) {
-
             if( is_active_sidebar($sidebar) ) { 
                 dynamic_sidebar( $sidebar ); 
             }
-
         } 
-
-    ?>
-    
+    ?>  
 </aside>
