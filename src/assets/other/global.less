@@ -251,12 +251,12 @@
     }
 }
 
-.overlay(@step; @index: 1) when ((@index * @step) =< 100) {
-    @value: @step * @index;
-    .overlay(@value; (@index+1));
+.overlay(@step; @index: 1) when (@index =< 20) {
+    @value: (@step * @index);
+    .overlay(@step; (@index+1));
      
     .components-opacity@{value}-overlay:after {
-        opacity: (@step * @index)/100
+        opacity: ((@step * @index)/100);
     }
    
 }

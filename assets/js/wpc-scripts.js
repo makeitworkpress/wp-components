@@ -2,14 +2,14 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/assets/js/atoms/cart.ts":
-/*!*************************************!*\
-  !*** ./src/assets/js/atoms/cart.ts ***!
-  \*************************************/
+/***/ "./src/assets/atoms/cart.ts":
+/*!**********************************!*\
+  !*** ./src/assets/atoms/cart.ts ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 /**
  * Defines a social share element
@@ -42,10 +42,10 @@ const Cart = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/map.ts":
-/*!************************************!*\
-  !*** ./src/assets/js/atoms/map.ts ***!
-  \************************************/
+/***/ "./src/assets/atoms/map.ts":
+/*!*********************************!*\
+  !*** ./src/assets/atoms/map.ts ***!
+  \*********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -145,14 +145,14 @@ const CustomMap = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/menu.ts":
-/*!*************************************!*\
-  !*** ./src/assets/js/atoms/menu.ts ***!
-  \*************************************/
+/***/ "./src/assets/atoms/menu.ts":
+/*!**********************************!*\
+  !*** ./src/assets/atoms/menu.ts ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 /**
  * Defines the custom menu scripts
@@ -207,14 +207,14 @@ const Menu = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/modal.ts":
-/*!**************************************!*\
-  !*** ./src/assets/js/atoms/modal.ts ***!
-  \**************************************/
+/***/ "./src/assets/atoms/modal.ts":
+/*!***********************************!*\
+  !*** ./src/assets/atoms/modal.ts ***!
+  \***********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 /**
  * Defines the custom header scripts
@@ -247,14 +247,14 @@ const Modal = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/rate.ts":
-/*!*************************************!*\
-  !*** ./src/assets/js/atoms/rate.ts ***!
-  \*************************************/
+/***/ "./src/assets/atoms/rate.ts":
+/*!**********************************!*\
+  !*** ./src/assets/atoms/rate.ts ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -354,14 +354,14 @@ const Rate = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/scroll.ts":
-/*!***************************************!*\
-  !*** ./src/assets/js/atoms/scroll.ts ***!
-  \***************************************/
+/***/ "./src/assets/atoms/scroll.ts":
+/*!************************************!*\
+  !*** ./src/assets/atoms/scroll.ts ***!
+  \************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 const Scroll = {
     elements: document.getElementsByClassName('atom-scroll'),
@@ -419,15 +419,15 @@ const Scroll = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/search.ts":
-/*!***************************************!*\
-  !*** ./src/assets/js/atoms/search.ts ***!
-  \***************************************/
+/***/ "./src/assets/atoms/search.ts":
+/*!************************************!*\
+  !*** ./src/assets/atoms/search.ts ***!
+  \************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/modules */ "./src/assets/js/other/modules.ts");
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/modules */ "./src/assets/other/modules.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -504,11 +504,11 @@ const Search = {
                     (0,_other_utils__WEBPACK_IMPORTED_MODULE_1__.FadeIn)(results);
                     results.innerHTML = response.data;
                     results.append(moreAnchor);
-                    if (typeof window.sr !== 'undefined') {
-                        if (window.sr.initialized === false) {
+                    if (typeof sr !== 'undefined') {
+                        if (sr.initialized === false) {
                             (0,_other_modules__WEBPACK_IMPORTED_MODULE_0__.InitScrollReveal)();
                         }
-                        window.sr.sync();
+                        sr.sync();
                     }
                 }
                 setTimeout(() => {
@@ -543,14 +543,14 @@ const Search = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/share.ts":
-/*!**************************************!*\
-  !*** ./src/assets/js/atoms/share.ts ***!
-  \**************************************/
+/***/ "./src/assets/atoms/share.ts":
+/*!***********************************!*\
+  !*** ./src/assets/atoms/share.ts ***!
+  \***********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 /**
  * Defines a social share element
@@ -593,10 +593,10 @@ const Share = {
 
 /***/ }),
 
-/***/ "./src/assets/js/atoms/tabs.ts":
-/*!*************************************!*\
-  !*** ./src/assets/js/atoms/tabs.ts ***!
-  \*************************************/
+/***/ "./src/assets/atoms/tabs.ts":
+/*!**********************************!*\
+  !*** ./src/assets/atoms/tabs.ts ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -655,14 +655,14 @@ const Tabs = {
 
 /***/ }),
 
-/***/ "./src/assets/js/molecules/header.ts":
-/*!*******************************************!*\
-  !*** ./src/assets/js/molecules/header.ts ***!
-  \*******************************************/
+/***/ "./src/assets/molecules/header.ts":
+/*!****************************************!*\
+  !*** ./src/assets/molecules/header.ts ***!
+  \****************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/js/other/utils.ts");
+/* harmony import */ var _other_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../other/utils */ "./src/assets/other/utils.ts");
 
 const Header = {
     elements: document.getElementsByClassName('molecule-header'),
@@ -731,10 +731,10 @@ const Header = {
 
 /***/ }),
 
-/***/ "./src/assets/js/molecules/posts.ts":
-/*!******************************************!*\
-  !*** ./src/assets/js/molecules/posts.ts ***!
-  \******************************************/
+/***/ "./src/assets/molecules/posts.ts":
+/*!***************************************!*\
+  !*** ./src/assets/molecules/posts.ts ***!
+  \***************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -803,12 +803,12 @@ const Posts = {
                 .then((response) => {
                 const posts = this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
                 const postsWrapper = element.querySelector('.molecule-posts-wrapper');
-                for (let key in posts) {
-                    postsWrapper.appendChild(posts[key]);
+                for (let post of posts) {
+                    postsWrapper.appendChild(post);
                 }
                 loading = false;
-                if (typeof window.sr !== 'undefined') {
-                    window.sr.sync();
+                if (typeof sr !== 'undefined') {
+                    sr.sync();
                 }
             });
         });
@@ -825,10 +825,10 @@ const Posts = {
         if (paginationAnchors.length < 1) {
             return;
         }
-        for (let key in paginationAnchors) {
-            paginationAnchors[key].addEventListener('click', (event) => {
+        for (let anchorElement of paginationAnchors) {
+            anchorElement.addEventListener('click', (event) => {
                 event.preventDefault();
-                this.paginationClickHandler(element, paginationAnchors[key]);
+                this.paginationClickHandler(element, anchorElement);
             });
         }
     },
@@ -850,18 +850,23 @@ const Posts = {
         })
             .then((response) => {
             const responseDom = this.parser.parseFromString(response, 'text/html');
-            const oldPagination = element.querySelector('.molecule-posts-wrapper');
+            const oldPagination = element.querySelector('.atom-pagination');
             const oldPosts = element.querySelector('.molecule-posts-wrapper');
             const newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
             const newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
             element.classList.remove('components-loading');
-            if (oldPagination) {
-                oldPagination.outerHTML = newPagination;
+            console.log(newPagination);
+            console.log(newPosts);
+            // Older Posts
+            if (oldPosts && newPosts) {
+                oldPosts.remove();
+                element.append(newPosts);
             }
-            if (oldPosts) {
-                oldPosts.outerHTML = newPosts;
+            if (oldPagination && newPagination) {
+                oldPagination.remove();
+                element.append(newPagination);
             }
-            // Jquery animate
+            // Jquery animate alternative
             setTimeout(() => {
                 window.scrollBy({
                     top: element.getBoundingClientRect().top,
@@ -869,7 +874,7 @@ const Posts = {
                 });
             }, 500);
             // Sync our scroll-reveal from the global object
-            if (typeof window.sr !== "undefined") {
+            if (typeof sr !== "undefined") {
                 sr.sync();
             }
             // Because our dom is reconstructed, we need to setup pagination again for the given element
@@ -882,10 +887,10 @@ const Posts = {
 
 /***/ }),
 
-/***/ "./src/assets/js/molecules/slider.ts":
-/*!*******************************************!*\
-  !*** ./src/assets/js/molecules/slider.ts ***!
-  \*******************************************/
+/***/ "./src/assets/molecules/slider.ts":
+/*!****************************************!*\
+  !*** ./src/assets/molecules/slider.ts ***!
+  \****************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -924,10 +929,10 @@ const Slider = {
 
 /***/ }),
 
-/***/ "./src/assets/js/other/modules.ts":
-/*!****************************************!*\
-  !*** ./src/assets/js/other/modules.ts ***!
-  \****************************************/
+/***/ "./src/assets/other/modules.ts":
+/*!*************************************!*\
+  !*** ./src/assets/other/modules.ts ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -937,7 +942,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "InitOverlays": function() { return /* binding */ InitOverlays; }
 /* harmony export */ });
 function InitScrollReveal() {
-    if (typeof window.ScrollReveal !== "undefined") {
+    if (typeof ScrollReveal !== "undefined") {
         window.sr = ScrollReveal();
         window.sr.reveal('.components-bottom-appear', { origin: 'bottom' }, 50);
         window.sr.reveal('.components-left-appear', { origin: 'left' }, 50);
@@ -966,7 +971,6 @@ function InitOverlays() {
         return;
     }
     for (let element of overlayedElements) {
-        console.log(element);
         const { color = '#000', opacity = '0.5' } = element.dataset;
         const overlay = document.createElement('div');
         overlay.classList.add('components-overlay-background');
@@ -979,10 +983,10 @@ function InitOverlays() {
 
 /***/ }),
 
-/***/ "./src/assets/js/other/utils.ts":
-/*!**************************************!*\
-  !*** ./src/assets/js/other/utils.ts ***!
-  \**************************************/
+/***/ "./src/assets/other/utils.ts":
+/*!***********************************!*\
+  !*** ./src/assets/other/utils.ts ***!
+  \***********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -997,7 +1001,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ToggleClass": function() { return /* binding */ ToggleClass; },
 /* harmony export */   "GetElementSiblings": function() { return /* binding */ GetElementSiblings; }
 /* harmony export */ });
-/* harmony import */ var _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/sibling-types */ "./src/assets/js/types/sibling-types.ts");
+/* harmony import */ var _types_sibling_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/sibling-types */ "./src/assets/types/sibling-types.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1017,20 +1021,20 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 function AjaxApi(data) {
     return __awaiter(this, void 0, void 0, function* () {
         if (typeof data.nonce === 'undefined') {
-            data.nonce = window.wpc.nonce;
+            data.nonce = wpc.nonce;
         }
         // Non-rest api calls using admin-ajax use FormData.
         const body = new FormData();
         for (const key in data) {
             body.append(key, data[key]);
         }
-        const response = yield fetch(window.wpc.ajaxUrl, {
+        const response = yield fetch(wpc.ajaxUrl, {
             method: 'POST',
             credentials: 'same-origin',
             body
         });
         const jsonResponse = response.json();
-        if (window.wpc.debug) {
+        if (wpc.debug) {
             console.log(jsonResponse);
         }
         return jsonResponse;
@@ -1192,10 +1196,10 @@ function GetElementSiblings(element, mode = _types_sibling_types__WEBPACK_IMPORT
 
 /***/ }),
 
-/***/ "./src/assets/js/types/sibling-types.ts":
-/*!**********************************************!*\
-  !*** ./src/assets/js/types/sibling-types.ts ***!
-  \**********************************************/
+/***/ "./src/assets/types/sibling-types.ts":
+/*!*******************************************!*\
+  !*** ./src/assets/types/sibling-types.ts ***!
+  \*******************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1271,23 +1275,23 @@ var SiblingTypes;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/*!**********************************!*\
-  !*** ./src/assets/js/scripts.ts ***!
-  \**********************************/
+/*!*******************************!*\
+  !*** ./src/assets/scripts.ts ***!
+  \*******************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _atoms_cart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./atoms/cart */ "./src/assets/js/atoms/cart.ts");
-/* harmony import */ var _atoms_map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./atoms/map */ "./src/assets/js/atoms/map.ts");
-/* harmony import */ var _atoms_menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./atoms/menu */ "./src/assets/js/atoms/menu.ts");
-/* harmony import */ var _atoms_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./atoms/modal */ "./src/assets/js/atoms/modal.ts");
-/* harmony import */ var _atoms_rate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./atoms/rate */ "./src/assets/js/atoms/rate.ts");
-/* harmony import */ var _atoms_scroll__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./atoms/scroll */ "./src/assets/js/atoms/scroll.ts");
-/* harmony import */ var _atoms_search__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./atoms/search */ "./src/assets/js/atoms/search.ts");
-/* harmony import */ var _atoms_share__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./atoms/share */ "./src/assets/js/atoms/share.ts");
-/* harmony import */ var _atoms_tabs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./atoms/tabs */ "./src/assets/js/atoms/tabs.ts");
-/* harmony import */ var _molecules_header__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./molecules/header */ "./src/assets/js/molecules/header.ts");
-/* harmony import */ var _molecules_posts__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./molecules/posts */ "./src/assets/js/molecules/posts.ts");
-/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/js/molecules/slider.ts");
-/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./other/modules */ "./src/assets/js/other/modules.ts");
+/* harmony import */ var _atoms_cart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./atoms/cart */ "./src/assets/atoms/cart.ts");
+/* harmony import */ var _atoms_map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./atoms/map */ "./src/assets/atoms/map.ts");
+/* harmony import */ var _atoms_menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./atoms/menu */ "./src/assets/atoms/menu.ts");
+/* harmony import */ var _atoms_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./atoms/modal */ "./src/assets/atoms/modal.ts");
+/* harmony import */ var _atoms_rate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./atoms/rate */ "./src/assets/atoms/rate.ts");
+/* harmony import */ var _atoms_scroll__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./atoms/scroll */ "./src/assets/atoms/scroll.ts");
+/* harmony import */ var _atoms_search__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./atoms/search */ "./src/assets/atoms/search.ts");
+/* harmony import */ var _atoms_share__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./atoms/share */ "./src/assets/atoms/share.ts");
+/* harmony import */ var _atoms_tabs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./atoms/tabs */ "./src/assets/atoms/tabs.ts");
+/* harmony import */ var _molecules_header__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./molecules/header */ "./src/assets/molecules/header.ts");
+/* harmony import */ var _molecules_posts__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./molecules/posts */ "./src/assets/molecules/posts.ts");
+/* harmony import */ var _molecules_slider__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./molecules/slider */ "./src/assets/molecules/slider.ts");
+/* harmony import */ var _other_modules__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./other/modules */ "./src/assets/other/modules.ts");
 /**
  * All front-end modules are bundled into one application
  */

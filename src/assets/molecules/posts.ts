@@ -2,6 +2,7 @@
  * Defines the custom posts scripts
  */
 import Component from '../types/component';
+declare let sr: any;
 
 const Posts: Component = {
     parser: new DOMParser,
@@ -91,14 +92,14 @@ const Posts: Component = {
                     const posts = this.parser.parseFromString(response, 'text/html').querySelectorAll('.molecule-posts[data-id="' + containerId + '"] .molecule-post');
                     const postsWrapper = element.querySelector('.molecule-posts-wrapper') as HTMLElement;
 
-                    for( let key in posts ) {
-                        postsWrapper.appendChild(posts[key]);
+                    for( let post of posts ) {
+                        postsWrapper.appendChild(post);
                     }
 
                     loading = false;
 
-                    if( typeof window.sr !== 'undefined' ) {
-                        window.sr.sync();
+                    if( typeof sr !== 'undefined' ) {
+                        sr.sync();
                     }
 
                 });
@@ -123,11 +124,10 @@ const Posts: Component = {
             return;
         }
 
-        for( let key in paginationAnchors ) {
-            paginationAnchors[key].addEventListener('click', (event) => {
+        for( let anchorElement of paginationAnchors ) {
+            anchorElement.addEventListener('click', (event) => {
                 event.preventDefault();
-
-                this.paginationClickHandler(element, paginationAnchors[key]);
+                this.paginationClickHandler(element, anchorElement);
             });
         }
 
@@ -155,32 +155,37 @@ const Posts: Component = {
             })
             .then( (response) => {
                 const responseDom = this.parser.parseFromString(response, 'text/html');
-                const oldPagination = element.querySelector('.molecule-posts-wrapper');
+                const oldPagination = element.querySelector('.atom-pagination');
                 const oldPosts = element.querySelector('.molecule-posts-wrapper');
                 const newPagination = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .atom-pagination');
                 const newPosts = responseDom.querySelector('.molecule-posts[data-id="' + element.dataset.id + '"] .molecule-posts-wrapper');
 
                 element.classList.remove('components-loading');
+
+                console.log(newPagination);
+                console.log(newPosts);
+
+                // Older Posts
+                if(oldPosts && newPosts) {
+                    oldPosts.remove();
+                    element.append(newPosts);
+                }
                 
-                if(oldPagination) {
-                    oldPagination.outerHTML = newPagination; 
+                if(oldPagination && newPagination) {
+                    oldPagination.remove();
+                    element.append(newPagination);
                 }
 
-                if(oldPosts) {
-                    oldPosts.outerHTML = newPosts;   
-                }
-
-                // Jquery animate
+                // Jquery animate alternative
                 setTimeout( () => {
                     window.scrollBy({
                         top: element.getBoundingClientRect().top,
                         behavior: 'smooth'
                     })            
-                    
                 }, 500);
 
                 // Sync our scroll-reveal from the global object
-                if( typeof window.sr !== "undefined" ) {
+                if( typeof sr !== "undefined" ) {
                     sr.sync();
                 }
 

@@ -1,5 +1,7 @@
+declare let ScrollReveal: any;
+
 export function InitScrollReveal() {
-  if( typeof window.ScrollReveal !== "undefined" ) {
+  if( typeof ScrollReveal !== "undefined" ) {
  
     window.sr = ScrollReveal();
 
@@ -36,7 +38,6 @@ export function InitOverlays() {
   }
 
   for( let element of overlayedElements ) {
-    console.log(element);
     const { color = '#000', opacity = '0.5' } = element.dataset;
     const overlay = document.createElement('div');
     

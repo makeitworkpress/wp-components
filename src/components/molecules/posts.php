@@ -29,8 +29,8 @@ $molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
         'itemtype'          => 'http://schema.org/Blog'
     ],
     'filter'            => false,                       // Adds a custom filter for a certain taxonomy. Accepts a certain taxonomy name in an array.  
-    'grid_gap'          => 'default',                                                
-    'infinite'          => false,    
+    'grid_gap'          => 'default',                   // The gap between posts                                           
+    'infinite'          => false,                       // To allow infinite scroll
     'none'              => __('Bummer! No posts found.', WP_COMPONENTS_LANGUAGE),
     /**
      * Accepts properties for each post

@@ -4,6 +4,8 @@
 import AjaxData from "../types/ajax-data";
 import { SiblingTypes } from "../types/sibling-types";
 
+declare let wpc: any;
+
 /**
  * Sends a post request to the default WordPress Ajax API endpoint
  * 
@@ -13,7 +15,7 @@ import { SiblingTypes } from "../types/sibling-types";
 export async function AjaxApi<T>(data: AjaxData): Promise<T> {
 
     if( typeof data.nonce === 'undefined' ) {
-        data.nonce = window.wpc.nonce;
+        data.nonce = wpc.nonce;
     }
 
     // Non-rest api calls using admin-ajax use FormData.
@@ -23,7 +25,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
         body.append(key, data[key]);    
     }
 
-    const response = await fetch(window.wpc.ajaxUrl, {
+    const response = await fetch(wpc.ajaxUrl, {
         method: 'POST',
         credentials: 'same-origin',
         body
@@ -31,7 +33,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
 
     const jsonResponse = response.json();
 
-    if( window.wpc.debug ) {
+    if( wpc.debug ) {
         console.log(jsonResponse);
     }
     

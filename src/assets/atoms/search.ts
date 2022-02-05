@@ -2,6 +2,8 @@ import { InitScrollReveal } from "../other/modules";
 import { ToggleClass, FadeToggle, FadeOut, AjaxApi, FadeIn } from "../other/utils";
 import Component from "../types/component";
 
+declare let sr: any;
+
 /**
  * Custom scripts for a search element
  * If enabled, the script will loads results through ajax
@@ -81,11 +83,11 @@ const Search: Component = {
                     results.innerHTML = response.data;
                     results.append(moreAnchor);
 
-                    if( typeof window.sr !== 'undefined') {
-                        if( window.sr.initialized === false ) {
+                    if( typeof sr !== 'undefined') {
+                        if( sr.initialized === false ) {
                             InitScrollReveal();
                         }
-                        window.sr.sync();
+                        sr.sync();
                     }
                 }
 
