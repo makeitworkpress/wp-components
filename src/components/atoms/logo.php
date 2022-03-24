@@ -32,7 +32,7 @@ $atom = MakeitWorkPress\WP_Components\Build::multi_parse_args( $atom, [
     'url'                   => esc_url( get_bloginfo('url') )
 ] ); 
 
-if( ! is_numeric($atom['default']) && ! isset($atom['default']['src']) ) {
+if( $atom['mode'] === 'logo' && ! is_numeric($atom['default']) && ! isset($atom['default']['src']) ) {
     return;
 } 
 

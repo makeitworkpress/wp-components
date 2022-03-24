@@ -27,6 +27,10 @@ const Menu: Component = {
         const hamburgerMenu = menu.querySelector('.atom-menu-hamburger') as HTMLAnchorElement;
         const menuWrapper = menu.querySelector('.menu') as HTMLElement;
 
+        if( ! hamburgerMenu ) {
+            return;
+        }
+
         hamburgerMenu.addEventListener('click', (event) => {
             event.preventDefault();
             menu.classList.toggle('atom-menu-expanded');
