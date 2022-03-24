@@ -1,6 +1,5 @@
-import { AjaxApi, FadeIn, FadeOut, GetElementSiblings, ToggleClass } from "../other/utils";
+import { AjaxApi, FadeIn, FadeOut } from "../other/utils";
 import Component from "../types/component";
-import { SiblingTypes } from "../types/sibling-types";
 
 /**
  * Defines the custom header scripts

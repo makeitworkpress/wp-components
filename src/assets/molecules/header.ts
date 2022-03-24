@@ -36,9 +36,9 @@ const Header: Component = {
          */
         if( header.classList.contains('molecule-header-fixed') ) {
             const height: number = header.clientHeight;
-            const mainElement = header.nextElementSibling as HTMLElement;
+            const mainElement = header.nextElementSibling as HTMLElement
             
-            if( mainElement.tagName === 'main') {
+            if( mainElement.tagName === 'main' || mainElement.tagName === 'MAIN' ) {             
                 mainElement.style.paddingTop = height + 'px';
             }
 

@@ -103,7 +103,7 @@ const CustomMap: Component = {
         // Define the minimum zoom to 15, even after bounds have changed
         google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
             if(map.getZoom() > 15) {
-                this.setZoom(15);
+                map.setZoom(15);
             }
         });
     }
