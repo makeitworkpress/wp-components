@@ -162,9 +162,6 @@ const Posts: Component = {
 
                 element.classList.remove('components-loading');
 
-                console.log(newPagination);
-                console.log(newPosts);
-
                 // Older Posts
                 if(oldPosts && newPosts) {
                     oldPosts.remove();
