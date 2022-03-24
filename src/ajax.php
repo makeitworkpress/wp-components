@@ -21,8 +21,9 @@ class Ajax {
         foreach( $methods as $method ) {
             
             // Skip our default methods
-            if( in_array($method, ['__construct', 'addMessage', 'addError', 'resolve', 'hasErrors']) )
+            if( in_array($method, ['__construct', 'addMessage', 'addError', 'resolve', 'hasErrors']) ) {
                 continue;
+            }
             
             // If a method is public, also add
             if( strpos($method, 'public') == 0 ) {

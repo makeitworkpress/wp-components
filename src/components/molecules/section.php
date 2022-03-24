@@ -11,13 +11,19 @@ $molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'atoms'         => [],          // Can render atoms if necessary
     'columns'       => [],          // Columns to display with their corresponding width and containing atoms or molecules. Use ['column' => 'half', 'atoms' => [['atom' => 'atom']]]
     'container'     => true,        // Wrap this component in a container
+    'custom_action' => '',          // Adds a custom add_action hook next to the default section hooks. This value is sanitized. Also ensures backwards compatibility
     'grid'          => false,       // Whether to display a grid
     'grid_gap'      => 'default',   // The gridgap, if a grid is enabled
     'molecules'     => [],          // Can render molecules if necessary
-    'tag'           => 'section',
-    'scroll'        => false,       // A scroll down button.
+    'tag'           => 'section',   // A tag for the section. Supports section, header, footer, main and div
+    'scroll'        => false,       // Renders a scroll down button if set to true.
     'video'         => ''           // Expects the url for a video for display a video background
 ] ); 
+
+// Prevents the use of unsupported tags
+if( ! in_array($molecule['tag'], ['div', 'footer', 'header', 'main', 'section']) ) {
+    $molecule['tag'] = 'div';
+}
 
 // Adds wrapper classes if we don't have a container
 if( ! $molecule['container'] && $molecule['grid'] ) {
@@ -30,6 +36,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     
     <?php do_action( 'components_section_before', $molecule ); ?>
 
+    <?php if( $molecule['custom_action'] ) { ?>
+        <?php do_action( 'components_' . sanitize_key( $molecule['custom_action'] ) . '_before', $molecule ); ?>    
+    <?php } ?>
+
     <?php if($molecule['video']) { ?>
         <div class="components-video-background-container">
             <video class="components-video-background-src" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" src="<?php echo esc_url($molecule['video']); ?>"></video>
@@ -41,6 +51,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     <?php } ?>
 
         <?php do_action( 'components_section_container_begin', $molecule ); ?>
+
+        <?php if( $molecule['custom_action'] ) { ?>
+            <?php do_action( 'components_' . sanitize_key( $molecule['custom_action'] ) . '_container_begin', $molecule ); ?>    
+        <?php } ?>        
 
         <?php foreach( $molecule['columns'] as $column ) { ?>
             <div class="components-section-columns components-<?php echo isset($column['column']) ? $column['column'] : 'fourth'; ?>-grid">
@@ -79,6 +93,10 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
 
         <?php do_action( 'components_section_container_end', $molecule ); ?>
 
+        <?php if( $molecule['custom_action'] ) { ?>
+            <?php do_action( 'components_' . sanitize_key( $molecule['custom_action'] ) . '_container_end', $molecule ); ?>    
+        <?php } ?>          
+
     <?php if( $molecule['container'] ) { ?>
         </div>
     <?php } ?>
@@ -93,5 +111,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
     ?>    
     
     <?php do_action( 'components_section_after', $molecule ); ?>
+
+    <?php if( $molecule['custom_action'] ) { ?>
+        <?php do_action( 'components_' . sanitize_key( $molecule['custom_action'] ) . '_after', $molecule ); ?>    
+    <?php } ?>        
     
 </<?php echo $molecule['tag']; ?>>

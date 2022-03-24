@@ -119,15 +119,13 @@ class Boot {
         } );     
         
         // Specific WooCommerce Based Actions
-        if( class_exists('WooCommerce') ) {
-            
+        if( class_exists('WooCommerce') ) { 
             // Counter that updates the mini cart with ajax
             add_filter('woocommerce_add_to_cart_fragments', function($fragments) {
                 $fragments['span.atom-cart-count'] = '<span class="atom-cart-count">' . WC()->cart->get_cart_contents_count() . '</span>'; 
                 
                 return $fragments;
-            });
-            
+            });  
         }        
         
     }   

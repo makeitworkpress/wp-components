@@ -50,6 +50,25 @@ class Build {
                 }    
             }
         }
+
+        // The molecules post-footer and post-header are deprecated. The following code ensures backwards compatibility.
+        if( $template === 'post-footer' || $template === 'post-header' ) {
+            switch($template) {
+                case 'post-footer':
+                    $custom_action  = 'post_footer';
+                    $tag            = 'footer';
+                    break;
+                case 'post-header':
+                    $custom_action  = 'post_header';
+                    $tag            = 'header';
+                    break;
+            }
+
+            $properties['custom_action']    = $custom_action;
+            $properties['tag']              = $tag;
+            $template = 'section';
+            
+        }
             
         // Our template path
         $path = apply_filters( 'components_' . $type . '_path', WP_COMPONENTS_PATH . 'components/' . $type . 's/' . $template . '.php', $template );
