@@ -75,21 +75,29 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($molecule['attribu
                     }
                 ?>
             </div>
-        <?php } ?>       
+        <?php } ?>  
+        
+        <?php if( $molecule['molecules'] || $molecule['atoms'] ) { ?>
+            <div class="molecule-section-components">
+        <?php } ?>
 
-        <?php 
+            <?php 
 
-            // Displaying molecules
-            foreach( $molecule['molecules'] as $sub_molecule ) { 
-                MakeitWorkPress\WP_Components\Build::molecule($sub_molecule['molecule'], $sub_molecule['properties']);
-            }          
+                // Displaying molecules
+                foreach( $molecule['molecules'] as $sub_molecule ) { 
+                    MakeitWorkPress\WP_Components\Build::molecule($sub_molecule['molecule'], $sub_molecule['properties']);
+                }          
 
-            // Displaying atoms only
-            foreach( $molecule['atoms'] as $atom ) { 
-                MakeitWorkPress\WP_Components\Build::atom($atom['atom'], $atom['properties']);
-            }            
+                // Displaying atoms only
+                foreach( $molecule['atoms'] as $atom ) { 
+                    MakeitWorkPress\WP_Components\Build::atom($atom['atom'], $atom['properties']);
+                }            
 
-        ?>
+            ?>
+
+        <?php if( $molecule['molecules'] || $molecule['atoms'] ) { ?>
+            </div>
+        <?php } ?>            
 
         <?php do_action( 'components_section_container_end', $molecule ); ?>
 
