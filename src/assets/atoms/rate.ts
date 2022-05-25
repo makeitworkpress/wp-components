@@ -80,10 +80,10 @@ const Rate: Component = {
 
         for( const starElement of starElements ) {
             starKey++;      
-            if( starKey < newRating ) {
+            if( starKey <= newRating ) {
                 starElement.classList.add('fas');
                 starElement.classList.remove('far');
-            } else if( starKey === newRating ) {
+            } else if( starKey === Math.ceil(newRating) ) {
                 const fraction = rating - Math.floor(rating) 
                 if( fraction > 0.25 && fraction < 0.75 ) {
                     starElement.classList.add('fas', 'fa-star-half');

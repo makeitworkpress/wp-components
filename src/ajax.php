@@ -21,7 +21,7 @@ class Ajax {
         foreach( $methods as $method ) {
             
             // Skip our default methods
-            if( in_array($method, ['__construct', 'addMessage', 'addError', 'resolve', 'hasErrors']) ) {
+            if( in_array($method, ['__construct']) ) {
                 continue;
             }
             
@@ -48,19 +48,19 @@ class Ajax {
         if( ! is_numeric($_POST['id']) || ! is_numeric($_POST['rating']) )
             wp_send_json_error();        
         
-        $userRating     = intval($_POST['rating']);
+        $user_rating    = intval($_POST['rating']);
         $id             = intval($_POST['id']);
         $max            = intval($_POST['max']);
         $min            = intval($_POST['min']);
         
         // Proceed if the rating is numeric, and between 0 and 5
-        if( $userRating <= $max && $userRating > $min ) {
+        if( $user_rating <= $max && $user_rating > $min ) {
            
             $count      = intval( get_post_meta($id, 'components_rating_count', true) );
             $rating     = floatval( get_post_meta($id, 'components_rating', true) );
             
             $newCount   = $count ? $count + 1 : 1;
-            $newRating  = ($rating * $count + $userRating)/$newCount;
+            $newRating  = ($rating * $count + $user_rating)/$newCount;
             
             update_post_meta($id, 'components_rating_count', $newCount);
             update_post_meta($id, 'components_rating', $newRating);
