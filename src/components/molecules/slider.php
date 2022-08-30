@@ -16,7 +16,7 @@ $molecule = MakeitWorkPress\WP_Components\Build::multi_parse_args( $molecule, [
     'options'           => [
         'arrowKeys'         => true,
         'autoHeight'        => true,
-        'controlsText'      => ['<i class="far fa-angle-left"></i>', '<i class="far fa-angle-right"></i>'],	
+        'controlsText'      => ['<i class="fas fa-angle-left"></i>', '<i class="fas fa-angle-right"></i>'],	
         'navPosition'       => 'bottom',
         'mode'              => 'carousel',      // Type of animation
         'mouseDrag'         => true,
