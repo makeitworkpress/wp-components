@@ -83,17 +83,17 @@ class Boot {
             }
 
             if( $this->configurations['fontawesome'] ) {
-                wp_enqueue_style( 'font-awesome', WP_COMPONENTS_ASSETS . 'vendor/css/font-awesome.min.css');
+                wp_enqueue_style( 'wpc-font-awesome', WP_COMPONENTS_ASSETS . 'vendor/css/font-awesome.min.css');
             }
             
             // Enqueue our animate CSS
             if( $this->configurations['animate'] ) {
-                wp_enqueue_style( 'animate-css', WP_COMPONENTS_ASSETS . 'vendor/css/animate.min.css');
+                wp_enqueue_style( 'wpc-animate-css', WP_COMPONENTS_ASSETS . 'vendor/css/animate.min.css');
             } 
             
             // Enqueue our hover CSS
             if( $this->configurations['hover'] ) {
-                wp_enqueue_style( 'hover-css', WP_COMPONENTS_ASSETS . 'vendor/css/hover.min.css');
+                wp_enqueue_style( 'wpc-hover-css', WP_COMPONENTS_ASSETS . 'vendor/css/hover.min.css');
             }  
             
             // Registers the maps script
