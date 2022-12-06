@@ -72,7 +72,7 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
     
     <?php if( $atom['collapse'] ) { ?>
         <a href="#" class="atom-search-expand">
-            <i class="fa fa-search"></i>
+            <i class="fas fa-search"></i>
         </a>
     <?php } ?>
     
