@@ -53,6 +53,9 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         </li>        
         
     <?php 
+
+        $breadcrumbs = [];
+
         /**
          * Loop through our types and see what matches our condition, and subsequently build the breadcrumbs array.
          */
@@ -63,8 +66,8 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
 
             if( function_exists($condition) && $condition() ) {
                 
-                // Reset our breadcrumbs, key and url if multiple conditions are ttrue
-                $breadcrumbs = array();
+                // Reset our breadcrumbs, key and url if multiple conditions are true
+                $breadcrumbs = [];
                 $key         = 0;
                 $url         = '';
 
