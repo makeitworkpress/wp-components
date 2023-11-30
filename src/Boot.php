@@ -42,9 +42,13 @@ class Boot {
         ] );
         
         // Define Constants
-        $folder = wp_normalize_path( substr( dirname(__DIR__, 1), strpos(__FILE__, 'wp-content') + strlen('wp-content') ) );    
-        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $folder . '/assets/' );
-        defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', plugin_dir_path( __FILE__ ) );
+        // $folder = wp_normalize_path( substr( dirname(__DIR__, 1), strpos(__FILE__, 'wp-content') + strlen('wp-content') ) ); 
+        $root_dir = dirname(__DIR__, 1);
+        $is_in_plugin = str_contains($root_dir, WP_PLUGIN_DIR) ? true : false; 
+        $root_path = $is_in_plugin ? substr($root_dir, strpos($root_dir, '/plugins')) : substr($root_dir, strpos($root_dir, '/themes'));
+
+        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $root_path . '/assets/' );
+        defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', $root_dir . '/src/' );
         defined( 'WP_COMPONENTS_LANGUAGE' ) or define( 'WP_COMPONENTS_LANGUAGE', $this->configurations['language'] );
         
         // Register our ajax actions
@@ -104,7 +108,7 @@ class Boot {
             // Enqueue our default components JS
             if( $this->configurations['js'] ) {
                 
-                wp_enqueue_script( 'wpc-js', WP_COMPONENTS_ASSETS . 'js/wpc-scripts.js', ['jquery'], NULL, true );
+                wp_enqueue_script( 'wpc-js', WP_COMPONENTS_ASSETS . 'js/wpc-scripts.js', [], NULL, true );
 
                 // Localize our script
                 wp_localize_script( 'wpc-js', 'wpc', [

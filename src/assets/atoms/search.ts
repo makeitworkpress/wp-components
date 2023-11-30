@@ -58,7 +58,7 @@ const Search: Component = {
             clearTimeout(timer);
             const currentSearchField = event.currentTarget as HTMLInputElement;
 
-            if( currentSearchField.value.length <= length || value === currentSearchField.value ) {
+            if( currentSearchField.value.length <= (length as number) || value === currentSearchField.value ) {
                 return;
             }
 
@@ -103,7 +103,7 @@ const Search: Component = {
     }, 
     
     /**
-     * Allows the search-form to be toggled
+     * Allows the search-form to be toggled from a single icon
      * @param element The search element
      */
     setupToggleSearch(element: HTMLElement): void {
@@ -124,6 +124,15 @@ const Search: Component = {
             ToggleClass(searchExpandElement.querySelector('.fas'), ['fa-search', 'fa-times']);
 
             FadeToggle(searchForm);
+
+            const searchResults = element.querySelector('.atom-search-results') as HTMLElement;
+
+            if (searchResults.style.display === 'block') {
+                (searchForm.querySelector('.search-field') as HTMLInputElement).value = '';
+                FadeOut(searchResults)
+            }
+
+            // Close search results when not expanding
             searchField.focus();
 
         });
