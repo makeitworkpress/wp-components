@@ -47,7 +47,7 @@ class Boot {
         $is_in_plugin = str_contains($root_dir, WP_PLUGIN_DIR) ? true : false; 
         $root_path = $is_in_plugin ? substr($root_dir, strpos($root_dir, '/plugins')) : substr($root_dir, strpos($root_dir, '/themes'));
 
-        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $root_path . '/assets/' );
+        defined( 'WP_COMPONENTS_ASSETS' ) or define( 'WP_COMPONENTS_ASSETS', content_url() . $root_path . '/public/' );
         defined( 'WP_COMPONENTS_PATH' ) or define( 'WP_COMPONENTS_PATH', $root_dir . '/src/' );
         defined( 'WP_COMPONENTS_LANGUAGE' ) or define( 'WP_COMPONENTS_LANGUAGE', $this->configurations['language'] );
         

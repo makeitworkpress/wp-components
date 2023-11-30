@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     filename: 'wpc-[name].js',
-    path: path.resolve( process.cwd(), 'assets/js' ),
+    path: path.resolve( process.cwd(), 'public/js' ),
   },  
   module: {
     ...defaults.module,
