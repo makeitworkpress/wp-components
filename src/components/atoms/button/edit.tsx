@@ -1,10 +1,28 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
-export default function Edit({ attributes, setAttributes }) {
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface ButtonAttributes {
+  label: string;
+  url: string;
+  linkTarget: string;
+  iconBefore: string;
+  iconAfter: string;
+  iconVisible: string;
+  size: string;
+  backgroundColor: string;
+  textColor: string;
+  className: string;
+}
+
+interface EditProps {
+  attributes: ButtonAttributes;
+  setAttributes: (attrs: Partial<ButtonAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
   const {
     label,
     url,
@@ -17,29 +35,23 @@ export default function Edit({ attributes, setAttributes }) {
     textColor,
   } = attributes;
 
-  const blockProps = useBlockProps({
-    className: `atom atom-button ${size ? `atom-button-${size}` : ""} ${
-      iconVisible && (iconBefore || iconAfter)
-        ? `atom-button-${iconVisible}`
-        : ""
-    } ${!backgroundColor ? "components-light-background" : ""}`.trim(),
-    style: {
-      backgroundColor: backgroundColor || undefined,
-      color: textColor || undefined,
-    },
-  });
-
   return (
-    <>
+    <div {...useBlockProps()}>
       <InspectorControls>
         <PanelBody
           title={__("Button Settings", "wp-components")}
           initialOpen={true}
         >
           <TextControl
+            label={__("Label", "wp-components")}
+            value={label}
+            onChange={(value: string) => setAttributes({ label: value })}
+            placeholder={__("Button Text", "wp-components")}
+          />
+          <TextControl
             label={__("URL", "wp-components")}
             value={url}
-            onChange={(value) => setAttributes({ url: value })}
+            onChange={(value: string) => setAttributes({ url: value })}
             placeholder={__("https://example.com", "wp-components")}
           />
           <SelectControl
@@ -49,7 +61,7 @@ export default function Edit({ attributes, setAttributes }) {
               { label: __("Same Window", "wp-components"), value: "_self" },
               { label: __("New Tab", "wp-components"), value: "_blank" },
             ]}
-            onChange={(value) => setAttributes({ linkTarget: value })}
+            onChange={(value: string) => setAttributes({ linkTarget: value })}
           />
           <SelectControl
             label={__("Size", "wp-components")}
@@ -60,7 +72,7 @@ export default function Edit({ attributes, setAttributes }) {
               { label: __("Large", "wp-components"), value: "large" },
               { label: __("None (Text Only)", "wp-components"), value: "none" },
             ]}
-            onChange={(value) => setAttributes({ size: value })}
+            onChange={(value: string) => setAttributes({ size: value })}
           />
         </PanelBody>
 
@@ -71,7 +83,7 @@ export default function Edit({ attributes, setAttributes }) {
           <TextControl
             label={__("Icon Before", "wp-components")}
             value={iconBefore}
-            onChange={(value) => setAttributes({ iconBefore: value })}
+            onChange={(value: string) => setAttributes({ iconBefore: value })}
             placeholder={__("fas fa-arrow-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-arrow-right)",
@@ -81,7 +93,7 @@ export default function Edit({ attributes, setAttributes }) {
           <TextControl
             label={__("Icon After", "wp-components")}
             value={iconAfter}
-            onChange={(value) => setAttributes({ iconAfter: value })}
+            onChange={(value: string) => setAttributes({ iconAfter: value })}
             placeholder={__("fas fa-chevron-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-chevron-right)",
@@ -99,7 +111,7 @@ export default function Edit({ attributes, setAttributes }) {
                 },
                 { label: __("Show on Hover", "wp-components"), value: "hover" },
               ]}
-              onChange={(value) => setAttributes({ iconVisible: value })}
+              onChange={(value: string) => setAttributes({ iconVisible: value })}
             />
           )}
         </PanelBody>
@@ -108,7 +120,7 @@ export default function Edit({ attributes, setAttributes }) {
           <TextControl
             label={__("Background Color", "wp-components")}
             value={backgroundColor}
-            onChange={(value) => setAttributes({ backgroundColor: value })}
+            onChange={(value: string) => setAttributes({ backgroundColor: value })}
             placeholder={__("#000000 or rgb(0,0,0)", "wp-components")}
             help={__(
               "Leave empty for default light background",
@@ -118,29 +130,16 @@ export default function Edit({ attributes, setAttributes }) {
           <TextControl
             label={__("Text Color", "wp-components")}
             value={textColor}
-            onChange={(value) => setAttributes({ textColor: value })}
+            onChange={(value: string) => setAttributes({ textColor: value })}
             placeholder={__("#ffffff or rgb(255,255,255)", "wp-components")}
           />
         </PanelBody>
       </InspectorControls>
 
-      <div {...blockProps}>
-        {iconBefore && (
-          <i className={`${iconBefore} hvr-icon`} aria-hidden="true"></i>
-        )}
-        <RichText
-          tagName="span"
-          className="atom-button-label"
-          value={label}
-          onChange={(value) => setAttributes({ label: value })}
-          placeholder={__("Button Text...", "wp-components")}
-          allowedFormats={[]}
-        />
-        {iconAfter && (
-          <i className={`${iconAfter} hvr-icon`} aria-hidden="true"></i>
-        )}
-      </div>
-    </>
+      <ServerSideRender
+        block="wpc/button"
+        attributes={attributes}
+      />
+    </div>
   );
 }
-

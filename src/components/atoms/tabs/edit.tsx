@@ -1,8 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
+const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, Button } = wp.components;
 const { useState } = wp.element;
 interface Tab {
   id: string;
@@ -72,12 +71,12 @@ function Edit({ attributes, setAttributes }: Props) {
               { label: __("Left", "wp-components"), value: "left" },
               { label: __("Right", "wp-components"), value: "right" },
             ]}
-            onChange={(value) => setAttributes({ position: value })}
+            onChange={(value: string) => setAttributes({ position: value })}
           />
           <TextControl
             label={__("Hover Effect", "wp-components")}
             value={hoverItem}
-            onChange={(value) => setAttributes({ hoverItem: value })}
+            onChange={(value: string) => setAttributes({ hoverItem: value })}
             help={__("Hover.css class name (e.g., underline-from-left)", "wp-components")}
           />
         </PanelBody>
@@ -88,7 +87,7 @@ function Edit({ attributes, setAttributes }: Props) {
               key={tab.id}
               label={`${tab.title} ${__("Icon", "wp-components")}`}
               value={tab.icon || ""}
-              onChange={(value) => updateTab(index, "icon", value)}
+              onChange={(value: string) => updateTab(index, "icon", value)}
               placeholder="fas fa-icon"
             />
           ))}
@@ -108,14 +107,14 @@ function Edit({ attributes, setAttributes }: Props) {
                 <RichText
                   tagName="span"
                   value={tab.title}
-                  onChange={(value) => updateTab(index, "title", value)}
+                  onChange={(value: string) => updateTab(index, "title", value)}
                   placeholder={__("Tab Title", "wp-components")}
                   allowedFormats={[]}
                 />
                 <Button
                   icon="no-alt"
                   isSmall
-                  onClick={(e) => { e.stopPropagation(); removeTab(index); }}
+                  onClick={(e: React.MouseEvent) => { e.stopPropagation(); removeTab(index); }}
                   label={__("Remove Tab", "wp-components")}
                 />
               </button>
@@ -138,7 +137,7 @@ function Edit({ attributes, setAttributes }: Props) {
               <RichText
                 tagName="div"
                 value={tab.content}
-                onChange={(value) => updateTab(index, "content", value)}
+                onChange={(value: string) => updateTab(index, "content", value)}
                 placeholder={__("Tab content...", "wp-components")}
               />
             </section>

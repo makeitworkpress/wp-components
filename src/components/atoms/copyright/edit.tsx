@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl } = wp.components;
 // Import block.json metadata
 interface CopyrightAttributes {
   copyright: string;
@@ -18,7 +16,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<CopyrightAttributes>) => void;
 }
 
-function CopyrightEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function CopyrightEdit({ attributes, setAttributes }: EditProps) {
   const { copyright, date, name, itemtype } = attributes;
   const blockProps = useBlockProps();
 

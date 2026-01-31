@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl } = wp.components;
 interface Attributes { type: string; prevText: string; nextText: string; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
 function Edit({ attributes, setAttributes }: Props) {
@@ -17,9 +15,9 @@ function Edit({ attributes, setAttributes }: Props) {
           <SelectControl label={__("Type", "wp-components")} value={type} options={[
             { label: __("Numbers", "wp-components"), value: "numbers" },
             { label: __("Previous/Next", "wp-components"), value: "prevnext" },
-          ]} onChange={(value) => setAttributes({ type: value })} />
-          <TextControl label={__("Previous Text", "wp-components")} value={prevText} onChange={(value) => setAttributes({ prevText: value })} />
-          <TextControl label={__("Next Text", "wp-components")} value={nextText} onChange={(value) => setAttributes({ nextText: value })} />
+          ]} onChange={(value: string) => setAttributes({ type: value })} />
+          <TextControl label={__("Previous Text", "wp-components")} value={prevText} onChange={(value: string) => setAttributes({ prevText: value })} />
+          <TextControl label={__("Next Text", "wp-components")} value={nextText} onChange={(value: string) => setAttributes({ nextText: value })} />
         </PanelBody>
       </InspectorControls>
       <nav {...blockProps}>

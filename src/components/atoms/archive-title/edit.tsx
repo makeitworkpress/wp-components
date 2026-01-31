@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
 interface ArchiveTitleAttributes {
   custom: string;
   className: string;
@@ -14,7 +12,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<ArchiveTitleAttributes>) => void;
 }
 
-function ArchiveTitleEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function ArchiveTitleEdit({ attributes, setAttributes }: EditProps) {
   const { custom } = attributes;
   const blockProps = useBlockProps();
 

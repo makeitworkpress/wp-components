@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl } = wp.components;
 interface Attributes {
   title: string;
   tag: string;
@@ -41,19 +39,19 @@ function Edit({ attributes, setAttributes }: Props) {
               { label: "H5", value: "h5" },
               { label: "H6", value: "h6" },
             ]}
-            onChange={(value) => setAttributes({ tag: value })}
+            onChange={(value: string) => setAttributes({ tag: value })}
           />
           <TextControl
             label={__("Link URL", "wp-components")}
             value={link}
-            onChange={(value) => setAttributes({ link: value })}
+            onChange={(value: string) => setAttributes({ link: value })}
             placeholder={__("https://example.com", "wp-components")}
             help={__("Leave empty for no link, or use 'post' for post permalink", "wp-components")}
           />
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
             checked={schema}
-            onChange={(value) => setAttributes({ schema: value })}
+            onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
       </InspectorControls>
@@ -62,7 +60,7 @@ function Edit({ attributes, setAttributes }: Props) {
         <RichText
           tagName={TagName}
           value={title}
-          onChange={(value) => setAttributes({ title: value })}
+          onChange={(value: string) => setAttributes({ title: value })}
           placeholder={__("Enter title...", "wp-components")}
           allowedFormats={["core/bold", "core/italic"]}
         />

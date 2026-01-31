@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
 interface MetaAttributes {
   key: string;
   before: string;
@@ -16,7 +14,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<MetaAttributes>) => void;
 }
 
-function MetaEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function MetaEdit({ attributes, setAttributes }: EditProps) {
   const { key, before, after } = attributes;
   const blockProps = useBlockProps();
 

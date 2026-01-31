@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, Button } = wp.components;
 interface SidebarAttributes {
   sidebars: string[];
   className: string;
@@ -14,7 +12,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<SidebarAttributes>) => void;
 }
 
-function SidebarEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function SidebarEdit({ attributes, setAttributes }: EditProps) {
   const { sidebars } = attributes;
   const blockProps = useBlockProps();
 

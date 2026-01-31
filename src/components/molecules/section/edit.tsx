@@ -1,15 +1,14 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useBlockProps, InspectorControls, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl, RangeControl, Button } = wp.components;
 const { useSelect } = wp.data;
-const { useState } = wp.element;
 interface Attributes { container: boolean; fullHeight: boolean; parallax: boolean; backgroundImage: number; backgroundColor: string; overlayColor: string; overlayOpacity: number; videoBackground: string; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
 function Edit({ attributes, setAttributes }: Props) {
   const { container, fullHeight, parallax, backgroundImage, backgroundColor, overlayColor, overlayOpacity, videoBackground } = attributes;
 
-  const imageData = useSelect((select) => backgroundImage ? (select("core") as any).getMedia(backgroundImage) : null, [backgroundImage]);
+  const imageData = useSelect((select: (arg: string) => any) => backgroundImage ? (select("core") as any).getMedia(backgroundImage) : null, [backgroundImage]);
 
   const style: React.CSSProperties = {
     backgroundColor: backgroundColor || undefined,
@@ -26,14 +25,14 @@ function Edit({ attributes, setAttributes }: Props) {
     <>
       <InspectorControls>
         <PanelBody title={__("Section Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Use Container", "wp-components")} checked={container} onChange={(value) => setAttributes({ container: value })} />
-          <ToggleControl label={__("Full Height", "wp-components")} checked={fullHeight} onChange={(value) => setAttributes({ fullHeight: value })} />
-          <ToggleControl label={__("Parallax Effect", "wp-components")} checked={parallax} onChange={(value) => setAttributes({ parallax: value })} />
+          <ToggleControl label={__("Use Container", "wp-components")} checked={container} onChange={(value: boolean) => setAttributes({ container: value })} />
+          <ToggleControl label={__("Full Height", "wp-components")} checked={fullHeight} onChange={(value: boolean) => setAttributes({ fullHeight: value })} />
+          <ToggleControl label={__("Parallax Effect", "wp-components")} checked={parallax} onChange={(value: boolean) => setAttributes({ parallax: value })} />
         </PanelBody>
         <PanelBody title={__("Background", "wp-components")} initialOpen={false}>
           <MediaUploadCheck>
-            <MediaUpload onSelect={(media) => setAttributes({ backgroundImage: media.id })} allowedTypes={["image"]} value={backgroundImage}
-              render={({ open }) => (
+            <MediaUpload onSelect={(media: any) => setAttributes({ backgroundImage: media.id })} allowedTypes={["image"]} value={backgroundImage}
+              render={({ open }: { open: () => void }) => (
                 <div style={{ marginBottom: "16px" }}>
                   {backgroundImage && imageData ? (
                     <>
@@ -47,12 +46,12 @@ function Edit({ attributes, setAttributes }: Props) {
               )}
             />
           </MediaUploadCheck>
-          <TextControl label={__("Background Color", "wp-components")} value={backgroundColor} onChange={(value) => setAttributes({ backgroundColor: value })} placeholder="#000000" />
-          <TextControl label={__("Video Background URL", "wp-components")} value={videoBackground} onChange={(value) => setAttributes({ videoBackground: value })} />
+          <TextControl label={__("Background Color", "wp-components")} value={backgroundColor} onChange={(value: string) => setAttributes({ backgroundColor: value })} placeholder="#000000" />
+          <TextControl label={__("Video Background URL", "wp-components")} value={videoBackground} onChange={(value: string) => setAttributes({ videoBackground: value })} />
         </PanelBody>
         <PanelBody title={__("Overlay", "wp-components")} initialOpen={false}>
-          <TextControl label={__("Overlay Color", "wp-components")} value={overlayColor} onChange={(value) => setAttributes({ overlayColor: value })} placeholder="rgba(0,0,0,0.5)" />
-          <RangeControl label={__("Overlay Opacity", "wp-components")} value={overlayOpacity} onChange={(value) => setAttributes({ overlayOpacity: value || 0.5 })} min={0} max={1} step={0.1} />
+          <TextControl label={__("Overlay Color", "wp-components")} value={overlayColor} onChange={(value: string) => setAttributes({ overlayColor: value })} placeholder="rgba(0,0,0,0.5)" />
+          <RangeControl label={__("Overlay Opacity", "wp-components")} value={overlayOpacity} onChange={(value: number) => setAttributes({ overlayOpacity: value || 0.5 })} min={0} max={1} step={0.1} />
         </PanelBody>
       </InspectorControls>
       <section {...blockProps}>

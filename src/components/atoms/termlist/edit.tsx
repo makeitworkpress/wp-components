@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl } = wp.components;
 interface TermlistAttributes {
   schema: boolean;
   className: string;
@@ -14,7 +12,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<TermlistAttributes>) => void;
 }
 
-function TermlistEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function TermlistEdit({ attributes, setAttributes }: EditProps) {
   const { schema } = attributes;
   const blockProps = useBlockProps();
 

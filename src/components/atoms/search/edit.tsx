@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl, RangeControl } = wp.components;
 interface Attributes {
   ajax: boolean;
   collapse: boolean;
@@ -35,19 +33,19 @@ function Edit({ attributes, setAttributes }: Props) {
           <ToggleControl
             label={__("Enable AJAX Search", "wp-components")}
             checked={ajax}
-            onChange={(value) => setAttributes({ ajax: value })}
+            onChange={(value: boolean) => setAttributes({ ajax: value })}
             help={__("Show live search results as user types", "wp-components")}
           />
           <ToggleControl
             label={__("Collapsible", "wp-components")}
             checked={collapse}
-            onChange={(value) => setAttributes({ collapse: value })}
+            onChange={(value: boolean) => setAttributes({ collapse: value })}
             help={__("Show only search icon that expands on click", "wp-components")}
           />
           <TextControl
             label={__("Post Types", "wp-components")}
             value={postTypes}
-            onChange={(value) => setAttributes({ postTypes: value })}
+            onChange={(value: string) => setAttributes({ postTypes: value })}
             placeholder="post,page"
             help={__("Comma-separated list of post types to search", "wp-components")}
           />
@@ -58,7 +56,7 @@ function Edit({ attributes, setAttributes }: Props) {
             <RangeControl
               label={__("Search Delay (ms)", "wp-components")}
               value={searchDelay}
-              onChange={(value) => setAttributes({ searchDelay: value || 500 })}
+              onChange={(value: number) => setAttributes({ searchDelay: value || 500 })}
               min={100}
               max={2000}
               step={100}
@@ -66,26 +64,26 @@ function Edit({ attributes, setAttributes }: Props) {
             <RangeControl
               label={__("Minimum Characters", "wp-components")}
               value={minLength}
-              onChange={(value) => setAttributes({ minLength: value || 3 })}
+              onChange={(value: number) => setAttributes({ minLength: value || 3 })}
               min={1}
               max={10}
             />
             <RangeControl
               label={__("Results to Show", "wp-components")}
               value={resultsNumber}
-              onChange={(value) => setAttributes({ resultsNumber: value || 5 })}
+              onChange={(value: number) => setAttributes({ resultsNumber: value || 5 })}
               min={1}
               max={20}
             />
             <TextControl
               label={__("View All Text", "wp-components")}
               value={allText}
-              onChange={(value) => setAttributes({ allText: value })}
+              onChange={(value: string) => setAttributes({ allText: value })}
             />
             <TextControl
               label={__("No Results Text", "wp-components")}
               value={noneText}
-              onChange={(value) => setAttributes({ noneText: value })}
+              onChange={(value: string) => setAttributes({ noneText: value })}
             />
           </PanelBody>
         )}

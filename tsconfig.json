@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
       "outDir": "./assets/",
-      "jsx": "react-jsx",
+      "jsx": "react",
+      "jsxFactory": "wp.element.createElement",
+      "jsxFragmentFactory": "wp.element.Fragment",
       "module": "ESNext",
-      "target": "ES2015",
+      "target": "ESNext",
       "strict": true,
       "allowSyntheticDefaultImports": true,
       "moduleResolution": "node",

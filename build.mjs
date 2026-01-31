@@ -44,14 +44,13 @@ const ctx = await esbuild.context({
     },
   ],
   // Prevent WP core from being bundled into the blocks script
-  external: ["react", "react-dom", "@wordpress/*"],
-  globalName: "wpcBlocks",
-  footer: {
-    // This maps the "require" calls that esbuild generates to the WP globals
-    js: `
-        var { blocks, element, editor, components, i18n, data } = window.wp;
-      `,
-  },
+  external: [
+    "react",
+    "react-dom",
+    "react/jsx-runtime",
+    "react/jsx-dev-runtime",
+    "@wordpress/*",
+  ],
 });
 
 if (isWatch) {

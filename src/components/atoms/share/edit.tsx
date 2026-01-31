@@ -1,10 +1,8 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
-  CheckboxControl,
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl, CheckboxControl } = wp.components;
+
 const AVAILABLE_NETWORKS = [
   { value: "facebook", label: "Facebook", icon: "fab fa-facebook-f" },
   { value: "twitter", label: "Twitter/X", icon: "fab fa-twitter" },
@@ -47,7 +45,7 @@ function Edit({ attributes, setAttributes }: Props) {
           <ToggleControl
             label={__("Show Labels", "wp-components")}
             checked={showLabels}
-            onChange={(value) => setAttributes({ showLabels: value })}
+            onChange={(value: boolean) => setAttributes({ showLabels: value })}
           />
         </PanelBody>
 
@@ -70,7 +68,7 @@ function Edit({ attributes, setAttributes }: Props) {
             if (!networkData) return null;
             return (
               <li key={network} className={`atom-share-${network}`}>
-                <a href="#" onClick={(e) => e.preventDefault()}>
+                <a href="#" onClick={(e: React.MouseEvent) => e.preventDefault()}>
                   <i className={networkData.icon} />
                   {showLabels && <span>{networkData.label}</span>}
                 </a>

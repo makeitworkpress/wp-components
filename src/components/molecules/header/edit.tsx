@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls, InnerBlocks } = wp.blockEditor;
+const { PanelBody, ToggleControl } = wp.components;
 interface Attributes { fixed: boolean; transparent: boolean; shrink: boolean; headroom: boolean; container: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
 const ALLOWED_BLOCKS = ["wpc/logo", "wpc/menu", "wpc/search", "wpc/cart", "wpc/social", "wpc/button", "core/group", "core/columns"];
@@ -18,11 +16,11 @@ function Edit({ attributes, setAttributes }: Props) {
     <>
       <InspectorControls>
         <PanelBody title={__("Header Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Fixed Header", "wp-components")} checked={fixed} onChange={(value) => setAttributes({ fixed: value })} help={__("Header stays at top when scrolling", "wp-components")} />
-          <ToggleControl label={__("Transparent", "wp-components")} checked={transparent} onChange={(value) => setAttributes({ transparent: value })} />
-          <ToggleControl label={__("Shrink on Scroll", "wp-components")} checked={shrink} onChange={(value) => setAttributes({ shrink: value })} />
-          <ToggleControl label={__("Headroom Effect", "wp-components")} checked={headroom} onChange={(value) => setAttributes({ headroom: value })} help={__("Hide header on scroll down, show on scroll up", "wp-components")} />
-          <ToggleControl label={__("Use Container", "wp-components")} checked={container} onChange={(value) => setAttributes({ container: value })} />
+          <ToggleControl label={__("Fixed Header", "wp-components")} checked={fixed} onChange={(value: boolean) => setAttributes({ fixed: value })} help={__("Header stays at top when scrolling", "wp-components")} />
+          <ToggleControl label={__("Transparent", "wp-components")} checked={transparent} onChange={(value: boolean) => setAttributes({ transparent: value })} />
+          <ToggleControl label={__("Shrink on Scroll", "wp-components")} checked={shrink} onChange={(value: boolean) => setAttributes({ shrink: value })} />
+          <ToggleControl label={__("Headroom Effect", "wp-components")} checked={headroom} onChange={(value: boolean) => setAttributes({ headroom: value })} help={__("Hide header on scroll down, show on scroll up", "wp-components")} />
+          <ToggleControl label={__("Use Container", "wp-components")} checked={container} onChange={(value: boolean) => setAttributes({ container: value })} />
         </PanelBody>
       </InspectorControls>
       <header {...blockProps}>

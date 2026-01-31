@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl, RangeControl } = wp.components;
 interface Attributes {
   max: number;
   allowVote: boolean;
@@ -30,19 +28,19 @@ function Edit({ attributes, setAttributes }: Props) {
           <RangeControl
             label={__("Maximum Stars", "wp-components")}
             value={max}
-            onChange={(value) => setAttributes({ max: value || 5 })}
+            onChange={(value: number) => setAttributes({ max: value || 5 })}
             min={1}
             max={10}
           />
           <ToggleControl
             label={__("Allow Voting", "wp-components")}
             checked={allowVote}
-            onChange={(value) => setAttributes({ allowVote: value })}
+            onChange={(value: boolean) => setAttributes({ allowVote: value })}
           />
           <ToggleControl
             label={__("Show Vote Count", "wp-components")}
             checked={showCount}
-            onChange={(value) => setAttributes({ showCount: value })}
+            onChange={(value: boolean) => setAttributes({ showCount: value })}
           />
         </PanelBody>
       </InspectorControls>

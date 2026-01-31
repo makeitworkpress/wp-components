@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
 interface Attributes {
   icon: string;
   target: string;
@@ -29,14 +27,14 @@ function Edit({ attributes, setAttributes }: Props) {
           <TextControl
             label={__("Icon Class", "wp-components")}
             value={icon}
-            onChange={(value) => setAttributes({ icon: value })}
+            onChange={(value: string) => setAttributes({ icon: value })}
             placeholder="fas fa-chevron-down"
             help={__("Font Awesome icon class", "wp-components")}
           />
           <TextControl
             label={__("Scroll Target", "wp-components")}
             value={target}
-            onChange={(value) => setAttributes({ target: value })}
+            onChange={(value: string) => setAttributes({ target: value })}
             placeholder="#section-id"
             help={__("CSS selector to scroll to (e.g., #section-id)", "wp-components")}
           />

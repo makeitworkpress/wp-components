@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl, Button } = wp.components;
 interface Profile { network: string; url: string; icon: string; }
 interface Attributes { profiles: Profile[]; showLabels: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
@@ -22,14 +20,14 @@ function Edit({ attributes, setAttributes }: Props) {
     <>
       <InspectorControls>
         <PanelBody title={__("Social Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Show Labels", "wp-components")} checked={showLabels} onChange={(value) => setAttributes({ showLabels: value })} />
+          <ToggleControl label={__("Show Labels", "wp-components")} checked={showLabels} onChange={(value: boolean) => setAttributes({ showLabels: value })} />
         </PanelBody>
         <PanelBody title={__("Profiles", "wp-components")} initialOpen={true}>
           {profiles.map((profile, i) => (
             <div key={i} style={{ marginBottom: "16px", padding: "8px", background: "#f0f0f0" }}>
-              <TextControl label={__("Network", "wp-components")} value={profile.network} onChange={(v) => updateProfile(i, "network", v)} />
-              <TextControl label={__("URL", "wp-components")} value={profile.url} onChange={(v) => updateProfile(i, "url", v)} />
-              <TextControl label={__("Icon", "wp-components")} value={profile.icon} onChange={(v) => updateProfile(i, "icon", v)} />
+              <TextControl label={__("Network", "wp-components")} value={profile.network} onChange={(v: string) => updateProfile(i, "network", v)} />
+              <TextControl label={__("URL", "wp-components")} value={profile.url} onChange={(v: string) => updateProfile(i, "url", v)} />
+              <TextControl label={__("Icon", "wp-components")} value={profile.icon} onChange={(v: string) => updateProfile(i, "icon", v)} />
               <Button isDestructive onClick={() => removeProfile(i)}>{__("Remove", "wp-components")}</Button>
             </div>
           ))}

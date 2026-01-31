@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, RangeControl, Placeholder } = wp.components;
 interface Attributes {
   lat: string;
   lng: string;
@@ -32,26 +30,26 @@ function Edit({ attributes, setAttributes }: Props) {
           <TextControl
             label={__("Latitude", "wp-components")}
             value={lat}
-            onChange={(value) => setAttributes({ lat: value })}
+            onChange={(value: string) => setAttributes({ lat: value })}
             placeholder="52.3676"
           />
           <TextControl
             label={__("Longitude", "wp-components")}
             value={lng}
-            onChange={(value) => setAttributes({ lng: value })}
+            onChange={(value: string) => setAttributes({ lng: value })}
             placeholder="4.9041"
           />
           <RangeControl
             label={__("Zoom Level", "wp-components")}
             value={zoom}
-            onChange={(value) => setAttributes({ zoom: value || 14 })}
+            onChange={(value: number) => setAttributes({ zoom: value || 14 })}
             min={1}
             max={20}
           />
           <TextControl
             label={__("Height", "wp-components")}
             value={height}
-            onChange={(value) => setAttributes({ height: value })}
+            onChange={(value: string) => setAttributes({ height: value })}
             placeholder="400px"
           />
         </PanelBody>

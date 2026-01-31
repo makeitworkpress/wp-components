@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl, Placeholder } = wp.components;
 interface Attributes { showForm: boolean; showAvatar: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
 function Edit({ attributes, setAttributes }: Props) {
@@ -14,8 +12,8 @@ function Edit({ attributes, setAttributes }: Props) {
     <>
       <InspectorControls>
         <PanelBody title={__("Comments Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Show Comment Form", "wp-components")} checked={showForm} onChange={(value) => setAttributes({ showForm: value })} />
-          <ToggleControl label={__("Show Avatars", "wp-components")} checked={showAvatar} onChange={(value) => setAttributes({ showAvatar: value })} />
+          <ToggleControl label={__("Show Comment Form", "wp-components")} checked={showForm} onChange={(value: boolean) => setAttributes({ showForm: value })} />
+          <ToggleControl label={__("Show Avatars", "wp-components")} checked={showAvatar} onChange={(value: boolean) => setAttributes({ showAvatar: value })} />
         </PanelBody>
       </InspectorControls>
       <div {...blockProps}>

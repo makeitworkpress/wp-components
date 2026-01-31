@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl } = wp.components;
 interface DateAttributes {
   date: string;
   icon: string;
@@ -16,7 +14,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<DateAttributes>) => void;
 }
 
-function DateEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function DateEdit({ attributes, setAttributes }: EditProps) {
   const { date, icon, schema } = attributes;
   const blockProps = useBlockProps();
 

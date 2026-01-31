@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
 interface Attributes {
   content: string;
   modalId: string;
@@ -29,7 +27,7 @@ function Edit({ attributes, setAttributes }: Props) {
           <TextControl
             label={__("Modal ID", "wp-components")}
             value={modalId}
-            onChange={(value) => setAttributes({ modalId: value })}
+            onChange={(value: string) => setAttributes({ modalId: value })}
             help={__("Unique identifier for targeting this modal", "wp-components")}
           />
         </PanelBody>
@@ -45,7 +43,7 @@ function Edit({ attributes, setAttributes }: Props) {
             <RichText
               tagName="div"
               value={content}
-              onChange={(value) => setAttributes({ content: value })}
+              onChange={(value: string) => setAttributes({ content: value })}
               placeholder={__("Enter modal content...", "wp-components")}
             />
           </div>

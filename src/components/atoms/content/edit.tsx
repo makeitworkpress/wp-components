@@ -1,11 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
-  TextareaControl,
-// Import block.json metadata
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, SelectControl, TextareaControl, ToggleControl } = wp.components;
 
 interface ContentAttributes {
   type: "content" | "excerpt";
@@ -19,7 +15,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<ContentAttributes>) => void;
 }
 
-function ContentEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function ContentEdit({ attributes, setAttributes }: EditProps) {
   const { type, content, schema } = attributes;
   const blockProps = useBlockProps();
 

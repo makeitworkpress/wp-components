@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
+const { PanelBody, SelectControl, ToggleControl } = wp.components;
 interface DescriptionAttributes {
   description: string;
   tag: string;
@@ -16,7 +14,7 @@ interface EditProps {
   setAttributes: (attrs: Partial<DescriptionAttributes>) => void;
 }
 
-function DescriptionEdit({ attributes, setAttributes }: EditProps): JSX.Element {
+function DescriptionEdit({ attributes, setAttributes }: EditProps) {
   const { description, tag, schema } = attributes;
   const blockProps = useBlockProps();
 

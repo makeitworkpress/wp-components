@@ -96,43 +96,43 @@ function registerWPCBlocks(): void {
   });
 
   // Atoms
-  registerBlockType(archiveTitleMetadata.name, { edit: ArchiveTitleEdit });
-  registerBlockType(authorMetadata.name, { edit: AuthorEdit });
-  registerBlockType(breadcrumbsMetadata.name, { edit: BreadcrumbsEdit });
-  registerBlockType(buttonMetadata.name, { edit: ButtonEdit });
-  registerBlockType(cartMetadata.name, { edit: CartEdit });
-  registerBlockType(commentsMetadata.name, { edit: CommentsEdit });
-  registerBlockType(contentMetadata.name, { edit: ContentEdit });
-  registerBlockType(copyrightMetadata.name, { edit: CopyrightEdit });
-  registerBlockType(dateMetadata.name, { edit: DateEdit });
-  registerBlockType(descriptionMetadata.name, { edit: DescriptionEdit });
-  registerBlockType(imageMetadata.name, { edit: ImageEdit });
-  registerBlockType(listMetadata.name, { edit: ListEdit });
-  registerBlockType(logoMetadata.name, { edit: LogoEdit });
-  registerBlockType(mapMetadata.name, { edit: MapEdit });
-  registerBlockType(menuMetadata.name, { edit: MenuEdit });
-  registerBlockType(metaMetadata.name, { edit: MetaEdit });
-  registerBlockType(modalMetadata.name, { edit: ModalEdit });
-  registerBlockType(paginationMetadata.name, { edit: PaginationEdit });
-  registerBlockType(rateMetadata.name, { edit: RateEdit });
-  registerBlockType(scrollMetadata.name, { edit: ScrollEdit });
-  registerBlockType(searchMetadata.name, { edit: SearchEdit });
-  registerBlockType(shareMetadata.name, { edit: ShareEdit });
-  registerBlockType(sidebarMetadata.name, { edit: SidebarEdit });
-  registerBlockType(socialMetadata.name, { edit: SocialEdit });
-  registerBlockType(tabsMetadata.name, { edit: TabsEdit });
-  registerBlockType(termlistMetadata.name, { edit: TermlistEdit });
-  registerBlockType(termsMetadata.name, { edit: TermsEdit });
-  registerBlockType(titleMetadata.name, { edit: TitleEdit });
-  registerBlockType(typeMetadata.name, { edit: TypeEdit });
-  registerBlockType(videoMetadata.name, { edit: VideoEdit });
+  registerBlockType(archiveTitleMetadata, { edit: ArchiveTitleEdit, save: () => null });
+  registerBlockType(authorMetadata, { edit: AuthorEdit, save: () => null });
+  registerBlockType(breadcrumbsMetadata, { edit: BreadcrumbsEdit, save: () => null });
+  registerBlockType(buttonMetadata, { edit: ButtonEdit, save: () => null });
+  registerBlockType(cartMetadata, { edit: CartEdit, save: () => null });
+  registerBlockType(commentsMetadata, { edit: CommentsEdit, save: () => null });
+  registerBlockType(contentMetadata, { edit: ContentEdit, save: () => null });
+  registerBlockType(copyrightMetadata, { edit: CopyrightEdit, save: () => null });
+  registerBlockType(dateMetadata, { edit: DateEdit, save: () => null });
+  registerBlockType(descriptionMetadata, { edit: DescriptionEdit, save: () => null });
+  registerBlockType(imageMetadata, { edit: ImageEdit, save: () => null });
+  registerBlockType(listMetadata, { edit: ListEdit, save: () => null });
+  registerBlockType(logoMetadata, { edit: LogoEdit, save: () => null });
+  registerBlockType(mapMetadata, { edit: MapEdit, save: () => null });
+  registerBlockType(menuMetadata, { edit: MenuEdit, save: () => null });
+  registerBlockType(metaMetadata, { edit: MetaEdit, save: () => null });
+  registerBlockType(modalMetadata, { edit: ModalEdit, save: () => null });
+  registerBlockType(paginationMetadata, { edit: PaginationEdit, save: () => null });
+  registerBlockType(rateMetadata, { edit: RateEdit, save: () => null });
+  registerBlockType(scrollMetadata, { edit: ScrollEdit, save: () => null });
+  registerBlockType(searchMetadata, { edit: SearchEdit, save: () => null });
+  registerBlockType(shareMetadata, { edit: ShareEdit, save: () => null });
+  registerBlockType(sidebarMetadata, { edit: SidebarEdit, save: () => null });
+  registerBlockType(socialMetadata, { edit: SocialEdit, save: () => null });
+  registerBlockType(tabsMetadata, { edit: TabsEdit, save: () => null });
+  registerBlockType(termlistMetadata, { edit: TermlistEdit, save: () => null });
+  registerBlockType(termsMetadata, { edit: TermsEdit, save: () => null });
+  registerBlockType(titleMetadata, { edit: TitleEdit, save: () => null });
+  registerBlockType(typeMetadata, { edit: TypeEdit, save: () => null });
+  registerBlockType(videoMetadata, { edit: VideoEdit, save: () => null });
 
   // Molecules
-  registerBlockType(footerMetadata.name, { edit: FooterEdit });
-  registerBlockType(headerMetadata.name, { edit: HeaderEdit });
-  registerBlockType(postsMetadata.name, { edit: PostsEdit });
-  registerBlockType(sectionMetadata.name, { edit: SectionEdit });
-  registerBlockType(sliderMetadata.name, { edit: SliderEdit });
+  registerBlockType(footerMetadata, { edit: FooterEdit, save: () => null });
+  registerBlockType(headerMetadata, { edit: HeaderEdit, save: () => null });
+  registerBlockType(postsMetadata, { edit: PostsEdit, save: () => null });
+  registerBlockType(sectionMetadata, { edit: SectionEdit, save: () => null });
+  registerBlockType(sliderMetadata, { edit: SliderEdit, save: () => null });
 }
 
 // Register blocks when DOM is ready

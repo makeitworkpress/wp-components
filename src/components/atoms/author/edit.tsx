@@ -1,9 +1,7 @@
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
-const { useSelect } = wp.data;
-const { useState } = wp.element;
+const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl } = wp.components;
 interface Attributes {
   showAvatar: boolean;
   showDescription: boolean;
@@ -35,17 +33,17 @@ function Edit({ attributes, setAttributes }: Props) {
           <ToggleControl
             label={__("Show Avatar", "wp-components")}
             checked={showAvatar}
-            onChange={(value) => setAttributes({ showAvatar: value })}
+            onChange={(value: boolean) => setAttributes({ showAvatar: value })}
           />
           <ToggleControl
             label={__("Show Name", "wp-components")}
             checked={showName}
-            onChange={(value) => setAttributes({ showName: value })}
+            onChange={(value: boolean) => setAttributes({ showName: value })}
           />
           <ToggleControl
             label={__("Show Description", "wp-components")}
             checked={showDescription}
-            onChange={(value) => setAttributes({ showDescription: value })}
+            onChange={(value: boolean) => setAttributes({ showDescription: value })}
           />
         </PanelBody>
 
@@ -58,12 +56,12 @@ function Edit({ attributes, setAttributes }: Props) {
               { label: __("Left", "wp-components"), value: "left" },
               { label: __("Right", "wp-components"), value: "right" },
             ]}
-            onChange={(value) => setAttributes({ imageFloat: value })}
+            onChange={(value: string) => setAttributes({ imageFloat: value })}
           />
           <ToggleControl
             label={__("Rounded Avatar", "wp-components")}
             checked={imageRounded}
-            onChange={(value) => setAttributes({ imageRounded: value })}
+            onChange={(value: boolean) => setAttributes({ imageRounded: value })}
           />
         </PanelBody>
 
@@ -71,19 +69,19 @@ function Edit({ attributes, setAttributes }: Props) {
           <TextControl
             label={__("Name Prepend", "wp-components")}
             value={prepend}
-            onChange={(value) => setAttributes({ prepend: value })}
+            onChange={(value: string) => setAttributes({ prepend: value })}
             placeholder={__("Written by ", "wp-components")}
           />
           <TextControl
             label={__("Job Title", "wp-components")}
             value={jobTitle}
-            onChange={(value) => setAttributes({ jobTitle: value })}
+            onChange={(value: string) => setAttributes({ jobTitle: value })}
             placeholder={__("Developer", "wp-components")}
           />
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
             checked={schema}
-            onChange={(value) => setAttributes({ schema: value })}
+            onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
       </InspectorControls>
