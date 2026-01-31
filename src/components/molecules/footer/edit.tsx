@@ -1,13 +1,11 @@
-/**
- * WPC Footer Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls, InnerBlocks } from "@wordpress/block-editor";
-import { PanelBody, ToggleControl, RangeControl } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { container: boolean; columns: number; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { container, columns } = attributes;
   const blockProps = useBlockProps({ className: "molecule molecule-footer" });

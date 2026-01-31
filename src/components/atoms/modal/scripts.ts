@@ -1,5 +1,5 @@
-import { FadeOut } from "../other/utils";
-import Component from "../types/component";
+import { FadeOut } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 /**
  * Defines the custom header scripts
@@ -7,7 +7,7 @@ import Component from "../types/component";
 const Modal: Component = {
     elements: document.getElementsByClassName('atom-modal') as HTMLCollectionOf<HTMLElement>,
     init(): void {
-        
+
         if( ! this.elements || this.elements.length < 1) {
             return;
         }
@@ -18,7 +18,7 @@ const Modal: Component = {
     },
     /**
      * Setup the click handler for closing modal
-     * 
+     *
      * @param modal The modal element
      */
     setupClickHandler(modal: HTMLElement): void {

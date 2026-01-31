@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/termlist",
+  "version": "1.0.0",
+  "title": "WPC Term List",
+  "category": "theme",
+  "icon": "tag",
+  "description": "Displays terms related to a post grouped by taxonomy from WP-Components.",
+  "keywords": [
+    "terms",
+    "taxonomy",
+    "categories",
+    "tags",
+    "list"
+  ],
+  "textdomain": "wp-components",
+  "attributes": {
+    "schema": {
+      "type": "boolean",
+      "default": true
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true
+    }
+  },
+  "render": "file:./render.php"
+}

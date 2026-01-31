@@ -1,6 +1,6 @@
-import { InitScrollReveal } from "../other/modules";
-import { ToggleClass, FadeToggle, FadeOut, AjaxApi, FadeIn } from "../other/utils";
-import Component from "../types/component";
+import { InitScrollReveal } from "@scripts/helpers/modules";
+import { ToggleClass, FadeToggle, FadeOut, AjaxApi, FadeIn } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 declare let sr: any;
 
@@ -16,15 +16,15 @@ const Search: Component = {
         }
         for( const element of this.elements ) {
             this.setupSearch(element);
-        }        
+        }
     },
 
     /**
      * Setups the tabs for each element existing on a page
      * @param element The search element
-     */    
-    setupSearch(element: HTMLElement): void {  
-        
+     */
+    setupSearch(element: HTMLElement): void {
+
         if( element.classList.contains('atom-search-ajax') ) {
             this.setupAjaxSearch(element)
         }
@@ -36,9 +36,9 @@ const Search: Component = {
     /**
      * Setups the ajax search functionality for the given element
      * @param element The search element
-     */    
-    setupAjaxSearch(element: HTMLElement): void {  
-        const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset; 
+     */
+    setupAjaxSearch(element: HTMLElement): void {
+        const { appear = 'bottom', delay = 300, length = 3, none = '', number = 5, types = '' } = element.dataset;
         const searchForm = element.querySelector('.search-form') as HTMLElement;
         const searchField = element.querySelector('.search-field') as HTMLInputElement;
         const moreAnchor = element.querySelector('.atom-search-all') as HTMLAnchorElement;
@@ -70,8 +70,8 @@ const Search: Component = {
                 results.querySelector('.atom-search-all')?.remove();
 
                 const response = await AjaxApi<{ success: boolean; data: string }>({
-                    action: 'public_search', 
-                    appear: appear, 
+                    action: 'public_search',
+                    appear: appear,
                     none: none,
                     number: number,
                     search: value,
@@ -98,10 +98,10 @@ const Search: Component = {
 
             }, +delay);
 
-        });    
-                    
-    }, 
-    
+        });
+
+    },
+
     /**
      * Allows the search-form to be toggled from a single icon
      * @param element The search element
@@ -114,7 +114,7 @@ const Search: Component = {
             return;
         }
 
-        const searchForm = element.querySelector('.atom-search-form') as HTMLElement; 
+        const searchForm = element.querySelector('.atom-search-form') as HTMLElement;
         const searchField = searchForm.querySelector('.search-field') as HTMLInputElement;
 
         searchExpandElement.addEventListener('click', (event) => {

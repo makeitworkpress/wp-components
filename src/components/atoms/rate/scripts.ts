@@ -1,5 +1,5 @@
-import { AjaxApi, FadeIn, FadeOut } from "../other/utils";
-import Component from "../types/component";
+import { AjaxApi, FadeIn, FadeOut } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 /**
  * Defines the custom header scripts

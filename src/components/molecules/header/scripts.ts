@@ -1,8 +1,8 @@
 /**
  * Defines the custom header scripts
  */
-import Component from "../types/component";
-import { SlideToggle, FadeToggle } from "../other/utils";
+import Component from "@scripts/types/component";
+import { SlideToggle, FadeToggle } from "@scripts/helpers/utils";
 
 const Header: Component = {
 
@@ -11,34 +11,34 @@ const Header: Component = {
     position: window.scrollY,
 
     init() {
-        
+
         if( ! this.elements || this.elements.length < 1 ) {
             return;
         }
-        
+
         for(const header of this.elements) {
-            this.cssHandler(header);   
-            this.scrollHandler(header); 
+            this.cssHandler(header);
+            this.scrollHandler(header);
         }
 
-     
+
     },
 
     /**
      * Set-up necessary css adjustments
-     * 
+     *
      * @param header HTML Element The passed header
      */
     cssHandler(header: HTMLElement): void {
 
-        /** 
+        /**
          * Adapts the top-padding for the main section that follows the header, so it won't overlap
          */
         if( header.classList.contains('molecule-header-fixed') ) {
             const height: number = header.clientHeight;
             const mainElement = header.nextElementSibling as HTMLElement
-            
-            if( mainElement.tagName === 'main' || mainElement.tagName === 'MAIN' ) {             
+
+            if( mainElement.tagName === 'main' || mainElement.tagName === 'MAIN' ) {
                 mainElement.style.paddingTop = height + 'px';
             }
 
@@ -80,7 +80,7 @@ const Header: Component = {
         });
     }
 
-};   
+};
 
 
 

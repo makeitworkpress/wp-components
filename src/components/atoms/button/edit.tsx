@@ -1,28 +1,10 @@
-/**
- * WPC Button Block - Editor Component
- *
- * Provides the Gutenberg editor interface for the Button atom.
- */
-
-import { registerBlockType } from "@wordpress/blocks";
-import { __ } from "@wordpress/i18n";
-import {
-  useBlockProps,
-  InspectorControls,
-  RichText,
-} from "@wordpress/block-editor";
-import { PanelBody, TextControl, SelectControl } from "@wordpress/components";
-
-
-/**
- * Editor component for the WPC Button block.
- *
- * @param {Object}   props               Block props.
- * @param {Object}   props.attributes    Block attributes.
- * @param {Function} props.setAttributes Function to set attributes.
- * @return {JSX.Element} Block editor element.
- */
-function Edit({ attributes, setAttributes }) {
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
+export default function Edit({ attributes, setAttributes }) {
   const {
     label,
     url,
@@ -36,8 +18,11 @@ function Edit({ attributes, setAttributes }) {
   } = attributes;
 
   const blockProps = useBlockProps({
-    className:
-      `atom atom-button ${size ? `atom-button-${size}` : ""} ${iconVisible && (iconBefore || iconAfter) ? `atom-button-${iconVisible}` : ""} ${!backgroundColor ? "components-light-background" : ""}`.trim(),
+    className: `atom atom-button ${size ? `atom-button-${size}` : ""} ${
+      iconVisible && (iconBefore || iconAfter)
+        ? `atom-button-${iconVisible}`
+        : ""
+    } ${!backgroundColor ? "components-light-background" : ""}`.trim(),
     style: {
       backgroundColor: backgroundColor || undefined,
       color: textColor || undefined,
@@ -90,7 +75,7 @@ function Edit({ attributes, setAttributes }) {
             placeholder={__("fas fa-arrow-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-arrow-right)",
-              "wp-components",
+              "wp-components"
             )}
           />
           <TextControl
@@ -100,7 +85,7 @@ function Edit({ attributes, setAttributes }) {
             placeholder={__("fas fa-chevron-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-chevron-right)",
-              "wp-components",
+              "wp-components"
             )}
           />
           {(iconBefore || iconAfter) && (
@@ -127,7 +112,7 @@ function Edit({ attributes, setAttributes }) {
             placeholder={__("#000000 or rgb(0,0,0)", "wp-components")}
             help={__(
               "Leave empty for default light background",
-              "wp-components",
+              "wp-components"
             )}
           />
           <TextControl
@@ -159,9 +144,3 @@ function Edit({ attributes, setAttributes }) {
   );
 }
 
-/**
- * Register the WPC Button block.
- */
-registerBlockType(metadata.name, {
-  edit: Edit,
-});

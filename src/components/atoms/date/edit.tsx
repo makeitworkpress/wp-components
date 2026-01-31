@@ -1,17 +1,9 @@
-/**
- * WPC Date Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import {
-  useBlockProps,
-  InspectorControls,
-} from "@wordpress/block-editor";
-import {
-  PanelBody,
-  TextControl,
-  ToggleControl,
-} from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface DateAttributes {
   date: string;
   icon: string;

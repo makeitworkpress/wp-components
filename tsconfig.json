@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
-      "outDir": "./assets/public/",
+      "outDir": "./assets/",
       "jsx": "react-jsx",
       "module": "ESNext",
       "target": "ES2015",
       "strict": true,
       "allowSyntheticDefaultImports": true,
-      "moduleResolution": "node"
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "baseUrl": ".",
+      "paths": {
+        "@scripts/*": ["src/assets/scripts/*"],
+        "@styles/*": ["src/assets/styles/*"],
+        "@components/*": ["src/components/*"]
+      },
   }
 }

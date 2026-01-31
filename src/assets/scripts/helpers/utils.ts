@@ -8,7 +8,7 @@ declare let wpc: any;
 
 /**
  * Sends a post request to the default WordPress Ajax API endpoint
- * 
+ *
  * @param data The data that needs to passed to the ajax endpoint
  * @returns Promise The json response from the fetched resource
  */
@@ -22,7 +22,7 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
     const body = new FormData();
 
     for( const key in data ) {
-        body.append(key, data[key]);    
+        body.append(key, data[key]);
     }
 
     const response = await fetch(wpc.ajaxUrl, {
@@ -36,13 +36,13 @@ export async function AjaxApi<T>(data: AjaxData): Promise<T> {
     if( wpc.debug ) {
         console.log(jsonResponse);
     }
-    
+
     return jsonResponse;
 }
 
 /**
  * Toggles the display of an HTML Element by sliding its height
- * 
+ *
  * @param element An HTML Element that needs to slide
  * @param displayStyle The display value that needs to used for displaying the item
  */
@@ -50,19 +50,19 @@ export function SlideToggle(element: HTMLElement | null, displayStyle: string = 
 
     if( ! element ) {
         return;
-    }  
-    
+    }
+
     if( getComputedStyle(element).display === 'none' ) {
         SlideOut(element, displayStyle);
     } else {
-        SlideIn(element);  
+        SlideIn(element);
     }
 
 }
 
 /**
  * Exposes the display of an HTML Element by sliding its height out
- * 
+ *
  * @param element An HTML Element that needs to slide
  * @param displayStyle The display value that needs to used for displaying the item
  */
@@ -70,7 +70,7 @@ export function SlideOut(element: HTMLElement | null, displayStyle: string = 'bl
 
     if( ! element ) {
         return;
-    }    
+    }
 
     element.classList.add('components-transition');
     element.style.display = displayStyle;
@@ -84,21 +84,21 @@ export function SlideOut(element: HTMLElement | null, displayStyle: string = 'bl
     setTimeout( () => {
         element.style.opacity = '1';
         element.style.height = elementHeight + 'px';
-    }, 0); 
+    }, 0);
 
 }
 
 /**
  * Hides the display of an HTML Element by sliding its height in
- * 
+ *
  * @param element An HTML Element that needs to slide
  */
  export function SlideIn(element: HTMLElement | null): void {
 
     if( ! element ) {
         return;
-    }    
-    
+    }
+
     element.classList.add('components-transition');
     element.style.opacity = '1';
 
@@ -110,12 +110,12 @@ export function SlideOut(element: HTMLElement | null, displayStyle: string = 'bl
     setTimeout( () => {
         element.style.display = 'none';
         element.classList.remove('components-transition');
-    }, 350);    
+    }, 350);
 }
 
 /**
  * Toggles the display of an HTML Element by adjusting it's opacity
- * 
+ *
  * @param element An HTML Element that needs to slide
  * @param displayStyle The display value that needs to used for displaying the item
  */
@@ -123,7 +123,7 @@ export function FadeToggle(element: HTMLElement | null, displayStyle: string = '
 
     if( ! element ) {
         return;
-    }   
+    }
 
     // FadeIn
     if( getComputedStyle(element).display === 'none' ) {
@@ -136,11 +136,11 @@ export function FadeToggle(element: HTMLElement | null, displayStyle: string = '
 
 /**
  * Toggles the display of an HTML Element by fading out
- * 
+ *
  * @param element An HTML Element that needs to slide
  */
 export function FadeOut(element: HTMLElement | null): void {
-    
+
     if( ! element ) {
         return;
     }
@@ -157,12 +157,12 @@ export function FadeOut(element: HTMLElement | null): void {
 /**
  * Toggles the display of an HTML Element by fading in.
  * The element should previously be faded out.
- * 
+ *
  * @param element An HTML Element that needs to slide
  * @param displayStyle The display value that needs to used for displaying the item
  */
 export function FadeIn(element: HTMLElement | null, displayStyle: string = 'block'): void {
-    
+
     if( ! element ) {
         return;
     }
@@ -172,7 +172,7 @@ export function FadeIn(element: HTMLElement | null, displayStyle: string = 'bloc
     element.classList.add('components-transition');
     setTimeout( () => {
         element.style.opacity = "1";
-    }, 0);  
+    }, 0);
 
 }
 
@@ -189,17 +189,17 @@ export function ToggleClass(element: HTMLElement | Element | null, className: st
 
     if( Array.isArray(className) ) {
         className.forEach(name => {
-            element.classList.toggle(name);            
+            element.classList.toggle(name);
         });
     } else {
         element.classList.toggle(className);
     }
-    
+
 }
 
 /**
  * Get all siblings for a given element
- * 
+ *
  * @param element The element to look for siblings
  * @param mode The type of siblings to look for (previous or next)
  */
@@ -218,7 +218,7 @@ export function GetElementSiblings(element: HTMLElement | Element | null, mode: 
     } else if(mode === SiblingTypes.Next) {
         while (element = element.nextElementSibling) {
             siblings.push(element);
-        }        
+        }
     }
 
     return siblings;

@@ -1,5 +1,5 @@
-import { FadeToggle } from "../other/utils";
-import Component from "../types/component";
+import { FadeToggle } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 /**
  * Defines a social share element
@@ -10,15 +10,15 @@ const Cart: Component = {
     if( ! this.elements || this.elements.length < 1) {
         return;
     }
-            
+
     for(const cartElement of this.elements) {
       this.cartHandler(cartElement);
-    }   
+    }
   },
 
   /**
    * Handles any cart related actions
-   * 
+   *
    * @param cart HTMLElement The passed cart element
    */
   cartHandler(cart: HTMLElement): void {

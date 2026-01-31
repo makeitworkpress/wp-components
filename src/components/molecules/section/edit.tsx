@@ -1,14 +1,11 @@
-/**
- * WPC Section Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls, InnerBlocks, MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import { PanelBody, ToggleControl, TextControl, RangeControl, Button, ColorPicker } from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { container: boolean; fullHeight: boolean; parallax: boolean; backgroundImage: number; backgroundColor: string; overlayColor: string; overlayOpacity: number; videoBackground: string; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { container, fullHeight, parallax, backgroundImage, backgroundColor, overlayColor, overlayOpacity, videoBackground } = attributes;
 

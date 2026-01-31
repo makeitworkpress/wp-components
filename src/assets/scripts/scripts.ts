@@ -13,7 +13,7 @@ import Tabs from "../../components/atoms/tabs/scripts";
 import Header from "../../components/molecules/header/scripts";
 import Posts from "../../components/molecules/posts/scripts";
 import Slider from "../../components/molecules/slider/scripts";
-import { InitParallax, InitScrollReveal, InitOverlays } from "./other/modules";
+import { InitParallax, InitScrollReveal, InitOverlays } from "./helpers/modules";
 import Component from "./types/component";
 
 /**

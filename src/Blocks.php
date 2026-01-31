@@ -67,7 +67,6 @@ class Blocks
     public function __construct()
     {
         $this->components_path = WP_COMPONENTS_PATH . "components/";
-
         $this->register_hooks();
     }
 
@@ -112,20 +111,12 @@ class Blocks
      */
     public function enqueue_editor_assets(): void
     {
-        // Enqueue Font Awesome in the editor so icons display correctly
-        wp_enqueue_style(
-            "wpc-font-awesome-editor",
-            WP_COMPONENTS_ASSETS . "vendor/css/font-awesome.min.css",
+        wp_enqueue_script(
+            "wpc-blocks-js",
+            WP_COMPONENTS_ASSETS . "wpc-blocks.min.js",
             [],
-            "6.0.0",
-        );
-
-        // Enqueue WPC component styles in the editor for accurate preview
-        wp_enqueue_style(
-            "wpc-css-editor",
-            WP_COMPONENTS_ASSETS . "styles/wpc-styles.min.css",
-            [],
-            "1.0.0",
+            null,
+            true,
         );
     }
 }

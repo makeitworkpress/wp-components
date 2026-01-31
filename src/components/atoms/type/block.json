@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/type",
+  "version": "1.0.0",
+  "title": "WPC Post Type",
+  "category": "theme",
+  "icon": "admin-post",
+  "description": "Displays the post type indicator from WP-Components.",
+  "keywords": [
+    "post type",
+    "type",
+    "label"
+  ],
+  "textdomain": "wp-components",
+  "attributes": {
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "type": {
+      "type": "string",
+      "default": ""
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    }
+  },
+  "render": "file:./render.php"
+}

@@ -1,5 +1,5 @@
-import { FadeIn, FadeOut } from "../other/utils";
-import Component from "../types/component";
+import { FadeIn, FadeOut } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 /**
  * Defines a social share element
@@ -10,7 +10,7 @@ const Share: Component = {
         if( ! this.elements || this.elements.length < 1) {
             return;
         }
-        
+
         this.setupShare();
     },
 
@@ -37,9 +37,9 @@ const Share: Component = {
                 scrolled = false;
                 for( const element of this.elements ) {
                     FadeOut(element);
-                }                
+                }
             }
-                     
+
         });
 
     }

@@ -1,8 +1,13 @@
 declare let ScrollReveal: any;
+declare global {
+  interface Window {
+    sr: any;
+  }
+}
 
 export function InitScrollReveal() {
   if( typeof ScrollReveal !== "undefined" ) {
- 
+
     window.sr = ScrollReveal();
 
     window.sr.reveal( '.components-bottom-appear', { origin: 'bottom'}, 50 );
@@ -16,7 +21,7 @@ export function InitParallax() {
   window.addEventListener('scroll', () => {
     let scrollPosition: number = window.scrollY;
     const parallaxSections = document.getElementsByClassName('components-parallax') as HTMLCollectionOf<HTMLElement>;
-    
+
     if( parallaxSections.length > 0 ) {
         for( let section of parallaxSections ) {
           section.style.backgroundPosition = 'calc(50%) ' + 'calc(50% + ' + (scrollPosition/5) + "px" + ')';
@@ -40,7 +45,7 @@ export function InitOverlays() {
   for( let element of overlayedElements ) {
     const { color = '#000', opacity = '0.5' } = element.dataset;
     const overlay = document.createElement('div');
-    
+
     overlay.classList.add('components-overlay-background');
     overlay.style.backgroundColor = color;
     overlay.style.opacity = opacity;

@@ -1,14 +1,12 @@
-/**
- * WPC Social Links Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
-import { PanelBody, TextControl, ToggleControl, Button } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Profile { network: string; url: string; icon: string; }
 interface Attributes { profiles: Profile[]; showLabels: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { profiles, showLabels } = attributes;
   const blockProps = useBlockProps({ className: "atom atom-social" });

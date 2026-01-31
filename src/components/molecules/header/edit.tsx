@@ -1,13 +1,11 @@
-/**
- * WPC Header Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls, InnerBlocks } from "@wordpress/block-editor";
-import { PanelBody, ToggleControl } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { fixed: boolean; transparent: boolean; shrink: boolean; headroom: boolean; container: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 const ALLOWED_BLOCKS = ["wpc/logo", "wpc/menu", "wpc/search", "wpc/cart", "wpc/social", "wpc/button", "core/group", "core/columns"];
 
 function Edit({ attributes, setAttributes }: Props) {

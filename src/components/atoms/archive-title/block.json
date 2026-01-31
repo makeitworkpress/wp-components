@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/archive-title",
+  "version": "1.0.0",
+  "title": "WPC Archive Title",
+  "category": "theme",
+  "icon": "archive",
+  "description": "Displays the archive title based on context from WP-Components.",
+  "keywords": [
+    "archive",
+    "title",
+    "heading",
+    "category",
+    "tag"
+  ],
+  "textdomain": "wp-components",
+  "attributes": {
+    "custom": {
+      "type": "string",
+      "default": ""
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right", "wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    }
+  },
+  "render": "file:./render.php"
+}

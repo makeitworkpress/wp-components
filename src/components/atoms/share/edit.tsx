@@ -1,19 +1,10 @@
-/**
- * WPC Share Block - Editor Component
- */
-
-import { __ } from "@wordpress/i18n";
-import {
-  useBlockProps,
-  InspectorControls,
-} from "@wordpress/block-editor";
-import {
-  PanelBody,
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
   CheckboxControl,
-  ToggleControl,
-} from "@wordpress/components";
-
-
 const AVAILABLE_NETWORKS = [
   { value: "facebook", label: "Facebook", icon: "fab fa-facebook-f" },
   { value: "twitter", label: "Twitter/X", icon: "fab fa-twitter" },

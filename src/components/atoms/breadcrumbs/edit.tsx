@@ -1,13 +1,11 @@
-/**
- * WPC Breadcrumbs Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
-import { PanelBody, TextControl, ToggleControl } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { separator: string; showHome: boolean; homeLabel: string; schema: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { separator, showHome, homeLabel, schema } = attributes;
   const blockProps = useBlockProps({ className: "atom atom-breadcrumbs" });

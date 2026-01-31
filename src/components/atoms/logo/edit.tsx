@@ -1,14 +1,11 @@
-/**
- * WPC Logo Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import { PanelBody, TextControl, Button, Placeholder } from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { image: number; mobileImage: number; link: string; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { image, link } = attributes;
   const blockProps = useBlockProps({ className: "atom atom-logo" });

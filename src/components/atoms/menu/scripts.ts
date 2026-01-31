@@ -1,5 +1,5 @@
-import { SlideToggle, ToggleClass } from "../other/utils";
-import Component from "../types/component";
+import { SlideToggle, ToggleClass } from "@scripts/helpers/utils";
+import Component from "@scripts/types/component";
 
 /**
  * Defines the custom menu scripts
@@ -7,7 +7,7 @@ import Component from "../types/component";
 const Menu: Component = {
     elements: document.getElementsByClassName('atom-menu') as HTMLCollectionOf<HTMLElement>,
     init(): void {
-        
+
         if( ! this.elements || this.elements.length < 1) {
             return;
         }
@@ -45,7 +45,7 @@ const Menu: Component = {
      * @param menu The given menu element
      */
     setupCollapsedMenu(menu: HTMLElement): void {
-        
+
         if( ! menu.classList.contains('atom-menu-collapse') ) {
             return;
         }
@@ -62,7 +62,7 @@ const Menu: Component = {
                 SlideToggle(subMenu);
             });
         }
-    }    
+    }
 };
 
 export default Menu;

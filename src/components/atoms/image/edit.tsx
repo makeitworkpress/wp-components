@@ -1,25 +1,9 @@
-/**
- * WPC Image Block - Editor Component
- */
-
-import { __ } from "@wordpress/i18n";
-import {
-  useBlockProps,
-  InspectorControls,
-  MediaUpload,
-  MediaUploadCheck,
-} from "@wordpress/block-editor";
-import {
-  PanelBody,
-  TextControl,
-  SelectControl,
-  ToggleControl,
-  Button,
-  Placeholder,
-} from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
-
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes {
   image: number;
   size: string;

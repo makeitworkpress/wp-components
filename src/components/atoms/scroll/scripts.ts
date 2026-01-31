@@ -1,5 +1,5 @@
-import { FadeIn, FadeOut } from '../other/utils';
-import Component from '../types/component';
+import { FadeIn, FadeOut } from '@scripts/helpers/utils';
+import Component from '@scripts/types/component';
 
 const Scroll: Component = {
     elements: document.getElementsByClassName('atom-scroll') as HTMLCollectionOf<HTMLAnchorElement>,
@@ -10,11 +10,11 @@ const Scroll: Component = {
 
         for( const element of this.elements ) {
             this.setupScrollHandler(element);
-        } 
-        
+        }
+
         this.setupwindowHandler();
     },
-    
+
     /**
      * Setup our scroll button
      * @param element The scroll element
@@ -46,7 +46,7 @@ const Scroll: Component = {
 
         window.addEventListener('scroll', () => {
             let scrollPosition = window.scrollY;
-            
+
             for( const element of this.elements ) {
                 if( element.classList.contains('atom-scroll-top') ) {
                     if( scrollPosition > window.innerHeight) {

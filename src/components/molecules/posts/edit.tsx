@@ -1,13 +1,11 @@
-/**
- * WPC Posts Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
-import { PanelBody, TextControl, SelectControl, RangeControl, ToggleControl, Placeholder } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Attributes { postType: string; postsPerPage: number; columns: number; layout: string; showImage: boolean; showExcerpt: boolean; showDate: boolean; showAuthor: boolean; categories: number[]; orderBy: string; order: string; ajax: boolean; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { postType, postsPerPage, columns, layout, showImage, showExcerpt, showDate, showAuthor, orderBy, order, ajax } = attributes;
   const blockProps = useBlockProps({ className: `molecule molecule-posts molecule-posts-${layout}` });

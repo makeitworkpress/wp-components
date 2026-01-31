@@ -1,14 +1,12 @@
-/**
- * WPC Slider Block - Editor Component
- */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import { PanelBody, ToggleControl, RangeControl, Button, Placeholder } from "@wordpress/components";
-
+const wp = (window as any).wp;
+const { __ } = wp.i18n;
+const { useBlockProps, InspectorControls, RichText, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, RangeControl, Button, Placeholder, ColorPicker } = wp.components;
+const { useSelect } = wp.data;
+const { useState } = wp.element;
 interface Slide { id: number; url: string; alt: string; caption?: string; }
 interface Attributes { slides: Slide[]; autoplay: boolean; autoplaySpeed: number; arrows: boolean; dots: boolean; loop: boolean; speed: number; slidesToShow: number; className: string; }
 interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-
 function Edit({ attributes, setAttributes }: Props) {
   const { slides, autoplay, autoplaySpeed, arrows, dots, loop, speed, slidesToShow } = attributes;
   const blockProps = useBlockProps({ className: "molecule molecule-slider" });
