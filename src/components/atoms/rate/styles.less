@@ -1,0 +1,38 @@
+// main: ../styles.less
+
+/**
+ * Styling for the rating element
+ */
+.atom-rate {
+    overflow: hidden;
+    .atom-rate-anchor {
+        display: inline-flex;
+        overflow: hidden;
+    }
+    // Reverses the direction of items, so we can select 'previous' items with CSS
+    &.atom-rate-can .atom-rate-anchor:hover {
+        flex-direction: row-reverse;
+        justify-content: flex-end;  
+        i {
+            font-weight: 400;
+            &:before {
+                content: "\f005";
+            }
+        }   
+        i:hover, i:hover ~ i {
+            font-weight: 900; // Triggers FontAwesome to adapt to solid styling
+        } 
+    }
+    .fa-star-half {
+        position: relative;
+        &:after {
+            content: "\f005";
+            font-weight: 400;
+            left: 0;
+            position: absolute;
+        }
+    }
+    .fa-circle-notch {
+        display: none;     
+    }    
+}

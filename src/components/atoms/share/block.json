@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/share",
+  "version": "1.0.0",
+  "title": "WPC Share",
+  "category": "widgets",
+  "icon": "share",
+  "description": "Social sharing buttons.",
+  "keywords": ["share", "social", "facebook", "twitter"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "networks": {
+      "type": "array",
+      "default": ["facebook", "twitter", "linkedin", "email"]
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": false
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"]
+  },
+  "render": "file:./render.php"
+}

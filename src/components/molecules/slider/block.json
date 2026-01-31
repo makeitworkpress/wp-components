@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/slider",
+  "version": "1.0.0",
+  "title": "WPC Slider",
+  "category": "media",
+  "icon": "slides",
+  "description": "A responsive slider/carousel component.",
+  "keywords": ["slider", "carousel", "gallery", "slideshow"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "slides": { "type": "array", "default": [] },
+    "autoplay": { "type": "boolean", "default": false },
+    "autoplaySpeed": { "type": "integer", "default": 5000 },
+    "arrows": { "type": "boolean", "default": true },
+    "dots": { "type": "boolean", "default": true },
+    "loop": { "type": "boolean", "default": true },
+    "speed": { "type": "integer", "default": 500 },
+    "slidesToShow": { "type": "integer", "default": 1 },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["wide", "full"] },
+  "render": "file:./render.php"
+}

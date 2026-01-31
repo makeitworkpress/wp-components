@@ -1,0 +1,15 @@
+{
+  "name": "wp-components",
+  "version": "1.0.0",
+  "author": "Make it WorkPress",
+  "description": "The package for WP-Components",
+  "devDependencies": {
+    "esbuild": "^0.20.0",
+    "esbuild-plugin-less": "^1.3.0",
+    "less": "^4.2.0"
+  },
+  "scripts": {
+    "dev": "node build.mjs --watch",
+    "build": "node build.mjs"
+  }
+}

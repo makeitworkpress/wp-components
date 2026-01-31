@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/menu",
+  "version": "1.0.0",
+  "title": "WPC Menu",
+  "category": "widgets",
+  "icon": "menu",
+  "description": "Display a WordPress navigation menu.",
+  "keywords": ["menu", "navigation", "nav", "links"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "menuLocation": {
+      "type": "string",
+      "default": ""
+    },
+    "menuId": {
+      "type": "integer",
+      "default": 0
+    },
+    "hamburger": {
+      "type": "boolean",
+      "default": false
+    },
+    "dropdown": {
+      "type": "string",
+      "default": "default",
+      "enum": ["default", "hover", "click"]
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"]
+  },
+  "render": "file:./render.php"
+}

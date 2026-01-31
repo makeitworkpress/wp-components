@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/video",
+  "version": "1.0.0",
+  "title": "WPC Video",
+  "category": "media",
+  "icon": "video-alt3",
+  "description": "Embed video from URL or file.",
+  "keywords": ["video", "media", "youtube", "vimeo"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "src": { "type": "string", "default": "" },
+    "poster": { "type": "integer", "default": 0 },
+    "autoplay": { "type": "boolean", "default": false },
+    "loop": { "type": "boolean", "default": false },
+    "muted": { "type": "boolean", "default": false },
+    "controls": { "type": "boolean", "default": true },
+    "schema": { "type": "boolean", "default": true },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["left", "center", "right", "wide", "full"] },
+  "render": "file:./render.php"
+}

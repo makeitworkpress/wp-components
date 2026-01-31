@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/social",
+  "version": "1.0.0",
+  "title": "WPC Social Links",
+  "category": "widgets",
+  "icon": "share-alt2",
+  "description": "Display social media profile links.",
+  "keywords": ["social", "links", "facebook", "twitter", "instagram"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "profiles": { "type": "array", "default": [] },
+    "showLabels": { "type": "boolean", "default": false },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["left", "center", "right"] },
+  "render": "file:./render.php"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/list",
+  "version": "1.0.0",
+  "title": "WPC List",
+  "category": "text",
+  "icon": "editor-ul",
+  "description": "Display a styled list.",
+  "keywords": ["list", "items", "bullet"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "items": { "type": "array", "default": [] },
+    "icon": { "type": "string", "default": "" },
+    "ordered": { "type": "boolean", "default": false },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["left", "center", "right"] },
+  "render": "file:./render.php"
+}

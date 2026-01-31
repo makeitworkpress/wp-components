@@ -1,0 +1,98 @@
+// main: ../styles.less
+
+/**
+ * Styling for the logo element
+ */
+.atom-logo {
+    display: block;
+    position: relative;
+    img {
+        transition: opacity 350ms ease-out;
+    }
+}
+
+/**
+ * Transparent Logo's
+ */
+.atom-logo-default_transparent, .atom-logo-tablet_transparent, .atom-logo-mobile_transparent {
+    display: none;
+    opacity: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.molecule-header-transparent { 
+    .atom-logo-default, .atom-logo-tablet, .atom-logo-mobile {
+        opacity: 0;
+    }
+    .atom-logo-default_transparent {
+        display: block;
+        opacity: 1;
+        .molecule-header-scrolled&  {
+            opacity: 0;
+        }        
+    }  
+    .atom-logo-tablet_transparent {
+        @media screen and (min-width: 768px) and (max-width: 1080px) {
+            display: block;
+            opacity: 1;
+            ~ .atom-logo-default_transparent  {
+                display: none;
+            }
+            .molecule-header-scrolled&  {
+                opacity: 0;
+            }
+        }                
+    }
+    .atom-logo-mobile_transparent {
+        @media screen and (max-width: 767px) {
+            display: block;
+            opacity: 1;
+            ~ .atom-logo-default_transparent {
+                display: none;
+            }   
+            .molecule-header-scrolled&  {
+                opacity: 0;
+            }
+        }    
+    }         
+}
+
+/**
+ * Default behaviour
+ */
+.atom-logo-default {
+    .molecule-header-scrolled & {
+        opacity: 1;
+    }    
+}
+
+.atom-logo-mobile {
+    display: none;
+    @media screen and (max-width: 767px) {
+        display: block;
+        ~ .atom-logo-default {
+            display: none;
+        }
+        .molecule-header-scrolled & {
+            opacity: 1;
+        }        
+    }
+}
+
+.atom-logo-tablet {
+    display: none;
+    @media screen and (min-width: 768px) and (max-width: 1080px) {
+        display: block;
+        ~ .atom-logo-default {
+            display: none;
+        }
+        .molecule-header-scrolled & {
+            opacity: 1;
+        }                
+    }
+}
+
+
+

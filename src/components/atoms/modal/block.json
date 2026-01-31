@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/modal",
+  "version": "1.0.0",
+  "title": "WPC Modal",
+  "category": "design",
+  "icon": "admin-page",
+  "description": "A modal popup component.",
+  "keywords": ["modal", "popup", "dialog", "lightbox"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    },
+    "modalId": {
+      "type": "string",
+      "default": ""
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "render": "file:./render.php"
+}

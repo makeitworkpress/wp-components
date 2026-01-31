@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/comments",
+  "version": "1.0.0",
+  "title": "WPC Comments",
+  "category": "widgets",
+  "icon": "admin-comments",
+  "description": "Display post comments.",
+  "keywords": ["comments", "discussion", "replies"],
+  "textdomain": "wp-components",
+  "usesContext": ["postId"],
+  "attributes": {
+    "showForm": { "type": "boolean", "default": true },
+    "showAvatar": { "type": "boolean", "default": true },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["wide", "full"] },
+  "render": "file:./render.php"
+}

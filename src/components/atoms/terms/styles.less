@@ -1,0 +1,33 @@
+// main: ../styles.less
+
+/**
+ * Styling for the terms atom
+ */
+.atom-terms {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+        display: inline-block;
+        margin: 0 0.5em 0.5em 0;
+        vertical-align: top;
+        &:first-child {
+            margin-left: 0;
+        }
+        a {
+            display: block;
+        }
+    }
+    span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.atom-term-style-button {
+    background: @light;
+    padding: 0.5em 1em;
+}

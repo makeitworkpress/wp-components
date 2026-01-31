@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/logo",
+  "version": "1.0.0",
+  "title": "WPC Logo",
+  "category": "theme",
+  "icon": "format-image",
+  "description": "Display site logo with optional link.",
+  "keywords": ["logo", "brand", "site", "identity"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "image": { "type": "integer", "default": 0 },
+    "mobileImage": { "type": "integer", "default": 0 },
+    "link": { "type": "string", "default": "home" },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["left", "center", "right"] },
+  "render": "file:./render.php"
+}

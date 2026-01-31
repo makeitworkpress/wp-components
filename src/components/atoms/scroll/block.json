@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/scroll",
+  "version": "1.0.0",
+  "title": "WPC Scroll Button",
+  "category": "design",
+  "icon": "arrow-down-alt",
+  "description": "A scroll down button for navigation.",
+  "keywords": ["scroll", "arrow", "down", "navigate"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "default": "fas fa-chevron-down"
+    },
+    "target": {
+      "type": "string",
+      "default": ""
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"]
+  },
+  "render": "file:./render.php"
+}

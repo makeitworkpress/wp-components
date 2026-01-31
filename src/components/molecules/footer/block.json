@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/footer",
+  "version": "1.0.0",
+  "title": "WPC Footer",
+  "category": "theme",
+  "icon": "align-full-width",
+  "description": "A customizable site footer component.",
+  "keywords": ["footer", "bottom", "site"],
+  "textdomain": "wp-components",
+  "attributes": {
+    "container": { "type": "boolean", "default": true },
+    "columns": { "type": "integer", "default": 4 },
+    "className": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "align": ["full"] },
+  "render": "file:./render.php"
+}

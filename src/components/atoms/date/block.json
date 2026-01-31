@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpc/date",
+  "version": "1.0.0",
+  "title": "WPC Date",
+  "category": "theme",
+  "icon": "calendar",
+  "description": "Displays a post date with optional icon from WP-Components.",
+  "keywords": [
+    "date",
+    "time",
+    "published",
+    "calendar"
+  ],
+  "textdomain": "wp-components",
+  "attributes": {
+    "date": {
+      "type": "string",
+      "default": ""
+    },
+    "icon": {
+      "type": "string",
+      "default": ""
+    },
+    "schema": {
+      "type": "boolean",
+      "default": true
+    },
+    "className": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true
+    }
+  },
+  "render": "file:./render.php"
+}
