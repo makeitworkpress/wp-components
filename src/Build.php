@@ -22,7 +22,7 @@ class Build
      */
     private static function render(
         string $type,
-        string $template,
+        string $component,
         array $properties = [],
         bool $render = true,
     ) {
@@ -45,43 +45,39 @@ class Build
 
         // Properties should be an array
         if (!is_array($properties)) {
-            $error = new WP_Error(
+            throw new WP_Error(
                 "wrong",
                 sprintf(
                     __(
                         "The properties for the molecule or atom called %s are not properly formatted as an array.",
                         "wpc",
                     ),
-                    $template,
+                    $component,
                 ),
             );
-            echo $error->get_error_message();
-            return;
         }
 
         // If we have atom properties, they should have proper properties
         if (isset($properties["atoms"]) && is_array($properties["atoms"])) {
             foreach ($properties["atoms"] as $atom) {
                 if (!isset($atom["atom"])) {
-                    $error = new WP_Error(
+                    throw new WP_Error(
                         "wrong",
                         sprintf(
                             __(
                                 "The custom atoms within %s are not properly formatted and miss the atom key.",
                                 "wpc",
                             ),
-                            $template,
+                            $component,
                         ),
                     );
-                    echo $error->get_error_message();
-                    return;
                 }
             }
         }
 
         // The molecules post-footer and post-header are deprecated. The following code ensures backwards compatibility.
-        if ($template === "post-footer" || $template === "post-header") {
-            switch ($template) {
+        if ($component === "post-footer" || $component === "post-header") {
+            switch ($component) {
                 case "post-footer":
                     $custom_action = "post_footer";
                     $tag = "footer";
@@ -94,51 +90,11 @@ class Build
 
             $properties["custom_action"] = $custom_action;
             $properties["tag"] = $tag;
-            $template = "section";
+            $component = "section";
         }
 
-        // Our template path
-        $path = apply_filters(
-            "components_" . $type . "_path",
-            WP_COMPONENTS_PATH .
-                "components/" .
-                $type .
-                "s/" .
-                $template .
-                "/component.php",
-            $template,
-        );
-
-        if (file_exists($path)) {
-            ${$type} = apply_filters(
-                "components_" . $type . "_properties",
-                self::set_default_properties($template, $properties, $type),
-                $template,
-            );
-
-            // If we do not render, we return
-            if ($render == false) {
-                ob_start();
-            }
-
-            require $path;
-
-            if ($render == false) {
-                return ob_get_clean();
-            }
-        } else {
-            $error = new WP_Error(
-                "wrong",
-                sprintf(
-                    __(
-                        "The given template for the molecule or atom called %s does not exist.",
-                        "wpc",
-                    ),
-                    $template,
-                ),
-            );
-            echo $error->get_error_message();
-        }
+        $component_instance = new ${ucfirst($component)}($type, $properties);
+        $component_instance->render($render);
     }
 
     /**

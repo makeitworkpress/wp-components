@@ -10,10 +10,10 @@ defined("ABSPATH") or die("Go eat veggies!");
 abstract class Component
 {
     /**
-     * Contains the called class
+     * Contains the called class name
      * @access private
      */
-    private $class;
+    private $component;
 
     /**
      * Contains the attributes for a component
@@ -43,12 +43,9 @@ abstract class Component
     final public function __construct(
         string $type,
         array $props = [],
-        bool $render = true,
     ) {
-        $this->$props = $props;
-        $this->parse_arguments();
 
-        $this->class = strtolower(new ReflectionClass($this)->getShortName());
+        $this->component = strtolower(new ReflectionClass($this)->getShortName());
         $this->template = apply_filters(
             "components_" . $type . "_path",
             WP_COMPONENTS_PATH .
@@ -59,6 +56,8 @@ abstract class Component
                 "/template.php",
             $this->class,
         );
+
+        $this->parse_arguments($this->component, $props, $type);
         $this->props = apply_filters(
             "wfr_components_props_" . $this->class,
             $this->props,
@@ -68,12 +67,16 @@ abstract class Component
     /**
      * This function initializes our components, sets it paramenters
      */
-    abstract protected function parse_arguments();
+    private function parse_arguments(string $template, array $props = [], $type)
+    {
+        $default_props = MakeitWorkPress\WP_Components\Props::get_default_props($component, $props, $type);
+        $this->sanitize_properties();
+    }
 
     /**
      * This function initializes our components, sets it paramenters
      */
-    abstract protected function parse_arguments();
+    private function sanitize_properties();
 
     /**
      * Renders a component
