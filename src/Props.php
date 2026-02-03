@@ -11,6 +11,28 @@ defined("ABSPATH") or die("Go eat veggies!");
 class Props
 {
     /**
+     * Converts camelCase property keys to snake_case
+     * Automatically detects camelCase keys if no explicit conversion map is provided
+     *
+     * @param Array $properties     The properties for a component, either a molecule or component
+     *
+     * @return Array $properties    The modified component properties with snake_case keys
+     */
+    public static function convert_camels($properties)
+    {
+        foreach (array_keys($properties) as $key) {
+            $snake_key = strtolower(preg_replace("/[A-Z]/", '_$0', $key));
+
+            if ($snake_key !== $key) {
+                $properties[$snake_key] = $properties[$key];
+                unset($properties[$key]);
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
      * Define the default attributes per template. This allows us to dynamically add attributes
      *
      * @param   string  $component  The molecule or atom name
@@ -237,7 +259,12 @@ class Props
 
             if ($key == "data" && is_array($attribute)) {
                 foreach ($attribute as $data => $value) {
-                    $output .= " data-" . $data . '="' . $value . '"';
+                    $output .=
+                        " data-" .
+                        sanitize_key($data) .
+                        '="' .
+                        esc_attr(wp_json_encode($value)) .
+                        '"';
                 }
             } elseif ($key == "style" && is_array($attribute)) {
                 $style = "";
@@ -245,15 +272,24 @@ class Props
                     if (!$value) {
                         continue;
                     }
-                    $style .= $selector . ":" . $value . ";";
+                    $style .=
+                        sanitize_key($selector) .
+                        ":" .
+                        sanitize_text_field($value) .
+                        ";";
                 }
 
                 // Only if we style properties we add our inline styling
                 if ($style) {
-                    $output .= ' style="' . $style . '"';
+                    $output .= ' style="' . esc_attr($style) . '"';
                 }
             } else {
-                $output .= " " . $key . '="' . $attribute . '"';
+                $output .=
+                    " " .
+                    sanitize_key($key) .
+                    '="' .
+                    esc_attr(sanitize_text_field($attribute)) .
+                    '"';
             }
         }
 
@@ -329,23 +365,125 @@ class Props
     }
 
     /**
-     * Retrieves older variable set-up, using camelcase to the new variations
-     * This function exists for backwards compatibility
+     * Sanitizes properties based on the type defined in block attributes.
+     * Applies the appropriate WordPress sanitization function per type.
      *
-     * @param Array $properties     The properties for a component, either a molecule or component
-     * @param Array $converts       The properties that need to be converted, in the format of old => new
+     * Supported types (matching WordPress register_block_type):
+     * - string:  sanitize_text_field (or wp_kses_post if 'rich' is set)
+     * - integer: intval
+     * - number:  floatval
+     * - boolean: cast to bool
+     * - array:   recursive sanitization
+     * - object:  recursive sanitization of values
      *
-     * @return Array $properties    The modified component properties
+     * @param array $properties     The properties to sanitize
+     * @param array $atts           The block attribute definitions with type info
+     *
+     * @return array $properties    The sanitized properties
      */
-    public static function convert_camels($properties, $converts)
-    {
-        foreach ($converts as $old => $new) {
-            if (isset($properties[$old]) && $properties[$old]) {
-                $properties[$new] = $properties[$old];
-                unset($properties[$old]);
+    public static function sanitize_properties(
+        array $properties,
+        array $atts,
+    ): array {
+        foreach ($properties as $key => $value) {
+            if (!isset($atts[$key])) {
+                continue;
             }
+
+            $type = $atts[$key]["type"] ?? "string";
+            $properties[$key] = self::sanitize_value(
+                $value,
+                $type,
+                $atts[$key],
+            );
         }
 
         return $properties;
+    }
+
+    /**
+     * Sanitizes a single value based on its block attribute type
+     *
+     * @param mixed  $value     The value to sanitize
+     * @param string $type      The block attribute type
+     * @param array  $att       The full attribute definition (may contain 'rich', 'properties', 'items')
+     *
+     * @return mixed            The sanitized value
+     */
+    private static function sanitize_value(
+        $value,
+        string $type,
+        array $att = [],
+    ) {
+        switch ($type) {
+            case "string":
+                if (!is_string($value)) {
+                    return "";
+                }
+                // Use wp_kses_post for rich text fields that may contain HTML
+                if (!empty($att["rich"])) {
+                    return wp_kses_post($value);
+                }
+                return sanitize_text_field($value);
+
+            case "integer":
+                return intval($value);
+
+            case "number":
+                return floatval($value);
+
+            case "boolean":
+                return (bool) $value;
+
+            case "array":
+                if (!is_array($value)) {
+                    return [];
+                }
+                // If items type is defined, sanitize each element
+                if (isset($att["items"]["type"])) {
+                    foreach ($value as $i => $item) {
+                        $value[$i] = self::sanitize_value(
+                            $item,
+                            $att["items"]["type"],
+                            $att["items"],
+                        );
+                    }
+                }
+                return $value;
+
+            case "object":
+                if (!is_array($value)) {
+                    return [];
+                }
+                // If nested properties are defined, sanitize each known property
+                if (isset($att["properties"])) {
+                    foreach ($value as $k => $v) {
+                        if (isset($att["properties"][$k]["type"])) {
+                            $value[$k] = self::sanitize_value(
+                                $v,
+                                $att["properties"][$k]["type"],
+                                $att["properties"][$k],
+                            );
+                        } else {
+                            $value[$k] = is_string($v)
+                                ? sanitize_text_field($v)
+                                : $v;
+                        }
+                    }
+                } else {
+                    // No schema defined — sanitize string values, leave others
+                    foreach ($value as $k => $v) {
+                        if (is_string($v)) {
+                            $value[$k] = sanitize_text_field($v);
+                        } elseif (is_array($v)) {
+                            $value[$k] = self::sanitize_value($v, "object");
+                        }
+                    }
+                }
+                return $value;
+
+            default:
+                return is_string($value) ? sanitize_text_field($value) : $value;
+        }
     }
 }
