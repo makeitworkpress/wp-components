@@ -390,12 +390,14 @@ class Props
                 continue;
             }
 
-            $type = $atts[$key]["type"] ?? "string";
-            $properties[$key] = self::sanitize_value(
-                $value,
-                $type,
-                $atts[$key],
-            );
+            if (!isset($atts[$key]["type"])) {
+                throw new WP_Error(
+                    "invalid_attribute_type",
+                    "Attribute type is missing",
+                );
+            }
+
+            $properties[$key] = self::sanitize_value($value, $atts[$key]);
         }
 
         return $properties;
@@ -410,11 +412,10 @@ class Props
      *
      * @return mixed            The sanitized value
      */
-    private static function sanitize_value(
-        $value,
-        string $type,
-        array $att = [],
-    ) {
+    private static function sanitize_value($value, array $att = [])
+    {
+        $type = $att["type"];
+
         switch ($type) {
             case "string":
                 if (!is_string($value)) {

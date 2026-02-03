@@ -16,6 +16,13 @@ abstract class Component
     private $component;
 
     /**
+     * Contains the component-specific attributes, defined in child classes.
+     * Matches the WordPress register_block_type attributes format.
+     * @access public
+     */
+    public static $atts = [];
+
+    /**
      * Contains the base attributes shared by every component.
      * Matches the WordPress register_block_type attributes format.
      * @access protected
@@ -41,13 +48,6 @@ abstract class Component
         'width'      => ['type' => 'string',  'default' => ''],
         'attributes' => ['type' => 'object',  'default' => ['class' => '']],
     ];
-
-    /**
-     * Contains the component-specific attributes, defined in child classes.
-     * Matches the WordPress register_block_type attributes format.
-     * @access public
-     */
-    public static $atts = [];
 
     /**
      * Contains the custom properties, used in the template
@@ -91,7 +91,7 @@ abstract class Component
             $this->class,
         );
 
-        $this->parse_properties($this->component, $props, $type);
+        $this->parse_properties();
         $this->props = apply_filters(
             "wfr_components_props_" . $this->class,
             $this->props,
@@ -111,7 +111,7 @@ abstract class Component
     }
 
     /**
-     * Parses input props against the full attribute definitions (base + child).
+     * Parses input props and attributes against the full attribute definitions (base + child).
      * Extracts default values, deep merges input props on top, and applies backwards compatibility conversions.
      */
     private function parse_properties()
@@ -125,16 +125,20 @@ abstract class Component
             $defaults[$key] = $attribute['default'] ?? '';
         }
 
-        $this->props = MakeitWorkPress\WP_Components\Build::multi_parse_args($this->props, $defaults);
+        $this->props = \MakeitWorkPress\WP_Components\Build::multi_parse_args($this->props, $defaults);
 
-        // Prepare attributes for rendering - should be implemented in child classes
-        $this->prepare_attributes();
+        // Set the main component html tag attributes
+        $this->props = $this->set_component_attributes($this->props);
+        $this->props['attributes'] = \MakeitWorkPress\WP_Components\Props::attributes($this->props['attributes']);
+
     }
 
     /**
-     * This function initializes our components, sets it paramenters
+     * This function initializes our components, sets its parameters
+     * @param array $type_props The properties of the component
+     * @return array The attributes of the component
      */
-    abstract protected function prepare_attributes();
+    abstract protected function prepare_attributes(array $type_props): array;
 
     /**
      * Renders a component
@@ -168,6 +172,7 @@ abstract class Component
 
         // Cast our object properties into the type variable, so they are accessible by the template file under the type name
         ${$this->type} = $this->props;
+        $attributes = $this->props['attributes'];
 
         if (!$render) {
             ob_start();
