@@ -12,44 +12,15 @@ defined("ABSPATH") || exit();
 class Blocks
 {
     /**
-     * Path to the components directory.
-     *
-     * @var string
-     */
-    private string $components_path;
-
-    /**
      * List of atom block names to register.
      *
      * @var array
      */
-    private array $atoms = [
-        "author",
-        "breadcrumbs",
-        "button",
-        "cart",
-        "comments",
-        "image",
-        "list",
-        "logo",
-        "map",
-        "menu",
-        "modal",
-        "pagination",
-        "rate",
-        "scroll",
-        "search",
-        "share",
-        "slider",
-        "social",
-        "tabs",
-        "terms",
-        "title",
-        "video",
-    ];
+    private array $atoms = [];
 
     /**
      * List of molecule block names to register.
+     * Currently, those are not registered as blocks
      *
      * @var array
      */
@@ -66,7 +37,15 @@ class Blocks
      */
     public function __construct()
     {
-        $this->components_path = WP_COMPONENTS_PATH . "components/";
+        $this->atoms = array_values(
+            array_filter(
+                scandir(__DIR__ . "/components/atoms"),
+                fn($dir) => $dir !== "." &&
+                    $dir !== ".." &&
+                    is_dir(__DIR__ . "/components/atoms/" . $dir),
+            ),
+        );
+
         $this->register_hooks();
     }
 
@@ -83,26 +62,62 @@ class Blocks
     }
 
     /**
+     * Resolves the component class name from a block folder name.
+     *
+     * @param string $block_name The folder name (e.g. "button", "content-block")
+     * @return string The fully qualified class name
+     */
+    private function resolve_class(string $block_name): string
+    {
+        $class_name = str_replace("-", "", ucwords($block_name, "-"));
+        return "MakeitWorkPress\\WP_Components\\Components\\Atoms\\" .
+            $class_name;
+    }
+
+    /**
      * Register all WPC blocks.
      */
     public function register_blocks(): void
     {
-        // Register atom blocks
         foreach ($this->atoms as $block_name) {
-            $block_dir = $this->components_path . "atoms/" . $block_name;
+            $class = $this->resolve_class($block_name);
 
-            if (file_exists($block_dir . "/block.json")) {
-                register_block_type($block_dir);
+            if (!class_exists($class) || empty($class::$block["name"])) {
+                continue;
             }
-        }
 
-        // Register molecule blocks
-        foreach ($this->molecules as $block_name) {
-            $block_dir = $this->components_path . "molecules/" . $block_name;
+            $block = $class::$block;
+            $script_handle = "wpc-" . $block_name . "-editor";
+            $script_path =
+                __DIR__ . "/components/atoms/" . $block_name . "/edit.js";
 
-            if (file_exists($block_dir . "/block.json")) {
-                register_block_type($block_dir);
+            if (file_exists($script_path)) {
+                wp_register_script(
+                    $script_handle,
+                    WP_COMPONENTS_ASSETS .
+                        "components/atoms/" .
+                        $block_name .
+                        "/edit.js",
+                    ["wp-blocks", "wp-element", "wp-block-editor"],
+                    filemtime($script_path),
+                    true,
+                );
             }
+
+            register_block_type(
+                $block["name"],
+                array_merge($block, [
+                    "attributes" => $class::get_block_atts(),
+                    "editor_script" => file_exists($script_path)
+                        ? $script_handle
+                        : null,
+                    "render_callback" => function (array $attributes) use (
+                        $block_name,
+                    ) {
+                        return Build::atom($block_name, $attributes, false);
+                    },
+                ]),
+            );
         }
     }
 

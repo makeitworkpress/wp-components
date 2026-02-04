@@ -8,13 +8,36 @@ defined("ABSPATH") or die("Go eat veggies!");
  */
 class Button extends Component
 {
+    public static $block = [
+        "name" => "wpc/button",
+        "title" => "Button",
+        "description" => "A button component with optional icons and link.",
+        "category" => "wpc-atoms",
+        "icon" => "button",
+        "keywords" => ["button", "link", "cta"],
+    ];
+
     public static $atts = [
-        "icon_visible" => [],
-        "icon_after" => false,
-        "icon_before" => false,
-        "background" => null,
-        "size" => null,
-        "link" => null,
+        "attributes" => [
+            "type" => "object",
+            "default" => [
+                "href" => "post",
+                "target" => "_self",
+            ],
+            "properties" => [
+                "href" => ["type" => "string"],
+                "target" => ["type" => "string"],
+            ],
+        ],
+        "icon_visible" => ["type" => "object", "default" => ""],
+        "icon_after" => ["type" => "string", "default" => ""],
+        "icon_before" => ["type" => "string", "default" => ""],
+        "label" => ["type" => "string", "default" => ""],
+        "size" => [
+            "type" => "string",
+            "default" => "",
+            "enum" => ["none", "small", "medium", "large"],
+        ],
     ];
 
     /**

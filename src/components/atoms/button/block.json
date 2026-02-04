@@ -1,65 +1,22 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "wpc/button",
+  "name": "wpc/cart",
   "version": "1.0.0",
-  "title": "WPC Button",
-  "category": "design",
-  "icon": "button",
-  "description": "A button component with icon support from WP-Components.",
-  "keywords": [
-    "button",
-    "link",
-    "cta",
-    "call to action"
-  ],
+  "title": "WPC Cart",
+  "category": "woocommerce",
+  "icon": "cart",
+  "description": "WooCommerce mini cart with item count.",
+  "keywords": ["cart", "woocommerce", "shop", "basket"],
   "textdomain": "wp-components",
   "attributes": {
-    "label": {
+    "icon": {
       "type": "string",
-      "default": ""
+      "default": "fas fa-shopping-cart"
     },
-    "url": {
-      "type": "string",
-      "default": ""
-    },
-    "linkTarget": {
-      "type": "string",
-      "default": "_self"
-    },
-    "iconBefore": {
-      "type": "string",
-      "default": ""
-    },
-    "iconAfter": {
-      "type": "string",
-      "default": ""
-    },
-    "iconVisible": {
-      "type": "string",
-      "default": "standard",
-      "enum": [
-        "standard",
-        "hover"
-      ]
-    },
-    "size": {
-      "type": "string",
-      "default": "",
-      "enum": [
-        "",
-        "small",
-        "large",
-        "none"
-      ]
-    },
-    "backgroundColor": {
-      "type": "string",
-      "default": ""
-    },
-    "textColor": {
-      "type": "string",
-      "default": ""
+    "showCount": {
+      "type": "boolean",
+      "default": true
     },
     "className": {
       "type": "string",
@@ -68,20 +25,7 @@
   },
   "supports": {
     "html": false,
-    "align": [
-      "left",
-      "center",
-      "right",
-      "wide",
-      "full"
-    ],
-    "spacing": {
-      "margin": true,
-      "padding": true
-    },
-    "typography": {
-      "fontSize": true
-    }
+    "align": ["left", "center", "right"]
   },
   "render": "file:./render.php"
 }

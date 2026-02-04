@@ -46,8 +46,22 @@ abstract class Component
         'rounded'    => ['type' => 'string',  'default' => ''],
         'video'      => ['type' => 'string',  'default' => ''],
         'width'      => ['type' => 'string',  'default' => ''],
-        'attributes' => ['type' => 'object',  'default' => ['class' => '']],
+        'attributes' => [
+            'type' => 'object',
+            'default' => ['class' => ''],
+            'properties' => [
+                'class' => ['type' => 'string']
+            ]
+        ],
+
     ];
+
+    /**
+     * Contains the general settings for the block,
+     * such as name, description, category, icon, keywords.
+     * @access public
+     */
+    public static $block = [];
 
     /**
      * Contains the custom properties, used in the template

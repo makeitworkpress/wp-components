@@ -443,11 +443,7 @@ class Props
                 // If items type is defined, sanitize each element
                 if (isset($att["items"]["type"])) {
                     foreach ($value as $i => $item) {
-                        $value[$i] = self::sanitize_value(
-                            $item,
-                            $att["items"]["type"],
-                            $att["items"],
-                        );
+                        $value[$i] = self::sanitize_value($item, $att["items"]);
                     }
                 }
                 return $value;
@@ -462,7 +458,6 @@ class Props
                         if (isset($att["properties"][$k]["type"])) {
                             $value[$k] = self::sanitize_value(
                                 $v,
-                                $att["properties"][$k]["type"],
                                 $att["properties"][$k],
                             );
                         } else {
@@ -477,7 +472,9 @@ class Props
                         if (is_string($v)) {
                             $value[$k] = sanitize_text_field($v);
                         } elseif (is_array($v)) {
-                            $value[$k] = self::sanitize_value($v, "object");
+                            $value[$k] = self::sanitize_value($v, [
+                                "type" => "object",
+                            ]);
                         }
                     }
                 }
