@@ -1,14 +1,22 @@
+/**
+ * Copyright Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl } = wp.components;
-// Import block.json metadata
-interface CopyrightAttributes {
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface CopyrightAttributes extends Partial<BaseAttributes> {
   copyright: string;
   date: string;
   name: string;
-  itemtype: string;
-  className: string;
 }
 
 interface EditProps {
@@ -16,17 +24,16 @@ interface EditProps {
   setAttributes: (attrs: Partial<CopyrightAttributes>) => void;
 }
 
-function CopyrightEdit({ attributes, setAttributes }: EditProps) {
-  const { copyright, date, name, itemtype } = attributes;
-  const blockProps = useBlockProps();
-
-  const currentYear = new Date().getFullYear().toString();
-  const displayDate = date || currentYear;
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { copyright, date, name } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-copyright">
       <InspectorControls>
-        <PanelBody title={__("Copyright Settings", "wp-components")}>
+        <PanelBody
+          title={__("Copyright Settings", "wp-components")}
+          initialOpen={true}
+        >
           <TextControl
             label={__("Copyright Symbol", "wp-components")}
             value={copyright}
@@ -34,39 +41,24 @@ function CopyrightEdit({ attributes, setAttributes }: EditProps) {
           />
           <TextControl
             label={__("Year", "wp-components")}
-            help={__("Leave empty for current year", "wp-components")}
             value={date}
             onChange={(value: string) => setAttributes({ date: value })}
+            help={__("Leave empty for current year", "wp-components")}
           />
           <TextControl
-            label={__("Organization/Person Name", "wp-components")}
+            label={__("Name", "wp-components")}
             value={name}
             onChange={(value: string) => setAttributes({ name: value })}
           />
-          <SelectControl
-            label={__("Schema Type", "wp-components")}
-            value={itemtype}
-            options={[
-              {
-                label: __("Organization", "wp-components"),
-                value: "http://schema.org/Organization",
-              },
-              {
-                label: __("Person", "wp-components"),
-                value: "http://schema.org/Person",
-              },
-            ]}
-            onChange={(value: string) => setAttributes({ itemtype: value })}
-          />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <span>{copyright}</span> <span>{displayDate}</span>{" "}
-        <span>{name || __("[Organization Name]", "wp-components")}</span>
-      </div>
-    </>
+      <ServerSideRender block="wpc/copyright" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default CopyrightEdit;

@@ -1,20 +1,30 @@
+/**
+ * Button Block Editor
+ * Attributes match Button.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, SelectControl } = wp.components;
 const ServerSideRender = wp.serverSideRender;
 
-interface ButtonAttributes {
+interface ButtonAttributes extends Partial<BaseAttributes> {
+  attributes: {
+    href: string;
+    target: string;
+    class: string;
+  };
+  icon_visible: string;
+  icon_after: string;
+  icon_before: string;
   label: string;
-  url: string;
-  linkTarget: string;
-  iconBefore: string;
-  iconAfter: string;
-  iconVisible: string;
   size: string;
-  backgroundColor: string;
-  textColor: string;
-  className: string;
 }
 
 interface EditProps {
@@ -24,19 +34,25 @@ interface EditProps {
 
 export default function Edit({ attributes, setAttributes }: EditProps) {
   const {
+    attributes: htmlAttributes = { href: "post", target: "_self", class: "" },
+    icon_visible,
+    icon_after,
+    icon_before,
     label,
-    url,
-    linkTarget,
-    iconBefore,
-    iconAfter,
-    iconVisible,
     size,
-    backgroundColor,
-    textColor,
   } = attributes;
 
+  const updateHtmlAttribute = (key: string, value: string) => {
+    setAttributes({
+      attributes: {
+        ...htmlAttributes,
+        [key]: value,
+      },
+    });
+  };
+
   return (
-    <div {...useBlockProps()}>
+    <BlockWrapper>
       <InspectorControls>
         <PanelBody
           title={__("Button Settings", "wp-components")}
@@ -50,27 +66,29 @@ export default function Edit({ attributes, setAttributes }: EditProps) {
           />
           <TextControl
             label={__("URL", "wp-components")}
-            value={url}
-            onChange={(value: string) => setAttributes({ url: value })}
-            placeholder={__("https://example.com", "wp-components")}
+            value={htmlAttributes.href}
+            onChange={(value: string) => updateHtmlAttribute("href", value)}
+            placeholder={__("post, https://example.com", "wp-components")}
+            help={__("Use 'post' for current post permalink", "wp-components")}
           />
           <SelectControl
             label={__("Link Target", "wp-components")}
-            value={linkTarget}
+            value={htmlAttributes.target}
             options={[
               { label: __("Same Window", "wp-components"), value: "_self" },
               { label: __("New Tab", "wp-components"), value: "_blank" },
             ]}
-            onChange={(value: string) => setAttributes({ linkTarget: value })}
+            onChange={(value: string) => updateHtmlAttribute("target", value)}
           />
           <SelectControl
             label={__("Size", "wp-components")}
             value={size}
             options={[
               { label: __("Default", "wp-components"), value: "" },
-              { label: __("Small", "wp-components"), value: "small" },
-              { label: __("Large", "wp-components"), value: "large" },
               { label: __("None (Text Only)", "wp-components"), value: "none" },
+              { label: __("Small", "wp-components"), value: "small" },
+              { label: __("Medium", "wp-components"), value: "medium" },
+              { label: __("Large", "wp-components"), value: "large" },
             ]}
             onChange={(value: string) => setAttributes({ size: value })}
           />
@@ -82,28 +100,28 @@ export default function Edit({ attributes, setAttributes }: EditProps) {
         >
           <TextControl
             label={__("Icon Before", "wp-components")}
-            value={iconBefore}
-            onChange={(value: string) => setAttributes({ iconBefore: value })}
+            value={icon_before}
+            onChange={(value: string) => setAttributes({ icon_before: value })}
             placeholder={__("fas fa-arrow-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-arrow-right)",
-              "wp-components"
+              "wp-components",
             )}
           />
           <TextControl
             label={__("Icon After", "wp-components")}
-            value={iconAfter}
-            onChange={(value: string) => setAttributes({ iconAfter: value })}
+            value={icon_after}
+            onChange={(value: string) => setAttributes({ icon_after: value })}
             placeholder={__("fas fa-chevron-right", "wp-components")}
             help={__(
               "Font Awesome class name (e.g., fas fa-chevron-right)",
-              "wp-components"
+              "wp-components",
             )}
           />
-          {(iconBefore || iconAfter) && (
+          {(icon_before || icon_after) && (
             <SelectControl
               label={__("Icon Visibility", "wp-components")}
-              value={iconVisible}
+              value={icon_visible}
               options={[
                 {
                   label: __("Always Visible", "wp-components"),
@@ -111,35 +129,20 @@ export default function Edit({ attributes, setAttributes }: EditProps) {
                 },
                 { label: __("Show on Hover", "wp-components"), value: "hover" },
               ]}
-              onChange={(value: string) => setAttributes({ iconVisible: value })}
+              onChange={(value: string) =>
+                setAttributes({ icon_visible: value })
+              }
             />
           )}
         </PanelBody>
 
-        <PanelBody title={__("Colors", "wp-components")} initialOpen={false}>
-          <TextControl
-            label={__("Background Color", "wp-components")}
-            value={backgroundColor}
-            onChange={(value: string) => setAttributes({ backgroundColor: value })}
-            placeholder={__("#000000 or rgb(0,0,0)", "wp-components")}
-            help={__(
-              "Leave empty for default light background",
-              "wp-components"
-            )}
-          />
-          <TextControl
-            label={__("Text Color", "wp-components")}
-            value={textColor}
-            onChange={(value: string) => setAttributes({ textColor: value })}
-            placeholder={__("#ffffff or rgb(255,255,255)", "wp-components")}
-          />
-        </PanelBody>
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <ServerSideRender
-        block="wpc/button"
-        attributes={attributes}
-      />
-    </div>
+      <ServerSideRender block="wpc/button" attributes={attributes} />
+    </BlockWrapper>
   );
 }

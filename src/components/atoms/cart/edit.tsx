@@ -1,51 +1,63 @@
+/**
+ * Cart Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, ToggleControl } = wp.components;
-interface Attributes {
-  icon: string;
-  showCount: boolean;
-  className: string;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface CartAttributes extends Partial<BaseAttributes> {
+  cart: boolean;
+  collapse: boolean;
+  icon: boolean;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: CartAttributes;
+  setAttributes: (attrs: Partial<CartAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { icon, showCount } = attributes;
-
-  const blockProps = useBlockProps({
-    className: "atom atom-cart",
-  });
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { cart, collapse, icon } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-cart">
       <InspectorControls>
-        <PanelBody title={__("Cart Settings", "wp-components")} initialOpen={true}>
-          <TextControl
-            label={__("Icon Class", "wp-components")}
-            value={icon}
-            onChange={(value: string) => setAttributes({ icon: value })}
-            placeholder="fas fa-shopping-cart"
+        <PanelBody
+          title={__("Cart Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <ToggleControl
+            label={__("Show Cart Icon", "wp-components")}
+            checked={icon}
+            onChange={(value: boolean) => setAttributes({ icon: value })}
           />
           <ToggleControl
-            label={__("Show Item Count", "wp-components")}
-            checked={showCount}
-            onChange={(value: boolean) => setAttributes({ showCount: value })}
+            label={__("Show Cart Content", "wp-components")}
+            checked={cart}
+            onChange={(value: boolean) => setAttributes({ cart: value })}
+          />
+          <ToggleControl
+            label={__("Collapse by Default", "wp-components")}
+            checked={collapse}
+            onChange={(value: boolean) => setAttributes({ collapse: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <a href="#" className="atom-cart-link">
-          <i className={icon || "fas fa-shopping-cart"} />
-          {showCount && <span className="atom-cart-count">0</span>}
-        </a>
-      </div>
-    </>
+      <ServerSideRender block="wpc/cart" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

@@ -1,34 +1,70 @@
+/**
+ * Breadcrumbs Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, ToggleControl } = wp.components;
-interface Attributes { separator: string; showHome: boolean; homeLabel: string; schema: boolean; className: string; }
-interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-function Edit({ attributes, setAttributes }: Props) {
-  const { separator, showHome, homeLabel, schema } = attributes;
-  const blockProps = useBlockProps({ className: "atom atom-breadcrumbs" });
+const ServerSideRender = wp.serverSideRender;
 
-  return (
-    <>
-      <InspectorControls>
-        <PanelBody title={__("Breadcrumbs Settings", "wp-components")} initialOpen={true}>
-          <TextControl label={__("Separator", "wp-components")} value={separator} onChange={(value: string) => setAttributes({ separator: value })} />
-          <ToggleControl label={__("Show Home", "wp-components")} checked={showHome} onChange={(value: boolean) => setAttributes({ showHome: value })} />
-          {showHome && <TextControl label={__("Home Label", "wp-components")} value={homeLabel} onChange={(value: string) => setAttributes({ homeLabel: value })} />}
-          <ToggleControl label={__("Enable Schema", "wp-components")} checked={schema} onChange={(value: boolean) => setAttributes({ schema: value })} />
-        </PanelBody>
-      </InspectorControls>
-      <nav {...blockProps}>
-        <ol className="atom-breadcrumbs-list">
-          {showHome && <li><a href="#">{homeLabel}</a></li>}
-          <li><span className="separator">{separator}</span></li>
-          <li><a href="#">{__("Category", "wp-components")}</a></li>
-          <li><span className="separator">{separator}</span></li>
-          <li><span>{__("Current Page", "wp-components")}</span></li>
-        </ol>
-      </nav>
-    </>
-  );
+interface BreadcrumbsAttributes extends Partial<BaseAttributes> {
+  archive: boolean;
+  home: string;
+  seperator: string;
+  taxonomy: string;
 }
 
-export default Edit;
+interface EditProps {
+  attributes: BreadcrumbsAttributes;
+  setAttributes: (attrs: Partial<BreadcrumbsAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { archive, home, seperator, taxonomy } = attributes;
+
+  return (
+    <BlockWrapper className="atom-breadcrumbs">
+      <InspectorControls>
+        <PanelBody
+          title={__("Breadcrumbs Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <TextControl
+            label={__("Home Text", "wp-components")}
+            value={home}
+            onChange={(value: string) => setAttributes({ home: value })}
+          />
+          <TextControl
+            label={__("Separator", "wp-components")}
+            value={seperator}
+            onChange={(value: string) => setAttributes({ seperator: value })}
+          />
+          <TextControl
+            label={__("Taxonomy", "wp-components")}
+            value={taxonomy}
+            onChange={(value: string) => setAttributes({ taxonomy: value })}
+            help={__("Show taxonomy in breadcrumbs", "wp-components")}
+          />
+          <ToggleControl
+            label={__("Show Archive Link", "wp-components")}
+            checked={archive}
+            onChange={(value: boolean) => setAttributes({ archive: value })}
+          />
+        </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
+      </InspectorControls>
+
+      <ServerSideRender block="wpc/breadcrumbs" attributes={attributes} />
+    </BlockWrapper>
+  );
+}

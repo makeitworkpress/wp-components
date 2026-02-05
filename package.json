@@ -11,5 +11,8 @@
   "scripts": {
     "dev": "node build.mjs --watch",
     "build": "node build.mjs"
+  },
+  "dependencies": {
+    "glob": "^13.0.1"
   }
 }

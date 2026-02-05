@@ -1,11 +1,22 @@
+/**
+ * Type Block Editor
+ * Attributes match Type.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl } = wp.components;
-interface TypeAttributes {
+const ServerSideRender = wp.serverSideRender;
+
+interface TypeAttributes extends Partial<BaseAttributes> {
   name: string;
   type: string;
-  className: string;
 }
 
 interface EditProps {
@@ -13,34 +24,38 @@ interface EditProps {
   setAttributes: (attrs: Partial<TypeAttributes>) => void;
 }
 
-function TypeEdit({ attributes, setAttributes }: EditProps) {
+export default function Edit({ attributes, setAttributes }: EditProps) {
   const { name, type } = attributes;
-  const blockProps = useBlockProps();
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Post Type Settings", "wp-components")}>
+        <PanelBody
+          title={__("Post Type Settings", "wp-components")}
+          initialOpen={true}
+        >
           <TextControl
             label={__("Post Type", "wp-components")}
-            help={__("Leave empty to use current post type", "wp-components")}
             value={type}
             onChange={(value: string) => setAttributes({ type: value })}
+            placeholder="post"
+            help={__("Leave empty to use current post type", "wp-components")}
           />
           <TextControl
             label={__("Custom Label", "wp-components")}
-            help={__("Leave empty to use post type label", "wp-components")}
             value={name}
             onChange={(value: string) => setAttributes({ name: value })}
+            help={__("Leave empty to use post type label", "wp-components")}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        {name || type || __("[Post Type]", "wp-components")}
-      </div>
-    </>
+      <ServerSideRender block="wpc/type" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default TypeEdit;

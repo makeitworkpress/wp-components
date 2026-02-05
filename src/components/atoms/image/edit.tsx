@@ -1,79 +1,74 @@
+/**
+ * Image Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, Button, Placeholder } = wp.components;
-const { useSelect } = wp.data;
-interface Attributes {
-  image: number;
-  size: string;
-  link: string;
+const { InspectorControls, MediaUpload } = wp.blockEditor;
+const { PanelBody, TextControl, SelectControl, ToggleControl, Button } =
+  wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface ImageAttributes extends Partial<BaseAttributes> {
   enlarge: boolean;
+  image: string;
+  link: string;
   schema: boolean;
-  className: string;
+  size: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: ImageAttributes;
+  setAttributes: (attrs: Partial<ImageAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { image, size, link, enlarge, schema } = attributes;
-
-  const blockProps = useBlockProps({
-    className: `atom atom-image ${enlarge ? "atom-image-enlarge" : ""}`.trim(),
-  });
-
-  const imageData = useSelect(
-    (select: (arg: string) => any) => {
-      if (!image) return null;
-      return (select("core") as any).getMedia(image);
-    },
-    [image]
-  );
-
-  const imageSizes = useSelect((select: (arg: string) => any) => {
-    const settings = (select("core/block-editor") as any).getSettings();
-    return settings.imageSizes || [];
-  }, []);
-
-  const sizeOptions = imageSizes.map((size: { slug: string; name: string }) => ({
-    label: size.name,
-    value: size.slug,
-  }));
-
-  const getImageUrl = () => {
-    if (!imageData) return null;
-    if (imageData.media_details?.sizes?.[size]?.source_url) {
-      return imageData.media_details.sizes[size].source_url;
-    }
-    return imageData.source_url;
-  };
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { enlarge, image, link, schema, size } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-image">
       <InspectorControls>
-        <PanelBody title={__("Image Settings", "wp-components")} initialOpen={true}>
+        <PanelBody
+          title={__("Image Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <MediaUpload
+            onSelect={(media: any) =>
+              setAttributes({ image: media.id.toString() })
+            }
+            allowedTypes={["image"]}
+            render={({ open }: any) => (
+              <Button onClick={open} variant="secondary">
+                {image
+                  ? __("Change Image", "wp-components")
+                  : __("Select Image", "wp-components")}
+              </Button>
+            )}
+          />
           <SelectControl
-            label={__("Image Size", "wp-components")}
+            label={__("Size", "wp-components")}
             value={size}
-            options={sizeOptions.length > 0 ? sizeOptions : [
-              { label: "Large", value: "large" },
-              { label: "Medium", value: "medium" },
-              { label: "Thumbnail", value: "thumbnail" },
-              { label: "Full", value: "full" },
+            options={[
+              { label: __("Thumbnail", "wp-components"), value: "thumbnail" },
+              { label: __("Medium", "wp-components"), value: "medium" },
+              { label: __("Large", "wp-components"), value: "large" },
+              { label: __("Full", "wp-components"), value: "full" },
             ]}
             onChange={(value: string) => setAttributes({ size: value })}
           />
           <TextControl
-            label={__("Link URL", "wp-components")}
+            label={__("Link", "wp-components")}
             value={link}
             onChange={(value: string) => setAttributes({ link: value })}
-            placeholder={__("https://example.com", "wp-components")}
-            help={__("Leave empty for no link, or use 'post' for post permalink", "wp-components")}
+            help={__("Use 'post' for post permalink", "wp-components")}
           />
           <ToggleControl
-            label={__("Enable Enlarge Effect", "wp-components")}
+            label={__("Enlarge on Click", "wp-components")}
             checked={enlarge}
             onChange={(value: boolean) => setAttributes({ enlarge: value })}
           />
@@ -83,41 +78,14 @@ function Edit({ attributes, setAttributes }: Props) {
             onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <figure {...blockProps}>
-        <MediaUploadCheck>
-          <MediaUpload
-            onSelect={(media: any) => setAttributes({ image: media.id })}
-            allowedTypes={["image"]}
-            value={image}
-            render={({ open }: { open: () => void }) => (
-              <>
-                {image && getImageUrl() ? (
-                  <div onClick={open} style={{ cursor: "pointer" }}>
-                    <img src={getImageUrl()!} alt="" style={{ maxWidth: "100%", height: "auto" }} />
-                    <Button variant="secondary" onClick={open} style={{ marginTop: "8px" }}>
-                      {__("Replace Image", "wp-components")}
-                    </Button>
-                  </div>
-                ) : (
-                  <Placeholder
-                    icon="format-image"
-                    label={__("WPC Image", "wp-components")}
-                    instructions={__("Select an image from the media library", "wp-components")}
-                  >
-                    <Button variant="primary" onClick={open}>
-                      {__("Select Image", "wp-components")}
-                    </Button>
-                  </Placeholder>
-                )}
-              </>
-            )}
-          />
-        </MediaUploadCheck>
-      </figure>
-    </>
+      <ServerSideRender block="wpc/image" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

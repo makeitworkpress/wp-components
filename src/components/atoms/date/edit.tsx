@@ -1,12 +1,22 @@
+/**
+ * Date Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, ToggleControl } = wp.components;
-interface DateAttributes {
+const ServerSideRender = wp.serverSideRender;
+
+interface DateAttributes extends Partial<BaseAttributes> {
   date: string;
   icon: string;
   schema: boolean;
-  className: string;
 }
 
 interface EditProps {
@@ -14,27 +24,27 @@ interface EditProps {
   setAttributes: (attrs: Partial<DateAttributes>) => void;
 }
 
-function DateEdit({ attributes, setAttributes }: EditProps) {
+export default function Edit({ attributes, setAttributes }: EditProps) {
   const { date, icon, schema } = attributes;
-  const blockProps = useBlockProps();
-
-  const displayDate = date || new Date().toLocaleDateString();
 
   return (
-    <>
+    <BlockWrapper className="atom-date">
       <InspectorControls>
-        <PanelBody title={__("Date Settings", "wp-components")}>
+        <PanelBody
+          title={__("Date Settings", "wp-components")}
+          initialOpen={true}
+        >
           <TextControl
             label={__("Custom Date", "wp-components")}
-            help={__("Leave empty to use post date", "wp-components")}
             value={date}
             onChange={(value: string) => setAttributes({ date: value })}
+            help={__("Leave empty for post date", "wp-components")}
           />
           <TextControl
-            label={__("Icon Class", "wp-components")}
-            help={__("e.g., fa fa-calendar", "wp-components")}
+            label={__("Icon", "wp-components")}
             value={icon}
             onChange={(value: string) => setAttributes({ icon: value })}
+            placeholder="fas fa-calendar"
           />
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
@@ -42,16 +52,14 @@ function DateEdit({ attributes, setAttributes }: EditProps) {
             onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <time>
-          {icon && <i className={`${icon} hvr-icon`}></i>}
-          {displayDate}
-        </time>
-      </div>
-    </>
+      <ServerSideRender block="wpc/date" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default DateEdit;

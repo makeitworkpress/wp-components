@@ -1,56 +1,54 @@
+/**
+ * Modal Block Editor
+ * Attributes match Modal.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
-const { PanelBody, TextControl } = wp.components;
-interface Attributes {
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextareaControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface ModalAttributes extends Partial<BaseAttributes> {
   content: string;
-  modalId: string;
-  className: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: ModalAttributes;
+  setAttributes: (attrs: Partial<ModalAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { content, modalId } = attributes;
-
-  const blockProps = useBlockProps({
-    className: "atom atom-modal",
-  });
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { content } = attributes;
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Modal Settings", "wp-components")} initialOpen={true}>
-          <TextControl
-            label={__("Modal ID", "wp-components")}
-            value={modalId}
-            onChange={(value: string) => setAttributes({ modalId: value })}
-            help={__("Unique identifier for targeting this modal", "wp-components")}
+        <PanelBody
+          title={__("Modal Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <TextareaControl
+            label={__("Content", "wp-components")}
+            value={content}
+            onChange={(value: string) => setAttributes({ content: value })}
+            help={__("HTML content to display in the modal", "wp-components")}
+            rows={6}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <div className="atom-modal-container" style={{ border: "2px dashed #ccc", padding: "20px", background: "#f9f9f9" }}>
-          <p style={{ color: "#666", marginBottom: "10px" }}>
-            <strong>{__("Modal Content", "wp-components")}</strong>
-            {modalId && <span> (ID: {modalId})</span>}
-          </p>
-          <div className="atom-modal-content">
-            <RichText
-              tagName="div"
-              value={content}
-              onChange={(value: string) => setAttributes({ content: value })}
-              placeholder={__("Enter modal content...", "wp-components")}
-            />
-          </div>
-        </div>
-      </div>
-    </>
+      <ServerSideRender block="wpc/modal" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

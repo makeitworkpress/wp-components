@@ -1,10 +1,20 @@
+/**
+ * Archive Title Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl } = wp.components;
-interface ArchiveTitleAttributes {
+const ServerSideRender = wp.serverSideRender;
+
+interface ArchiveTitleAttributes extends Partial<BaseAttributes> {
   custom: string;
-  className: string;
 }
 
 interface EditProps {
@@ -12,28 +22,31 @@ interface EditProps {
   setAttributes: (attrs: Partial<ArchiveTitleAttributes>) => void;
 }
 
-function ArchiveTitleEdit({ attributes, setAttributes }: EditProps) {
+export default function Edit({ attributes, setAttributes }: EditProps) {
   const { custom } = attributes;
-  const blockProps = useBlockProps();
 
   return (
-    <>
+    <BlockWrapper className="atom-archive-title">
       <InspectorControls>
-        <PanelBody title={__("Archive Title Settings", "wp-components")}>
+        <PanelBody
+          title={__("Archive Title Settings", "wp-components")}
+          initialOpen={true}
+        >
           <TextControl
             label={__("Custom Title", "wp-components")}
-            help={__("Leave empty to use automatic archive title", "wp-components")}
             value={custom}
             onChange={(value: string) => setAttributes({ custom: value })}
+            help={__("Override the automatic archive title", "wp-components")}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <h1 {...blockProps}>
-        {custom || __("[Archive Title]", "wp-components")}
-      </h1>
-    </>
+      <ServerSideRender block="wpc/archive-title" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default ArchiveTitleEdit;

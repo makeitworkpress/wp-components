@@ -1,10 +1,23 @@
+/**
+ * Termlist Block Editor
+ * Attributes match Termlist.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, ToggleControl } = wp.components;
-interface TermlistAttributes {
+const ServerSideRender = wp.serverSideRender;
+
+interface TermlistAttributes extends Partial<BaseAttributes> {
+  id: number;
   schema: boolean;
-  className: string;
+  taxonomies: object;
 }
 
 interface EditProps {
@@ -12,34 +25,34 @@ interface EditProps {
   setAttributes: (attrs: Partial<TermlistAttributes>) => void;
 }
 
-function TermlistEdit({ attributes, setAttributes }: EditProps) {
+export default function Edit({ attributes, setAttributes }: EditProps) {
   const { schema } = attributes;
-  const blockProps = useBlockProps();
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Term List Settings", "wp-components")}>
+        <PanelBody
+          title={__("Term List Settings", "wp-components")}
+          initialOpen={true}
+        >
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
             checked={schema}
             onChange={(value: boolean) => setAttributes({ schema: value })}
+            help={__(
+              "Add Schema.org microdata for categories and tags",
+              "wp-components",
+            )}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <div className="wpc-termlist-placeholder">
-          <span className="wpc-termlist-item">
-            <i className="fas fa-folder"></i> {__("[Categories]", "wp-components")}
-          </span>
-          <span className="wpc-termlist-item">
-            <i className="fas fa-tag"></i> {__("[Tags]", "wp-components")}
-          </span>
-        </div>
-      </div>
-    </>
+      <ServerSideRender block="wpc/termlist" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default TermlistEdit;

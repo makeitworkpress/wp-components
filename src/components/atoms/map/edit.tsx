@@ -1,73 +1,85 @@
+/**
+ * Map Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, RangeControl, Placeholder } = wp.components;
-interface Attributes {
-  lat: string;
-  lng: string;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, RangeControl, ToggleControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface MapAttributes extends Partial<BaseAttributes> {
+  center: { lat: string; lng: string };
+  fit: boolean;
+  id: string;
   zoom: number;
-  height: string;
-  markers: Array<{ lat: string; lng: string; title?: string }>;
-  className: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: MapAttributes;
+  setAttributes: (attrs: Partial<MapAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { lat, lng, zoom, height } = attributes;
-
-  const blockProps = useBlockProps({
-    className: "atom atom-map",
-  });
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const {
+    center = { lat: "52.090736", lng: "5.121420" },
+    fit,
+    id,
+    zoom,
+  } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-map">
       <InspectorControls>
-        <PanelBody title={__("Map Settings", "wp-components")} initialOpen={true}>
+        <PanelBody
+          title={__("Map Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <TextControl
+            label={__("Map ID", "wp-components")}
+            value={id}
+            onChange={(value: string) => setAttributes({ id: value })}
+          />
           <TextControl
             label={__("Latitude", "wp-components")}
-            value={lat}
-            onChange={(value: string) => setAttributes({ lat: value })}
-            placeholder="52.3676"
+            value={center.lat}
+            onChange={(value: string) =>
+              setAttributes({ center: { ...center, lat: value } })
+            }
           />
           <TextControl
             label={__("Longitude", "wp-components")}
-            value={lng}
-            onChange={(value: string) => setAttributes({ lng: value })}
-            placeholder="4.9041"
+            value={center.lng}
+            onChange={(value: string) =>
+              setAttributes({ center: { ...center, lng: value } })
+            }
           />
           <RangeControl
             label={__("Zoom Level", "wp-components")}
             value={zoom}
-            onChange={(value: number) => setAttributes({ zoom: value || 14 })}
+            onChange={(value: number) => setAttributes({ zoom: value })}
             min={1}
             max={20}
           />
-          <TextControl
-            label={__("Height", "wp-components")}
-            value={height}
-            onChange={(value: string) => setAttributes({ height: value })}
-            placeholder="400px"
+          <ToggleControl
+            label={__("Fit to Markers", "wp-components")}
+            checked={fit}
+            onChange={(value: boolean) => setAttributes({ fit: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps} style={{ height }}>
-        <Placeholder
-          icon="location-alt"
-          label={__("WPC Map", "wp-components")}
-          instructions={
-            lat && lng
-              ? `${__("Coordinates:", "wp-components")} ${lat}, ${lng}`
-              : __("Configure map coordinates in block settings", "wp-components")
-          }
-        />
-      </div>
-    </>
+      <ServerSideRender block="wpc/map" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

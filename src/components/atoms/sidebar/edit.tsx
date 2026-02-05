@@ -1,10 +1,21 @@
+/**
+ * Sidebar Block Editor
+ * Attributes match Sidebar.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, Button } = wp.components;
-interface SidebarAttributes {
+const ServerSideRender = wp.serverSideRender;
+
+interface SidebarAttributes extends Partial<BaseAttributes> {
   sidebars: string[];
-  className: string;
 }
 
 interface EditProps {
@@ -12,9 +23,8 @@ interface EditProps {
   setAttributes: (attrs: Partial<SidebarAttributes>) => void;
 }
 
-function SidebarEdit({ attributes, setAttributes }: EditProps) {
-  const { sidebars } = attributes;
-  const blockProps = useBlockProps();
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { sidebars = [] } = attributes;
 
   const addSidebar = () => {
     setAttributes({ sidebars: [...sidebars, ""] });
@@ -32,22 +42,29 @@ function SidebarEdit({ attributes, setAttributes }: EditProps) {
   };
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Sidebar Settings", "wp-components")}>
-          {sidebars.map((sidebar, index) => (
-            <div key={index} style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
+        <PanelBody
+          title={__("Sidebar Settings", "wp-components")}
+          initialOpen={true}
+        >
+          {sidebars.map((sidebar: string, index: number) => (
+            <div
+              key={index}
+              style={{ display: "flex", gap: "8px", marginBottom: "8px" }}
+            >
               <TextControl
-                label={`${__("Sidebar", "wp-components")} ${index + 1}`}
+                label={`${__("Sidebar ID", "wp-components")} ${index + 1}`}
                 value={sidebar}
                 onChange={(value: string) => updateSidebar(index, value)}
+                placeholder="sidebar-1"
               />
               <Button
                 isDestructive
                 onClick={() => removeSidebar(index)}
                 style={{ alignSelf: "flex-end" }}
               >
-                {__("Remove", "wp-components")}
+                ×
               </Button>
             </div>
           ))}
@@ -55,21 +72,14 @@ function SidebarEdit({ attributes, setAttributes }: EditProps) {
             {__("Add Sidebar", "wp-components")}
           </Button>
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <aside {...blockProps}>
-        <div className="wpc-sidebar-placeholder">
-          {sidebars.length > 0 ? (
-            sidebars.map((sidebar, index) => (
-              <p key={index}>[{sidebar || __("Sidebar", "wp-components")}]</p>
-            ))
-          ) : (
-            <p>{__("[No sidebars selected]", "wp-components")}</p>
-          )}
-        </div>
-      </aside>
-    </>
+      <ServerSideRender block="wpc/sidebar" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default SidebarEdit;

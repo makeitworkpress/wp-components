@@ -1,56 +1,132 @@
+/**
+ * Slider Molecule Editor
+ * Attributes match Slider.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, ToggleControl, RangeControl, Button, Placeholder } = wp.components;
-interface Slide { id: number; url: string; alt: string; caption?: string; }
-interface Attributes { slides: Slide[]; autoplay: boolean; autoplaySpeed: number; arrows: boolean; dots: boolean; loop: boolean; speed: number; slidesToShow: number; className: string; }
-interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-function Edit({ attributes, setAttributes }: Props) {
-  const { slides, autoplay, autoplaySpeed, arrows, dots, loop, speed, slidesToShow } = attributes;
-  const blockProps = useBlockProps({ className: "molecule molecule-slider" });
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl, TextControl, SelectControl, RangeControl } =
+  wp.components;
+const ServerSideRender = wp.serverSideRender;
 
-  const onSelectImages = (media: any[]) => {
-    const newSlides = media.map((m) => ({ id: m.id, url: m.url, alt: m.alt || "", caption: m.caption || "" }));
-    setAttributes({ slides: newSlides });
+interface SliderAttributes extends Partial<BaseAttributes> {
+  options: {
+    arrowKeys?: boolean;
+    autoHeight?: boolean;
+    mode?: string;
+    mouseDrag?: boolean;
+    speed?: number;
+  };
+  schema: boolean;
+  scroll: boolean;
+  slides: Array<{
+    atoms?: any[];
+    attributes?: object;
+    image?: object;
+    video?: object;
+  }>;
+  thumbnail_size: string;
+}
+
+interface EditProps {
+  attributes: SliderAttributes;
+  setAttributes: (attrs: Partial<SliderAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { options = {}, schema, scroll, thumbnail_size } = attributes;
+
+  const updateOption = (key: string, value: any) => {
+    setAttributes({
+      options: {
+        ...options,
+        [key]: value,
+      },
+    });
   };
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Slider Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Autoplay", "wp-components")} checked={autoplay} onChange={(value: boolean) => setAttributes({ autoplay: value })} />
-          {autoplay && <RangeControl label={__("Autoplay Speed (ms)", "wp-components")} value={autoplaySpeed} onChange={(value: number) => setAttributes({ autoplaySpeed: value || 5000 })} min={1000} max={10000} step={500} />}
-          <ToggleControl label={__("Show Arrows", "wp-components")} checked={arrows} onChange={(value: boolean) => setAttributes({ arrows: value })} />
-          <ToggleControl label={__("Show Dots", "wp-components")} checked={dots} onChange={(value: boolean) => setAttributes({ dots: value })} />
-          <ToggleControl label={__("Loop", "wp-components")} checked={loop} onChange={(value: boolean) => setAttributes({ loop: value })} />
-          <RangeControl label={__("Animation Speed (ms)", "wp-components")} value={speed} onChange={(value: number) => setAttributes({ speed: value || 500 })} min={100} max={2000} step={100} />
-          <RangeControl label={__("Slides to Show", "wp-components")} value={slidesToShow} onChange={(value: number) => setAttributes({ slidesToShow: value || 1 })} min={1} max={6} />
+        <PanelBody
+          title={__("Slider Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <SelectControl
+            label={__("Mode", "wp-components")}
+            value={options.mode || "carousel"}
+            options={[
+              { label: __("Carousel", "wp-components"), value: "carousel" },
+              { label: __("Gallery", "wp-components"), value: "gallery" },
+            ]}
+            onChange={(value: string) => updateOption("mode", value)}
+          />
+          <RangeControl
+            label={__("Animation Speed (ms)", "wp-components")}
+            value={options.speed || 500}
+            onChange={(value: number) => updateOption("speed", value)}
+            min={100}
+            max={2000}
+            step={100}
+          />
+          <ToggleControl
+            label={__("Auto Height", "wp-components")}
+            checked={options.autoHeight !== false}
+            onChange={(value: boolean) => updateOption("autoHeight", value)}
+          />
+          <ToggleControl
+            label={__("Arrow Keys Navigation", "wp-components")}
+            checked={options.arrowKeys !== false}
+            onChange={(value: boolean) => updateOption("arrowKeys", value)}
+          />
+          <ToggleControl
+            label={__("Mouse Drag", "wp-components")}
+            checked={options.mouseDrag !== false}
+            onChange={(value: boolean) => updateOption("mouseDrag", value)}
+          />
         </PanelBody>
-      </InspectorControls>
-      <div {...blockProps}>
-        <MediaUploadCheck>
-          <MediaUpload onSelect={onSelectImages} allowedTypes={["image"]} multiple gallery value={slides.map((s) => s.id)}
-            render={({ open }: { open: () => void }) => (
-              slides.length > 0 ? (
-                <div className="molecule-slider-preview">
-                  <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "8px" }}>
-                    {slides.map((slide, i) => (
-                      <img key={i} src={slide.url} alt={slide.alt} style={{ height: "120px", objectFit: "cover" }} />
-                    ))}
-                  </div>
-                  <Button variant="secondary" onClick={open} style={{ marginTop: "8px" }}>{__("Edit Gallery", "wp-components")}</Button>
-                </div>
-              ) : (
-                <Placeholder icon="slides" label={__("WPC Slider", "wp-components")} instructions={__("Select images for the slider", "wp-components")}>
-                  <Button variant="primary" onClick={open}>{__("Select Images", "wp-components")}</Button>
-                </Placeholder>
-              )
+
+        <PanelBody
+          title={__("Additional Options", "wp-components")}
+          initialOpen={false}
+        >
+          <ToggleControl
+            label={__("Enable Schema Markup", "wp-components")}
+            checked={schema}
+            onChange={(value: boolean) => setAttributes({ schema: value })}
+          />
+          <ToggleControl
+            label={__("Show Scroll Button", "wp-components")}
+            checked={scroll}
+            onChange={(value: boolean) => setAttributes({ scroll: value })}
+          />
+          <TextControl
+            label={__("Thumbnail Size", "wp-components")}
+            value={thumbnail_size}
+            onChange={(value: string) =>
+              setAttributes({ thumbnail_size: value })
+            }
+            placeholder="thumbnail"
+            help={__(
+              "WordPress image size for thumbnail navigation",
+              "wp-components",
             )}
           />
-        </MediaUploadCheck>
-      </div>
-    </>
+        </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
+      </InspectorControls>
+
+      <ServerSideRender block="wpc/slider" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

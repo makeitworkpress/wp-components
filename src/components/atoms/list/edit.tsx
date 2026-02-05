@@ -1,38 +1,93 @@
+/**
+ * List Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
-const { PanelBody, TextControl, ToggleControl, Button } = wp.components;
-interface Attributes { items: string[]; icon: string; ordered: boolean; className: string; }
-interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-function Edit({ attributes, setAttributes }: Props) {
-  const { items, icon, ordered } = attributes;
-  const blockProps = useBlockProps({ className: "atom atom-list" });
-  const ListTag = ordered ? "ol" : "ul";
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 
-  const addItem = () => setAttributes({ items: [...items, ""] });
-  const removeItem = (index: number) => setAttributes({ items: items.filter((_, i) => i !== index) });
-  const updateItem = (index: number, value: string) => setAttributes({ items: items.map((item, i) => i === index ? value : item) });
-
-  return (
-    <>
-      <InspectorControls>
-        <PanelBody title={__("List Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Ordered List", "wp-components")} checked={ordered} onChange={(value: boolean) => setAttributes({ ordered: value })} />
-          <TextControl label={__("Icon Class", "wp-components")} value={icon} onChange={(value: string) => setAttributes({ icon: value })} placeholder="fas fa-check" help={__("Font Awesome icon for list items", "wp-components")} />
-        </PanelBody>
-      </InspectorControls>
-      <ListTag {...blockProps}>
-        {items.map((item, i) => (
-          <li key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {icon && <i className={icon} />}
-            <RichText tagName="span" value={item} onChange={(value: string) => updateItem(i, value)} placeholder={__("List item...", "wp-components")} />
-            <Button icon="no-alt" isSmall onClick={() => removeItem(i)} />
-          </li>
-        ))}
-        <li><Button variant="secondary" onClick={addItem} icon="plus">{__("Add Item", "wp-components")}</Button></li>
-      </ListTag>
-    </>
-  );
+interface ListAttributes extends Partial<BaseAttributes> {
+  grid: boolean;
+  grid_gap: string;
+  hover_item: string;
+  style: string;
+  title_tag: string;
 }
 
-export default Edit;
+interface EditProps {
+  attributes: ListAttributes;
+  setAttributes: (attrs: Partial<ListAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { grid, grid_gap, hover_item, style, title_tag } = attributes;
+
+  return (
+    <BlockWrapper className="atom-list">
+      <InspectorControls>
+        <PanelBody
+          title={__("List Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <SelectControl
+            label={__("Style", "wp-components")}
+            value={style}
+            options={[
+              { label: __("Default", "wp-components"), value: "default" },
+              { label: __("Card", "wp-components"), value: "card" },
+            ]}
+            onChange={(value: string) => setAttributes({ style: value })}
+          />
+          <SelectControl
+            label={__("Title Tag", "wp-components")}
+            value={title_tag}
+            options={[
+              { label: "H3", value: "h3" },
+              { label: "H4", value: "h4" },
+              { label: "H5", value: "h5" },
+              { label: "H6", value: "h6" },
+            ]}
+            onChange={(value: string) => setAttributes({ title_tag: value })}
+          />
+          <ToggleControl
+            label={__("Display as Grid", "wp-components")}
+            checked={grid}
+            onChange={(value: boolean) => setAttributes({ grid: value })}
+          />
+          {grid && (
+            <SelectControl
+              label={__("Grid Gap", "wp-components")}
+              value={grid_gap}
+              options={[
+                { label: __("Default", "wp-components"), value: "default" },
+                { label: __("Small", "wp-components"), value: "small" },
+                { label: __("Large", "wp-components"), value: "large" },
+              ]}
+              onChange={(value: string) => setAttributes({ grid_gap: value })}
+            />
+          )}
+          <TextControl
+            label={__("Hover Effect", "wp-components")}
+            value={hover_item}
+            onChange={(value: string) => setAttributes({ hover_item: value })}
+            help={__("hover.css class name", "wp-components")}
+          />
+        </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
+      </InspectorControls>
+
+      <ServerSideRender block="wpc/list" attributes={attributes} />
+    </BlockWrapper>
+  );
+}

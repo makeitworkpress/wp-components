@@ -1,49 +1,65 @@
+/**
+ * Social Block Editor
+ * Attributes match Social.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, ToggleControl, Button } = wp.components;
-interface Profile { network: string; url: string; icon: string; }
-interface Attributes { profiles: Profile[]; showLabels: boolean; className: string; }
-interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-function Edit({ attributes, setAttributes }: Props) {
-  const { profiles, showLabels } = attributes;
-  const blockProps = useBlockProps({ className: "atom atom-social" });
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 
-  const addProfile = () => setAttributes({ profiles: [...profiles, { network: "", url: "", icon: "fab fa-" }] });
-  const removeProfile = (index: number) => setAttributes({ profiles: profiles.filter((_, i) => i !== index) });
-  const updateProfile = (index: number, field: keyof Profile, value: string) => {
-    const newProfiles = profiles.map((p, i) => i === index ? { ...p, [field]: value } : p);
-    setAttributes({ profiles: newProfiles });
-  };
-
-  return (
-    <>
-      <InspectorControls>
-        <PanelBody title={__("Social Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Show Labels", "wp-components")} checked={showLabels} onChange={(value: boolean) => setAttributes({ showLabels: value })} />
-        </PanelBody>
-        <PanelBody title={__("Profiles", "wp-components")} initialOpen={true}>
-          {profiles.map((profile, i) => (
-            <div key={i} style={{ marginBottom: "16px", padding: "8px", background: "#f0f0f0" }}>
-              <TextControl label={__("Network", "wp-components")} value={profile.network} onChange={(v: string) => updateProfile(i, "network", v)} />
-              <TextControl label={__("URL", "wp-components")} value={profile.url} onChange={(v: string) => updateProfile(i, "url", v)} />
-              <TextControl label={__("Icon", "wp-components")} value={profile.icon} onChange={(v: string) => updateProfile(i, "icon", v)} />
-              <Button isDestructive onClick={() => removeProfile(i)}>{__("Remove", "wp-components")}</Button>
-            </div>
-          ))}
-          <Button variant="secondary" onClick={addProfile}>{__("Add Profile", "wp-components")}</Button>
-        </PanelBody>
-      </InspectorControls>
-      <div {...blockProps}>
-        <ul className="atom-social-list">
-          {profiles.map((p, i) => (
-            <li key={i}><a href={p.url || "#"}><i className={p.icon} />{showLabels && <span>{p.network}</span>}</a></li>
-          ))}
-          {profiles.length === 0 && <li style={{ color: "#999" }}>{__("Add social profiles in settings", "wp-components")}</li>}
-        </ul>
-      </div>
-    </>
-  );
+interface SocialAttributes extends Partial<BaseAttributes> {
+  color_background: boolean;
+  hover_item: string;
+  icons: object;
+  titles: object;
+  urls: object;
 }
 
-export default Edit;
+interface EditProps {
+  attributes: SocialAttributes;
+  setAttributes: (attrs: Partial<SocialAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { color_background, hover_item } = attributes;
+
+  return (
+    <BlockWrapper>
+      <InspectorControls>
+        <PanelBody
+          title={__("Social Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <ToggleControl
+            label={__("Color Background", "wp-components")}
+            checked={color_background}
+            onChange={(value: boolean) =>
+              setAttributes({ color_background: value })
+            }
+            help={__("Show network-colored backgrounds", "wp-components")}
+          />
+          <TextControl
+            label={__("Hover Effect", "wp-components")}
+            value={hover_item}
+            onChange={(value: string) => setAttributes({ hover_item: value })}
+            placeholder="grow"
+          />
+        </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
+      </InspectorControls>
+
+      <ServerSideRender block="wpc/social" attributes={attributes} />
+    </BlockWrapper>
+  );
+}

@@ -1,33 +1,42 @@
+/**
+ * Title Block Editor
+ * Attributes match Title.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, RichText } = wp.blockEditor;
+const { InspectorControls, RichText } = wp.blockEditor;
 const { PanelBody, TextControl, SelectControl, ToggleControl } = wp.components;
-interface Attributes {
-  title: string;
-  tag: string;
+
+interface TitleAttributes extends Partial<BaseAttributes> {
   link: string;
   schema: boolean;
-  className: string;
+  tag: string;
+  title: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: TitleAttributes;
+  setAttributes: (attrs: Partial<TitleAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { title, tag, link, schema } = attributes;
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { link, schema, tag, title } = attributes;
 
-  const blockProps = useBlockProps({
-    className: "atom atom-title",
-  });
-
-  const TagName = tag as keyof JSX.IntrinsicElements;
+  const TagName = (tag || "h1") as keyof JSX.IntrinsicElements;
 
   return (
-    <>
+    <BlockWrapper className="atom-title">
       <InspectorControls>
-        <PanelBody title={__("Title Settings", "wp-components")} initialOpen={true}>
+        <PanelBody
+          title={__("Title Settings", "wp-components")}
+          initialOpen={true}
+        >
           <SelectControl
             label={__("Heading Level", "wp-components")}
             value={tag}
@@ -46,7 +55,10 @@ function Edit({ attributes, setAttributes }: Props) {
             value={link}
             onChange={(value: string) => setAttributes({ link: value })}
             placeholder={__("https://example.com", "wp-components")}
-            help={__("Leave empty for no link, or use 'post' for post permalink", "wp-components")}
+            help={__(
+              "Leave empty for no link, or use 'post' for post permalink",
+              "wp-components",
+            )}
           />
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
@@ -54,19 +66,20 @@ function Edit({ attributes, setAttributes }: Props) {
             onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <RichText
-          tagName={TagName}
-          value={title}
-          onChange={(value: string) => setAttributes({ title: value })}
-          placeholder={__("Enter title...", "wp-components")}
-          allowedFormats={["core/bold", "core/italic"]}
-        />
-      </div>
-    </>
+      <RichText
+        tagName={TagName}
+        value={title}
+        onChange={(value: string) => setAttributes({ title: value })}
+        placeholder={__("Enter title...", "wp-components")}
+        allowedFormats={["core/bold", "core/italic"]}
+      />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

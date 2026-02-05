@@ -1,84 +1,90 @@
+/**
+ * Share Block Editor
+ * Attributes match Share.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, ToggleControl, CheckboxControl } = wp.components;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, TextControl, ToggleControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 
-const AVAILABLE_NETWORKS = [
-  { value: "facebook", label: "Facebook", icon: "fab fa-facebook-f" },
-  { value: "twitter", label: "Twitter/X", icon: "fab fa-twitter" },
-  { value: "linkedin", label: "LinkedIn", icon: "fab fa-linkedin-in" },
-  { value: "pinterest", label: "Pinterest", icon: "fab fa-pinterest-p" },
-  { value: "whatsapp", label: "WhatsApp", icon: "fab fa-whatsapp" },
-  { value: "telegram", label: "Telegram", icon: "fab fa-telegram-plane" },
-  { value: "email", label: "Email", icon: "fas fa-envelope" },
-];
-
-interface Attributes {
-  networks: string[];
-  showLabels: boolean;
-  className: string;
+interface ShareAttributes extends Partial<BaseAttributes> {
+  color_background: boolean;
+  enabled: string[];
+  fixed: boolean;
+  hover_item: string;
+  image: string;
+  networks: object;
+  share: string;
+  source: string;
+  title: string;
+  url: string;
+  via: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: ShareAttributes;
+  setAttributes: (attrs: Partial<ShareAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { networks, showLabels } = attributes;
-
-  const blockProps = useBlockProps({
-    className: "atom atom-share",
-  });
-
-  const toggleNetwork = (network: string) => {
-    const newNetworks = networks.includes(network)
-      ? networks.filter((n) => n !== network)
-      : [...networks, network];
-    setAttributes({ networks: newNetworks });
-  };
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { color_background, fixed, hover_item, share, via } = attributes;
 
   return (
-    <>
+    <BlockWrapper>
       <InspectorControls>
-        <PanelBody title={__("Share Settings", "wp-components")} initialOpen={true}>
+        <PanelBody
+          title={__("Share Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <TextControl
+            label={__("Share Label", "wp-components")}
+            value={share}
+            onChange={(value: string) => setAttributes({ share: value })}
+            placeholder={__("Share:", "wp-components")}
+          />
+          <TextControl
+            label={__("Twitter Via", "wp-components")}
+            value={via}
+            onChange={(value: string) => setAttributes({ via: value })}
+            placeholder="username"
+            help={__("Twitter username for via attribution", "wp-components")}
+          />
           <ToggleControl
-            label={__("Show Labels", "wp-components")}
-            checked={showLabels}
-            onChange={(value: boolean) => setAttributes({ showLabels: value })}
+            label={__("Fixed Position", "wp-components")}
+            checked={fixed}
+            onChange={(value: boolean) => setAttributes({ fixed: value })}
+            help={__("Fix share buttons to screen edge", "wp-components")}
+          />
+          <ToggleControl
+            label={__("Color Background", "wp-components")}
+            checked={color_background}
+            onChange={(value: boolean) =>
+              setAttributes({ color_background: value })
+            }
+            help={__("Show network-colored backgrounds", "wp-components")}
+          />
+          <TextControl
+            label={__("Hover Effect", "wp-components")}
+            value={hover_item}
+            onChange={(value: string) => setAttributes({ hover_item: value })}
+            placeholder="grow"
           />
         </PanelBody>
 
-        <PanelBody title={__("Networks", "wp-components")} initialOpen={true}>
-          {AVAILABLE_NETWORKS.map((network) => (
-            <CheckboxControl
-              key={network.value}
-              label={network.label}
-              checked={networks.includes(network.value)}
-              onChange={() => toggleNetwork(network.value)}
-            />
-          ))}
-        </PanelBody>
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <ul className="atom-share-list">
-          {networks.map((network) => {
-            const networkData = AVAILABLE_NETWORKS.find((n) => n.value === network);
-            if (!networkData) return null;
-            return (
-              <li key={network} className={`atom-share-${network}`}>
-                <a href="#" onClick={(e: React.MouseEvent) => e.preventDefault()}>
-                  <i className={networkData.icon} />
-                  {showLabels && <span>{networkData.label}</span>}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </>
+      <ServerSideRender block="wpc/share" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

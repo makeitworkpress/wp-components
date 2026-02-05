@@ -1,78 +1,88 @@
+/**
+ * Menu Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, ToggleControl, Placeholder } = wp.components;
-interface Attributes {
-  menuLocation: string;
-  menuId: number;
-  hamburger: boolean;
-  dropdown: string;
-  className: string;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, SelectControl, ToggleControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
+
+interface MenuAttributes extends Partial<BaseAttributes> {
+  collapse: boolean;
+  dropdown: boolean;
+  hamburger: string;
+  indicator: boolean;
+  view: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: MenuAttributes;
+  setAttributes: (attrs: Partial<MenuAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { menuLocation, menuId, hamburger, dropdown } = attributes;
-
-  const blockProps = useBlockProps({
-    className: `atom atom-menu ${hamburger ? "atom-menu-hamburger" : ""}`.trim(),
-  });
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { collapse, dropdown, hamburger, indicator, view } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-menu">
       <InspectorControls>
-        <PanelBody title={__("Menu Settings", "wp-components")} initialOpen={true}>
-          <TextControl
-            label={__("Menu Location", "wp-components")}
-            value={menuLocation}
-            onChange={(value: string) => setAttributes({ menuLocation: value })}
-            help={__("Theme menu location slug (e.g., primary)", "wp-components")}
-          />
-          <TextControl
-            label={__("Menu ID", "wp-components")}
-            value={menuId ? String(menuId) : ""}
-            onChange={(value: string) => setAttributes({ menuId: parseInt(value) || 0 })}
-            type="number"
-            help={__("Specific menu ID (overrides location)", "wp-components")}
-          />
-          <ToggleControl
-            label={__("Hamburger Menu", "wp-components")}
-            checked={hamburger}
-            onChange={(value: boolean) => setAttributes({ hamburger: value })}
-            help={__("Show hamburger icon for mobile", "wp-components")}
-          />
+        <PanelBody
+          title={__("Menu Settings", "wp-components")}
+          initialOpen={true}
+        >
           <SelectControl
-            label={__("Dropdown Behavior", "wp-components")}
-            value={dropdown}
+            label={__("View", "wp-components")}
+            value={view}
             options={[
               { label: __("Default", "wp-components"), value: "default" },
-              { label: __("Hover", "wp-components"), value: "hover" },
-              { label: __("Click", "wp-components"), value: "click" },
+              { label: __("Dark", "wp-components"), value: "dark" },
+              { label: __("Fixed", "wp-components"), value: "fixed" },
+              { label: __("Left", "wp-components"), value: "left" },
+              { label: __("Right", "wp-components"), value: "right" },
             ]}
-            onChange={(value: string) => setAttributes({ dropdown: value })}
+            onChange={(value: string) => setAttributes({ view: value })}
+          />
+          <SelectControl
+            label={__("Hamburger Menu", "wp-components")}
+            value={hamburger}
+            options={[
+              { label: __("Mobile", "wp-components"), value: "mobile" },
+              { label: __("Tablet", "wp-components"), value: "tablet" },
+              { label: __("Always", "wp-components"), value: "always" },
+              { label: __("Never", "wp-components"), value: "" },
+            ]}
+            onChange={(value: string) => setAttributes({ hamburger: value })}
+          />
+          <ToggleControl
+            label={__("Show Dropdowns", "wp-components")}
+            checked={dropdown}
+            onChange={(value: boolean) => setAttributes({ dropdown: value })}
+          />
+          <ToggleControl
+            label={__("Show Submenu Indicator", "wp-components")}
+            checked={indicator}
+            onChange={(value: boolean) => setAttributes({ indicator: value })}
+          />
+          <ToggleControl
+            label={__("Collapse by Default", "wp-components")}
+            checked={collapse}
+            onChange={(value: boolean) => setAttributes({ collapse: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <nav {...blockProps}>
-        <Placeholder
-          icon="menu"
-          label={__("WPC Menu", "wp-components")}
-          instructions={
-            menuLocation
-              ? `${__("Menu Location:", "wp-components")} ${menuLocation}`
-              : menuId
-              ? `${__("Menu ID:", "wp-components")} ${menuId}`
-              : __("Configure menu location or ID in block settings", "wp-components")
-          }
-        />
-      </nav>
-    </>
+      <ServerSideRender block="wpc/menu" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;

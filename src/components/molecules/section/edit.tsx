@@ -1,67 +1,117 @@
+/**
+ * Section Molecule Editor
+ * Attributes match Section.php $atts
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls, InnerBlocks, MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { PanelBody, TextControl, ToggleControl, RangeControl, Button } = wp.components;
-const { useSelect } = wp.data;
-interface Attributes { container: boolean; fullHeight: boolean; parallax: boolean; backgroundImage: number; backgroundColor: string; overlayColor: string; overlayOpacity: number; videoBackground: string; className: string; }
-interface Props { attributes: Attributes; setAttributes: (attrs: Partial<Attributes>) => void; }
-function Edit({ attributes, setAttributes }: Props) {
-  const { container, fullHeight, parallax, backgroundImage, backgroundColor, overlayColor, overlayOpacity, videoBackground } = attributes;
+const { InspectorControls } = wp.blockEditor;
+const { PanelBody, ToggleControl, TextControl, SelectControl } = wp.components;
+const ServerSideRender = wp.serverSideRender;
 
-  const imageData = useSelect((select: (arg: string) => any) => backgroundImage ? (select("core") as any).getMedia(backgroundImage) : null, [backgroundImage]);
-
-  const style: React.CSSProperties = {
-    backgroundColor: backgroundColor || undefined,
-    backgroundImage: imageData ? `url(${imageData.source_url})` : undefined,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: fullHeight ? "100vh" : undefined,
-    position: "relative" as const,
-  };
-
-  const blockProps = useBlockProps({ className: `molecule molecule-section ${fullHeight ? "molecule-section-fullheight" : ""} ${parallax ? "molecule-section-parallax" : ""}`.trim(), style });
-
-  return (
-    <>
-      <InspectorControls>
-        <PanelBody title={__("Section Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl label={__("Use Container", "wp-components")} checked={container} onChange={(value: boolean) => setAttributes({ container: value })} />
-          <ToggleControl label={__("Full Height", "wp-components")} checked={fullHeight} onChange={(value: boolean) => setAttributes({ fullHeight: value })} />
-          <ToggleControl label={__("Parallax Effect", "wp-components")} checked={parallax} onChange={(value: boolean) => setAttributes({ parallax: value })} />
-        </PanelBody>
-        <PanelBody title={__("Background", "wp-components")} initialOpen={false}>
-          <MediaUploadCheck>
-            <MediaUpload onSelect={(media: any) => setAttributes({ backgroundImage: media.id })} allowedTypes={["image"]} value={backgroundImage}
-              render={({ open }: { open: () => void }) => (
-                <div style={{ marginBottom: "16px" }}>
-                  {backgroundImage && imageData ? (
-                    <>
-                      <img src={imageData.source_url} alt="" style={{ maxWidth: "100%", marginBottom: "8px" }} />
-                      <Button isDestructive onClick={() => setAttributes({ backgroundImage: 0 })}>{__("Remove", "wp-components")}</Button>
-                    </>
-                  ) : (
-                    <Button variant="secondary" onClick={open}>{__("Select Background Image", "wp-components")}</Button>
-                  )}
-                </div>
-              )}
-            />
-          </MediaUploadCheck>
-          <TextControl label={__("Background Color", "wp-components")} value={backgroundColor} onChange={(value: string) => setAttributes({ backgroundColor: value })} placeholder="#000000" />
-          <TextControl label={__("Video Background URL", "wp-components")} value={videoBackground} onChange={(value: string) => setAttributes({ videoBackground: value })} />
-        </PanelBody>
-        <PanelBody title={__("Overlay", "wp-components")} initialOpen={false}>
-          <TextControl label={__("Overlay Color", "wp-components")} value={overlayColor} onChange={(value: string) => setAttributes({ overlayColor: value })} placeholder="rgba(0,0,0,0.5)" />
-          <RangeControl label={__("Overlay Opacity", "wp-components")} value={overlayOpacity} onChange={(value: number) => setAttributes({ overlayOpacity: value || 0.5 })} min={0} max={1} step={0.1} />
-        </PanelBody>
-      </InspectorControls>
-      <section {...blockProps}>
-        {overlayColor && <div className="molecule-section-overlay" style={{ position: "absolute", inset: 0, backgroundColor: overlayColor, opacity: overlayOpacity }} />}
-        <div className={container ? "components-container" : ""} style={{ position: "relative", zIndex: 1 }}>
-          <InnerBlocks templateLock={false} />
-        </div>
-      </section>
-    </>
-  );
+interface SectionAttributes extends Partial<BaseAttributes> {
+  atoms: Array<{ atom: string; properties: object }>;
+  columns: Array<{ column: string; atoms?: any[]; molecules?: any[] }>;
+  container: boolean;
+  custom_action: string;
+  grid: boolean;
+  grid_gap: string;
+  molecules: Array<{ molecule: string; properties: object }>;
+  tag: string;
+  scroll: boolean;
+  video: string;
 }
 
-export default Edit;
+interface EditProps {
+  attributes: SectionAttributes;
+  setAttributes: (attrs: Partial<SectionAttributes>) => void;
+}
+
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { container, custom_action, grid, grid_gap, tag, scroll, video } =
+    attributes;
+
+  return (
+    <BlockWrapper>
+      <InspectorControls>
+        <PanelBody
+          title={__("Section Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <SelectControl
+            label={__("HTML Tag", "wp-components")}
+            value={tag}
+            options={[
+              { label: "section", value: "section" },
+              { label: "header", value: "header" },
+              { label: "footer", value: "footer" },
+              { label: "main", value: "main" },
+              { label: "div", value: "div" },
+            ]}
+            onChange={(value: string) => setAttributes({ tag: value })}
+          />
+          <ToggleControl
+            label={__("Use Container", "wp-components")}
+            checked={container}
+            onChange={(value: boolean) => setAttributes({ container: value })}
+          />
+          <ToggleControl
+            label={__("Enable Grid", "wp-components")}
+            checked={grid}
+            onChange={(value: boolean) => setAttributes({ grid: value })}
+          />
+          {grid && (
+            <SelectControl
+              label={__("Grid Gap", "wp-components")}
+              value={grid_gap}
+              options={[
+                { label: __("Default", "wp-components"), value: "default" },
+                { label: __("None", "wp-components"), value: "none" },
+                { label: __("Small", "wp-components"), value: "small" },
+                { label: __("Large", "wp-components"), value: "large" },
+              ]}
+              onChange={(value: string) => setAttributes({ grid_gap: value })}
+            />
+          )}
+        </PanelBody>
+
+        <PanelBody
+          title={__("Additional Options", "wp-components")}
+          initialOpen={false}
+        >
+          <ToggleControl
+            label={__("Show Scroll Button", "wp-components")}
+            checked={scroll}
+            onChange={(value: boolean) => setAttributes({ scroll: value })}
+          />
+          <TextControl
+            label={__("Custom Action Hook", "wp-components")}
+            value={custom_action}
+            onChange={(value: string) =>
+              setAttributes({ custom_action: value })
+            }
+            help={__("Add custom WordPress action hooks", "wp-components")}
+          />
+          <TextControl
+            label={__("Background Video URL", "wp-components")}
+            value={video}
+            onChange={(value: string) => setAttributes({ video: value })}
+            placeholder="https://example.com/video.mp4"
+          />
+        </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
+      </InspectorControls>
+
+      <ServerSideRender block="wpc/section" attributes={attributes} />
+    </BlockWrapper>
+  );
+}

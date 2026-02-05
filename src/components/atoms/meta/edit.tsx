@@ -1,12 +1,23 @@
+/**
+ * Meta Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl } = wp.components;
-interface MetaAttributes {
-  key: string;
-  before: string;
+const ServerSideRender = wp.serverSideRender;
+
+interface MetaAttributes extends Partial<BaseAttributes> {
   after: string;
-  className: string;
+  before: string;
+  key: string;
+  meta: string;
 }
 
 interface EditProps {
@@ -14,42 +25,47 @@ interface EditProps {
   setAttributes: (attrs: Partial<MetaAttributes>) => void;
 }
 
-function MetaEdit({ attributes, setAttributes }: EditProps) {
-  const { key, before, after } = attributes;
-  const blockProps = useBlockProps();
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const { after, before, key, meta } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-meta">
       <InspectorControls>
-        <PanelBody title={__("Meta Settings", "wp-components")}>
+        <PanelBody
+          title={__("Meta Settings", "wp-components")}
+          initialOpen={true}
+        >
           <TextControl
             label={__("Meta Key", "wp-components")}
-            help={__("The post meta key to retrieve", "wp-components")}
             value={key}
             onChange={(value: string) => setAttributes({ key: value })}
+            help={__("The custom field key to display", "wp-components")}
           />
           <TextControl
-            label={__("Before Text", "wp-components")}
+            label={__("Custom Value", "wp-components")}
+            value={meta}
+            onChange={(value: string) => setAttributes({ meta: value })}
+            help={__("Override with custom value", "wp-components")}
+          />
+          <TextControl
+            label={__("Before", "wp-components")}
             value={before}
             onChange={(value: string) => setAttributes({ before: value })}
           />
           <TextControl
-            label={__("After Text", "wp-components")}
+            label={__("After", "wp-components")}
             value={after}
             onChange={(value: string) => setAttributes({ after: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <span className="wpc-meta-placeholder">
-          {before}
-          {key ? `[${key}]` : __("[Meta Key]", "wp-components")}
-          {after}
-        </span>
-      </div>
-    </>
+      <ServerSideRender block="wpc/meta" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default MetaEdit;

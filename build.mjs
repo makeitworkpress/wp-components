@@ -3,17 +3,25 @@ import { lessLoader } from "esbuild-plugin-less";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { glob } from "glob";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const isWatch = process.argv.includes("--watch");
 
+// Discover all edit.tsx files in components
+const editFiles = glob.sync("src/components/**/*/edit.tsx");
+const blockEntryPoints = editFiles.map((file) => {
+  const componentName = path.basename(path.dirname(file));
+  return { in: file, out: `blocks/wpc-${componentName}-edit.min` };
+});
+
 const ctx = await esbuild.context({
   // Multiple entry points for separate output files
   entryPoints: [
     { in: "src/assets/styles/styles.less", out: "wpc-styles.min" },
-    { in: "src/assets/scripts/blocks.ts", out: "wpc-blocks.min" },
     { in: "src/assets/scripts/scripts.ts", out: "wpc-scripts.min" },
+    ...blockEntryPoints,
   ],
   bundle: true,
   outdir: "public",

@@ -1,107 +1,112 @@
+/**
+ * Author Block Editor
+ */
+import {
+  BaseAttributesPanel,
+  BaseAttributes,
+  BlockWrapper,
+} from "@scripts/editor";
+
 const wp = (window as any).wp;
 const { __ } = wp.i18n;
-const { useBlockProps, InspectorControls } = wp.blockEditor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, TextControl, SelectControl, ToggleControl } = wp.components;
-interface Attributes {
-  showAvatar: boolean;
-  showDescription: boolean;
-  showName: boolean;
-  imageFloat: string;
-  imageRounded: boolean;
+const ServerSideRender = wp.serverSideRender;
+
+interface AuthorAttributes extends Partial<BaseAttributes> {
+  description: string;
+  image_float: string;
+  image_rounded: boolean;
+  job_title: string;
+  name: string;
   prepend: string;
-  jobTitle: string;
   schema: boolean;
-  className: string;
 }
 
-interface Props {
-  attributes: Attributes;
-  setAttributes: (attrs: Partial<Attributes>) => void;
+interface EditProps {
+  attributes: AuthorAttributes;
+  setAttributes: (attrs: Partial<AuthorAttributes>) => void;
 }
 
-function Edit({ attributes, setAttributes }: Props) {
-  const { showAvatar, showDescription, showName, imageFloat, imageRounded, prepend, jobTitle, schema } = attributes;
-
-  const blockProps = useBlockProps({
-    className: "atom atom-author",
-  });
+export default function Edit({ attributes, setAttributes }: EditProps) {
+  const {
+    description,
+    image_float,
+    image_rounded,
+    job_title,
+    name,
+    prepend,
+    schema,
+  } = attributes;
 
   return (
-    <>
+    <BlockWrapper className="atom-author">
       <InspectorControls>
-        <PanelBody title={__("Display Settings", "wp-components")} initialOpen={true}>
-          <ToggleControl
-            label={__("Show Avatar", "wp-components")}
-            checked={showAvatar}
-            onChange={(value: boolean) => setAttributes({ showAvatar: value })}
+        <PanelBody
+          title={__("Author Settings", "wp-components")}
+          initialOpen={true}
+        >
+          <TextControl
+            label={__("Name", "wp-components")}
+            value={name}
+            onChange={(value: string) => setAttributes({ name: value })}
           />
-          <ToggleControl
-            label={__("Show Name", "wp-components")}
-            checked={showName}
-            onChange={(value: boolean) => setAttributes({ showName: value })}
+          <TextControl
+            label={__("Job Title", "wp-components")}
+            value={job_title}
+            onChange={(value: string) => setAttributes({ job_title: value })}
           />
-          <ToggleControl
-            label={__("Show Description", "wp-components")}
-            checked={showDescription}
-            onChange={(value: boolean) => setAttributes({ showDescription: value })}
+          <TextControl
+            label={__("Description", "wp-components")}
+            value={description}
+            onChange={(value: string) => setAttributes({ description: value })}
+          />
+          <TextControl
+            label={__("Prepend", "wp-components")}
+            value={prepend}
+            onChange={(value: string) => setAttributes({ prepend: value })}
+            help={__("Text before the author name", "wp-components")}
           />
         </PanelBody>
 
-        <PanelBody title={__("Avatar Settings", "wp-components")} initialOpen={false}>
+        <PanelBody
+          title={__("Image Settings", "wp-components")}
+          initialOpen={false}
+        >
           <SelectControl
             label={__("Image Float", "wp-components")}
-            value={imageFloat}
+            value={image_float}
             options={[
               { label: __("None", "wp-components"), value: "none" },
               { label: __("Left", "wp-components"), value: "left" },
               { label: __("Right", "wp-components"), value: "right" },
             ]}
-            onChange={(value: string) => setAttributes({ imageFloat: value })}
+            onChange={(value: string) => setAttributes({ image_float: value })}
           />
           <ToggleControl
-            label={__("Rounded Avatar", "wp-components")}
-            checked={imageRounded}
-            onChange={(value: boolean) => setAttributes({ imageRounded: value })}
+            label={__("Rounded Image", "wp-components")}
+            checked={image_rounded}
+            onChange={(value: boolean) =>
+              setAttributes({ image_rounded: value })
+            }
           />
         </PanelBody>
 
-        <PanelBody title={__("Content Settings", "wp-components")} initialOpen={false}>
-          <TextControl
-            label={__("Name Prepend", "wp-components")}
-            value={prepend}
-            onChange={(value: string) => setAttributes({ prepend: value })}
-            placeholder={__("Written by ", "wp-components")}
-          />
-          <TextControl
-            label={__("Job Title", "wp-components")}
-            value={jobTitle}
-            onChange={(value: string) => setAttributes({ jobTitle: value })}
-            placeholder={__("Developer", "wp-components")}
-          />
+        <PanelBody title={__("Schema", "wp-components")} initialOpen={false}>
           <ToggleControl
             label={__("Enable Schema Markup", "wp-components")}
             checked={schema}
             onChange={(value: boolean) => setAttributes({ schema: value })}
           />
         </PanelBody>
+
+        <BaseAttributesPanel
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
       </InspectorControls>
 
-      <div {...blockProps}>
-        <div className="atom-author-preview">
-          {showAvatar && (
-            <figure className={`atom-author-avatar components-${imageFloat}-float ${imageRounded ? 'components-rounded' : ''}`}>
-              <div style={{ width: 100, height: 100, background: '#ddd', borderRadius: imageRounded ? '50%' : 0 }} />
-            </figure>
-          )}
-          <div className={`atom-author-description components-${imageFloat}-float`}>
-            {showName && <h4>{prepend}{__("Author Name", "wp-components")}</h4>}
-            {jobTitle && <p>{jobTitle}</p>}
-            {showDescription && <p>{__("Author bio will appear here...", "wp-components")}</p>}
-          </div>
-        </div>
-      </div>
-    </>
+      <ServerSideRender block="wpc/author" attributes={attributes} />
+    </BlockWrapper>
   );
 }
-
-export default Edit;
