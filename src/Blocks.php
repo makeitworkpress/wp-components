@@ -59,12 +59,12 @@ class Blocks
      */
     private function register_block(string $block_name, string $type)
     {
-        $class = Build::resolve_class($component, $type);
+        $class = Build::resolve_class($block_name, $type);
         if (!class_exists($class) || empty($class::$block)) {
             return;
         }
 
-        $block = $class::$block;
+        $block_settings = $class::get_block_settings();
         $script_handle = "wpc-" . $block_name . "-edit";
 
         wp_register_script(
@@ -76,9 +76,8 @@ class Blocks
         );
 
         register_block_type(
-            $block["name"],
-            array_merge($block, [
-                "attributes" => $class::get_block_atts(),
+            $block_settings["name"],
+            array_merge($block_settings, [
                 "editor_script" => $script_handle,
                 "render_callback" => function (array $properties) use (
                     $block_name,
@@ -100,10 +99,10 @@ class Blocks
     public function register_blocks(): void
     {
         foreach ($this->atoms as $block_name) {
-            $this->register_block($block_name);
+            $this->register_block($block_name, "atom");
         }
         foreach ($this->molecules as $block_name) {
-            $this->register_block($block_name);
+            $this->register_block($block_name, "molecule");
         }
     }
 }

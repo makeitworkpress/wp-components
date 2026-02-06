@@ -17,7 +17,7 @@ export interface BaseAttributes {
   color: string;
   display: string;
   float: string;
-  grid: string;
+  grid: string | boolean;
   height: string;
   hover: string;
   overlay: string;
@@ -139,10 +139,7 @@ export default function BaseAttributesPanel({
 
   return (
     <>
-      <PanelBody
-        title={__("Layout", "wp-components")}
-        initialOpen={false}
-      >
+      <PanelBody title={__("Layout", "wp-components")} initialOpen={false}>
         <SelectControl
           label={__("Align", "wp-components")}
           value={align}
@@ -175,10 +172,7 @@ export default function BaseAttributesPanel({
         />
       </PanelBody>
 
-      <PanelBody
-        title={__("Dimensions", "wp-components")}
-        initialOpen={false}
-      >
+      <PanelBody title={__("Dimensions", "wp-components")} initialOpen={false}>
         <TextControl
           label={__("Width", "wp-components")}
           value={width}
@@ -195,10 +189,7 @@ export default function BaseAttributesPanel({
         />
       </PanelBody>
 
-      <PanelBody
-        title={__("Appearance", "wp-components")}
-        initialOpen={false}
-      >
+      <PanelBody title={__("Appearance", "wp-components")} initialOpen={false}>
         <TextControl
           label={__("Background", "wp-components")}
           value={background}
@@ -270,10 +261,7 @@ export default function BaseAttributesPanel({
         />
       </PanelBody>
 
-      <PanelBody
-        title={__("Media", "wp-components")}
-        initialOpen={false}
-      >
+      <PanelBody title={__("Media", "wp-components")} initialOpen={false}>
         <TextControl
           label={__("Video Background", "wp-components")}
           value={video}
