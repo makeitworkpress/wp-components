@@ -9,9 +9,9 @@ $atom = MakeitWorkPress\WP_Components\Build::convert_camels($atom, ['hoverItem' 
 // Atom values
 $atom = wp_parse_args( $atom, [
     'after'         => '',                              // Content after each term
-    'args'          => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags 
+    'args'          => ['taxonomy' => 'post_tag'],      // Arguments for retrieving the tags
     'before'        => '',                              // Content before each term
-    'hover_item'    => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().  
+    'hover_item'    => '',                              // Allows a hover.css class applied to each item. Requires hover to be set true in Boot().
     'seperator'     => '/',                             // Content that seperates terms
     'terms'         => [],                              // Accepts a custom array of terms
     'term_style'     => 'normal'                        // Accepts a custom style, such as 'button'
@@ -21,8 +21,8 @@ if( ! $atom['terms'] ) {
     $atom['terms'] = get_terms( $atom['args'] );
 }
 
-// Return if we do not have a video
-if( ! $atom['terms'] ) {
+// Return if we do not have any term
+if( ! $atom['terms'] || ! is_array($atom['terms']) ) {
     return;
 }
 
@@ -39,20 +39,20 @@ $atom['attributes']['data']['taxonomy'] = $atom['args']['taxonomy'];
 
 // So we can check our seprator
 $count      = count($atom['terms']);
-$i          = 0; 
+$i          = 0;
 $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes']); ?>
 
 <ul <?php echo $attributes; ?>>
-    
+
     <?php foreach( $atom['terms'] as $term ) { ?>
 
-        <?php 
+        <?php
             // Some term variables
-            $term_link  = esc_url( get_term_link($term) ); 
+            $term_link  = esc_url( get_term_link($term) );
             $term_class = $atom['term_style'];
 
             if( $active == $term->term_id ) {
-                $term_class .= ' atom-term-active';    
+                $term_class .= ' atom-term-active';
             }
 
             if( $atom['hover_item'] ) {
@@ -61,39 +61,39 @@ $attributes = MakeitWorkPress\WP_Components\Build::attributes($atom['attributes'
         ?>
 
         <li>
-            
-            <?php 
-                if( $atom['before'] ) {                             
-                    echo $atom['before']; 
+
+            <?php
+                if( $atom['before'] ) {
+                    echo $atom['before'];
                 }
             ?>
-            
+
             <a class="atom-term<?php echo $term_class; ?>" href="<?php echo $term_link; ?>" data-id="<?php echo $term->term_id; ?>">
                 <?php echo $term->name; ?>
             </a>
-            
-            <?php 
-                if( $atom['after'] ) {                             
+
+            <?php
+                if( $atom['after'] ) {
                     echo $atom['after'];
                 }
             ?>
-            
+
         </li>
-    
-        <?php 
-            
+
+        <?php
+
             // Seperators
-            if( $atom['seperator'] ) {                                  
-                                              
+            if( $atom['seperator'] ) {
+
                 $i++;
 
-                if( $i != $count )                                  
-                    echo '<span class="atom-terms-seperator">' . $atom['seperator'] . '</span>'; 
-                
+                if( $i != $count )
+                    echo '<span class="atom-terms-seperator">' . $atom['seperator'] . '</span>';
+
             }
 
         ?>
-    
+
     <?php } ?>
-    
+
 </ul>
